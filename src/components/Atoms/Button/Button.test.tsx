@@ -40,9 +40,24 @@ describe('Button component', () => {
 	})
 
 	it('disables button when isLoading is true', () => {
-		const { getByRole, getByTestId } = render(<Button isLoading>Button</Button>)
+		const { getByRole } = render(<Button isLoading>Button</Button>)
 		const button = getByRole('button')
 		expect(button).toBeDisabled()
-		expect(button).toContainElement(getByTestId('loading-spinner'))
+	})
+
+	it('shows spinner when isLoading is true', () => {
+		const { getByTestId } = render(<Button isLoading>Button</Button>)
+		const spinner = getByTestId('loading-spinner')
+		expect(spinner).toBeInTheDocument()
+	})
+
+	it('spinner applies custom classe', () => {
+		const { getByTestId } = render(
+			<Button isLoading spinnerProps={{ className: 'custom-class' }}>
+				Button
+			</Button>,
+		)
+		const spinner = getByTestId('loading-spinner')
+		expect(spinner).toHaveClass('custom-class')
 	})
 })

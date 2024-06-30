@@ -1,27 +1,14 @@
 import { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { Spinner, SpinnerProps } from '../Spinner'
+
 type ButtonProps = ComponentProps<'button'> & {
 	leftIcon?: ReactNode
 	rightIcon?: ReactNode
 	isLoading?: boolean
 	loadingColor?: string
-}
-
-const LoadingSpinner = ({ loadingColor }: ButtonProps) => {
-	return (
-		<span
-			className={twMerge(
-				'inline-block size-4 animate-spin rounded-full border-[3px] border-current border-t-transparent text-white',
-				loadingColor,
-			)}
-			role="status"
-			aria-label="loading"
-			data-testid="loading-spinner"
-		>
-			<span className="sr-only">Loading...</span>
-		</span>
-	)
+	spinnerProps?: SpinnerProps
 }
 
 export const Button = ({
@@ -31,6 +18,7 @@ export const Button = ({
 	rightIcon = null,
 	loadingColor,
 	isLoading,
+	spinnerProps,
 	...props
 }: ButtonProps) => {
 	return (
@@ -42,7 +30,11 @@ export const Button = ({
 			disabled={isLoading}
 			{...props}
 		>
-			{isLoading ? <LoadingSpinner loadingColor={loadingColor} /> : leftIcon}
+			{isLoading ? (
+				<Spinner data-testid="loading-spinner" {...spinnerProps} />
+			) : (
+				leftIcon
+			)}
 			{children}
 			{rightIcon}
 		</button>
