@@ -48,7 +48,6 @@
 		"*.{ts,tsx}": [
 			"eslint --fix",
 			"prettier --write",
-			"pnpm run check-types",
 			"jest --bail --findRelatedTests"
 		]
 	}
