@@ -1,4 +1,5 @@
 export * from './Button'
+export * from './Checkbox'
 export * from './Field'
 export * from './HelperErrorText'
 export * from './Label'
