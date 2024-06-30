@@ -2,8 +2,6 @@ import { ComponentProps, forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FieldProps = ComponentProps<'input'> & {
-	label: string
-	helpErrorText?: string
 	isInvalid?: boolean
 }
 
@@ -33,38 +31,21 @@ const Warning = () => {
 	)
 }
 
-const HelperErrorText = ({ children, ...props }: ComponentProps<'p'>) => {
-	return (
-		<p className="mt-2 text-sm text-red-600" {...props}>
-			{children}
-		</p>
-	)
-}
-
 export const Field = forwardRef<HTMLInputElement, FieldProps>(
-	({ label, helpErrorText, isInvalid, className, ...props }, ref) => {
+	({ isInvalid, className, ...props }, ref) => {
 		return (
-			<div>
-				<label
-					htmlFor={props.id || props.name}
-					className="mb-2 block text-sm font-medium"
-				>
-					{label}
-				</label>
-				<div className="relative">
-					<input
-						className={twMerge(
-							'block w-full rounded-lg px-4 py-3 text-sm',
-							className,
-							isInvalid &&
-								'border-red-500 focus:border-red-500 focus:ring-red-500',
-						)}
-						ref={ref}
-						{...props}
-					/>
-					{isInvalid ? <Warning /> : null}
-				</div>
-				{isInvalid ? <HelperErrorText>{helpErrorText}</HelperErrorText> : null}
+			<div className="relative">
+				<input
+					className={twMerge(
+						'block w-full rounded-lg py-3 pl-4 pr-8 text-sm',
+						className,
+						isInvalid &&
+							'border-red-500 focus:border-red-500 focus:ring-red-500',
+					)}
+					ref={ref}
+					{...props}
+				/>
+				{isInvalid ? <Warning /> : null}
 			</div>
 		)
 	},

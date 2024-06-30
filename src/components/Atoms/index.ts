@@ -1,4 +1,6 @@
 export * from './Button'
 export * from './Field'
+export * from './HelperErrorText'
+export * from './Label'
 export * from './Skeleton'
 export * from './Spinner'
