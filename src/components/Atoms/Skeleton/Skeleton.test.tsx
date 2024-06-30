@@ -28,11 +28,10 @@ describe('Skeleton component', () => {
 	})
 
 	it('passes additional props to the underlying div element', () => {
-		const { getByTestId, debug } = render(
+		const { getByTestId } = render(
 			<Skeleton data-testid="skeleton" draggable />,
 		)
 		const skeletonElement = getByTestId('skeleton')
-		debug(skeletonElement)
 
 		expect(skeletonElement).toHaveAttribute('draggable')
 	})
