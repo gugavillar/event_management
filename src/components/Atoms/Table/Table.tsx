@@ -1,0 +1,38 @@
+import { ComponentProps } from 'react'
+import { twMerge } from 'tailwind-merge'
+
+import { TableBody, TableBodyProps } from './TableBody'
+import { TableHeader, TableHeaderProps } from './TableHeader'
+
+type TableProps = ComponentProps<'table'> & TableHeaderProps & TableBodyProps
+
+export const Table = ({
+	headerLabels,
+	bodyData,
+	handleClickRow,
+	className,
+	...props
+}: TableProps) => {
+	return (
+		<div className="-m-1.5 overflow-x-auto">
+			<div className="inline-block min-w-full p-1.5 align-middle">
+				<div className="overflow-hidden rounded-lg border">
+					<table
+						className={twMerge(
+							'min-w-full divide-y divide-gray-200',
+							className,
+						)}
+						{...props}
+					>
+						<TableHeader headerLabels={headerLabels} />
+						<TableBody
+							bodyData={bodyData}
+							headerLabels={headerLabels}
+							handleClickRow={handleClickRow}
+						/>
+					</table>
+				</div>
+			</div>
+		</div>
+	)
+}
