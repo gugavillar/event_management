@@ -11,16 +11,23 @@ import { Link } from '@/components/Atoms'
 
 const MENU_LINKS = [
 	{ label: 'Dashboard', href: '#', icon: <MdOutlineDashboard size={24} /> },
-	{ label: 'Participantes', href: '#', icon: <FaClipboardUser size={24} /> },
+	{
+		label: 'Participantes',
+		href: '/participantes',
+		icon: <FaClipboardUser size={24} />,
+	},
 	{ label: 'Voluntários', href: '#', icon: <GrUserWorker size={24} /> },
 	{ label: 'Grupos', href: '#', icon: <MdOutlineGroups size={24} /> },
 	{ label: 'Quartos', href: '#', icon: <MdRoomService size={24} /> },
 	{ label: 'Pagamentos', href: '#', icon: <MdOutlinePayment size={24} /> },
-]
+] as const
 
 export const PrincipalMenu = () => {
 	return (
-		<section className="mt-12 flex flex-col space-y-6">
+		<section
+			className="mt-12 flex flex-col space-y-6"
+			data-testid="principal-menu"
+		>
 			{MENU_LINKS.map((link) => (
 				<Link
 					key={link.label}
