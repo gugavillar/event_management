@@ -32,7 +32,7 @@ export const PrincipalMenu = () => {
 				<Link
 					key={link.label}
 					href={link.href}
-					className="rounded-lg p-2 text-gray-100/80 hover:bg-slate-900/30"
+					className="rounded-lg p-2 text-gray-100 transition-colors duration-500 hover:bg-slate-900/80"
 				>
 					{link.icon}
 					{link.label}

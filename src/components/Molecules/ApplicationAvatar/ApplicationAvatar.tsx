@@ -14,8 +14,8 @@ export const ApplicationAvatar = () => {
 				data-testid="ticket-icon"
 			/>
 			<div>
-				<Text className="text-xl font-bold text-gray-50">Hub de Eventos</Text>
-				<Text className="text-lg text-gray-100/30">Anglicana Vida</Text>
+				<Text className="text-xl font-bold text-gray-100">Hub de Eventos</Text>
+				<Text className="text-lg text-gray-100/40">Anglicana Vida</Text>
 			</div>
 		</section>
 	)

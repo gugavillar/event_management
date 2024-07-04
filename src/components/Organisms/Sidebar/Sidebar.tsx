@@ -6,7 +6,7 @@ import {
 
 export const Sidebar = () => {
 	return (
-		<aside className="flex flex-col bg-slate-700 px-4 py-6">
+		<aside className="flex flex-col bg-slate-800 px-4 py-6">
 			<ApplicationAvatar />
 			<PrincipalMenu />
 			<UserAvatar />
