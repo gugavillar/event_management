@@ -17,15 +17,15 @@ describe('Header component', () => {
 		const heading =
 			HEADING_ELEMENTS[Math.ceil(Math.random() * HEADING_ELEMENTS.length)]
 
-		const { container } = render(
+		const { getByText } = render(
 			<Header as={heading} data-testid="header">
 				Header
 			</Header>,
 		)
 
-		const header = container.querySelector(heading)
+		const header = getByText('Header')
 
-		expect(header).toBeInTheDocument()
+		expect(header.tagName).toBe(heading.toUpperCase())
 	})
 
 	it('applies custom classes', () => {
