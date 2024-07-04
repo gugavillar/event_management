@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR">
-			<body className={inter.className}>{children}</body>
+			<body className={`h-screen w-screen ${inter.className}`}>{children}</body>
 			<PrelineScript />
 		</html>
 	)

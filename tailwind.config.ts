@@ -7,6 +7,14 @@ const config: Config = {
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 		'./node_modules/preline/preline.js',
 	],
+	theme: {
+		extend: {
+			gridTemplateColumns: {
+				appMd: 'minmax(0, 32rem) 16rem',
+				appLg: 'minmax(0, 60rem) 30rem',
+			},
+		},
+	},
 	plugins: [require('@tailwindcss/forms'), require('preline/plugin')],
 }
 export default config
