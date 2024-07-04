@@ -1,6 +1,7 @@
 export * from './Button'
 export * from './Checkbox'
 export * from './Field'
+export * from './Header'
 export * from './HelperErrorText'
 export * from './Label'
 export * from './Link'
