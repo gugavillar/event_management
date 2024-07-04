@@ -7,7 +7,6 @@ type ButtonProps = ComponentProps<'button'> & {
 	leftIcon?: ReactNode
 	rightIcon?: ReactNode
 	isLoading?: boolean
-	loadingColor?: string
 	spinnerProps?: SpinnerProps
 }
 
@@ -16,7 +15,6 @@ export const Button = ({
 	className,
 	leftIcon = null,
 	rightIcon = null,
-	loadingColor,
 	isLoading,
 	spinnerProps,
 	...props
