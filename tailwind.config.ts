@@ -10,7 +10,6 @@ const config: Config = {
 	theme: {
 		extend: {
 			gridTemplateColumns: {
-				appMd: 'minmax(0, 32rem) 16rem',
 				appLg: 'minmax(0, 60rem) 30rem',
 			},
 		},
