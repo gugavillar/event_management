@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
 
-import { Inter } from 'next/font/google'
-
 import './globals.css'
 import PrelineScript from '@/loaders/Preline'
-
-const inter = Inter({ subsets: ['latin'] })
+import { roboto } from '@/theme'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -19,7 +16,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR">
-			<body className={`h-screen w-screen ${inter.className}`}>{children}</body>
+			<body className={`h-screen w-screen ${roboto.className}`}>
+				{children}
+			</body>
 			<PrelineScript />
 		</html>
 	)
