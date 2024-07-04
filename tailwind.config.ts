@@ -11,6 +11,7 @@ const config: Config = {
 		extend: {
 			gridTemplateColumns: {
 				appLg: 'minmax(0, 60rem) 30rem',
+				admin: 'min(12rem, 16rem) 1fr',
 			},
 		},
 	},
