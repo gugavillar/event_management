@@ -3,6 +3,7 @@ import { twMerge } from 'tailwind-merge'
 
 type SelectProps = ComponentProps<'select'> & {
 	isInvalid?: boolean
+	placeholder?: string
 	options: Array<{
 		label: string
 		value: string | number
@@ -36,7 +37,7 @@ const Warning = () => {
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-	({ options, className, isInvalid, ...props }, ref) => {
+	({ options, className, isInvalid, placeholder, ...props }, ref) => {
 		if (!options) return null
 
 		return (
@@ -51,6 +52,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 					ref={ref}
 					{...props}
 				>
+					{placeholder ? (
+						<option value="" disabled selected>
+							{placeholder}
+						</option>
+					) : null}
 					{options.map(({ label, value }) => (
 						<option key={value} value={value}>
 							{label}

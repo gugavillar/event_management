@@ -15,13 +15,13 @@ export const TableHeader = ({
 	...props
 }: TableHeaderProps) => {
 	return (
-		<thead className={twMerge('bg-gray-50', className)} {...props}>
+		<thead className={twMerge('bg-slate-800', className)} {...props}>
 			<tr>
 				{headerLabels?.map(({ label }) => (
 					<th
 						key={uuid()}
 						scope="col"
-						className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-500"
+						className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-100"
 					>
 						{label}
 					</th>

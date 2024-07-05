@@ -1,8 +1,9 @@
-import { ComponentProps, forwardRef } from 'react'
+import { ComponentProps, forwardRef, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FieldProps = ComponentProps<'input'> & {
 	isInvalid?: boolean
+	rightIcon?: ReactNode
 }
 
 const Warning = () => {
@@ -32,7 +33,7 @@ const Warning = () => {
 }
 
 export const Field = forwardRef<HTMLInputElement, FieldProps>(
-	({ isInvalid, className, ...props }, ref) => {
+	({ isInvalid, className, rightIcon, ...props }, ref) => {
 		return (
 			<div className="relative">
 				<input
@@ -45,6 +46,11 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 					ref={ref}
 					{...props}
 				/>
+				{rightIcon ? (
+					<div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50">
+						{rightIcon}
+					</div>
+				) : null}
 				{isInvalid ? <Warning /> : null}
 			</div>
 		)

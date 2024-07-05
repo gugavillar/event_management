@@ -4,7 +4,9 @@ import { twMerge } from 'tailwind-merge'
 import { TableBody, TableBodyProps } from './TableBody'
 import { TableHeader, TableHeaderProps } from './TableHeader'
 
-type TableProps = ComponentProps<'table'> & TableHeaderProps & TableBodyProps
+export type TableProps = ComponentProps<'table'> &
+	TableHeaderProps &
+	TableBodyProps
 
 export const Table = ({
 	headerLabels,
@@ -16,7 +18,7 @@ export const Table = ({
 	return (
 		<div className="-m-1.5 overflow-x-auto">
 			<div className="inline-block min-w-full p-1.5 align-middle">
-				<div className="overflow-hidden rounded-lg border">
+				<div className="overflow-hidden rounded-lg border shadow-md">
 					<table
 						className={twMerge(
 							'min-w-full divide-y divide-gray-200',
