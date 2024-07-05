@@ -1,6 +1,7 @@
 export * from './AgesChart'
 export * from './CitiesChart'
 export * from './ConfirmationsChart'
+export * from './DashboardCards'
 export * from './GendersChart'
 export * from './LoginButton'
 export * from './PaymentsChart'

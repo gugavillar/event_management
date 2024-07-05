@@ -1,5 +1,6 @@
 export * from './ApplicationAvatar'
 export * from './ChartContainer'
 export * from './HeaderPage'
+export * from './InformationCard'
 export * from './PrincipalMenu'
 export * from './UserAvatar'
