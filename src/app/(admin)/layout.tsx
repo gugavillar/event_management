@@ -8,7 +8,7 @@ export default function AdminLayout({
 	return (
 		<main className="grid h-full grid-cols-1 md:grid-cols-admin">
 			<Sidebar />
-			<div className="md:overflow-y-auto">{children}</div>
+			<div className="bg-slate-100/50 md:overflow-y-auto">{children}</div>
 		</main>
 	)
 }

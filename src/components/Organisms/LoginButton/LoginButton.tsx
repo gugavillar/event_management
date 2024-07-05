@@ -8,7 +8,7 @@ export const LoginButton = () => {
 			<Header>Acesse sua conta</Header>
 			<Button
 				leftIcon={<FcGoogle />}
-				className="w-3/4 items-center justify-center bg-white py-4 text-lg font-medium text-black/55 drop-shadow"
+				className="w-3/4 items-center justify-center bg-white py-4 text-lg font-medium text-slate-800/70 drop-shadow"
 			>
 				Acesse com o Google
 			</Button>

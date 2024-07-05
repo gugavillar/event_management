@@ -16,7 +16,7 @@ export const Header = <T extends HeadingElement>({
 	const Component = as
 	return (
 		<Component
-			className={twMerge('text-2xl font-bold text-stone-700', className)}
+			className={twMerge('text-2xl font-bold text-slate-800', className)}
 			{...props}
 		>
 			{children}
