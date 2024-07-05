@@ -25,7 +25,7 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 	plotOptions: {
 		bar: {
 			horizontal: false,
-			columnWidth: '30px',
+			columnWidth: '16px',
 			borderRadius: 0,
 		},
 	},

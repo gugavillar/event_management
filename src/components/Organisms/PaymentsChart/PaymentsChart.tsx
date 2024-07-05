@@ -7,10 +7,7 @@ export const PaymentsChart = () => {
 			headingText="Pagamentos"
 			subheadingText="Distribuição de pagamentos por tipo"
 		>
-			<PieChart
-				labels={['Pix', 'Boleto', 'Cartão de Credito']}
-				series={[50, 30, 20]}
-			/>
+			<PieChart labels={['Pix', 'Dinheiro', 'Cartão']} series={[50, 30, 5]} />
 		</ChartContainer>
 	)
 }

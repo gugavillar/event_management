@@ -53,14 +53,20 @@ const OPTIONS_CHART_PIE: ApexOptions = {
 type PieChartProps = ComponentProps<'div'> & {
 	series: ApexNonAxisChartSeries
 	labels: ApexOptions['labels']
+	height?: number
 }
 
-export const PieChart = ({ className, labels, series }: PieChartProps) => {
+export const PieChart = ({
+	className,
+	labels,
+	series,
+	height,
+}: PieChartProps) => {
 	return (
 		<ApexCharts
-			className={twMerge('flex h-full w-full cursor-pointer', className)}
+			className={twMerge('flex w-full cursor-pointer', className)}
 			type="donut"
-			height="100%"
+			height={height || 256}
 			width="100%"
 			series={series}
 			options={{
