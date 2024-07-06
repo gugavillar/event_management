@@ -1,3 +1,5 @@
 export * from './Dashboard'
 export * from './Login'
 export * from './Participants'
+export * from './Payments'
+export * from './Volunteers'

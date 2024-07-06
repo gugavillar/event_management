@@ -22,10 +22,18 @@ const MENU_LINKS = [
 		href: '/participantes',
 		icon: <FaClipboardUser size={24} />,
 	},
-	{ label: 'Voluntários', href: '#', icon: <GrUserWorker size={24} /> },
+	{
+		label: 'Voluntários',
+		href: '/voluntarios',
+		icon: <GrUserWorker size={24} />,
+	},
 	{ label: 'Grupos', href: '#', icon: <MdOutlineGroups size={24} /> },
 	{ label: 'Quartos', href: '#', icon: <MdRoomService size={24} /> },
-	{ label: 'Pagamentos', href: '#', icon: <MdOutlinePayment size={24} /> },
+	{
+		label: 'Pagamentos',
+		href: '/pagamentos',
+		icon: <MdOutlinePayment size={24} />,
+	},
 	{ label: 'Gestão de acesso', href: '#', icon: <GrUserSettings size={24} /> },
 ] as const
 

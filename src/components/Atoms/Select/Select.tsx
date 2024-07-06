@@ -41,7 +41,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 		if (!options) return null
 
 		return (
-			<div className="relative">
+			<div className="relative w-full">
 				<select
 					className={twMerge(
 						'block w-full rounded-lg px-4 py-3 pe-16 text-sm disabled:pointer-events-none disabled:opacity-50',
@@ -52,11 +52,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 					ref={ref}
 					{...props}
 				>
-					{placeholder ? (
-						<option value="" disabled selected>
-							{placeholder}
-						</option>
-					) : null}
+					{placeholder ? <option value="">{placeholder}</option> : null}
 					{options.map(({ label, value }) => (
 						<option key={value} value={value}>
 							{label}
