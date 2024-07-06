@@ -1,24 +1,20 @@
-import { faker } from '@faker-js/faker/locale/pt_BR'
+'use client'
+import { useEffect, useState } from 'react'
+import { IoMdAlert } from 'react-icons/io'
 
-import { UUID } from 'crypto'
-
-import { PaymentTag, Select } from '@/components/Atoms'
+import {
+	Button,
+	Header,
+	Modal,
+	Select,
+	Spinner,
+	TableProps,
+} from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
 import { PaymentType, PaymentTypeAPI } from '@/constants'
 
-const FAKE_PARTICIPANTES = () => {
-	return Array.from({ length: 10 }, () => {
-		const status = Math.floor(Math.random() * 3) + 1
-		return {
-			id: faker.string.uuid() as UUID,
-			name: faker.person.fullName(),
-			phone: faker.phone.number(),
-			birthdate: faker.date.birthdate().toISOString(),
-			payment: <PaymentTag status={status} />,
-		}
-	})
-}
+import { FAKE_PARTICIPANTES } from './Payments.mocks'
 
 const HEADER_LABELS = [
 	{
@@ -40,15 +36,49 @@ const HEADER_LABELS = [
 ]
 
 export const Payments = () => {
+	const [tableData, setTableData] = useState<null | ReturnType<
+		typeof FAKE_PARTICIPANTES
+	>>()
+
+	const handleClickRow = async ({ id }: TableProps['bodyData'][number]) => {
+		console.log(id)
+		const overlay = await import('preline/preline')
+		overlay.HSOverlay.open(document.getElementById('test-modal') as HTMLElement)
+	}
+
+	useEffect(() => {
+		if (tableData) return
+
+		setTableData(FAKE_PARTICIPANTES())
+	}, [tableData])
+
 	return (
-		<PageContent subheadingPage="Listagem de colaboradores do evento">
-			<ListPage
-				placeholderField="Encontrar um colaborador"
-				className="lg:max-w-screen-lg"
-				moreFilter={
+		<>
+			<PageContent subheadingPage="Listagem de colaboradores do evento">
+				{!tableData ? (
+					<Spinner />
+				) : (
+					<ListPage placeholderField="Encontrar um colaborador">
+						<ListManager
+							bodyData={tableData}
+							headerLabels={HEADER_LABELS}
+							handleClickRow={handleClickRow}
+						/>
+					</ListPage>
+				)}
+			</PageContent>
+			<Modal modalId="test-modal">
+				<div className="flex flex-col items-center justify-center px-6 pb-6">
+					<div className="flex flex-col items-center justify-between gap-2 md:flex-row">
+						<IoMdAlert size={32} className="text-amber-300" />
+						<Header as="h3" className="text-center text-lg">
+							Você deseja confirmar o pagamento do colaborador?
+						</Header>
+					</div>
 					<Select
+						className="mx-auto my-6 max-w-sm"
 						defaultValue=""
-						placeholder="Selecione o status"
+						placeholder="Selecione a forma de pagamento"
 						options={[
 							{
 								label: PaymentType[PaymentTypeAPI.CARD].label,
@@ -64,13 +94,20 @@ export const Payments = () => {
 							},
 						]}
 					/>
-				}
-			>
-				<ListManager
-					bodyData={FAKE_PARTICIPANTES()}
-					headerLabels={HEADER_LABELS}
-				/>
-			</ListPage>
-		</PageContent>
+					<div className="flex w-full flex-col justify-end gap-y-4 md:flex-row md:gap-x-5">
+						<Button
+							type="button"
+							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200 md:w-32"
+							data-hs-overlay="#test-modal"
+						>
+							Cancelar
+						</Button>
+						<Button className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:w-32">
+							Confirmar
+						</Button>
+					</div>
+				</div>
+			</Modal>
+		</>
 	)
 }

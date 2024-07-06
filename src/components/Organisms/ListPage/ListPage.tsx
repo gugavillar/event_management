@@ -2,17 +2,19 @@ import { ComponentProps, ReactNode } from 'react'
 import { IoMdSearch } from 'react-icons/io'
 import { twMerge } from 'tailwind-merge'
 
-import { Field, Select } from '@/components/Atoms'
+import { Field } from '@/components/Atoms'
 
 type ListPageProps = ComponentProps<'div'> & {
 	placeholderField: string
 	moreFilter?: ReactNode
+	actionButton?: ReactNode
 }
 
 export const ListPage = ({
 	placeholderField,
 	children,
 	moreFilter,
+	actionButton,
 	className,
 	...props
 }: ListPageProps) => {
@@ -25,20 +27,13 @@ export const ListPage = ({
 				)}
 				{...props}
 			>
-				<Select
-					defaultValue=""
-					placeholder="Selecione o evento"
-					options={[
-						{ label: 'Evento 1', value: '1' },
-						{ label: 'Evento 2', value: '2' },
-					]}
-				/>
 				{moreFilter || null}
 				<Field
 					placeholder={placeholderField}
 					rightIcon={<IoMdSearch size={24} />}
 					className="ps-11"
 				/>
+				{actionButton || null}
 			</div>
 			{children}
 		</>
