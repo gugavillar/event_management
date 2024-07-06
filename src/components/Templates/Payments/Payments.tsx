@@ -3,6 +3,7 @@ import { faker } from '@faker-js/faker/locale/pt_BR'
 import { UUID } from 'crypto'
 
 import { PaymentTag, Select } from '@/components/Atoms'
+import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
 import { PaymentType, PaymentTypeAPI } from '@/constants'
 
@@ -42,28 +43,32 @@ export const Payments = () => {
 	return (
 		<PageContent subheadingPage="Listagem de colaboradores do evento">
 			<ListPage
-				bodyData={FAKE_PARTICIPANTES()}
-				headerLabels={HEADER_LABELS}
 				placeholderField="Encontrar um colaborador"
 				className="lg:max-w-screen-lg"
+				moreFilter={
+					<Select
+						defaultValue=""
+						placeholder="Selecione o status"
+						options={[
+							{
+								label: PaymentType[PaymentTypeAPI.CARD].label,
+								value: PaymentTypeAPI.CARD,
+							},
+							{
+								label: PaymentType[PaymentTypeAPI.CASH].label,
+								value: PaymentTypeAPI.CASH,
+							},
+							{
+								label: PaymentType[PaymentTypeAPI.PIX].label,
+								value: PaymentTypeAPI.PIX,
+							},
+						]}
+					/>
+				}
 			>
-				<Select
-					defaultValue=""
-					placeholder="Selecione o status"
-					options={[
-						{
-							label: PaymentType[PaymentTypeAPI.CARD].label,
-							value: PaymentTypeAPI.CARD,
-						},
-						{
-							label: PaymentType[PaymentTypeAPI.CASH].label,
-							value: PaymentTypeAPI.CASH,
-						},
-						{
-							label: PaymentType[PaymentTypeAPI.PIX].label,
-							value: PaymentTypeAPI.PIX,
-						},
-					]}
+				<ListManager
+					bodyData={FAKE_PARTICIPANTES()}
+					headerLabels={HEADER_LABELS}
 				/>
 			</ListPage>
 		</PageContent>

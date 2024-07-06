@@ -2,19 +2,17 @@ import { ComponentProps, ReactNode } from 'react'
 import { IoMdSearch } from 'react-icons/io'
 import { twMerge } from 'tailwind-merge'
 
-import { Field, Select, Table, TableProps } from '@/components/Atoms'
+import { Field, Select } from '@/components/Atoms'
 
 type ListPageProps = ComponentProps<'div'> & {
-	bodyData: TableProps['bodyData']
-	headerLabels: TableProps['headerLabels']
 	placeholderField: string
-	children?: ReactNode
+	moreFilter?: ReactNode
 }
+
 export const ListPage = ({
-	bodyData,
-	headerLabels,
 	placeholderField,
 	children,
+	moreFilter,
 	className,
 	...props
 }: ListPageProps) => {
@@ -35,14 +33,14 @@ export const ListPage = ({
 						{ label: 'Evento 2', value: '2' },
 					]}
 				/>
-				{children || null}
+				{moreFilter || null}
 				<Field
 					placeholder={placeholderField}
 					rightIcon={<IoMdSearch size={24} />}
 					className="ps-11"
 				/>
 			</div>
-			<Table headerLabels={headerLabels} bodyData={bodyData} />
+			{children}
 		</>
 	)
 }
