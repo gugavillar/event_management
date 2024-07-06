@@ -9,6 +9,7 @@ import {
 	PersonalInfoCard,
 	AddressInfoCard,
 } from '@/components/Organisms'
+import { MODALS_IDS } from '@/constants'
 
 import { FAKE_PARTICIPANTES, MOCKED_USER } from './Volunteers.mocks'
 
@@ -48,7 +49,7 @@ export const Volunteers = () => {
 		console.log(id)
 		const overlay = await import('preline/preline')
 		overlay.HSOverlay.open(
-			document.getElementById('volunteer-manager') as HTMLElement,
+			document.getElementById(MODALS_IDS.VOLUNTEER_DRAWER) as HTMLElement,
 		)
 	}
 
@@ -68,7 +69,7 @@ export const Volunteers = () => {
 						handleClickRow={handleClickRow}
 						bodyData={tableData}
 						headerLabels={HEADER_LABELS}
-						drawerId="volunteer-manager"
+						drawerId={MODALS_IDS.VOLUNTEER_DRAWER}
 						drawerTitle="Dados do voluntário"
 						drawerFooter={
 							<>
