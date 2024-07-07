@@ -1,7 +1,13 @@
 'use client'
 import { ReactNode } from 'react'
 
-import { Table, Drawer, TableProps } from '@/components/Atoms'
+import {
+	Table,
+	Drawer,
+	TableProps,
+	DrawerBody,
+	DrawerFooter,
+} from '@/components/Atoms'
 
 type ParticipantManagerProps = {
 	bodyData: TableProps['bodyData']
@@ -40,12 +46,8 @@ export const ListManager = ({
 			/>
 			{drawerId ? (
 				<Drawer drawerId={drawerId} headingTitle={drawerTitle}>
-					<section className="max-h-[calc(88dvh-4rem)] space-y-6 overflow-y-auto p-6">
-						{drawerContent}
-					</section>
-					<footer className="absolute bottom-0 flex min-h-16 w-full flex-col items-center justify-between gap-y-2 px-6 pb-6 pt-3 md:flex-row md:gap-x-6">
-						{drawerFooter}
-					</footer>
+					<DrawerBody>{drawerContent}</DrawerBody>
+					<DrawerFooter>{drawerFooter}</DrawerFooter>
 				</Drawer>
 			) : null}
 		</>

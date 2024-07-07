@@ -27,7 +27,7 @@ const MENU_LINKS = [
 		href: '/voluntarios',
 		icon: <GrUserWorker size={24} />,
 	},
-	{ label: 'Grupos', href: '#', icon: <MdOutlineGroups size={24} /> },
+	{ label: 'Grupos', href: '/grupos', icon: <MdOutlineGroups size={24} /> },
 	{ label: 'Quartos', href: '#', icon: <MdRoomService size={24} /> },
 	{
 		label: 'Pagamentos',

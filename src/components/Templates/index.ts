@@ -1,4 +1,5 @@
 export * from './Dashboard'
+export * from './Groups'
 export * from './Login'
 export * from './Participants'
 export * from './Payments'
