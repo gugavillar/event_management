@@ -7,6 +7,7 @@ type SelectProps = ComponentProps<'select'> & {
 	options: Array<{
 		label: string
 		value: string | number
+		isDisabled?: boolean
 	}>
 }
 
@@ -53,8 +54,8 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 					{...props}
 				>
 					{placeholder ? <option value="">{placeholder}</option> : null}
-					{options.map(({ label, value }) => (
-						<option key={value} value={value}>
+					{options.map(({ label, value, isDisabled }) => (
+						<option key={value} value={value} disabled={isDisabled}>
 							{label}
 						</option>
 					))}

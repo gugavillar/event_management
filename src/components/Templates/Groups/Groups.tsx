@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { MdOutlineGroups } from 'react-icons/md'
 
 import {
@@ -11,6 +12,8 @@ import {
 	Spinner,
 } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
+import { InputField } from '@/components/Molecules/InputField/InputField'
+import { InputFieldArray } from '@/components/Molecules/InputFieldArray/InputFieldArray'
 import { ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS } from '@/constants'
 
@@ -32,6 +35,13 @@ export const Groups = () => {
 		ReturnType<typeof FAKE_PARTICIPANTES>
 	>>(null)
 
+	const methods = useForm({
+		defaultValues: {
+			groupName: '',
+			participants: [{ selectedValue: '' }],
+		},
+	})
+
 	useEffect(() => {
 		if (tableData) return
 
@@ -42,6 +52,8 @@ export const Groups = () => {
 
 		setTableData(groups)
 	}, [tableData])
+
+	console.log(methods.watch())
 
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
@@ -71,7 +83,18 @@ export const Groups = () => {
 				</ListPage>
 			)}
 			<Drawer drawerId={MODALS_IDS.GROUP_DRAWER} headingTitle="Novo grupo">
-				<DrawerBody></DrawerBody>
+				<DrawerBody>
+					<FormProvider {...methods}>
+						<InputField fieldName="groupName">Nome do grupo</InputField>
+						<InputFieldArray
+							control={methods.control}
+							name="participants"
+							valueKey="selectedValue"
+						>
+							Selecione um participante
+						</InputFieldArray>
+					</FormProvider>
+				</DrawerBody>
 				<DrawerFooter>
 					<Button className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800">
 						Criar grupo

@@ -16,7 +16,7 @@ const MENU_LINKS = [
 		href: '/dashboard',
 		icon: <MdOutlineDashboard size={24} />,
 	},
-	{ label: 'Eventos', href: '#', icon: <MdEvent size={24} /> },
+	{ label: 'Eventos', href: '/eventos', icon: <MdEvent size={24} /> },
 	{
 		label: 'Participantes',
 		href: '/participantes',

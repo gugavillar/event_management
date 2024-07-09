@@ -11,7 +11,7 @@ import {
 } from '@/components/Organisms'
 import { MODALS_IDS } from '@/constants'
 
-import { FAKE_PARTICIPANTES, MOCKED_USER } from './Volunteers.mocks'
+import { FAKE_VOLUNTEERS, MOCKED_USER } from './Volunteers.mocks'
 
 const HEADER_LABELS = [
 	{
@@ -42,7 +42,7 @@ const HEADER_LABELS = [
 
 export const Volunteers = () => {
 	const [tableData, setTableData] = useState<null | ReturnType<
-		typeof FAKE_PARTICIPANTES
+		typeof FAKE_VOLUNTEERS
 	>>()
 
 	const handleClickRow = async ({ id }: TableProps['bodyData'][number]) => {
@@ -56,7 +56,7 @@ export const Volunteers = () => {
 	useEffect(() => {
 		if (tableData) return
 
-		setTableData(FAKE_PARTICIPANTES())
+		setTableData(FAKE_VOLUNTEERS())
 	}, [tableData])
 
 	return (

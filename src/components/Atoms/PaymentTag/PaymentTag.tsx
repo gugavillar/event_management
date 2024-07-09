@@ -11,6 +11,7 @@ const STATUS_COLORS = {
 	[PaymentTypeAPI.CARD]: 'bg-blue-300',
 	[PaymentTypeAPI.CASH]: 'bg-yellow-400',
 	[PaymentTypeAPI.PIX]: 'bg-green-500',
+	[PaymentTypeAPI.DONATION]: 'bg-purple-400',
 }
 
 export const PaymentTag = ({

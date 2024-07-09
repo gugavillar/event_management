@@ -4,7 +4,7 @@ import { UUID } from 'crypto'
 
 import { StatusTag } from '@/components/Atoms'
 
-export const FAKE_PARTICIPANTES = () => {
+export const FAKE_VOLUNTEERS = () => {
 	return Array.from({ length: 10 }, () => {
 		const status = Math.floor(Math.random() * 3) + 1
 		return {
