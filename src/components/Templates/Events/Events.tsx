@@ -4,7 +4,8 @@ import { LuCalendarPlus } from 'react-icons/lu'
 
 import { Button, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import { EventDrawer, ListPage, PageContent } from '@/components/Organisms'
+import { MODALS_IDS } from '@/constants'
 
 import { FAKE_EVENTS } from './Events.mocks'
 
@@ -49,7 +50,7 @@ export const Events = () => {
 					actionButton={
 						<Button
 							type="button"
-							// data-hs-overlay={`#${MODALS_IDS.GROUP_DRAWER}`}
+							data-hs-overlay={`#${MODALS_IDS.EVENT_DRAWER}`}
 							leftIcon={<LuCalendarPlus />}
 							className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 						>
@@ -60,6 +61,7 @@ export const Events = () => {
 					<ListManager bodyData={tableData} headerLabels={HEADER_LABELS} />
 				</ListPage>
 			)}
+			<EventDrawer drawerId={MODALS_IDS.EVENT_DRAWER} />
 		</PageContent>
 	)
 }

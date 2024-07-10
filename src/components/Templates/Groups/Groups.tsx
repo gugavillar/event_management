@@ -14,10 +14,11 @@ import {
 import { ListManager } from '@/components/Molecules'
 import { InputField } from '@/components/Molecules/InputField/InputField'
 import { InputFieldArray } from '@/components/Molecules/InputFieldArray/InputFieldArray'
+import { SelectField } from '@/components/Molecules/SelectField/SelectField'
 import { ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS } from '@/constants'
 
-import { FAKE_PARTICIPANTES } from './Groups.mocks'
+import { FAKE_LEADERS, FAKE_PARTICIPANTES } from './Groups.mocks'
 
 const HEADER_LABELS = [
 	{
@@ -34,6 +35,9 @@ export const Groups = () => {
 	const [tableData, setTableData] = useState<null | Array<
 		ReturnType<typeof FAKE_PARTICIPANTES>
 	>>(null)
+	const [leaders, setLeaders] = useState<ReturnType<typeof FAKE_LEADERS> | []>(
+		[],
+	)
 
 	const methods = useForm({
 		defaultValues: {
@@ -45,15 +49,15 @@ export const Groups = () => {
 	useEffect(() => {
 		if (tableData) return
 
+		const leadersFake = FAKE_LEADERS()
 		const groups = []
 		for (let i = 1; i <= 4; i++) {
 			groups.push(FAKE_PARTICIPANTES(i))
 		}
 
+		setLeaders(leadersFake)
 		setTableData(groups)
-	}, [tableData])
-
-	console.log(methods.watch())
+	}, [leaders, tableData])
 
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
@@ -86,6 +90,9 @@ export const Groups = () => {
 				<DrawerBody>
 					<FormProvider {...methods}>
 						<InputField fieldName="groupName">Nome do grupo</InputField>
+						<SelectField fieldName="groupLeader" options={leaders}>
+							Selecione o líder do grupo
+						</SelectField>
 						<InputFieldArray
 							control={methods.control}
 							name="participants"
