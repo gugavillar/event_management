@@ -76,6 +76,7 @@ type BarChartProps = ComponentProps<'div'> & {
 export const BarChart = ({ className, categories, series }: BarChartProps) => {
 	return (
 		<ApexCharts
+			data-testid="bar-chart"
 			className={twMerge('h-full w-full cursor-pointer', className)}
 			type="bar"
 			height="100%"
