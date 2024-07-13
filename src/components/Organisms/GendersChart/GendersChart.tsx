@@ -1,5 +1,6 @@
 import { PieChart } from '@/components/Atoms'
 import { ChartContainer } from '@/components/Molecules'
+import { GenderType, GenderTypeAPI } from '@/constants'
 
 export const GendersChart = () => {
 	return (
@@ -7,7 +8,13 @@ export const GendersChart = () => {
 			headingText="Gênero"
 			subheadingText="Distribuição de cadastros por gênero"
 		>
-			<PieChart labels={['Masculino', 'Feminino']} series={[50, 30]} />
+			<PieChart
+				labels={[
+					GenderType[GenderTypeAPI.MALE].label,
+					GenderType[GenderTypeAPI.FEMALE].label,
+				]}
+				series={[50, 30]}
+			/>
 		</ChartContainer>
 	)
 }

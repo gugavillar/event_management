@@ -58,9 +58,13 @@ describe('Field component', () => {
 		expect(currencyValueNumber).toContain('')
 	})
 
+	it('currencyFieldValue function return empty string when value is equal 000', () => {
+		const currencyValueNumber = currencyFieldValue('000')
+		expect(currencyValueNumber).toContain('')
+	})
+
 	it('removeCurrencyFormat function format correcty', () => {
 		const currencyValueNumber = removeCurrencyFormat('R$ 1.000,00')
-		console.log(currencyValueNumber)
 		expect(currencyValueNumber).toContain('1000.00')
 	})
 

@@ -1,21 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 import { MdOutlineGroups } from 'react-icons/md'
 
-import {
-	Button,
-	Drawer,
-	DrawerBody,
-	DrawerFooter,
-	Header,
-	Spinner,
-} from '@/components/Atoms'
+import { Button, Header, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { InputField } from '@/components/Molecules/InputField/InputField'
-import { InputFieldArray } from '@/components/Molecules/InputFieldArray/InputFieldArray'
-import { SelectField } from '@/components/Molecules/SelectField/SelectField'
-import { ListPage, PageContent } from '@/components/Organisms'
+import { GroupDrawer, ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS } from '@/constants'
 
 import { FAKE_LEADERS, FAKE_PARTICIPANTES } from './Groups.mocks'
@@ -38,13 +27,6 @@ export const Groups = () => {
 	const [leaders, setLeaders] = useState<ReturnType<typeof FAKE_LEADERS> | []>(
 		[],
 	)
-
-	const methods = useForm({
-		defaultValues: {
-			groupName: '',
-			participants: [{ selectedValue: '' }],
-		},
-	})
 
 	useEffect(() => {
 		if (tableData) return
@@ -86,28 +68,7 @@ export const Groups = () => {
 					))}
 				</ListPage>
 			)}
-			<Drawer drawerId={MODALS_IDS.GROUP_DRAWER} headingTitle="Novo grupo">
-				<DrawerBody>
-					<FormProvider {...methods}>
-						<InputField fieldName="groupName">Nome do grupo</InputField>
-						<SelectField fieldName="groupLeader" options={leaders}>
-							Selecione o líder do grupo
-						</SelectField>
-						<InputFieldArray
-							control={methods.control}
-							name="participants"
-							valueKey="selectedValue"
-						>
-							Selecione um participante
-						</InputFieldArray>
-					</FormProvider>
-				</DrawerBody>
-				<DrawerFooter>
-					<Button className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800">
-						Criar grupo
-					</Button>
-				</DrawerFooter>
-			</Drawer>
+			<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} leaders={leaders} />
 		</PageContent>
 	)
 }

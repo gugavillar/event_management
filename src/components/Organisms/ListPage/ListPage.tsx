@@ -27,12 +27,12 @@ export const ListPage = ({
 				)}
 				{...props}
 			>
-				{moreFilter || null}
 				<Field
 					placeholder={placeholderField}
 					rightIcon={<IoMdSearch size={24} />}
 					className="ps-11"
 				/>
+				{moreFilter || null}
 				{actionButton || null}
 			</div>
 			{children}

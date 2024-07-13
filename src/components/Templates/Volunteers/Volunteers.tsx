@@ -1,15 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { Button, Spinner, TableProps } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { Button, Select, Spinner, TableProps } from '@/components/Atoms'
+import { ImportButton, ListManager } from '@/components/Molecules'
 import {
 	ListPage,
 	PageContent,
 	PersonalInfoCard,
 	AddressInfoCard,
 } from '@/components/Organisms'
-import { MODALS_IDS } from '@/constants'
+import { MODALS_IDS, StatusType } from '@/constants'
 
 import { FAKE_VOLUNTEERS, MOCKED_USER } from './Volunteers.mocks'
 
@@ -64,7 +64,20 @@ export const Volunteers = () => {
 			{!tableData ? (
 				<Spinner />
 			) : (
-				<ListPage placeholderField="Encontrar um voluntário">
+				<ListPage
+					placeholderField="Encontrar um voluntário"
+					className="lg:max-w-full"
+					moreFilter={
+						<Select
+							placeholder="Selecione o status"
+							options={[
+								{ label: StatusType[1].label, value: StatusType[1].value },
+								{ label: StatusType[2].label, value: StatusType[2].value },
+							]}
+						/>
+					}
+					actionButton={<ImportButton label="Importar voluntários" />}
+				>
 					<ListManager
 						handleClickRow={handleClickRow}
 						bodyData={tableData}

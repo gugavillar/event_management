@@ -7,6 +7,7 @@ import {
 	InputField,
 	SelectField,
 	MaskedInputField,
+	CurrencyInputField,
 } from '@/components/Molecules'
 import { GenderType, GenderTypeAPI } from '@/constants'
 
@@ -42,6 +43,12 @@ export const EventDrawer = ({ drawerId }: EventDrawerProps) => {
 					>
 						Gênero do evento
 					</SelectField>
+					<CurrencyInputField fieldName="eventParticipantPrice">
+						Valor ficha participante
+					</CurrencyInputField>
+					<CurrencyInputField fieldName="eventVolunteerPrice">
+						Valor ficha voluntário
+					</CurrencyInputField>
 					<MaskedInputField format="##/##/####" fieldName="eventInitialDate">
 						Data de início do evento
 					</MaskedInputField>

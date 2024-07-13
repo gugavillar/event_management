@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { Button, Spinner, TableProps } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { Button, Select, Spinner, TableProps } from '@/components/Atoms'
+import { ImportButton, ListManager } from '@/components/Molecules'
 import {
 	AddressInfoCard,
 	FamilyContactInfo,
@@ -11,7 +11,7 @@ import {
 	PageContent,
 	PersonalInfoCard,
 } from '@/components/Organisms'
-import { MODALS_IDS } from '@/constants'
+import { MODALS_IDS, StatusType } from '@/constants'
 
 import { FAKE_PARTICIPANTES, MOCKED_USER } from './Participants.mocks'
 
@@ -21,16 +21,16 @@ const HEADER_LABELS = [
 		accessor: 'name',
 	},
 	{
-		label: 'Email',
-		accessor: 'email',
-	},
-	{
 		label: 'Telefone',
 		accessor: 'phone',
 	},
 	{
 		label: 'Data de nascimento',
 		accessor: 'birthdate',
+	},
+	{
+		label: 'Cidade',
+		accessor: 'city',
 	},
 	{
 		label: 'Status',
@@ -62,7 +62,20 @@ export const Participants = () => {
 			{!tableData ? (
 				<Spinner />
 			) : (
-				<ListPage placeholderField="Encontrar um participante">
+				<ListPage
+					placeholderField="Encontrar um participante"
+					className="lg:max-w-full"
+					actionButton={<ImportButton label="Importar participantes" />}
+					moreFilter={
+						<Select
+							placeholder="Selecione o status"
+							options={[
+								{ label: StatusType[1].label, value: StatusType[1].value },
+								{ label: StatusType[2].label, value: StatusType[2].value },
+							]}
+						/>
+					}
+				>
 					<ListManager
 						handleClickRow={handleClickRow}
 						bodyData={tableData}

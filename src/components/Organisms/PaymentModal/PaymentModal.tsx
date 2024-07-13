@@ -34,6 +34,10 @@ export const PaymentModal = ({ modalId }: PaymentModalProps) => {
 							label: PaymentType[PaymentTypeAPI.PIX].label,
 							value: PaymentTypeAPI.PIX,
 						},
+						{
+							label: PaymentType[PaymentTypeAPI.DONATION].label,
+							value: PaymentTypeAPI.DONATION,
+						},
 					]}
 				/>
 				<div className="flex w-full flex-col justify-end gap-y-4 md:flex-row md:gap-x-5">

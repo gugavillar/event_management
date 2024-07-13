@@ -10,9 +10,9 @@ export const FAKE_PARTICIPANTES = () => {
 		return {
 			id: faker.string.uuid() as UUID,
 			name: faker.person.fullName(),
-			email: faker.internet.email(),
 			phone: faker.phone.number(),
 			birthdate: faker.date.birthdate().toISOString(),
+			city: faker.location.city(),
 			status: status > 2 ? '' : <StatusTag status={status} />,
 		}
 	})

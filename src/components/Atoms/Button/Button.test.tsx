@@ -60,4 +60,27 @@ describe('Button component', () => {
 		const spinner = getByTestId('loading-spinner')
 		expect(spinner).toHaveClass('custom-class')
 	})
+
+	it('show spinner when isLoading is true and have left icon', () => {
+		const { getByTestId } = render(
+			<Button isLoading leftIcon={<span>👈</span>}>
+				Button
+			</Button>,
+		)
+		const spinner = getByTestId('loading-spinner')
+		expect(spinner).toBeInTheDocument()
+	})
+
+	it('show left icon when leftIcon is provided and isLoading is false', () => {
+		const { getByTestId } = render(
+			<Button
+				leftIcon={<span data-testid="left-icon">👈</span>}
+				isLoading={false}
+			>
+				Button
+			</Button>,
+		)
+		const leftIcon = getByTestId('left-icon')
+		expect(leftIcon).toBeInTheDocument()
+	})
 })
