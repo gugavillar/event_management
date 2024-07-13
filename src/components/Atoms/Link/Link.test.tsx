@@ -24,14 +24,13 @@ describe('Link component', () => {
 	})
 
 	it('renders change href', () => {
-		const { getByRole, debug } = render(
+		const { getByRole } = render(
 			<Link href="#" as="/link">
 				Link
 			</Link>,
 		)
 
 		const link = getByRole('link', { name: 'Link' })
-		debug(link)
 
 		expect(link).toHaveAttribute('href', '/link')
 	})

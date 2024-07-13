@@ -10,7 +10,7 @@ import {
 
 import { Link } from '@/components/Atoms'
 
-const MENU_LINKS = [
+export const MENU_LINKS = [
 	{
 		label: 'Dashboard',
 		href: '/dashboard',

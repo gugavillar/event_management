@@ -15,7 +15,7 @@ describe('Header component', () => {
 
 	it('renders correctly heading element passed in as prop', () => {
 		const heading =
-			HEADING_ELEMENTS[Math.ceil(Math.random() * HEADING_ELEMENTS.length)]
+			HEADING_ELEMENTS[Math.floor(Math.random() * HEADING_ELEMENTS.length)]
 
 		const { getByText } = render(
 			<Header as={heading} data-testid="header">

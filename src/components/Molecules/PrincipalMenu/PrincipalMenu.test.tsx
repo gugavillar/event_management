@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { PrincipalMenu } from './PrincipalMenu'
+import { MENU_LINKS, PrincipalMenu } from './PrincipalMenu'
 
 jest.mock('next/dist/client/router', () => ({
 	useRouter: jest.fn(),
@@ -17,10 +17,11 @@ describe('PrincipalMenu component', () => {
 
 	it('haves 6 links', () => {
 		const { getByTestId } = render(<PrincipalMenu />)
+		const length = MENU_LINKS.length
 
 		const links = getByTestId('principal-menu').querySelectorAll('a')
 
-		expect(links).toHaveLength(6)
+		expect(links).toHaveLength(length)
 	})
 
 	it('have dashboard menu', () => {

@@ -20,9 +20,9 @@ const Warning = () => {
 				viewBox="0 0 24 24"
 				fill="none"
 				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			>
 				<circle cx="12" cy="12" r="10"></circle>
 				<line x1="12" x2="12" y1="8" y2="12"></line>
@@ -47,7 +47,10 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 					{...props}
 				/>
 				{rightIcon ? (
-					<div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50">
+					<div
+						className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50"
+						data-testid="right-icon"
+					>
 						{rightIcon}
 					</div>
 				) : null}

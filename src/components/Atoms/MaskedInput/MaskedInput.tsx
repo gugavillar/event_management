@@ -1,10 +1,11 @@
-import { forwardRef } from 'react'
+import { forwardRef, ReactNode } from 'react'
 import { PatternFormat, type PatternFormatProps } from 'react-number-format'
 
 import { Field } from '../Field'
 
 type MaskedInputProps = Omit<PatternFormatProps, 'customInput'> & {
 	isInvalid?: boolean
+	rightIcon?: ReactNode
 }
 
 export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(

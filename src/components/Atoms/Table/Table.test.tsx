@@ -67,7 +67,6 @@ describe('Table component', () => {
 
 	it('handle click function called when click in column data', () => {
 		const handleClick = jest.fn()
-		const randomIndex = Math.floor(Math.random() * 15)
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
@@ -80,15 +79,15 @@ describe('Table component', () => {
 
 		const rows = getByTestId('table').querySelectorAll('tbody tr td')
 
-		fireEvent.click(rows[randomIndex])
+		fireEvent.click(rows[tableHeader.length - 2])
 
 		expect(handleClick).toHaveBeenCalled()
 	})
 
 	it('handle click function called with correct data', () => {
 		const handleClick = jest.fn()
-		const randomIndex = Math.floor(Math.random() * 15)
 		const { tableHeader, tableData } = generateTableData(15)
+		const randomIndex = Math.floor(Math.random() * tableData.length)
 		const { getByTestId } = render(
 			<Table
 				headerLabels={tableHeader}
@@ -107,8 +106,8 @@ describe('Table component', () => {
 
 	it('not have function when a react element is passed', () => {
 		const handleClick = jest.fn()
-		const randomIndex = Math.floor(Math.random() * 15)
 		const { tableHeader, tableData } = generateTableData(15)
+		const randomIndex = Math.floor(Math.random() * tableData.length)
 		const { getByTestId } = render(
 			<Table
 				headerLabels={tableHeader}

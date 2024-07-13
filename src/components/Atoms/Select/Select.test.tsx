@@ -56,7 +56,7 @@ describe('Field component', () => {
 
 	it('renders options correctly', () => {
 		const onChangeMock = jest.fn()
-		const randomOption = Math.floor(Math.random() * 10)
+		const randomOption = Math.floor(Math.random() * 8) + 1
 		const OPTIONS = generateOptions(randomOption)
 
 		const { getByTestId } = render(
@@ -69,7 +69,7 @@ describe('Field component', () => {
 
 		const options = getByTestId('select-field').querySelectorAll('option')
 
-		expect(options).toHaveLength(randomOption)
+		expect(options).toHaveLength(OPTIONS.length)
 	})
 
 	it('ref getting value correctly', () => {
@@ -94,5 +94,26 @@ describe('Field component', () => {
 		fireEvent.change(selectElement, { target: { value: selectOption } })
 
 		expect(ref.current?.value).toBe(selectOption)
+	})
+
+	it('renders first option as placeholder', () => {
+		const { getByTestId } = render(
+			<Select
+				data-testid="select-field"
+				options={generateOptions(10)}
+				placeholder="Selecione"
+			/>,
+		)
+		const select = getByTestId('select-field').querySelectorAll('option')[0]
+
+		expect(select).toContainHTML('Selecione')
+	})
+
+	it('renders nothing if options is a empty array', () => {
+		const { container } = render(
+			<Select data-testid="select-field" options={[]} />,
+		)
+
+		expect(container.firstChild).toBeNull()
 	})
 })

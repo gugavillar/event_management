@@ -32,10 +32,7 @@ export const TableBody = ({
 			{...props}
 		>
 			{bodyData?.map((data) => (
-				<tr
-					key={data?.id || uuid()}
-					className="odd:bg-slate-50 even:bg-slate-800/5"
-				>
+				<tr key={data?.id} className="odd:bg-slate-50 even:bg-slate-800/5">
 					{headerLabels?.map(({ accessor }) => {
 						const isToApplyClassOrFunction =
 							handleClickRow && !isValidElement(data[accessor])
