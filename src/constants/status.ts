@@ -33,3 +33,13 @@ export const GenderType = {
 	'2': { label: 'Feminino', value: GenderTypeAPI.FEMALE },
 	'3': { label: 'Ambos', value: GenderTypeAPI.BOTH },
 }
+
+export enum CollaboratorTypeAPI {
+	VOLUNTARY = 1,
+	PARTICIPANT = 2,
+}
+
+export const CollaboratorType = {
+	'1': { label: 'Voluntário', value: CollaboratorTypeAPI.VOLUNTARY },
+	'2': { label: 'Participante', value: CollaboratorTypeAPI.PARTICIPANT },
+}
