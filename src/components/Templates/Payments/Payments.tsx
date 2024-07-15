@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { Spinner, TableProps } from '@/components/Atoms'
+import { Select, Spinner, TableProps } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
-import { MODALS_IDS } from '@/constants'
+import { CollaboratorType, MODALS_IDS } from '@/constants'
 
-import { FAKE_PARTICIPANTES } from './Payments.mocks'
+import { FAKE_COLLABORATORS } from './Payments.mocks'
 
 const HEADER_LABELS = [
 	{
@@ -18,8 +18,12 @@ const HEADER_LABELS = [
 		accessor: 'phone',
 	},
 	{
-		label: 'Data de nascimento',
-		accessor: 'birthdate',
+		label: 'Tipo de colaborador',
+		accessor: 'collaboratorType',
+	},
+	{
+		label: 'Valor pago',
+		accessor: 'valuePayed',
 	},
 	{
 		label: 'Status',
@@ -29,7 +33,7 @@ const HEADER_LABELS = [
 
 export const Payments = () => {
 	const [tableData, setTableData] = useState<null | ReturnType<
-		typeof FAKE_PARTICIPANTES
+		typeof FAKE_COLLABORATORS
 	>>()
 
 	const handleClickRow = async ({ id }: TableProps['bodyData'][number]) => {
@@ -43,7 +47,7 @@ export const Payments = () => {
 	useEffect(() => {
 		if (tableData) return
 
-		setTableData(FAKE_PARTICIPANTES())
+		setTableData(FAKE_COLLABORATORS())
 	}, [tableData])
 
 	return (
@@ -52,7 +56,25 @@ export const Payments = () => {
 				{!tableData ? (
 					<Spinner />
 				) : (
-					<ListPage placeholderField="Encontrar um colaborador">
+					<ListPage
+						placeholderField="Encontrar um colaborador"
+						className="lg:max-w-full"
+						moreFilter={
+							<Select
+								placeholder="Selecione o tipo do colaborador"
+								options={[
+									{
+										label: CollaboratorType[1].label,
+										value: CollaboratorType[1].value,
+									},
+									{
+										label: CollaboratorType[2].label,
+										value: CollaboratorType[2].value,
+									},
+								]}
+							/>
+						}
+					>
 						<ListManager
 							bodyData={tableData}
 							headerLabels={HEADER_LABELS}

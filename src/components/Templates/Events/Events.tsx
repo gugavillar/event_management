@@ -26,6 +26,14 @@ const HEADER_LABELS = [
 		label: 'Data final',
 		accessor: 'finalDate',
 	},
+	{
+		label: 'Valor do participante',
+		accessor: 'participantValue',
+	},
+	{
+		label: 'Valor do voluntário',
+		accessor: 'volunteerValue',
+	},
 ]
 
 export const Events = () => {

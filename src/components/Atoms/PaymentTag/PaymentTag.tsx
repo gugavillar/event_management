@@ -8,10 +8,10 @@ type PaymentTagProps = ComponentProps<'mark'> & {
 }
 
 const STATUS_COLORS = {
-	[PaymentTypeAPI.CARD]: 'bg-blue-300',
-	[PaymentTypeAPI.CASH]: 'bg-yellow-400',
-	[PaymentTypeAPI.PIX]: 'bg-green-500',
-	[PaymentTypeAPI.DONATION]: 'bg-purple-400',
+	[PaymentTypeAPI.CARD]: 'bg-blue-300 bg-opacity-30',
+	[PaymentTypeAPI.CASH]: 'bg-yellow-400 bg-opacity-30',
+	[PaymentTypeAPI.PIX]: 'bg-green-500 bg-opacity-30',
+	[PaymentTypeAPI.DONATION]: 'bg-purple-400 bg-opacity-30',
 }
 
 export const PaymentTag = ({

@@ -28,7 +28,7 @@ export const MENU_LINKS = [
 		icon: <GrUserWorker size={24} />,
 	},
 	{ label: 'Grupos', href: '/grupos', icon: <MdOutlineGroups size={24} /> },
-	{ label: 'Quartos', href: '#', icon: <MdRoomService size={24} /> },
+	{ label: 'Quartos', href: '/quartos', icon: <MdRoomService size={24} /> },
 	{
 		label: 'Pagamentos',
 		href: '/pagamentos',

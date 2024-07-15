@@ -8,8 +8,8 @@ type StatusTag = ComponentProps<'mark'> & {
 }
 
 const STATUS_COLORS = {
-	[StatusTypeAPI.NOT_CONFIRMED]: 'bg-red-400',
-	[StatusTypeAPI.CONFIRMED]: 'bg-emerald-400',
+	[StatusTypeAPI.NOT_CONFIRMED]: 'bg-red-400 bg-opacity-30',
+	[StatusTypeAPI.CONFIRMED]: 'bg-emerald-400 bg-opacity-30',
 }
 
 export const StatusTag = ({ status, className, ...props }: StatusTag) => {
