@@ -105,4 +105,20 @@ describe('Field component', () => {
 
 		expect(container.firstChild).toBeNull()
 	})
+
+	it('applies error styles when isInvalid is passed', () => {
+		const { getByTestId } = render(
+			<Select
+				data-testid="select-field"
+				options={generateOptions(10)}
+				isInvalid
+			/>,
+		)
+
+		const select = getByTestId('select-field')
+
+		expect(select).toHaveClass(
+			'border-red-500 focus:border-red-500 focus:ring-red-500',
+		)
+	})
 })
