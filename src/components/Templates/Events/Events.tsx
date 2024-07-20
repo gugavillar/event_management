@@ -1,11 +1,17 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { LuCalendarPlus } from 'react-icons/lu'
 
 import { Button, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { EventDrawer, ListPage, PageContent } from '@/components/Organisms'
-import { MODALS_IDS } from '@/constants'
+import {
+	EventSchema,
+	EventSchemaType,
+} from '@/components/Organisms/EventDrawer/EventDrawer.schema'
+import { GenderTypeAPI, MODALS_IDS } from '@/constants'
 
 import { FAKE_EVENTS } from './Events.mocks'
 
@@ -47,6 +53,19 @@ export const Events = () => {
 		setTableData(FAKE_EVENTS())
 	}, [tableData])
 
+	const methods = useForm<EventSchemaType>({
+		defaultValues: {
+			name: '',
+			gender: GenderTypeAPI.MALE,
+			initialDate: '',
+			finalDate: '',
+			participantValue: '',
+			volunteerValue: '',
+		},
+		mode: 'onChange',
+		resolver: zodResolver(EventSchema),
+	})
+
 	return (
 		<PageContent subheadingPage="Listagem de eventos">
 			{!tableData ? (
@@ -69,7 +88,9 @@ export const Events = () => {
 					<ListManager bodyData={tableData} headerLabels={HEADER_LABELS} />
 				</ListPage>
 			)}
-			<EventDrawer drawerId={MODALS_IDS.EVENT_DRAWER} />
+			<FormProvider {...methods}>
+				<EventDrawer drawerId={MODALS_IDS.EVENT_DRAWER} />
+			</FormProvider>
 		</PageContent>
 	)
 }

@@ -23,15 +23,15 @@ export const StatusType = {
 }
 
 export enum GenderTypeAPI {
-	MALE = 1,
-	FEMALE = 2,
-	BOTH = 3,
+	MALE = 'MALE',
+	FEMALE = 'FEMALE',
+	BOTH = 'BOTH',
 }
 
 export const GenderType = {
-	'1': { label: 'Masculino', value: GenderTypeAPI.MALE },
-	'2': { label: 'Feminino', value: GenderTypeAPI.FEMALE },
-	'3': { label: 'Ambos', value: GenderTypeAPI.BOTH },
+	[GenderTypeAPI.MALE]: { label: 'Masculino', value: GenderTypeAPI.MALE },
+	[GenderTypeAPI.FEMALE]: { label: 'Feminino', value: GenderTypeAPI.FEMALE },
+	[GenderTypeAPI.BOTH]: { label: 'Ambos', value: GenderTypeAPI.BOTH },
 }
 
 export enum CollaboratorTypeAPI {

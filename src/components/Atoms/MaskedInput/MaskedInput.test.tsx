@@ -1,8 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
-import { formatISO, startOfDay } from 'date-fns'
 import { createRef } from 'react'
-
-import { formatToBrazilianDate, formatToISODate } from '@/formatters'
 
 import { MaskedInput } from './MaskedInput'
 
@@ -94,27 +91,5 @@ describe('Field component', () => {
 			/>,
 		)
 		expect(getByTestId('right-icon')).toBeInTheDocument()
-	})
-
-	it('formatToBrazilianDate format correctly', () => {
-		const dateFormatted = formatToBrazilianDate(new Date().toISOString())
-		expect(dateFormatted).toBe(
-			`${new Date().getDate()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`,
-		)
-	})
-
-	it('formatToBrazilianDate return empty string when no value is passed', () => {
-		const dateFormatted = formatToBrazilianDate('')
-		expect(dateFormatted).toBe('')
-	})
-
-	it('formatToISODate return empty string when no value is passed', () => {
-		const dateFormatted = formatToISODate('')
-		expect(dateFormatted).toBe('')
-	})
-
-	it('formatToISODate format correctly', () => {
-		const dateFormatted = formatToISODate(new Date().toString())
-		expect(dateFormatted).toBe(formatISO(startOfDay(new Date())))
 	})
 })

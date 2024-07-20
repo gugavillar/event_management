@@ -10,7 +10,7 @@ type MaskedInputProps = Omit<PatternFormatProps, 'customInput'> & {
 
 export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
 	({ ...props }, ref) => {
-		return <PatternFormat getInputRef={ref} {...props} customInput={Field} />
+		return <PatternFormat customInput={Field} getInputRef={ref} {...props} />
 	},
 )
 

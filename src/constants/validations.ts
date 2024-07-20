@@ -1,0 +1,3 @@
+export const MIN_CURRENCY_VALUE = 0.01
+export const MAX_CURRENCY_VALUE = 999999.99
+export const MAX_FIELD_LENGTH = 255

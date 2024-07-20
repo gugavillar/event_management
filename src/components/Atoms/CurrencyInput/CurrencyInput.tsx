@@ -23,9 +23,9 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
 		return (
 			<NumberFormatBase
 				getInputRef={ref}
-				{...props}
 				format={format}
 				customInput={Field}
+				{...props}
 			/>
 		)
 	},

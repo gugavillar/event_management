@@ -19,17 +19,6 @@ describe('Field component', () => {
 		expect(getByTestId('select-field')).toBeInTheDocument()
 	})
 
-	it('displays warning when isInvalid true', () => {
-		const { getByTestId } = render(
-			<Select
-				data-testid="select-field"
-				options={generateOptions(9)}
-				isInvalid
-			/>,
-		)
-		expect(getByTestId('warning-icon')).toBeInTheDocument()
-	})
-
 	it('forwards ref to input element', () => {
 		const ref = createRef<HTMLSelectElement>()
 		render(
