@@ -8,7 +8,10 @@ import {
 
 export const EventSchema = z
 	.object({
-		name: z.string().min(3, 'Campo obrigatório'),
+		name: z
+			.string({ required_error: 'Campo obrigatório' })
+			.trim()
+			.min(3, 'Campo obrigatório'),
 		gender: z.enum(
 			[GenderTypeAPI.MALE, GenderTypeAPI.FEMALE, GenderTypeAPI.BOTH],
 			{

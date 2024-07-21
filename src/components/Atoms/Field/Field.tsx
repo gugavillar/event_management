@@ -1,7 +1,7 @@
-import { ComponentProps, forwardRef, ReactNode } from 'react'
+import { ComponentPropsWithRef, forwardRef, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-type FieldProps = ComponentProps<'input'> & {
+type FieldProps = ComponentPropsWithRef<'input'> & {
 	isInvalid?: boolean
 	rightIcon?: ReactNode
 }

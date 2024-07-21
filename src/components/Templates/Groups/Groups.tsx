@@ -1,10 +1,16 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { MdOutlineGroups } from 'react-icons/md'
 
 import { Button, Header, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { GroupDrawer, ListPage, PageContent } from '@/components/Organisms'
+import {
+	GroupSchema,
+	GroupSchemaType,
+} from '@/components/Organisms/GroupDrawer/GroupDrawer.schema'
 import { MODALS_IDS } from '@/constants'
 
 import { FAKE_LEADERS, FAKE_PARTICIPANTES } from './Groups.mocks'
@@ -41,6 +47,16 @@ export const Groups = () => {
 		setTableData(groups)
 	}, [leaders, tableData])
 
+	const methods = useForm<GroupSchemaType>({
+		mode: 'onChange',
+		resolver: zodResolver(GroupSchema),
+		defaultValues: {
+			name: '',
+			leader: '',
+			participants: [{ selected: '' }],
+		},
+	})
+
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			{!tableData ? (
@@ -68,7 +84,9 @@ export const Groups = () => {
 					))}
 				</ListPage>
 			)}
-			<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} leaders={leaders} />
+			<FormProvider {...methods}>
+				<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} leaders={leaders} />
+			</FormProvider>
 		</PageContent>
 	)
 }
