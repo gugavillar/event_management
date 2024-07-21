@@ -4,10 +4,12 @@ import { PaymentType, PaymentTypeAPI } from '@/constants'
 
 import { PaymentTag } from './PaymentTag'
 
+const PaymentTagStatusArray = Object.values(PaymentTypeAPI)
+
 describe('PaymentTag component', () => {
 	it('renders correclty', () => {
 		const { getByTestId } = render(
-			<PaymentTag status={1} data-testid="payment-tag" />,
+			<PaymentTag status={PaymentTypeAPI.CARD} data-testid="payment-tag" />,
 		)
 
 		const paymentTag = getByTestId('payment-tag')
@@ -18,7 +20,7 @@ describe('PaymentTag component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<PaymentTag
-				status={1}
+				status={PaymentTypeAPI.CARD}
 				data-testid="payment-tag"
 				className="custom-class"
 			/>,
@@ -31,7 +33,11 @@ describe('PaymentTag component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<PaymentTag status={1} data-testid="payment-tag" id="test" />,
+			<PaymentTag
+				status={PaymentTypeAPI.CARD}
+				data-testid="payment-tag"
+				id="test"
+			/>,
 		)
 
 		const paymentTag = getByTestId('payment-tag')
@@ -40,15 +46,18 @@ describe('PaymentTag component', () => {
 	})
 
 	it('renders correctly custom label based on status', () => {
-		const status: PaymentTypeAPI = Math.floor(Math.random() * 4) + 1
+		const status = Math.floor(Math.random() * PaymentTagStatusArray.length)
 
 		const { getByTestId } = render(
-			<PaymentTag status={status} data-testid="payment-tag" />,
+			<PaymentTag
+				status={PaymentTagStatusArray[status]}
+				data-testid="payment-tag"
+			/>,
 		)
 
 		const paymentTag = getByTestId('payment-tag')
 
-		const label = PaymentType[status].label
+		const label = PaymentType[PaymentTagStatusArray[status]].label
 
 		expect(paymentTag).toHaveTextContent(label)
 	})

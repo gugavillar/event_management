@@ -9,7 +9,7 @@ import {
 	PersonalInfoCard,
 	AddressInfoCard,
 } from '@/components/Organisms'
-import { MODALS_IDS, StatusType } from '@/constants'
+import { MODALS_IDS, StatusSelectOptions } from '@/constants'
 
 import { FAKE_VOLUNTEERS, MOCKED_USER } from './Volunteers.mocks'
 
@@ -70,10 +70,7 @@ export const Volunteers = () => {
 					moreFilter={
 						<Select
 							placeholder="Selecione o status"
-							options={[
-								{ label: StatusType[1].label, value: StatusType[1].value },
-								{ label: StatusType[2].label, value: StatusType[2].value },
-							]}
+							options={StatusSelectOptions}
 						/>
 					}
 					actionButton={<ImportButton label="Importar voluntários" />}

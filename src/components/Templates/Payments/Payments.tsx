@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Select, Spinner, TableProps } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
-import { CollaboratorType, MODALS_IDS } from '@/constants'
+import { CollaboratorTypeSelectOptions, MODALS_IDS } from '@/constants'
 
 import { FAKE_COLLABORATORS } from './Payments.mocks'
 
@@ -62,16 +62,7 @@ export const Payments = () => {
 						moreFilter={
 							<Select
 								placeholder="Selecione o tipo do colaborador"
-								options={[
-									{
-										label: CollaboratorType[1].label,
-										value: CollaboratorType[1].value,
-									},
-									{
-										label: CollaboratorType[2].label,
-										value: CollaboratorType[2].value,
-									},
-								]}
+								options={CollaboratorTypeSelectOptions}
 							/>
 						}
 					>

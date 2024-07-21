@@ -1,7 +1,7 @@
 import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal, Select } from '@/components/Atoms'
-import { PaymentType, PaymentTypeAPI } from '@/constants'
+import { PaymentSelectOptions } from '@/constants'
 
 type PaymentModalProps = {
 	modalId: string
@@ -21,24 +21,7 @@ export const PaymentModal = ({ modalId }: PaymentModalProps) => {
 					className="mx-auto my-6 max-w-sm"
 					defaultValue=""
 					placeholder="Selecione a forma de pagamento"
-					options={[
-						{
-							label: PaymentType[PaymentTypeAPI.CARD].label,
-							value: PaymentTypeAPI.CARD,
-						},
-						{
-							label: PaymentType[PaymentTypeAPI.CASH].label,
-							value: PaymentTypeAPI.CASH,
-						},
-						{
-							label: PaymentType[PaymentTypeAPI.PIX].label,
-							value: PaymentTypeAPI.PIX,
-						},
-						{
-							label: PaymentType[PaymentTypeAPI.DONATION].label,
-							value: PaymentTypeAPI.DONATION,
-						},
-					]}
+					options={PaymentSelectOptions}
 				/>
 				<div className="flex w-full flex-col justify-end gap-y-4 md:flex-row md:gap-x-5">
 					<Button

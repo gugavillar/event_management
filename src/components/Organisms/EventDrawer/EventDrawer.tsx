@@ -8,7 +8,7 @@ import {
 	MaskedInputField,
 	CurrencyInputField,
 } from '@/components/Molecules'
-import { GenderType, GenderTypeAPI } from '@/constants'
+import { GenderSelectOptions } from '@/constants'
 
 import { EventSchemaType } from './EventDrawer.schema'
 
@@ -30,20 +30,7 @@ export const EventDrawer = ({ drawerId }: EventDrawerProps) => {
 				<SelectField
 					fieldName="gender"
 					placeholder="Selecione o gênero do evento"
-					options={[
-						{
-							label: GenderType[GenderTypeAPI.MALE].label,
-							value: GenderTypeAPI.MALE,
-						},
-						{
-							label: GenderType[GenderTypeAPI.FEMALE].label,
-							value: GenderTypeAPI.FEMALE,
-						},
-						{
-							label: GenderType[GenderTypeAPI.BOTH].label,
-							value: GenderTypeAPI.BOTH,
-						},
-					]}
+					options={GenderSelectOptions}
 				>
 					Gênero do evento
 				</SelectField>

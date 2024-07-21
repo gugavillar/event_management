@@ -3,17 +3,25 @@ import { faker } from '@faker-js/faker/locale/pt_BR'
 import { UUID } from 'crypto'
 
 import { StatusTag } from '@/components/Atoms'
+import { StatusTypeAPI } from '@/constants'
+
+const statusTagArray = Object.values(StatusTypeAPI)
 
 export const FAKE_PARTICIPANTES = () => {
 	return Array.from({ length: 10 }, () => {
-		const status = Math.floor(Math.random() * 3) + 1
+		const status = Math.floor(Math.random() * statusTagArray.length)
 		return {
 			id: faker.string.uuid() as UUID,
 			name: faker.person.fullName(),
 			phone: faker.phone.number(),
 			birthdate: faker.date.birthdate().toISOString(),
 			city: faker.location.city(),
-			status: status > 2 ? '' : <StatusTag status={status} />,
+			status:
+				status > 2 ? (
+					''
+				) : (
+					<StatusTag status={StatusTypeAPI[statusTagArray[status]]} />
+				),
 		}
 	})
 }

@@ -4,10 +4,12 @@ import { StatusType, StatusTypeAPI } from '@/constants'
 
 import { StatusTag } from './StatusTag'
 
+const StatusTagArray = Object.values(StatusTypeAPI)
+
 describe('PaymentTag component', () => {
 	it('renders correclty', () => {
 		const { getByTestId } = render(
-			<StatusTag status={1} data-testid="status-tag" />,
+			<StatusTag status={StatusTypeAPI.CONFIRMED} data-testid="status-tag" />,
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -18,7 +20,7 @@ describe('PaymentTag component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<StatusTag
-				status={1}
+				status={StatusTypeAPI.CONFIRMED}
 				data-testid="status-tag"
 				className="custom-class"
 			/>,
@@ -31,7 +33,11 @@ describe('PaymentTag component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<StatusTag status={1} data-testid="status-tag" id="test" />,
+			<StatusTag
+				status={StatusTypeAPI.CONFIRMED}
+				data-testid="status-tag"
+				id="test"
+			/>,
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -40,15 +46,15 @@ describe('PaymentTag component', () => {
 	})
 
 	it('renders correctly custom label based on status', () => {
-		const status: StatusTypeAPI = Math.floor(Math.random() * 2) + 1
+		const status = Math.floor(Math.random() * StatusTagArray.length)
 
 		const { getByTestId } = render(
-			<StatusTag status={status} data-testid="status-tag" />,
+			<StatusTag status={StatusTagArray[status]} data-testid="status-tag" />,
 		)
 
 		const statusTag = getByTestId('status-tag')
 
-		const label = StatusType[status].label
+		const label = StatusType[StatusTagArray[status]].label
 
 		expect(statusTag).toHaveTextContent(label)
 	})

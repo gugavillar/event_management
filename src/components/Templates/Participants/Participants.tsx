@@ -11,7 +11,7 @@ import {
 	PageContent,
 	PersonalInfoCard,
 } from '@/components/Organisms'
-import { MODALS_IDS, StatusType } from '@/constants'
+import { MODALS_IDS, StatusSelectOptions } from '@/constants'
 
 import { FAKE_PARTICIPANTES, MOCKED_USER } from './Participants.mocks'
 
@@ -69,10 +69,7 @@ export const Participants = () => {
 					moreFilter={
 						<Select
 							placeholder="Selecione o status"
-							options={[
-								{ label: StatusType[1].label, value: StatusType[1].value },
-								{ label: StatusType[2].label, value: StatusType[2].value },
-							]}
+							options={StatusSelectOptions}
 						/>
 					}
 				>

@@ -1,26 +1,43 @@
 export enum PaymentTypeAPI {
-	CARD = 1,
-	PIX = 2,
-	CASH = 3,
-	DONATION = 4,
+	CARD = 'CARD',
+	PIX = 'PIX',
+	CASH = 'CASH',
+	DONATION = 'DONATION',
 }
 
 export const PaymentType = {
-	'1': { label: 'Cartão', value: PaymentTypeAPI.CARD },
-	'2': { label: 'Pix', value: PaymentTypeAPI.PIX },
-	'3': { label: 'Dinheiro', value: PaymentTypeAPI.CASH },
-	'4': { label: 'Doação', value: PaymentTypeAPI.DONATION },
+	[PaymentTypeAPI.CARD]: { label: 'Cartão', value: PaymentTypeAPI.CARD },
+	[PaymentTypeAPI.PIX]: { label: 'Pix', value: PaymentTypeAPI.PIX },
+	[PaymentTypeAPI.CASH]: { label: 'Dinheiro', value: PaymentTypeAPI.CASH },
+	[PaymentTypeAPI.DONATION]: {
+		label: 'Doação',
+		value: PaymentTypeAPI.DONATION,
+	},
 }
 
+export const PaymentSelectOptions = Object.values(PaymentTypeAPI).map(
+	(value) => ({ ...PaymentType[value] }),
+)
+
 export enum StatusTypeAPI {
-	CONFIRMED = 1,
-	NOT_CONFIRMED = 2,
+	CONFIRMED = 'CONFIRMED',
+	NOT_CONFIRMED = 'NOT_CONFIRMED',
 }
 
 export const StatusType = {
-	'1': { label: 'Confirmado', value: StatusTypeAPI.CONFIRMED },
-	'2': { label: 'Desistiu', value: StatusTypeAPI.NOT_CONFIRMED },
+	[StatusTypeAPI.CONFIRMED]: {
+		label: 'Confirmado',
+		value: StatusTypeAPI.CONFIRMED,
+	},
+	[StatusTypeAPI.NOT_CONFIRMED]: {
+		label: 'Desistiu',
+		value: StatusTypeAPI.NOT_CONFIRMED,
+	},
 }
+
+export const StatusSelectOptions = Object.values(StatusTypeAPI).map(
+	(value) => ({ ...StatusType[value] }),
+)
 
 export enum GenderTypeAPI {
 	MALE = 'MALE',
@@ -34,12 +51,26 @@ export const GenderType = {
 	[GenderTypeAPI.BOTH]: { label: 'Ambos', value: GenderTypeAPI.BOTH },
 }
 
+export const GenderSelectOptions = Object.values(GenderTypeAPI).map(
+	(value) => ({ ...GenderType[value] }),
+)
+
 export enum CollaboratorTypeAPI {
-	VOLUNTARY = 1,
-	PARTICIPANT = 2,
+	VOLUNTARY = 'VOLUNTARY',
+	PARTICIPANT = 'PARTICIPANT',
 }
 
 export const CollaboratorType = {
-	'1': { label: 'Voluntário', value: CollaboratorTypeAPI.VOLUNTARY },
-	'2': { label: 'Participante', value: CollaboratorTypeAPI.PARTICIPANT },
+	[CollaboratorTypeAPI.VOLUNTARY]: {
+		label: 'Voluntário',
+		value: CollaboratorTypeAPI.VOLUNTARY,
+	},
+	[CollaboratorTypeAPI.PARTICIPANT]: {
+		label: 'Participante',
+		value: CollaboratorTypeAPI.PARTICIPANT,
+	},
 }
+
+export const CollaboratorTypeSelectOptions = Object.values(
+	CollaboratorTypeAPI,
+).map((value) => ({ ...CollaboratorType[value] }))
