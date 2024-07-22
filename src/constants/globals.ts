@@ -4,4 +4,5 @@ export enum MODALS_IDS {
 	PAYMENT_MODAL = 'payment_modal',
 	GROUP_DRAWER = 'group_manager',
 	EVENT_DRAWER = 'event_manager',
+	ROOMS_DRAWER = 'rooms_manager',
 }

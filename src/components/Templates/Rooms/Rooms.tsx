@@ -1,13 +1,20 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { MdRoomService } from 'react-icons/md'
 
 import { Button, Header, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
+import { RoomDrawer } from '@/components/Organisms/RoomDrawer/RoomDrawer'
+import {
+	RoomSchema,
+	RoomSchemaType,
+} from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
 import { MODALS_IDS } from '@/constants'
 
-import { FAKE_COLLABORATORS } from './Rooms.mocks'
+import { FAKE_COLLABORATORS, FAKE_LEADERS } from './Rooms.mocks'
 
 const HEADER_LABELS = [
 	{
@@ -24,22 +31,40 @@ export const Rooms = () => {
 	const [tableData, setTableData] = useState<null | Array<
 		ReturnType<typeof FAKE_COLLABORATORS>
 	>>(null)
-	// const [leaders, setLeaders] = useState<
-	// 	ReturnType<typeof FAKE_PARTICIPANTES> | []
-	// >([])
+	const [leaders, setLeaders] = useState<ReturnType<typeof FAKE_LEADERS> | []>(
+		[],
+	)
 
 	useEffect(() => {
 		if (tableData) return
 
-		// const leadersFake = FAKE_PARTICIPANTES()
+		const leadersFake = FAKE_LEADERS()
 		const groups = []
 		for (let i = 1; i <= 4; i++) {
 			groups.push(FAKE_COLLABORATORS())
 		}
 
-		// setLeaders(leadersFake)
+		setLeaders(leadersFake)
 		setTableData(groups)
 	}, [tableData])
+
+	const methods = useForm<RoomSchemaType>({
+		mode: 'onChange',
+		resolver: zodResolver(RoomSchema),
+		defaultValues: {
+			event: '',
+			roomNumber: undefined,
+			gender: undefined,
+			type: undefined,
+			need: undefined,
+			leader: '',
+			collaborators: [
+				{
+					selected: '',
+				},
+			],
+		},
+	})
 
 	return (
 		<PageContent subheadingPage="Listagem de quartos">
@@ -52,7 +77,7 @@ export const Rooms = () => {
 					actionButton={
 						<Button
 							type="button"
-							data-hs-overlay={`#${MODALS_IDS.GROUP_DRAWER}`}
+							data-hs-overlay={`#${MODALS_IDS.ROOMS_DRAWER}`}
 							leftIcon={<MdRoomService />}
 							className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 						>
@@ -68,7 +93,9 @@ export const Rooms = () => {
 					))}
 				</ListPage>
 			)}
-			{/* <GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} leaders={leaders} /> */}
+			<FormProvider {...methods}>
+				<RoomDrawer drawerId={MODALS_IDS.ROOMS_DRAWER} leaders={leaders} />
+			</FormProvider>
 		</PageContent>
 	)
 }

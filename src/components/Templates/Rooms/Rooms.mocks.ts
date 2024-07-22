@@ -13,3 +13,12 @@ export const FAKE_COLLABORATORS = () => {
 		data,
 	}
 }
+
+export const FAKE_LEADERS = () => {
+	return Array.from({ length: 10 }, () => {
+		return {
+			value: faker.string.uuid() as UUID,
+			label: faker.person.fullName(),
+		}
+	})
+}

@@ -1,33 +1,6 @@
 import { z } from 'zod'
 
-const validateFieldsForNotEquals = (
-	value: Array<{ selected: string }>,
-	ctx: z.RefinementCtx,
-) => {
-	const indices: Array<number> = []
-	const stringArray = value.map((val) => val.selected)
-
-	stringArray.forEach((value, i, array) => {
-		array.forEach((val, index) => {
-			if (val === value && index !== i) {
-				indices.push(index)
-				indices.push(i)
-			}
-		})
-	})
-
-	const duplicatesFields = new Set([...indices])
-
-	if (duplicatesFields?.size) {
-		duplicatesFields?.forEach((value) =>
-			ctx.addIssue({
-				code: 'custom',
-				path: [`${value}.selected`],
-				message: 'Os participantes devem ser diferentes',
-			}),
-		)
-	}
-}
+import { validateFieldsForNotEquals } from '@/constants'
 
 export const GroupSchema = z.object({
 	name: z
@@ -49,7 +22,25 @@ export const GroupSchema = z.object({
 					.refine((value) => !!value?.length, { message: 'Campo obrigatório' }),
 			}),
 		)
-		.superRefine((value, ctx) => validateFieldsForNotEquals(value, ctx)),
+		.superRefine((value, ctx) => {
+			if (value.length < 3) {
+				value.forEach((_, index) => {
+					ctx.addIssue({
+						code: 'custom',
+						path: [`${index}.selected`],
+						message: 'O grupo deve ter pelo menos 3 participantes',
+					})
+				})
+			}
+		})
+		.superRefine((value, ctx) =>
+			validateFieldsForNotEquals(
+				value,
+				ctx,
+				'selected',
+				'Os participantes devem ser diferentes',
+			),
+		),
 })
 
 export type GroupSchemaType = z.infer<typeof GroupSchema>

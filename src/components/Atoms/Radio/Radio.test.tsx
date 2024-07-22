@@ -1,7 +1,7 @@
 import { fireEvent, render } from '@testing-library/react'
 import { createRef } from 'react'
 
-import { RadioField } from './RadioField'
+import { Radio } from './Radio'
 
 const options = [
 	{
@@ -18,10 +18,10 @@ const options = [
 	},
 ]
 
-describe('RadioField component', () => {
+describe('Radio component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<RadioField options={options} name="radio-test" />,
+			<Radio options={options} name="radio-test" />,
 		)
 		const radio = getByTestId('radio')
 		expect(radio).toBeInTheDocument()
@@ -29,11 +29,7 @@ describe('RadioField component', () => {
 
 	it('applies custom props in input radios', () => {
 		const { getAllByTestId } = render(
-			<RadioField
-				options={options}
-				name="radio-test"
-				data-testid="radio-input"
-			/>,
+			<Radio options={options} name="radio-test" data-testid="radio-input" />,
 		)
 
 		const radios = getAllByTestId('radio-input')
@@ -43,14 +39,14 @@ describe('RadioField component', () => {
 	})
 
 	it('content is null when options is empty', () => {
-		const { container } = render(<RadioField options={[]} name="radio-test" />)
+		const { container } = render(<Radio options={[]} name="radio-test" />)
 
 		expect(container.firstChild).toBeNull()
 	})
 
 	it('applies errors classes correctly when is invalid', () => {
 		const { getAllByTestId } = render(
-			<RadioField
+			<Radio
 				options={options}
 				name="radio-test"
 				isInvalid
@@ -69,7 +65,7 @@ describe('RadioField component', () => {
 	})
 
 	it('renders the correct number of options', () => {
-		const { getAllByRole } = render(<RadioField options={options} />)
+		const { getAllByRole } = render(<Radio options={options} />)
 
 		const radioOptions = getAllByRole('radio')
 
@@ -77,7 +73,7 @@ describe('RadioField component', () => {
 	})
 
 	it('renders labels and descriptions correctly', () => {
-		const { getByText } = render(<RadioField options={options} />)
+		const { getByText } = render(<Radio options={options} />)
 
 		options.forEach((option) => {
 			expect(getByText(option.label)).toBeInTheDocument()
@@ -87,7 +83,7 @@ describe('RadioField component', () => {
 
 	it('forwards ref to input radio element', () => {
 		const ref = createRef<HTMLInputElement>()
-		render(<RadioField options={options} ref={ref} />)
+		render(<Radio options={options} ref={ref} />)
 
 		expect(ref.current).toBeDefined()
 	})
@@ -96,11 +92,7 @@ describe('RadioField component', () => {
 		const onChangeMock = jest.fn()
 
 		const { getAllByRole } = render(
-			<RadioField
-				options={options}
-				name="radio-test"
-				onChange={onChangeMock}
-			/>,
+			<Radio options={options} name="radio-test" onChange={onChangeMock} />,
 		)
 
 		const radio = getAllByRole('radio')
@@ -117,19 +109,4 @@ describe('RadioField component', () => {
 			}),
 		)
 	})
-
-	/* it('ref getting value correctly', () => {
-		const onChangeMock = jest.fn()
-		const ref = createRef<HTMLInputElement>()
-
-		const { getByTestId } = render(
-			<Field data-testid="input-field" onChange={onChangeMock} ref={ref} />,
-		)
-
-		const inputElement = getByTestId('input-field')
-
-		fireEvent.change(inputElement, { target: { value: 'Novo valor' } })
-
-		expect(ref.current?.value).toBe('Novo valor')
-	}) */
 })

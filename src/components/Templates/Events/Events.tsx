@@ -11,7 +11,7 @@ import {
 	EventSchema,
 	EventSchemaType,
 } from '@/components/Organisms/EventDrawer/EventDrawer.schema'
-import { GenderTypeAPI, MODALS_IDS } from '@/constants'
+import { MODALS_IDS } from '@/constants'
 
 import { FAKE_EVENTS } from './Events.mocks'
 
@@ -56,7 +56,7 @@ export const Events = () => {
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
 			name: '',
-			gender: GenderTypeAPI.MALE,
+			gender: undefined,
 			initialDate: '',
 			finalDate: '',
 			participantValue: '',

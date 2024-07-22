@@ -1,7 +1,7 @@
-import { ComponentProps, forwardRef } from 'react'
+import { ComponentPropsWithoutRef, forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-export type SelectProps = ComponentProps<'select'> & {
+export type SelectProps = ComponentPropsWithoutRef<'select'> & {
 	isInvalid?: boolean
 	placeholder?: string
 	options: Array<{

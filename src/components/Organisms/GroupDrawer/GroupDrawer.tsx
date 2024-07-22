@@ -1,4 +1,5 @@
 'use client'
+import { useEffect } from 'react'
 import { SubmitHandler, useFieldArray, useFormContext } from 'react-hook-form'
 import { FiUserPlus } from 'react-icons/fi'
 
@@ -26,7 +27,7 @@ type GroupDrawerProps = {
 }
 
 export const GroupDrawer = ({ drawerId, leaders }: GroupDrawerProps) => {
-	const { handleSubmit, register, formState } =
+	const { handleSubmit, register, formState, trigger } =
 		useFormContext<GroupSchemaType>()
 	const { fields, append, remove } = useFieldArray({
 		name: 'participants',
@@ -36,10 +37,15 @@ export const GroupDrawer = ({ drawerId, leaders }: GroupDrawerProps) => {
 		console.log(values)
 	}
 
+	useEffect(() => {
+		if (fields.length === 3) {
+			trigger('participants')
+		}
+	}, [trigger, fields.length])
+
 	return (
 		<Drawer drawerId={drawerId} headingTitle="Novo grupo">
 			<DrawerBody>
-				<InputField fieldName="name">Nome do grupo</InputField>
 				<SelectField
 					fieldName="event"
 					options={leaders}
@@ -47,6 +53,7 @@ export const GroupDrawer = ({ drawerId, leaders }: GroupDrawerProps) => {
 				>
 					Evento
 				</SelectField>
+				<InputField fieldName="name">Nome do grupo</InputField>
 				<SelectField
 					fieldName="leader"
 					options={leaders}

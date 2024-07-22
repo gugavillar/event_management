@@ -74,3 +74,21 @@ export const CollaboratorType = {
 export const CollaboratorTypeSelectOptions = Object.values(
 	CollaboratorTypeAPI,
 ).map((value) => ({ ...CollaboratorType[value] }))
+
+export enum TrueOrFalseAPI {
+	TRUE = 'TRUE',
+	FALSE = 'FALSE',
+}
+
+export const TrueOrFalseRadioOptions = [
+	{
+		label: 'Sim',
+		description: 'O limite de pessoas passa a ser 4',
+		value: TrueOrFalseAPI.TRUE,
+	},
+	{
+		label: 'Não',
+		description: 'O limite de pessoas passa a ser 5',
+		value: TrueOrFalseAPI.FALSE,
+	},
+]
