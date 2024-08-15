@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
 
-import './globals.css'
 import PrelineScript from '@/loaders/Preline'
 import { roboto } from '@/theme'
+
+import './globals.css'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
