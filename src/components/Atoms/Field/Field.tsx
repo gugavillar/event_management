@@ -13,7 +13,7 @@ const Warning = () => {
 			data-testid="warning-icon"
 		>
 			<svg
-				className="size-4 flex-shrink-0 text-red-500"
+				className="size-4 shrink-0 text-red-500"
 				xmlns="http://www.w3.org/2000/svg"
 				width="24"
 				height="24"
