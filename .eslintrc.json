@@ -5,6 +5,7 @@
 		"plugin:import/errors",
 		"plugin:import/warnings",
 		"plugin:tailwindcss/recommended",
+		"plugin:@tanstack/eslint-plugin-query/recommended",
 		"next/core-web-vitals"
 	],
 	"rules": {
