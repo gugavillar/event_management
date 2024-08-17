@@ -1,6 +1,8 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { LuCalendarPlus } from 'react-icons/lu'
 
 import { Button, Spinner } from '@/components/Atoms'
@@ -10,13 +12,18 @@ import {
 	EventSchema,
 	EventSchemaType,
 } from '@/components/Organisms/EventDrawer/EventDrawer.schema'
-import { MODALS_IDS } from '@/constants'
-import { useGetEvents } from '@/services/queries/events'
+import { MODALS_IDS, overlayOpen } from '@/constants'
+import { useDeleteEvent, useGetEvents } from '@/services/queries/events'
+import { EventsFromAPI } from '@/services/queries/events/event.type'
 
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
 export const Events = () => {
+	const [selectedEvent, setSelectedEvent] = useState<
+		null | EventsFromAPI['id']
+	>(null)
 	const { data, isLoading, search, setSearch } = useGetEvents()
+	const { remove } = useDeleteEvent()
 
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
@@ -31,7 +38,24 @@ export const Events = () => {
 		resolver: zodResolver(EventSchema),
 	})
 
-	const formatData = formatTableData(data?.data)
+	const handleEditEvent = (id: EventsFromAPI['id']) => {
+		setSelectedEvent(id)
+		overlayOpen(MODALS_IDS.EVENT_DRAWER)
+	}
+
+	const handleCreateEvent = () => {
+		setSelectedEvent(null)
+		overlayOpen(MODALS_IDS.EVENT_DRAWER)
+	}
+
+	const handleDeleteEvent = async (id: EventsFromAPI['id']) => {
+		await remove(id, {
+			onSuccess: () => toast.success('Evento excluído com sucesso!'),
+			onError: () => toast.error('Erro ao excluir evento'),
+		})
+	}
+
+	const formatData = formatTableData(data, handleEditEvent, handleDeleteEvent)
 
 	return (
 		<PageContent subheadingPage="Listagem de eventos">
@@ -46,7 +70,7 @@ export const Events = () => {
 					actionButton={
 						<Button
 							type="button"
-							data-hs-overlay={`#${MODALS_IDS.EVENT_DRAWER}`}
+							onClick={handleCreateEvent}
 							leftIcon={<LuCalendarPlus />}
 							className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 						>
@@ -58,7 +82,10 @@ export const Events = () => {
 				</ListPage>
 			)}
 			<FormProvider {...methods}>
-				<EventDrawer drawerId={MODALS_IDS.EVENT_DRAWER} />
+				<EventDrawer
+					drawerId={MODALS_IDS.EVENT_DRAWER}
+					selectedEvent={selectedEvent}
+				/>
 			</FormProvider>
 		</PageContent>
 	)

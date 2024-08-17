@@ -3,7 +3,9 @@ import { useFormContext } from 'react-hook-form'
 
 import { HelperErrorText, Label, MaskedInput } from '@/components/Atoms'
 
-type MaskedInputFieldProps = {
+import type { PatternFormatProps } from 'react-number-format'
+
+type MaskedInputFieldProps = Omit<PatternFormatProps, 'customInput'> & {
 	children: string
 	fieldName: string
 	format: string
@@ -13,6 +15,7 @@ export const MaskedInputField = ({
 	children,
 	fieldName,
 	format,
+	...props
 }: MaskedInputFieldProps) => {
 	const { register, formState } = useFormContext()
 
@@ -24,6 +27,7 @@ export const MaskedInputField = ({
 				id={fieldName}
 				{...register(fieldName)}
 				isInvalid={!!formState?.errors?.[fieldName]?.message}
+				{...props}
 			/>
 			{formState.errors[fieldName] ? (
 				<HelperErrorText className="text-red-500">

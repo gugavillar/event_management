@@ -40,6 +40,7 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	data: Array<EventsFromAPI>,
 	handleOpenDrawer: (id: EventsFromAPI['id']) => void,
+	handleDeleteEvent: (id: EventsFromAPI['id']) => void,
 ) => {
 	return data?.map((event) => ({
 		...event,
@@ -51,7 +52,7 @@ export const formatTableData = (
 		actions: (
 			<div className="flex space-x-4">
 				<FaRegEdit size={18} onClick={() => handleOpenDrawer(event.id)} />
-				<MdDelete size={18} />
+				<MdDelete size={18} onClick={() => handleDeleteEvent(event.id)} />
 			</div>
 		),
 	}))
