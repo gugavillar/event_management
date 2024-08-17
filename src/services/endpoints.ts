@@ -7,4 +7,5 @@ const BASE_PATH = {
 export const ENDPOINTS = {
 	CREATE_EVENT: `${BASE_PATH.EVENTS}`,
 	GET_EVENTS: `${BASE_PATH.EVENTS}`,
+	GET_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
 }

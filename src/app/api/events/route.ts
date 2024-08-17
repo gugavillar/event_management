@@ -12,7 +12,7 @@ const handlerPost = async (request: NextRequest) => {
 
 	try {
 		eventSchemaRoute.parse(body)
-
+		// TODO: trocar depois para pegar o id do usuário pelo next auth
 		await prisma.event.create({
 			data: { ...body, userId: '9f3aadfd-47d8-4063-9ad3-2afd6d2a8c5d' },
 		})

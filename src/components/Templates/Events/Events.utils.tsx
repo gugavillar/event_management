@@ -1,4 +1,6 @@
 import { format } from 'date-fns'
+import { FaRegEdit } from 'react-icons/fa'
+import { MdDelete } from 'react-icons/md'
 
 import { GenderType } from '@/constants'
 import { currencyValue } from '@/formatters'
@@ -29,9 +31,16 @@ export const HEADER_LABELS = [
 		label: 'Valor do voluntário',
 		accessor: 'volunteerPrice',
 	},
+	{
+		label: '',
+		accessor: 'actions',
+	},
 ]
 
-export const formatTableData = (data: Array<EventsFromAPI>) => {
+export const formatTableData = (
+	data: Array<EventsFromAPI>,
+	handleOpenDrawer: (id: EventsFromAPI['id']) => void,
+) => {
 	return data?.map((event) => ({
 		...event,
 		gender: GenderType[event.gender].label,
@@ -39,5 +48,11 @@ export const formatTableData = (data: Array<EventsFromAPI>) => {
 		finalDate: format(event.finalDate, 'dd/MM/yyyy'),
 		participantPrice: currencyValue(Number(event.participantPrice)),
 		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
+		actions: (
+			<div className="flex space-x-4">
+				<FaRegEdit size={18} onClick={() => handleOpenDrawer(event.id)} />
+				<MdDelete size={18} />
+			</div>
+		),
 	}))
 }

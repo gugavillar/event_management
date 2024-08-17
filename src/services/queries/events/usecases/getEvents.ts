@@ -12,5 +12,5 @@ export const getEvents = async ({ search }: GetEventsParams) => {
 		},
 	})
 
-	return response
+	return response.data
 }
