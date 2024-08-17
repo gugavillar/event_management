@@ -12,13 +12,23 @@ export const EventSchema = z
 			.string({ required_error: 'Campo obrigatório' })
 			.trim()
 			.min(3, 'Campo obrigatório'),
-		gender: z.enum(
-			[GenderTypeAPI.MALE, GenderTypeAPI.FEMALE, GenderTypeAPI.BOTH],
-			{
-				required_error: 'Campo obrigatório',
-				message: 'Campo obrigatório',
-			},
-		),
+		gender: z
+			.union([
+				z.enum([GenderTypeAPI.MALE, GenderTypeAPI.FEMALE, GenderTypeAPI.BOTH], {
+					required_error: 'Campo obrigatório',
+					message: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine(
+				(value) =>
+					[
+						GenderTypeAPI.MALE,
+						GenderTypeAPI.FEMALE,
+						GenderTypeAPI.BOTH,
+					].includes(value as GenderTypeAPI),
+				{ message: 'Campo obrigatório' },
+			),
 		initialDate: z
 			.string({ required_error: 'Campo obrigatório' })
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })

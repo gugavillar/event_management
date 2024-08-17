@@ -28,7 +28,7 @@ export const Events = () => {
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
 			name: '',
-			gender: undefined,
+			gender: '',
 			initialDate: '',
 			finalDate: '',
 			participantPrice: '',

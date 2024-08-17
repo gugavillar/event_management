@@ -9,4 +9,5 @@ export const ENDPOINTS = {
 	GET_EVENTS: `${BASE_PATH.EVENTS}`,
 	GET_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
 	DELETE_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
+	UPDATE_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
 }

@@ -20,7 +20,11 @@ import {
 } from '@/components/Molecules'
 import { GenderSelectOptions, overlayClose } from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
-import { useCreateEvent, useGetEvent } from '@/services/queries/events'
+import {
+	useCreateEvent,
+	useGetEvent,
+	useUpdateEvent,
+} from '@/services/queries/events'
 import { EventsFromAPI } from '@/services/queries/events/event.type'
 
 import { EventSchemaType } from './EventDrawer.schema'
@@ -32,7 +36,8 @@ type EventDrawerProps = {
 
 export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 	const { handleSubmit, reset } = useFormContext<EventSchemaType>()
-	const { create, isPending } = useCreateEvent()
+	const { create, isPending: isPendingCreate } = useCreateEvent()
+	const { update, isPending: isPendingUpdate } = useUpdateEvent()
 	const { data, isLoading } = useGetEvent(selectedEvent)
 
 	const onSubmit: SubmitHandler<EventSchemaType> = async (values) => {
@@ -50,16 +55,29 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 			}).toISOString(),
 		}
 
-		await create(formattedValues, {
-			onSuccess: () => toast.success('Evento criado com sucesso!'),
-			onError: () => toast.error('Erro ao criar evento'),
-		})
+		if (selectedEvent) {
+			await update(
+				{
+					eventId: selectedEvent,
+					data: formattedValues,
+				},
+				{
+					onSuccess: () => toast.success('Evento atualizado com sucesso!'),
+					onError: () => toast.error('Erro ao atualizar evento'),
+				},
+			)
+		} else {
+			await create(formattedValues, {
+				onSuccess: () => toast.success('Evento criado com sucesso!'),
+				onError: () => toast.error('Erro ao criar evento'),
+			})
+		}
 
 		overlayClose(drawerId)
 	}
 
 	useEffect(() => {
-		if (!data) return
+		if (!data) return reset()
 		reset({ ...data }, { keepDefaultValues: true })
 	}, [data, reset])
 
@@ -112,8 +130,8 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					onClick={handleSubmit(onSubmit)}
 					type="submit"
-					isLoading={isPending}
-					disabled={isPending || isLoading}
+					isLoading={isPendingCreate || isPendingUpdate}
+					disabled={isPendingCreate || isPendingCreate || isLoading}
 				>
 					{selectedEvent ? 'Editar evento' : 'Criar evento'}
 				</Button>
