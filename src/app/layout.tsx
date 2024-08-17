@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 
+import { Toaster } from 'react-hot-toast'
+
 import PrelineScript from '@/loaders/Preline'
+import { QueryProvider } from '@/providers/QueryProvider'
 import { roboto } from '@/theme'
 
 import './globals.css'
@@ -17,9 +20,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR">
-			<body className={`h-screen w-screen ${roboto.className}`}>
-				{children}
-			</body>
+			<QueryProvider>
+				<body className={`h-screen w-screen ${roboto.className}`}>
+					{children}
+					<Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+				</body>
+			</QueryProvider>
 			<PrelineScript />
 		</html>
 	)

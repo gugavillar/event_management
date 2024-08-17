@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react'
 import { Select, Spinner, TableProps } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
-import { CollaboratorTypeSelectOptions, MODALS_IDS } from '@/constants'
+import {
+	CollaboratorTypeSelectOptions,
+	MODALS_IDS,
+	overlayOpen,
+} from '@/constants'
 
 import { FAKE_COLLABORATORS } from './Payments.mocks'
 
@@ -38,10 +42,7 @@ export const Payments = () => {
 
 	const handleClickRow = async ({ id }: TableProps['bodyData'][number]) => {
 		console.log(id)
-		const overlay = await import('preline/preline')
-		overlay.HSOverlay.open(
-			document.getElementById(MODALS_IDS.PAYMENT_MODAL) as HTMLElement,
-		)
+		overlayOpen(MODALS_IDS.PAYMENT_MODAL)
 	}
 
 	useEffect(() => {
