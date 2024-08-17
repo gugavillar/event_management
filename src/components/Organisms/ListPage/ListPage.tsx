@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, Dispatch, ReactNode, SetStateAction } from 'react'
 import { IoMdSearch } from 'react-icons/io'
 import { twMerge } from 'tailwind-merge'
 
@@ -6,6 +6,8 @@ import { Field } from '@/components/Atoms'
 
 type ListPageProps = ComponentProps<'div'> & {
 	placeholderField: string
+	search?: string
+	setSearch?: Dispatch<SetStateAction<string>>
 	moreFilter?: ReactNode
 	actionButton?: ReactNode
 }
@@ -16,6 +18,8 @@ export const ListPage = ({
 	moreFilter,
 	actionButton,
 	className,
+	search,
+	setSearch,
 	...props
 }: ListPageProps) => {
 	return (
@@ -31,6 +35,8 @@ export const ListPage = ({
 					placeholder={placeholderField}
 					rightIcon={<IoMdSearch size={24} />}
 					className="ps-11"
+					value={search}
+					onChange={(event) => setSearch?.(event.target.value)}
 				/>
 				{moreFilter || null}
 				{actionButton || null}

@@ -39,12 +39,12 @@ export const EventSchema = z
 						: false,
 				{ message: 'A data não é valida' },
 			),
-		participantValue: z
+		participantPrice: z
 			.string({
 				required_error: 'Campo obrigatório',
 			})
 			.min(1, 'Campo obrigatório'),
-		volunteerValue: z
+		volunteerPrice: z
 			.string({
 				required_error: 'Campo obrigatório',
 			})

@@ -1,6 +1,5 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { LuCalendarPlus } from 'react-icons/lu'
 
@@ -12,46 +11,12 @@ import {
 	EventSchemaType,
 } from '@/components/Organisms/EventDrawer/EventDrawer.schema'
 import { MODALS_IDS } from '@/constants'
+import { useGetEvents } from '@/services/queries/events'
 
-import { FAKE_EVENTS } from './Events.mocks'
-
-const HEADER_LABELS = [
-	{
-		label: 'Nome',
-		accessor: 'name',
-	},
-	{
-		label: 'Gênero permitido',
-		accessor: 'gender',
-	},
-	{
-		label: 'Data inicial',
-		accessor: 'initialDate',
-	},
-	{
-		label: 'Data final',
-		accessor: 'finalDate',
-	},
-	{
-		label: 'Valor do participante',
-		accessor: 'participantValue',
-	},
-	{
-		label: 'Valor do voluntário',
-		accessor: 'volunteerValue',
-	},
-]
+import { formatTableData, HEADER_LABELS } from './Events.utils'
 
 export const Events = () => {
-	const [tableData, setTableData] = useState<null | ReturnType<
-		typeof FAKE_EVENTS
-	>>(null)
-
-	useEffect(() => {
-		if (tableData) return
-
-		setTableData(FAKE_EVENTS())
-	}, [tableData])
+	const { data, isLoading, search, setSearch } = useGetEvents()
 
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
@@ -59,21 +24,25 @@ export const Events = () => {
 			gender: undefined,
 			initialDate: '',
 			finalDate: '',
-			participantValue: '',
-			volunteerValue: '',
+			participantPrice: '',
+			volunteerPrice: '',
 		},
 		mode: 'onChange',
 		resolver: zodResolver(EventSchema),
 	})
 
+	const formatData = formatTableData(data?.data)
+
 	return (
 		<PageContent subheadingPage="Listagem de eventos">
-			{!tableData ? (
+			{isLoading ? (
 				<Spinner />
 			) : (
 				<ListPage
 					placeholderField="Encontrar um evento"
 					className="w-full lg:max-w-full"
+					search={search}
+					setSearch={setSearch}
 					actionButton={
 						<Button
 							type="button"
@@ -85,7 +54,7 @@ export const Events = () => {
 						</Button>
 					}
 				>
-					<ListManager bodyData={tableData} headerLabels={HEADER_LABELS} />
+					<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} />
 				</ListPage>
 			)}
 			<FormProvider {...methods}>
