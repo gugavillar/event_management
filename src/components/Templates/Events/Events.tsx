@@ -7,12 +7,17 @@ import { LuCalendarPlus } from 'react-icons/lu'
 
 import { Button, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { EventDrawer, ListPage, PageContent } from '@/components/Organisms'
+import {
+	EventDrawer,
+	EventModal,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
 import {
 	EventSchema,
 	EventSchemaType,
 } from '@/components/Organisms/EventDrawer/EventDrawer.schema'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { MODALS_IDS, overlayClose, overlayOpen } from '@/constants'
 import { useDeleteEvent, useGetEvents } from '@/services/queries/events'
 import { EventsFromAPI } from '@/services/queries/events/event.type'
 
@@ -23,7 +28,7 @@ export const Events = () => {
 		null | EventsFromAPI['id']
 	>(null)
 	const { data, isLoading, search, setSearch } = useGetEvents()
-	const { remove } = useDeleteEvent()
+	const { remove, isPending } = useDeleteEvent()
 
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
@@ -48,14 +53,25 @@ export const Events = () => {
 		overlayOpen(MODALS_IDS.EVENT_DRAWER)
 	}
 
-	const handleDeleteEvent = async (id: EventsFromAPI['id']) => {
-		await remove(id, {
+	const handleOpenModalToDeleteEvent = async (id: EventsFromAPI['id']) => {
+		setSelectedEvent(id)
+		overlayOpen(MODALS_IDS.EVENT_MODAL)
+	}
+
+	const handleDeleteEvent = async () => {
+		if (!selectedEvent) return
+		await remove(selectedEvent, {
 			onSuccess: () => toast.success('Evento excluído com sucesso!'),
 			onError: () => toast.error('Erro ao excluir evento'),
 		})
+		overlayClose(MODALS_IDS.EVENT_MODAL)
 	}
 
-	const formatData = formatTableData(data, handleEditEvent, handleDeleteEvent)
+	const formatData = formatTableData(
+		data,
+		handleEditEvent,
+		handleOpenModalToDeleteEvent,
+	)
 
 	return (
 		<PageContent subheadingPage="Listagem de eventos">
@@ -87,6 +103,11 @@ export const Events = () => {
 					selectedEvent={selectedEvent}
 				/>
 			</FormProvider>
+			<EventModal
+				modalId={MODALS_IDS.EVENT_MODAL}
+				handleConfirm={handleDeleteEvent}
+				isLoading={isPending}
+			/>
 		</PageContent>
 	)
 }
