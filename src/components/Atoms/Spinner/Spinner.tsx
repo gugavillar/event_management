@@ -12,6 +12,7 @@ export const Spinner = ({ className, ...props }: SpinnerProps) => {
 			)}
 			role="status"
 			aria-label="loading"
+			data-testid="spinner"
 			{...props}
 		>
 			<span className="sr-only">Loading...</span>

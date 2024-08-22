@@ -5,6 +5,8 @@ import { v4 as uuid } from 'uuid'
 import { UUID } from 'crypto'
 
 import { type TableHeaderProps } from './TableHeader'
+import { Spinner } from '../Spinner'
+
 type RowsData = Array<{
 	id: UUID
 	[key: TableHeaderProps['headerLabels'][number]['accessor']]:
@@ -15,7 +17,8 @@ type RowsData = Array<{
 
 export type TableBodyProps = ComponentProps<'tbody'> & {
 	headerLabels: TableHeaderProps['headerLabels']
-	bodyData: RowsData
+	bodyData?: RowsData
+	isLoading: boolean
 	handleClickRow?: (row: RowsData[number]) => void
 }
 
@@ -24,6 +27,7 @@ export const TableBody = ({
 	headerLabels,
 	className,
 	handleClickRow,
+	isLoading,
 	...props
 }: TableBodyProps) => {
 	return (
@@ -31,28 +35,40 @@ export const TableBody = ({
 			className={twMerge('divide-y divide-gray-200', className)}
 			{...props}
 		>
-			{bodyData?.map((data) => (
-				<tr key={data?.id} className="odd:bg-slate-50 even:bg-slate-800/5">
-					{headerLabels?.map(({ accessor }) => {
-						const isToApplyClassOrFunction =
-							handleClickRow && !isValidElement(data[accessor])
-						return (
-							<td
-								key={uuid()}
-								className={twMerge(
-									'whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800',
-									isToApplyClassOrFunction && 'cursor-pointer',
-								)}
-								{...(isToApplyClassOrFunction && {
-									onClick: () => handleClickRow(data),
-								})}
-							>
-								{data[accessor]}
-							</td>
-						)
-					})}
+			{!bodyData || !bodyData?.length ? (
+				<tr>
+					<td
+						colSpan={headerLabels.length}
+						className="py-36 text-center"
+						data-testid="no-data"
+					>
+						{isLoading ? <Spinner /> : 'Nenhum registro encontrado'}
+					</td>
 				</tr>
-			))}
+			) : (
+				bodyData?.map((data) => (
+					<tr key={data?.id} className="odd:bg-slate-50 even:bg-slate-800/5">
+						{headerLabels?.map(({ accessor }) => {
+							const isToApplyClassOrFunction =
+								handleClickRow && !isValidElement(data[accessor])
+							return (
+								<td
+									key={uuid()}
+									className={twMerge(
+										'whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800',
+										isToApplyClassOrFunction && 'cursor-pointer',
+									)}
+									{...(isToApplyClassOrFunction && {
+										onClick: () => handleClickRow(data),
+									})}
+								>
+									{data[accessor]}
+								</td>
+							)
+						})}
+					</tr>
+				))
+			)}
 		</tbody>
 	)
 }

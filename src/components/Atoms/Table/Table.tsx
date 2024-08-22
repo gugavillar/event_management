@@ -13,6 +13,7 @@ export const Table = ({
 	bodyData,
 	handleClickRow,
 	className,
+	isLoading,
 	...props
 }: TableProps) => {
 	return (
@@ -31,6 +32,7 @@ export const Table = ({
 							bodyData={bodyData}
 							headerLabels={headerLabels}
 							handleClickRow={handleClickRow}
+							isLoading={isLoading}
 						/>
 					</table>
 				</div>

@@ -33,6 +33,7 @@ describe('Table component', () => {
 				headerLabels={tableHeader}
 				bodyData={tableData}
 				data-testid="table"
+				isLoading={false}
 			/>,
 		)
 
@@ -47,6 +48,7 @@ describe('Table component', () => {
 				bodyData={tableData}
 				data-testid="table"
 				className="custom-class"
+				isLoading={false}
 			/>,
 		)
 		expect(getByTestId('table')).toHaveClass('custom-class')
@@ -60,6 +62,7 @@ describe('Table component', () => {
 				bodyData={tableData}
 				data-testid="table"
 				width={150}
+				isLoading={false}
 			/>,
 		)
 		expect(getByTestId('table')).toHaveAttribute('width', '150')
@@ -74,6 +77,7 @@ describe('Table component', () => {
 				bodyData={tableData}
 				data-testid="table"
 				handleClickRow={(row) => handleClick(row)}
+				isLoading={false}
 			/>,
 		)
 
@@ -94,6 +98,7 @@ describe('Table component', () => {
 				bodyData={tableData}
 				data-testid="table"
 				handleClickRow={(row) => handleClick(row)}
+				isLoading={false}
 			/>,
 		)
 
@@ -114,6 +119,7 @@ describe('Table component', () => {
 				bodyData={tableData}
 				data-testid="table"
 				handleClickRow={(row) => handleClick(row)}
+				isLoading={false}
 			/>,
 		)
 
@@ -122,5 +128,36 @@ describe('Table component', () => {
 		fireEvent.click(row.lastChild as HTMLElement)
 
 		expect(handleClick).not.toHaveBeenCalled()
+	})
+
+	it('render spinner when is loading true and table data is undefined', () => {
+		const { tableHeader } = generateTableData(15)
+		const { getByTestId } = render(
+			<Table
+				headerLabels={tableHeader}
+				bodyData={undefined}
+				data-testid="table"
+				isLoading
+			/>,
+		)
+		const spinner = getByTestId('spinner')
+
+		expect(spinner).toBeInTheDocument()
+	})
+
+	it('render no data found when is loading false and body data is undefined', () => {
+		const { tableHeader } = generateTableData(15)
+		const { getByTestId } = render(
+			<Table
+				headerLabels={tableHeader}
+				bodyData={undefined}
+				data-testid="table"
+				isLoading={false}
+			/>,
+		)
+
+		const noData = getByTestId('no-data')
+
+		expect(noData).toContainHTML('Nenhum registro encontrado')
 	})
 })

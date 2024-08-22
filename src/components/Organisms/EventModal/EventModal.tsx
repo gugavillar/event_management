@@ -1,6 +1,6 @@
 import { IoMdAlert } from 'react-icons/io'
 
-import { Button, Header, Modal } from '@/components/Atoms'
+import { Button, Header, Modal, Text } from '@/components/Atoms'
 
 type EventModalProps = {
 	modalId: string
@@ -16,12 +16,17 @@ export const EventModal = ({
 	return (
 		<Modal modalId={modalId}>
 			<div className="flex flex-col items-center justify-center px-4 pb-3">
-				<div className="flex flex-col items-center justify-between gap-8">
+				<div className="flex flex-col items-center justify-between gap-6">
 					<IoMdAlert size={64} className="text-amber-300" />
-					<Header as="h3" className="text-center text-2xl">
-						Você deseja excluir o evento?
-					</Header>
-
+					<div>
+						<Header as="h3" className="text-center text-2xl">
+							Você deseja excluir o evento?
+						</Header>
+						<Text>
+							Ao excluir o evento todos os dados que vinculados a ele serão
+							excluídos.
+						</Text>
+					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button
 							type="button"

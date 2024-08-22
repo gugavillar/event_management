@@ -42,6 +42,8 @@ export const formatTableData = (
 	handleOpenDrawer: (id: EventsFromAPI['id']) => void,
 	handleDeleteEvent: (id: EventsFromAPI['id']) => void,
 ) => {
+	if (!data) return undefined
+
 	return data?.map((event) => ({
 		...event,
 		gender: GenderType[event.gender].label,

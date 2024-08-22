@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { LuCalendarPlus } from 'react-icons/lu'
 
-import { Button, Spinner } from '@/components/Atoms'
+import { Button } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import {
 	EventDrawer,
@@ -75,28 +75,28 @@ export const Events = () => {
 
 	return (
 		<PageContent subheadingPage="Listagem de eventos">
-			{isLoading ? (
-				<Spinner />
-			) : (
-				<ListPage
-					placeholderField="Encontrar um evento"
-					className="w-full lg:max-w-full"
-					search={search}
-					setSearch={setSearch}
-					actionButton={
-						<Button
-							type="button"
-							onClick={handleCreateEvent}
-							leftIcon={<LuCalendarPlus />}
-							className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-						>
-							Criar um novo evento
-						</Button>
-					}
-				>
-					<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} />
-				</ListPage>
-			)}
+			<ListPage
+				placeholderField="Encontrar um evento"
+				className="w-full lg:max-w-full"
+				search={search}
+				setSearch={setSearch}
+				actionButton={
+					<Button
+						type="button"
+						onClick={handleCreateEvent}
+						leftIcon={<LuCalendarPlus />}
+						className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					>
+						Criar um novo evento
+					</Button>
+				}
+			>
+				<ListManager
+					bodyData={formatData}
+					headerLabels={HEADER_LABELS}
+					isLoading={isLoading}
+				/>
+			</ListPage>
 			<FormProvider {...methods}>
 				<EventDrawer
 					drawerId={MODALS_IDS.EVENT_DRAWER}

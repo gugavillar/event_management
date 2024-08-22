@@ -11,6 +11,7 @@ import {
 
 type ParticipantManagerProps = {
 	bodyData: TableProps['bodyData']
+	isLoading: TableProps['isLoading']
 	headerLabels: TableProps['headerLabels']
 	handleClickRow?: TableProps['handleClickRow']
 } & (
@@ -36,6 +37,7 @@ export const ListManager = ({
 	drawerContent,
 	drawerTitle,
 	drawerFooter,
+	isLoading,
 }: ParticipantManagerProps) => {
 	return (
 		<>
@@ -43,6 +45,7 @@ export const ListManager = ({
 				headerLabels={headerLabels}
 				bodyData={bodyData}
 				handleClickRow={handleClickRow}
+				isLoading={isLoading}
 			/>
 			{drawerId ? (
 				<Drawer drawerId={drawerId} headingTitle={drawerTitle}>
