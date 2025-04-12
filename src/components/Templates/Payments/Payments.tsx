@@ -1,7 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-import { Select, Spinner, TableProps } from '@/components/Atoms'
+import { UUID } from 'crypto'
+
+import { Select, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
 import {
@@ -40,7 +42,7 @@ export const Payments = () => {
 		typeof FAKE_COLLABORATORS
 	>>()
 
-	const handleClickRow = async ({ id }: TableProps['bodyData'][number]) => {
+	const handleClickRow = async ({ id }: { id: UUID }) => {
 		console.log(id)
 		overlayOpen(MODALS_IDS.PAYMENT_MODAL)
 	}
@@ -71,6 +73,7 @@ export const Payments = () => {
 							bodyData={tableData}
 							headerLabels={HEADER_LABELS}
 							handleClickRow={handleClickRow}
+							isLoading={false}
 						/>
 					</ListPage>
 				)}

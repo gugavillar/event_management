@@ -1,5 +1,5 @@
 'use client'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 
 import { HelperErrorText, Label, MaskedInput } from '@/components/Atoms'
 
@@ -17,17 +17,23 @@ export const MaskedInputField = ({
 	format,
 	...props
 }: MaskedInputFieldProps) => {
-	const { register, formState } = useFormContext()
+	const { control, formState } = useFormContext()
 
 	return (
 		<div>
 			<Label htmlFor={fieldName}>{children}</Label>
-			<MaskedInput
-				format={format}
-				id={fieldName}
-				{...register(fieldName)}
-				isInvalid={!!formState?.errors?.[fieldName]?.message}
-				{...props}
+			<Controller
+				name={fieldName}
+				control={control}
+				render={({ field }) => (
+					<MaskedInput
+						format={format}
+						id={fieldName}
+						isInvalid={!!formState?.errors?.[fieldName]?.message}
+						{...props}
+						{...field}
+					/>
+				)}
 			/>
 			{formState.errors[fieldName] ? (
 				<HelperErrorText className="text-red-500">

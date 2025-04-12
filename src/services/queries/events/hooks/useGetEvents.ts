@@ -1,6 +1,7 @@
 'use client'
 import { useDebounce } from '@uidotdev/usehooks'
-import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
@@ -8,9 +9,23 @@ import { useQuery } from '@/providers/QueryProvider'
 import { getEvents } from '../usecases'
 
 export const useGetEvents = () => {
-	const [search, setSearch] = useState('')
+	const searchParams = useSearchParams()
+	const [search, setSearch] = useState(searchParams.get('search') || '')
 
 	const debouceValue = useDebounce(search, 500)
+
+	useEffect(() => {
+		if (!debouceValue) {
+			return window.history.replaceState({}, '', window.location.pathname)
+		}
+
+		const params = new URLSearchParams(window.location.search)
+		params.set('search', debouceValue)
+
+		const newUrl = `${window.location.pathname}?${params.toString()}`
+
+		window.history.replaceState({}, '', newUrl)
+	}, [debouceValue, searchParams])
 
 	const query = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue],

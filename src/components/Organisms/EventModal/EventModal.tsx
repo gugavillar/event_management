@@ -15,11 +15,11 @@ export const EventModal = ({
 }: EventModalProps) => {
 	return (
 		<Modal modalId={modalId}>
-			<div className="flex flex-col items-center justify-center px-4 pb-3">
+			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<IoMdAlert size={64} className="text-amber-300" />
-					<div>
-						<Header as="h3" className="text-center text-2xl">
+					<div className="space-y-4 text-center">
+						<Header as="h3" className="text-2xl">
 							Você deseja excluir o evento?
 						</Header>
 						<Text>
@@ -37,7 +37,7 @@ export const EventModal = ({
 							Cancelar
 						</Button>
 						<Button
-							className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 							onClick={handleConfirm}
 							isLoading={isLoading}
 							disabled={isLoading}

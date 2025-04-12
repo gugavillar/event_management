@@ -79,7 +79,11 @@ export const Groups = () => {
 					{tableData?.map((data, index) => (
 						<div key={index} className="space-y-2">
 							<Header>Grupo {index + 1}</Header>
-							<ListManager headerLabels={HEADER_LABELS} bodyData={data} />
+							<ListManager
+								headerLabels={HEADER_LABELS}
+								bodyData={data}
+								isLoading={false}
+							/>
 						</div>
 					))}
 				</ListPage>

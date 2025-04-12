@@ -5,7 +5,7 @@ export const DashboardCards = () => {
 		<section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 			<InformationCard headingText="Participantes">
 				<div className="p-4 md:p-5">
-					<Header as="h3" className="text-5xl">
+					<Header as="h3" className="text-right text-5xl">
 						50
 					</Header>
 				</div>

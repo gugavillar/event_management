@@ -12,7 +12,7 @@ export const HEADER_LABELS = [
 		accessor: 'name',
 	},
 	{
-		label: 'Gênero permitido',
+		label: 'Gênero',
 		accessor: 'gender',
 	},
 	{
@@ -24,11 +24,11 @@ export const HEADER_LABELS = [
 		accessor: 'finalDate',
 	},
 	{
-		label: 'Valor do participante',
+		label: 'R$ Participante',
 		accessor: 'participantPrice',
 	},
 	{
-		label: 'Valor do voluntário',
+		label: 'R$ Voluntário',
 		accessor: 'volunteerPrice',
 	},
 	{

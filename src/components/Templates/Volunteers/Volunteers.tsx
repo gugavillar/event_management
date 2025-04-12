@@ -1,7 +1,7 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { UUID } from 'crypto'
 
-import { Button, Select, Spinner, TableProps } from '@/components/Atoms'
+import { Button, Select, Spinner } from '@/components/Atoms'
 import { ImportButton, ListManager } from '@/components/Molecules'
 import {
 	ListPage,
@@ -9,7 +9,7 @@ import {
 	PersonalInfoCard,
 	AddressInfoCard,
 } from '@/components/Organisms'
-import { MODALS_IDS, StatusSelectOptions } from '@/constants'
+import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 
 import { FAKE_VOLUNTEERS, MOCKED_USER } from './Volunteers.mocks'
 
@@ -40,28 +40,19 @@ const HEADER_LABELS = [
 	},
 ]
 
-export const Volunteers = () => {
-	const [tableData, setTableData] = useState<null | ReturnType<
-		typeof FAKE_VOLUNTEERS
-	>>()
+type VolunteersProps = {
+	volunteers: ReturnType<typeof FAKE_VOLUNTEERS>
+}
 
-	const handleClickRow = async ({ id }: TableProps['bodyData'][number]) => {
+export const Volunteers = ({ volunteers }: VolunteersProps) => {
+	const handleClickRow = async ({ id }: { id: UUID }) => {
 		console.log(id)
-		const overlay = await import('preline/preline')
-		overlay.HSOverlay.open(
-			document.getElementById(MODALS_IDS.VOLUNTEER_DRAWER) as HTMLElement,
-		)
+		overlayOpen(MODALS_IDS.VOLUNTEER_DRAWER)
 	}
-
-	useEffect(() => {
-		if (tableData) return
-
-		setTableData(FAKE_VOLUNTEERS())
-	}, [tableData])
 
 	return (
 		<PageContent subheadingPage="Listagem de voluntários">
-			{!tableData ? (
+			{!volunteers ? (
 				<Spinner />
 			) : (
 				<ListPage
@@ -77,8 +68,9 @@ export const Volunteers = () => {
 				>
 					<ListManager
 						handleClickRow={handleClickRow}
-						bodyData={tableData}
+						bodyData={volunteers}
 						headerLabels={HEADER_LABELS}
+						isLoading={false}
 						drawerId={MODALS_IDS.VOLUNTEER_DRAWER}
 						drawerTitle="Dados do voluntário"
 						drawerFooter={

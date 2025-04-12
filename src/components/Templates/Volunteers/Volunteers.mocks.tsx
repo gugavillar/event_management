@@ -16,7 +16,6 @@ export const FAKE_VOLUNTEERS = () => {
 			role: faker.person.jobArea(),
 			phone: faker.phone.number(),
 			birthdate: faker.date.birthdate().toISOString(),
-			function: faker.person.jobArea(),
 			status:
 				status > 2 ? (
 					''

@@ -1,5 +1,5 @@
 'use client'
-import { useFormContext } from 'react-hook-form'
+import { Controller, useFormContext } from 'react-hook-form'
 import { type NumberFormatBaseProps } from 'react-number-format'
 
 import { HelperErrorText, Label, CurrencyInput } from '@/components/Atoms'
@@ -17,16 +17,22 @@ export const CurrencyInputField = ({
 	fieldName,
 	...props
 }: CurrencyInputFieldProps) => {
-	const { register, formState } = useFormContext()
+	const { control, formState } = useFormContext()
 
 	return (
 		<div>
 			<Label htmlFor={fieldName}>{children}</Label>
-			<CurrencyInput
-				id={fieldName}
-				{...register(fieldName)}
-				isInvalid={!!formState?.errors?.[fieldName]?.message}
-				{...props}
+			<Controller
+				name={fieldName}
+				control={control}
+				render={({ field }) => (
+					<CurrencyInput
+						id={fieldName}
+						isInvalid={!!formState?.errors?.[fieldName]?.message}
+						{...props}
+						{...field}
+					/>
+				)}
 			/>
 			{formState.errors[fieldName] ? (
 				<HelperErrorText className="text-red-500">

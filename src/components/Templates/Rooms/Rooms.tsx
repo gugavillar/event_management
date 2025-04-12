@@ -88,7 +88,11 @@ export const Rooms = () => {
 					{tableData?.map((data) => (
 						<div key={data.number} className="space-y-2">
 							<Header>Quarto {data.number}</Header>
-							<ListManager headerLabels={HEADER_LABELS} bodyData={data.data} />
+							<ListManager
+								headerLabels={HEADER_LABELS}
+								bodyData={data.data}
+								isLoading={false}
+							/>
 						</div>
 					))}
 				</ListPage>

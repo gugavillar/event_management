@@ -14,7 +14,7 @@ const handlerPost = async (request: NextRequest) => {
 		eventSchemaRoute.parse(body)
 		// TODO: trocar depois para pegar o id do usuário pelo next auth
 		await prisma.event.create({
-			data: { ...body, userId: '9f3aadfd-47d8-4063-9ad3-2afd6d2a8c5d' },
+			data: { ...body, userId: '7b323ec3-5323-4636-856e-b0c1fcf6cabe' },
 		})
 
 		return NextResponse.json({ message: 'Evento criado com sucesso!' })
@@ -47,13 +47,22 @@ const handlerGet = async (request: NextRequest) => {
 	try {
 		const response = await prisma.event.findMany({
 			...(searchParams && {
-				where: { name: { contains: searchParams, mode: 'insensitive' } },
+				where: {
+					name: { startsWith: searchParams },
+				},
+				orderBy: {
+					name: 'asc',
+				},
 			}),
-			orderBy: { name: 'asc' },
+			...(!searchParams && {
+				orderBy: {
+					createdAt: 'desc',
+				},
+			}),
 		})
 
 		return NextResponse.json(response)
-	} catch (error) {
+	} catch {
 		return NextResponse.json(
 			{
 				error: 'Erro interno do servidor!',

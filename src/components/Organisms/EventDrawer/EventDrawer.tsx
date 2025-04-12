@@ -2,16 +2,10 @@
 import { parse } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useEffect } from 'react'
-import { SubmitHandler, useFormContext } from 'react-hook-form'
+import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import {
-	Button,
-	Drawer,
-	DrawerBody,
-	DrawerFooter,
-	Spinner,
-} from '@/components/Atoms'
+import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
 	InputField,
 	SelectField,
@@ -83,47 +77,41 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 
 	return (
 		<Drawer drawerId={drawerId} headingTitle="Novo evento">
-			<DrawerBody>
-				{isLoading ? (
-					<Spinner />
-				) : (
-					<>
-						<InputField fieldName="name">Nome do evento</InputField>
-						<SelectField
-							fieldName="gender"
-							placeholder="Selecione o gênero do evento"
-							options={GenderSelectOptions}
-						>
-							Gênero do evento
-						</SelectField>
-						<CurrencyInputField
-							fieldName="participantPrice"
-							value={data?.participantPrice}
-						>
-							Valor ficha participante
-						</CurrencyInputField>
-						<CurrencyInputField
-							fieldName="volunteerPrice"
-							value={data?.volunteerPrice}
-						>
-							Valor ficha voluntário
-						</CurrencyInputField>
-						<MaskedInputField
-							format="##/##/####"
-							fieldName="initialDate"
-							value={data?.initialDate}
-						>
-							Data de início do evento
-						</MaskedInputField>
-						<MaskedInputField
-							format="##/##/####"
-							fieldName="finalDate"
-							value={data?.finalDate}
-						>
-							Data de término do evento
-						</MaskedInputField>
-					</>
-				)}
+			<DrawerBody isLoading={isLoading}>
+				<InputField fieldName="name">Nome do evento</InputField>
+				<SelectField
+					fieldName="gender"
+					placeholder="Selecione o gênero do evento"
+					options={GenderSelectOptions}
+				>
+					Gênero do evento
+				</SelectField>
+				<CurrencyInputField
+					fieldName="participantPrice"
+					value={data?.participantPrice}
+				>
+					Valor ficha participante
+				</CurrencyInputField>
+				<CurrencyInputField
+					fieldName="volunteerPrice"
+					value={data?.volunteerPrice}
+				>
+					Valor ficha voluntário
+				</CurrencyInputField>
+				<MaskedInputField
+					format="##/##/####"
+					fieldName="initialDate"
+					value={data?.initialDate}
+				>
+					Data de início do evento
+				</MaskedInputField>
+				<MaskedInputField
+					format="##/##/####"
+					fieldName="finalDate"
+					value={data?.finalDate}
+				>
+					Data de término do evento
+				</MaskedInputField>
 			</DrawerBody>
 			<DrawerFooter>
 				<Button

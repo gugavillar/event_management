@@ -27,6 +27,7 @@ export const Events = () => {
 	const [selectedEvent, setSelectedEvent] = useState<
 		null | EventsFromAPI['id']
 	>(null)
+
 	const { data, isLoading, search, setSearch } = useGetEvents()
 	const { remove, isPending } = useDeleteEvent()
 
@@ -74,7 +75,7 @@ export const Events = () => {
 	)
 
 	return (
-		<PageContent subheadingPage="Listagem de eventos">
+		<PageContent subheadingPage="Listagem de eventos" isLoading={isLoading}>
 			<ListPage
 				placeholderField="Encontrar um evento"
 				className="w-full lg:max-w-full"

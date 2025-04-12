@@ -10,7 +10,7 @@ type PaymentModalProps = {
 export const PaymentModal = ({ modalId }: PaymentModalProps) => {
 	return (
 		<Modal modalId={modalId}>
-			<div className="flex flex-col items-center justify-center px-4 pb-3">
+			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-2 md:flex-row">
 					<IoMdAlert size={32} className="text-amber-300" />
 					<Header as="h3" className="text-center text-lg">
