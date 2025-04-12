@@ -62,10 +62,13 @@ export const Events = () => {
 	const handleDeleteEvent = async () => {
 		if (!selectedEvent) return
 		await remove(selectedEvent, {
-			onSuccess: () => toast.success('Evento excluído com sucesso!'),
+			onSuccess: () => {
+				setSelectedEvent(null)
+				toast.success('Evento excluído com sucesso!')
+				overlayClose(MODALS_IDS.EVENT_MODAL)
+			},
 			onError: () => toast.error('Erro ao excluir evento'),
 		})
-		overlayClose(MODALS_IDS.EVENT_MODAL)
 	}
 
 	const formatData = formatTableData(

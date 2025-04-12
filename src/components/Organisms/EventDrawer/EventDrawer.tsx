@@ -1,6 +1,4 @@
 'use client'
-import { parse } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { useEffect } from 'react'
 import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -13,7 +11,7 @@ import {
 	CurrencyInputField,
 } from '@/components/Molecules'
 import { GenderSelectOptions, overlayClose } from '@/constants'
-import { removeCurrencyFormat } from '@/formatters'
+import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
 import {
 	useCreateEvent,
 	useGetEvent,
@@ -41,12 +39,8 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 			...values,
 			participantPrice: Number(removeCurrencyFormat(values.participantPrice)),
 			volunteerPrice: Number(removeCurrencyFormat(values.volunteerPrice)),
-			initialDate: parse(values.initialDate, 'dd/MM/yyyy', new Date(), {
-				locale: ptBR,
-			}).toISOString(),
-			finalDate: parse(values.finalDate, 'dd/MM/yyyy', new Date(), {
-				locale: ptBR,
-			}).toISOString(),
+			initialDate: formatDateToSendToApi(values.initialDate),
+			finalDate: formatDateToSendToApi(values.finalDate),
 		}
 
 		if (selectedEvent) {
@@ -56,18 +50,23 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 					data: formattedValues,
 				},
 				{
-					onSuccess: () => toast.success('Evento atualizado com sucesso!'),
+					onSuccess: () => {
+						reset()
+						toast.success('Evento atualizado com sucesso!')
+						overlayClose(drawerId)
+					},
 					onError: () => toast.error('Erro ao atualizar evento'),
 				},
 			)
-		} else {
-			await create(formattedValues, {
-				onSuccess: () => toast.success('Evento criado com sucesso!'),
-				onError: () => toast.error('Erro ao criar evento'),
-			})
 		}
-
-		overlayClose(drawerId)
+		await create(formattedValues, {
+			onSuccess: () => {
+				reset()
+				toast.success('Evento criado com sucesso!')
+				overlayClose(drawerId)
+			},
+			onError: () => toast.error('Erro ao criar evento'),
+		})
 	}
 
 	useEffect(() => {

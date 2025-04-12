@@ -59,3 +59,11 @@ export const isEqualOrIsBeforeFirstDate = (
 		isEqual(numberedFirstData, numberedFinalDate)
 	)
 }
+
+export const formatDateToSendToApi = (date: string) => {
+	if (!date) return ''
+
+	return parse(date, 'dd/MM/yyyy', new Date(), {
+		locale: ptBR,
+	}).toISOString()
+}
