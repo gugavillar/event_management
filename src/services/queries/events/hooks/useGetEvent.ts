@@ -1,4 +1,5 @@
 'use client'
+import { UseQueryResult } from '@tanstack/react-query'
 import { format } from 'date-fns'
 
 import { QUERY_KEYS } from '@/constants'
@@ -9,7 +10,7 @@ import { EventsFromAPI } from '../event.type'
 import { getEvent } from '../usecases'
 
 export const useGetEvent = (eventId: EventsFromAPI['id'] | null) => {
-	const query = useQuery({
+	const query: UseQueryResult<EventsFromAPI> = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, eventId],
 		queryFn: () => getEvent(eventId as EventsFromAPI['id']),
 		retry: 0,

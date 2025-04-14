@@ -12,8 +12,11 @@ import {
 	ListPage,
 	PageContent,
 	PersonalInfoCard,
+	ImportFileModal,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
+import { formatterFieldSelectValues } from '@/formatters'
+import { useGetEvents } from '@/services/queries/events'
 
 import { FAKE_PARTICIPANTES, MOCKED_USER } from './Participants.mocks'
 
@@ -45,6 +48,8 @@ export const Participants = () => {
 		typeof FAKE_PARTICIPANTES
 	>>(null)
 
+	const { data: events } = useGetEvents()
+
 	const handleClickRow = async ({ id }: { id: UUID }) => {
 		console.log(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_DRAWER)
@@ -56,6 +61,8 @@ export const Participants = () => {
 		setTableData(FAKE_PARTICIPANTES())
 	}, [tableData])
 
+	const formattedEvents = formatterFieldSelectValues(events?.data, 'name', 'id')
+
 	return (
 		<PageContent
 			subheadingPage="Listagem de participantes"
@@ -64,12 +71,23 @@ export const Participants = () => {
 			<ListPage
 				placeholderField="Encontrar um participante"
 				className="lg:max-w-full"
-				actionButton={<ImportButton label="Importar participantes" />}
-				moreFilter={
-					<Select
-						placeholder="Selecione o status"
-						options={StatusSelectOptions}
+				actionButton={
+					<ImportButton
+						label="Importar participantes"
+						modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL}
 					/>
+				}
+				moreFilter={
+					<>
+						<Select
+							placeholder="Selecione o evento"
+							options={formattedEvents}
+						/>
+						<Select
+							placeholder="Selecione o status"
+							options={StatusSelectOptions}
+						/>
+					</>
 				}
 			>
 				<ListManager
@@ -103,6 +121,7 @@ export const Participants = () => {
 					}
 				/>
 			</ListPage>
+			<ImportFileModal modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL} />
 		</PageContent>
 	)
 }

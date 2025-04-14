@@ -20,7 +20,7 @@ export const SelectField = ({
 	const { formState, control } = useFormContext()
 
 	return (
-		<div>
+		<div className="w-full">
 			<Label htmlFor={fieldName}>{children}</Label>
 			<Controller
 				name={fieldName}

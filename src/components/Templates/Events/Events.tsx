@@ -72,7 +72,7 @@ export const Events = () => {
 	}
 
 	const formatData = formatTableData(
-		data,
+		data?.data ?? [],
 		handleEditEvent,
 		handleOpenModalToDeleteEvent,
 	)

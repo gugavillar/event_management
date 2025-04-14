@@ -1,54 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
-import { prisma } from '@/constants'
+import { getEventById, removeEventById, updateEventById } from '@/server'
 import { FormEvent } from '@/services/queries/events/event.type'
+import { requestProcess } from '@/utils/prisma'
 
 const handlerGet = async (
-	request: NextRequest,
+	_: NextRequest,
 	{ params }: { params: { event_id: string } },
 ) => {
-	try {
-		const response = await prisma.event.findUnique({
-			where: {
-				id: params.event_id,
-			},
-		})
-
-		return NextResponse.json(response)
-	} catch (error) {
-		return NextResponse.json(
-			{
-				error: 'Erro interno do servidor!',
-			},
-			{ status: 500 },
-		)
-	} finally {
-		await prisma.$disconnect()
-	}
+	return await requestProcess({
+		functions: async () => await getEventById(params.event_id),
+	})
 }
 
 const handleDelete = async (
-	request: NextRequest,
+	_: NextRequest,
 	{ params }: { params: { event_id: string } },
 ) => {
-	try {
-		const response = await prisma.event.delete({
-			where: {
-				id: params.event_id,
-			},
-		})
-
-		return NextResponse.json(response)
-	} catch (error) {
-		return NextResponse.json(
-			{
-				error: 'Erro interno do servidor!',
-			},
-			{ status: 500 },
-		)
-	} finally {
-		await prisma.$disconnect()
-	}
+	return await requestProcess({
+		functions: async () => removeEventById(params.event_id),
+	})
 }
 
 const handleUpdate = async (
@@ -56,25 +27,10 @@ const handleUpdate = async (
 	{ params }: { params: { event_id: string } },
 ) => {
 	const body: FormEvent = await request.json()
-	try {
-		const response = await prisma.event.update({
-			data: { ...body },
-			where: {
-				id: params.event_id,
-			},
-		})
 
-		return NextResponse.json(response)
-	} catch (error) {
-		return NextResponse.json(
-			{
-				error: 'Erro interno do servidor!',
-			},
-			{ status: 500 },
-		)
-	} finally {
-		await prisma.$disconnect()
-	}
+	return await requestProcess({
+		functions: async () => await updateEventById(body, params.event_id),
+	})
 }
 
 export { handlerGet as GET, handleDelete as DELETE, handleUpdate as PUT }

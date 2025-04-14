@@ -64,7 +64,9 @@ export const Volunteers = ({ volunteers }: VolunteersProps) => {
 							options={StatusSelectOptions}
 						/>
 					}
-					actionButton={<ImportButton label="Importar voluntários" />}
+					actionButton={
+						<ImportButton modalId="teste" label="Importar voluntários" />
+					}
 				>
 					<ListManager
 						handleClickRow={handleClickRow}

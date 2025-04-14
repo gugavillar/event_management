@@ -44,7 +44,7 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 		}
 
 		if (selectedEvent) {
-			await update(
+			return await update(
 				{
 					eventId: selectedEvent,
 					data: formattedValues,

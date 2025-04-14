@@ -53,8 +53,16 @@ export const formatTableData = (
 		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
 		actions: (
 			<div className="flex space-x-4">
-				<FaRegEdit size={18} onClick={() => handleOpenDrawer(event.id)} />
-				<MdDelete size={18} onClick={() => handleDeleteEvent(event.id)} />
+				<FaRegEdit
+					className="cursor-pointer"
+					size={18}
+					onClick={() => handleOpenDrawer(event.id)}
+				/>
+				<MdDelete
+					className="cursor-pointer"
+					size={18}
+					onClick={() => handleDeleteEvent(event.id)}
+				/>
 			</div>
 		),
 	}))

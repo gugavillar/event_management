@@ -1,4 +1,5 @@
 'use client'
+import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -6,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
 
+import { EventsFromAPI } from '../event.type'
 import { getEvents } from '../usecases'
 
 export const useGetEvents = () => {
@@ -27,7 +29,7 @@ export const useGetEvents = () => {
 		window.history.replaceState({}, '', newUrl)
 	}, [debouceValue, searchParams])
 
-	const query = useQuery({
+	const query: UseQueryResult<{ data: Array<EventsFromAPI> }> = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue],
 		queryFn: () => getEvents({ search: debouceValue }),
 		retry: 0,
