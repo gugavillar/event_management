@@ -72,10 +72,12 @@ export const Events = () => {
 	}
 
 	const formatData = formatTableData(
-		data?.data ?? [],
+		data ?? [],
 		handleEditEvent,
 		handleOpenModalToDeleteEvent,
 	)
+
+	console.log(data)
 
 	return (
 		<PageContent subheadingPage="Listagem de eventos" isLoading={isLoading}>

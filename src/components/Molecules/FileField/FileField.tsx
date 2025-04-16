@@ -1,14 +1,19 @@
 'use client'
+import { ComponentProps } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { FileInput, HelperErrorText, Label } from '@/components/Atoms'
 
-type FileFieldProps = {
+type FileFieldProps = ComponentProps<'input'> & {
 	children: string
 	fieldName: string
 }
 
-export const FileField = ({ children, fieldName }: FileFieldProps) => {
+export const FileField = ({
+	children,
+	fieldName,
+	...props
+}: FileFieldProps) => {
 	const { formState, register } = useFormContext()
 	return (
 		<div className="w-full">
@@ -17,6 +22,7 @@ export const FileField = ({ children, fieldName }: FileFieldProps) => {
 				id={fieldName}
 				{...register(fieldName)}
 				isInvalid={!!formState?.errors?.[fieldName]?.message}
+				{...props}
 			/>
 			{formState.errors[fieldName] ? (
 				<HelperErrorText className="text-red-500">

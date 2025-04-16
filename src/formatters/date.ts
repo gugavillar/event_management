@@ -5,6 +5,7 @@ import {
 	isBefore,
 	isEqual,
 	isFuture,
+	isPast,
 	isValid,
 	parse,
 	startOfDay,
@@ -66,4 +67,12 @@ export const formatDateToSendToApi = (date: string) => {
 	return parse(date, 'dd/MM/yyyy', new Date(), {
 		locale: ptBR,
 	}).toISOString()
+}
+
+export const validateBirthdate = (date: string) => {
+	if (!date) return false
+
+	const numberedDate = getNumberDate(date, 'dd/MM/yyyy')
+
+	return isValid(numberedDate) && isPast(numberedDate)
 }

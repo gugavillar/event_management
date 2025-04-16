@@ -29,7 +29,7 @@ export const useGetEvents = () => {
 		window.history.replaceState({}, '', newUrl)
 	}, [debouceValue, searchParams])
 
-	const query: UseQueryResult<{ data: Array<EventsFromAPI> }> = useQuery({
+	const query: UseQueryResult<Array<EventsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue],
 		queryFn: () => getEvents({ search: debouceValue }),
 		retry: 0,

@@ -1,1 +1,2 @@
-export * from './useImportPartipantsData'
+export * from './useGetParticipantsTemplateFile'
+export * from './useImportParticipantsData'

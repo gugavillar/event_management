@@ -13,6 +13,7 @@ import {
 	PageContent,
 	PersonalInfoCard,
 	ImportFileModal,
+	DownloadTemplateParticipantsButton,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
@@ -61,22 +62,23 @@ export const Participants = () => {
 		setTableData(FAKE_PARTICIPANTES())
 	}, [tableData])
 
-	const formattedEvents = formatterFieldSelectValues(events?.data, 'name', 'id')
+	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
 	return (
 		<PageContent
 			subheadingPage="Listagem de participantes"
 			isLoading={!tableData}
 		>
+			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<DownloadTemplateParticipantsButton />
+				<ImportButton
+					label="Importar participantes"
+					modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL}
+				/>
+			</div>
 			<ListPage
 				placeholderField="Encontrar um participante"
 				className="lg:max-w-full"
-				actionButton={
-					<ImportButton
-						label="Importar participantes"
-						modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL}
-					/>
-				}
 				moreFilter={
 					<>
 						<Select

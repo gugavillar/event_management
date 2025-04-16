@@ -3,6 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { FileField, SelectField } from '@/components/Molecules'
+import { FILES_TYPES } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
 import { useImportParticipantsData } from '@/services/queries/participants'
@@ -16,7 +17,7 @@ export const ImportFileModal = ({ modalId }: ImportFileModalProps) => {
 	const { data: events } = useGetEvents()
 	const { importData, isPending } = useImportParticipantsData()
 
-	const formattedEvents = formatterFieldSelectValues(events?.data, 'name', 'id')
+	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
 	const handleSubmit = async (values: any) => {
 		await importData({ eventId: values.eventId, file: values.file[0] })
@@ -39,7 +40,9 @@ export const ImportFileModal = ({ modalId }: ImportFileModalProps) => {
 						>
 							Evento
 						</SelectField>
-						<FileField fieldName="file">Arquivo</FileField>
+						<FileField fieldName="file" accept={FILES_TYPES.xlsx}>
+							Arquivo
+						</FileField>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 							type="submit"

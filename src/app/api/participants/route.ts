@@ -1,11 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+
+import { getTemplateFile, importParticipants } from '@/server'
+import { requestProcess } from '@/utils/prisma'
 
 const handlerPost = async (request: NextRequest) => {
 	const body = await request.formData()
 
-	console.log(body)
-
-	return NextResponse.json({ message: 'Participante criado com sucesso!' })
+	return await requestProcess({
+		functions: async () => await importParticipants(body),
+	})
 }
 
-export { handlerPost as POST }
+const handlerGet = async () => {
+	return await requestProcess({
+		functions: async () => await getTemplateFile(),
+	})
+}
+
+export { handlerPost as POST, handlerGet as GET }
