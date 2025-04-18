@@ -7,8 +7,13 @@ import {
 	MdOutlineGroups,
 	MdEvent,
 } from 'react-icons/md'
+import { twMerge } from 'tailwind-merge'
 
-import { Link } from '@/components/Atoms'
+import { Link, Tooltip } from '@/components/Atoms'
+
+type PrincipalMenuProps = {
+	collapsed: boolean
+}
 
 export const MENU_LINKS = [
 	{
@@ -37,7 +42,7 @@ export const MENU_LINKS = [
 	{ label: 'Gestão de acesso', href: '#', icon: <GrUserSettings size={24} /> },
 ] as const
 
-export const PrincipalMenu = () => {
+export const PrincipalMenu = ({ collapsed }: PrincipalMenuProps) => {
 	return (
 		<section
 			className="mt-8 flex flex-col space-y-4"
@@ -47,10 +52,20 @@ export const PrincipalMenu = () => {
 				<Link
 					key={link.label}
 					href={link.href}
-					className="rounded-lg p-2 text-gray-100 transition-colors duration-500 hover:bg-slate-900/80"
+					className={twMerge(
+						'hs-tooltip rounded-lg p-2 text-gray-100 transition-colors duration-500 [--placement:right] hover:bg-slate-900/80',
+						collapsed && 'justify-center gap-x-0',
+					)}
 				>
+					<Tooltip
+						className={
+							collapsed ? 'hs-tooltip-shown:visible' : 'hs-tooltip-shown:hidden'
+						}
+					>
+						{link.label}
+					</Tooltip>
 					{link.icon}
-					{link.label}
+					{!collapsed && link.label}
 				</Link>
 			))}
 		</section>

@@ -1,0 +1,19 @@
+import { ComponentProps } from 'react'
+import { twMerge } from 'tailwind-merge'
+
+type TooltipProps = ComponentProps<'span'>
+
+export const Tooltip = ({ children, className, ...props }: TooltipProps) => {
+	return (
+		<span
+			className={twMerge(
+				'hs-tooltip-content invisible absolute z-10 inline-block rounded-md bg-gray-900 px-2 py-1 text-sm font-medium text-white opacity-0 shadow-md transition-opacity hs-tooltip-shown:visible hs-tooltip-shown:opacity-100',
+				className,
+			)}
+			role="tooltip"
+			{...props}
+		>
+			{children}
+		</span>
+	)
+}

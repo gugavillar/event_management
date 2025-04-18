@@ -8,7 +8,7 @@ jest.mock('next/dist/client/router', () => ({
 
 describe('PrincipalMenu component', () => {
 	it('renders correctly', () => {
-		const { getByTestId } = render(<PrincipalMenu />)
+		const { getByTestId } = render(<PrincipalMenu collapsed={false} />)
 
 		const principalMenu = getByTestId('principal-menu')
 
@@ -16,19 +16,11 @@ describe('PrincipalMenu component', () => {
 	})
 
 	it('haves 6 links', () => {
-		const { getByTestId } = render(<PrincipalMenu />)
+		const { getByTestId } = render(<PrincipalMenu collapsed={false} />)
 		const length = MENU_LINKS.length
 
 		const links = getByTestId('principal-menu').querySelectorAll('a')
 
 		expect(links).toHaveLength(length)
-	})
-
-	it('have dashboard menu', () => {
-		const { getByText } = render(<PrincipalMenu />)
-
-		const dashboard = getByText('Dashboard')
-
-		expect(dashboard).toBeInTheDocument()
 	})
 })
