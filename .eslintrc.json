@@ -11,6 +11,7 @@
 	"rules": {
 		"camelcase": "off",
 		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-duplicate-enum-values": "off",
 		"tailwindcss/no-custom-classname": [
 			"warn",
 			{

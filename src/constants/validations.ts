@@ -1,4 +1,4 @@
-import { RefinementCtx } from 'zod'
+import { type RefinementCtx } from 'zod'
 
 export const MIN_CURRENCY_VALUE = 0.01
 export const MAX_CURRENCY_VALUE = 999999.99

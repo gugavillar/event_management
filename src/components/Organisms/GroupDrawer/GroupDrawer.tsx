@@ -1,6 +1,10 @@
 'use client'
 import { useEffect } from 'react'
-import { SubmitHandler, useFieldArray, useFormContext } from 'react-hook-form'
+import {
+	type SubmitHandler,
+	useFieldArray,
+	useFormContext,
+} from 'react-hook-form'
 import { FiUserPlus } from 'react-icons/fi'
 
 import {
