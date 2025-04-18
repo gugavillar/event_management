@@ -2,6 +2,7 @@ import { format } from 'date-fns'
 import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 
+import { Tooltip } from '@/components/Atoms'
 import { GenderType } from '@/constants'
 import { currencyValue } from '@/formatters'
 import { EventsFromAPI } from '@/services/queries/events/event.type'
@@ -38,7 +39,7 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	data: Array<EventsFromAPI>,
+	data: Array<EventsFromAPI> | undefined,
 	handleOpenDrawer: (id: EventsFromAPI['id']) => void,
 	handleDeleteEvent: (id: EventsFromAPI['id']) => void,
 ) => {
@@ -53,16 +54,22 @@ export const formatTableData = (
 		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
 		actions: (
 			<div className="flex space-x-4">
-				<FaRegEdit
-					className="cursor-pointer"
-					size={18}
-					onClick={() => handleOpenDrawer(event.id)}
-				/>
-				<MdDelete
-					className="cursor-pointer"
-					size={18}
-					onClick={() => handleDeleteEvent(event.id)}
-				/>
+				<div className="hs-tooltip">
+					<FaRegEdit
+						className="cursor-pointer"
+						size={18}
+						onClick={() => handleOpenDrawer(event.id)}
+					/>
+					<Tooltip>Editar</Tooltip>
+				</div>
+				<div className="hs-tooltip">
+					<MdDelete
+						className="cursor-pointer"
+						size={18}
+						onClick={() => handleDeleteEvent(event.id)}
+					/>
+					<Tooltip>Excluir</Tooltip>
+				</div>
 			</div>
 		),
 	}))

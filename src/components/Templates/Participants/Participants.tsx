@@ -9,9 +9,11 @@ import {
 	PageContent,
 	DownloadTemplateParticipantsButton,
 	ParticipantDeleteModal,
+	ParticipantCheckInModal,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
+import { useTooltip } from '@/hooks'
 import { useGetEvents } from '@/services/queries/events'
 import { useGetParticipants } from '@/services/queries/participants'
 import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
@@ -32,6 +34,7 @@ export const Participants = () => {
 		setEventId,
 		eventId,
 	} = useGetParticipants()
+	useTooltip(Boolean(selectedParticipant))
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
@@ -39,12 +42,20 @@ export const Participants = () => {
 		id: ParticipantsFromAPI['id'],
 	) => {
 		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL)
+		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
+	}
+
+	const handleOpenModalToCheckInParticipant = async (
+		id: ParticipantsFromAPI['id'],
+	) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
 	}
 
 	const formattedParticipants = formatTableData(
-		participants ?? [],
+		participants,
 		handleOpenModalToDeleteParticipant,
+		handleOpenModalToCheckInParticipant,
 	)
 
 	return (
@@ -86,7 +97,12 @@ export const Participants = () => {
 				/>
 			</ListPage>
 			<ParticipantDeleteModal
-				modalId={MODALS_IDS.PARTICIPANT_MODAL}
+				modalId={MODALS_IDS.PARTICIPANT_REMOVE_MODAL}
+				selectedParticipant={selectedParticipant}
+				setSelectedParticipant={setSelectedParticipant}
+			/>
+			<ParticipantCheckInModal
+				modalId={MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>

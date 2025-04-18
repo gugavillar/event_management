@@ -4,9 +4,10 @@ export const MODALS_IDS = {
 	VOLUNTEER_DRAWER: 'volunteer_manager',
 	PAYMENT_MODAL: 'payment_modal',
 	GROUP_DRAWER: 'group_manager',
-	EVENT_DRAWER: 'event_manager',
-	EVENT_MODAL: 'event_modal',
-	PARTICIPANT_MODAL: 'participant_modal',
+	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
+	EVENT_REMOVE_MODAL: 'event_remove_modal',
+	PARTICIPANT_REMOVE_MODAL: 'participant_remove_modal',
+	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
 	ROOMS_DRAWER: 'rooms_manager',
 	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
 }

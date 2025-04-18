@@ -5,61 +5,62 @@ import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
-import { useDeleteEvent } from '@/services/queries/events'
-import { EventsFromAPI } from '@/services/queries/events/event.type'
+import { useDeleteParticipant } from '@/services/queries/participants'
+import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
 
-type EventDeleteModalProps = {
+type ParticipantCheckInModalProps = {
 	modalId: string
-	selectedEvent: EventsFromAPI['id'] | null
-	setSelectedEvent: Dispatch<SetStateAction<EventsFromAPI['id'] | null>>
+	selectedParticipant: ParticipantsFromAPI['id'] | null
+	setSelectedParticipant: Dispatch<
+		SetStateAction<ParticipantsFromAPI['id'] | null>
+	>
 }
 
-export const EventDeleteModal = ({
+export const ParticipantCheckInModal = ({
 	modalId,
-	selectedEvent,
-	setSelectedEvent,
-}: EventDeleteModalProps) => {
-	const { remove, isPending } = useDeleteEvent()
+	selectedParticipant,
+	setSelectedParticipant,
+}: ParticipantCheckInModalProps) => {
+	const { remove, isPending } = useDeleteParticipant()
 
-	const handleDeleteEvent = async () => {
-		if (!selectedEvent) return
-		await remove(selectedEvent, {
+	const handleCheckInParticipant = async () => {
+		if (!selectedParticipant) return
+
+		await remove(selectedParticipant, {
 			onSuccess: () => {
-				setSelectedEvent(null)
-				toast.success('Evento excluído com sucesso!')
+				setSelectedParticipant(null)
+				toast.success('Participante excluído com sucesso!')
 				overlayClose(modalId)
 			},
-			onError: () => toast.error('Erro ao excluir evento'),
+			onError: () => toast.error('Erro ao excluir participante'),
 		})
 	}
 
 	return (
-		<Modal modalId={modalId} handleClose={() => setSelectedEvent(null)}>
+		<Modal modalId={modalId} handleClose={() => setSelectedParticipant(null)}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<IoMdAlert size={64} className="text-amber-300" />
 					<div className="space-y-4 text-center">
 						<Header as="h3" className="text-2xl">
-							Você deseja excluir o evento?
+							Está tudo certo com este participante?
 						</Header>
 						<Text>
-							Ao excluir o evento todos os dados que vinculados a ele serão
-							excluídos.
+							Confirme a presença ou marque a desistência, conforme combinado
+							com ele(a)
 						</Text>
 					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button
 							type="button"
 							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-							data-hs-overlay={`#${modalId}`}
 							disabled={isPending}
-							onClick={() => setSelectedEvent(null)}
 						>
-							Cancelar
+							Desistir
 						</Button>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-							onClick={handleDeleteEvent}
+							onClick={handleCheckInParticipant}
 							isLoading={isPending}
 							disabled={isPending}
 						>

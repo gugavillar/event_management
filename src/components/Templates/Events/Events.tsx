@@ -17,6 +17,7 @@ import {
 	EventSchemaType,
 } from '@/components/Organisms/EventDrawer/EventDrawer.schema'
 import { MODALS_IDS, overlayOpen } from '@/constants'
+import { useTooltip } from '@/hooks'
 import { useGetEvents } from '@/services/queries/events'
 import { EventsFromAPI } from '@/services/queries/events/event.type'
 
@@ -41,24 +42,25 @@ export const Events = () => {
 		mode: 'onChange',
 		resolver: zodResolver(EventSchema),
 	})
+	useTooltip(Boolean(selectedEvent))
 
 	const handleEditEvent = (id: EventsFromAPI['id']) => {
 		setSelectedEvent(id)
-		overlayOpen(MODALS_IDS.EVENT_DRAWER)
+		overlayOpen(MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER)
 	}
 
 	const handleCreateEvent = () => {
 		setSelectedEvent(null)
-		overlayOpen(MODALS_IDS.EVENT_DRAWER)
+		overlayOpen(MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER)
 	}
 
 	const handleOpenModalToDeleteEvent = async (id: EventsFromAPI['id']) => {
 		setSelectedEvent(id)
-		overlayOpen(MODALS_IDS.EVENT_MODAL)
+		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
 	}
 
 	const formatData = formatTableData(
-		data ?? [],
+		data,
 		handleEditEvent,
 		handleOpenModalToDeleteEvent,
 	)
@@ -89,12 +91,13 @@ export const Events = () => {
 			</ListPage>
 			<FormProvider {...methods}>
 				<EventDrawer
-					drawerId={MODALS_IDS.EVENT_DRAWER}
+					drawerId={MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER}
 					selectedEvent={selectedEvent}
+					setSelectedEvent={setSelectedEvent}
 				/>
 			</FormProvider>
 			<EventDeleteModal
-				modalId={MODALS_IDS.EVENT_MODAL}
+				modalId={MODALS_IDS.EVENT_REMOVE_MODAL}
 				selectedEvent={selectedEvent}
 				setSelectedEvent={setSelectedEvent}
 			/>

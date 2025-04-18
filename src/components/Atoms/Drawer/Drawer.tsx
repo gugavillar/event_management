@@ -7,9 +7,15 @@ type DrawerProps = {
 	children: ReactNode
 	headingTitle: string
 	drawerId: string
+	handleClose?: () => void
 }
 
-export const Drawer = ({ children, drawerId, headingTitle }: DrawerProps) => {
+export const Drawer = ({
+	children,
+	drawerId,
+	headingTitle,
+	handleClose,
+}: DrawerProps) => {
 	return (
 		<div
 			id={drawerId}
@@ -23,6 +29,7 @@ export const Drawer = ({ children, drawerId, headingTitle }: DrawerProps) => {
 					type="button"
 					className="flex size-7 items-center justify-center rounded-full border border-transparent text-sm font-semibold text-slate-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 					data-hs-overlay={`#${drawerId}`}
+					onClick={handleClose}
 				>
 					<span className="sr-only">Close modal</span>
 					<MdOutlineClose />

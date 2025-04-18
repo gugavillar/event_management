@@ -37,7 +37,7 @@ export const ParticipantDeleteModal = ({
 	}
 
 	return (
-		<Modal modalId={modalId}>
+		<Modal modalId={modalId} handleClose={() => setSelectedParticipant(null)}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<IoMdAlert size={64} className="text-amber-300" />
@@ -56,6 +56,7 @@ export const ParticipantDeleteModal = ({
 							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
 							data-hs-overlay={`#${modalId}`}
 							disabled={isPending}
+							onClick={() => setSelectedParticipant(null)}
 						>
 							Cancelar
 						</Button>

@@ -10,7 +10,7 @@ export const useImportParticipantsData = () => {
 		mutationFn: importParticipantsData,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [QUERY_KEYS.PARTICIPANTS_DATA],
+				queryKey: [QUERY_KEYS.PARTICIPANTS],
 			})
 		},
 	})

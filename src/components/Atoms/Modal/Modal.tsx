@@ -4,9 +4,10 @@ import { MdOutlineClose } from 'react-icons/md'
 type ModalProps = {
 	modalId: string
 	children: ReactNode
+	handleClose?: () => void
 }
 
-export const Modal = ({ modalId, children }: ModalProps) => {
+export const Modal = ({ modalId, children, handleClose }: ModalProps) => {
 	return (
 		<div
 			id={modalId}
@@ -19,6 +20,7 @@ export const Modal = ({ modalId, children }: ModalProps) => {
 						type="button"
 						className="absolute right-3 top-3 flex size-7 items-center justify-center rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 						data-hs-overlay={`#${modalId}`}
+						onClick={handleClose}
 					>
 						<span className="sr-only">Close</span>
 						<MdOutlineClose />

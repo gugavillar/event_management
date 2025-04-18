@@ -1,7 +1,9 @@
 import { differenceInYears, format } from 'date-fns'
 import { FaRegEdit } from 'react-icons/fa'
+import { LuTicketCheck } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 
+import { Tooltip } from '@/components/Atoms'
 import { formatPhone } from '@/formatters'
 import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
 
@@ -37,8 +39,9 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	data: Array<ParticipantsFromAPI>,
+	data: Array<ParticipantsFromAPI> | undefined,
 	handleDeleteParticipant: (id: ParticipantsFromAPI['id']) => void,
+	handleCheckInParticipant: (id: ParticipantsFromAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -51,16 +54,30 @@ export const formatTableData = (
 		event: participant.event.name,
 		actions: (
 			<div className="flex space-x-4">
-				<FaRegEdit
-					className="cursor-pointer"
-					size={18}
-					// onClick={() => handleOpenDrawer(event.id)}
-				/>
-				<MdDelete
-					className="cursor-pointer"
-					size={18}
-					onClick={() => handleDeleteParticipant(participant.id)}
-				/>
+				<div className="hs-tooltip">
+					<FaRegEdit
+						className="cursor-pointer"
+						size={18}
+						// onClick={() => handleOpenDrawer(event.id)}
+					/>
+					<Tooltip>Editar</Tooltip>
+				</div>
+				<div className="hs-tooltip">
+					<LuTicketCheck
+						className="cursor-pointer"
+						size={18}
+						onClick={() => handleCheckInParticipant(participant.id)}
+					/>
+					<Tooltip>Check-In</Tooltip>
+				</div>
+				<div className="hs-tooltip">
+					<MdDelete
+						className="cursor-pointer"
+						size={18}
+						onClick={() => handleDeleteParticipant(participant.id)}
+					/>
+					<Tooltip>Excluir</Tooltip>
+				</div>
 			</div>
 		),
 	}))

@@ -1,3 +1,5 @@
+'use client'
+import { usePathname } from 'next/navigation'
 import { FaClipboardUser } from 'react-icons/fa6'
 import { GrUserWorker, GrUserSettings } from 'react-icons/gr'
 import {
@@ -43,6 +45,8 @@ export const MENU_LINKS = [
 ] as const
 
 export const PrincipalMenu = ({ collapsed }: PrincipalMenuProps) => {
+	const path = usePathname()
+
 	return (
 		<section
 			className="mt-8 flex flex-col space-y-4"
@@ -55,6 +59,7 @@ export const PrincipalMenu = ({ collapsed }: PrincipalMenuProps) => {
 					className={twMerge(
 						'hs-tooltip rounded-lg p-2 text-gray-100 transition-colors duration-500 [--placement:right] hover:bg-slate-900/80',
 						collapsed && 'justify-center gap-x-0',
+						path === link.href && 'bg-slate-900/80',
 					)}
 				>
 					<Tooltip

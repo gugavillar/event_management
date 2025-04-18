@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -24,9 +24,14 @@ import { EventSchemaType } from './EventDrawer.schema'
 type EventDrawerProps = {
 	drawerId: string
 	selectedEvent: null | EventsFromAPI['id']
+	setSelectedEvent: Dispatch<SetStateAction<EventsFromAPI['id'] | null>>
 }
 
-export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
+export const EventDrawer = ({
+	drawerId,
+	selectedEvent,
+	setSelectedEvent,
+}: EventDrawerProps) => {
 	const { handleSubmit, reset } = useFormContext<EventSchemaType>()
 	const { create, isPending: isPendingCreate } = useCreateEvent()
 	const { update, isPending: isPendingUpdate } = useUpdateEvent()
@@ -52,6 +57,7 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 				{
 					onSuccess: () => {
 						reset()
+						setSelectedEvent(null)
 						toast.success('Evento atualizado com sucesso!')
 						overlayClose(drawerId)
 					},
@@ -75,7 +81,11 @@ export const EventDrawer = ({ drawerId, selectedEvent }: EventDrawerProps) => {
 	}, [data, reset])
 
 	return (
-		<Drawer drawerId={drawerId} headingTitle="Novo evento">
+		<Drawer
+			drawerId={drawerId}
+			headingTitle="Novo evento"
+			handleClose={() => setSelectedEvent(null)}
+		>
 			<DrawerBody isLoading={isLoading}>
 				<InputField fieldName="name">Nome do evento</InputField>
 				<SelectField
