@@ -1,26 +1,49 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { FileField, SelectField } from '@/components/Molecules'
-import { FILES_TYPES } from '@/constants'
+import { FILES_TYPES, overlayClose } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
 import { useImportParticipantsData } from '@/services/queries/participants'
+
+import {
+	ImportFileModalSchema,
+	ImportFileModalType,
+} from './ImportFileModal.schema'
 
 type ImportFileModalProps = {
 	modalId: string
 }
 
 export const ImportFileModal = ({ modalId }: ImportFileModalProps) => {
-	const methods = useForm()
+	const methods = useForm<ImportFileModalType>({
+		defaultValues: {
+			eventId: '',
+			file: undefined,
+		},
+		resolver: zodResolver(ImportFileModalSchema),
+	})
 	const { data: events } = useGetEvents()
 	const { importData, isPending } = useImportParticipantsData()
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
-	const handleSubmit = async (values: any) => {
-		await importData({ eventId: values.eventId, file: values.file[0] })
+	const handleSubmit = async (values: ImportFileModalType) => {
+		await importData(
+			{ eventId: values.eventId, file: values.file[0] },
+			{
+				onSuccess: () => {
+					toast.success('Participantes importados com sucesso!')
+					overlayClose(modalId)
+				},
+				onError: () =>
+					toast.error('Alguns dados estão incorretos. Revise o arquivo.'),
+			},
+		)
 	}
 	return (
 		<Modal modalId={modalId}>
