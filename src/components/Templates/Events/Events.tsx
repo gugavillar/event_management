@@ -77,8 +77,6 @@ export const Events = () => {
 		handleOpenModalToDeleteEvent,
 	)
 
-	console.log(data)
-
 	return (
 		<PageContent subheadingPage="Listagem de eventos" isLoading={isLoading}>
 			<ListPage

@@ -42,7 +42,7 @@ export const formatTableData = (
 	handleOpenDrawer: (id: EventsFromAPI['id']) => void,
 	handleDeleteEvent: (id: EventsFromAPI['id']) => void,
 ) => {
-	if (!data) return undefined
+	if (!data) return []
 
 	return data?.map((event) => ({
 		...event,

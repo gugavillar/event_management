@@ -19,6 +19,7 @@ export const QUERY_KEYS = {
 	EVENTS: 'events',
 	PARTICIPANTS_DATA: 'participants-data',
 	PARTICIPANTS_TEMPLATE_FILE: 'participants-template-file',
+	PARTICIPANTS: 'participants',
 } as const
 
 export const getQueryClient = () => {

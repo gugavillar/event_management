@@ -1,20 +1,16 @@
 import { NextRequest } from 'next/server'
 
-import { getTemplateFile, importParticipants } from '@/server'
+import { getAllParticipants } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handlerPost = async (request: NextRequest) => {
-	const body = await request.formData()
+const handlerGet = async (request: NextRequest) => {
+	const searchParams = request.nextUrl.searchParams.get('search')
+	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 
 	return await requestProcess({
-		functions: async () => await importParticipants(body),
+		functions: async () =>
+			await getAllParticipants(eventIdParams, searchParams),
 	})
 }
 
-const handlerGet = async () => {
-	return await requestProcess({
-		functions: async () => await getTemplateFile(),
-	})
-}
-
-export { handlerPost as POST, handlerGet as GET }
+export { handlerGet as GET }

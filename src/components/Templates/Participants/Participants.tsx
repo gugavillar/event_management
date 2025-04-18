@@ -1,73 +1,46 @@
 'use client'
-import { useEffect, useState } from 'react'
 
 import { UUID } from 'crypto'
 
 import { Button, Select } from '@/components/Atoms'
 import { ImportButton, ListManager } from '@/components/Molecules'
 import {
-	AddressInfoCard,
-	FamilyContactInfo,
-	HealthInfoCard,
 	ListPage,
 	PageContent,
-	PersonalInfoCard,
 	ImportFileModal,
 	DownloadTemplateParticipantsButton,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
+import { useGetParticipants } from '@/services/queries/participants'
 
-import { FAKE_PARTICIPANTES, MOCKED_USER } from './Participants.mocks'
-
-const HEADER_LABELS = [
-	{
-		label: 'Nome',
-		accessor: 'name',
-	},
-	{
-		label: 'Telefone',
-		accessor: 'phone',
-	},
-	{
-		label: 'Data de nascimento',
-		accessor: 'birthdate',
-	},
-	{
-		label: 'Cidade',
-		accessor: 'city',
-	},
-	{
-		label: 'Status',
-		accessor: 'status',
-	},
-]
+import { formatTableData, HEADER_LABELS } from './Participants.utils'
 
 export const Participants = () => {
-	const [tableData, setTableData] = useState<null | ReturnType<
-		typeof FAKE_PARTICIPANTES
-	>>(null)
-
 	const { data: events } = useGetEvents()
+	const {
+		data: participants,
+		isLoading,
+		search,
+		setSearch,
+		setEventId,
+		eventId,
+	} = useGetParticipants()
 
 	const handleClickRow = async ({ id }: { id: UUID }) => {
 		console.log(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_DRAWER)
 	}
 
-	useEffect(() => {
-		if (tableData) return
-
-		setTableData(FAKE_PARTICIPANTES())
-	}, [tableData])
-
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+
+	const formattedParticipants = formatTableData(participants ?? [])
 
 	return (
 		<PageContent
 			subheadingPage="Listagem de participantes"
-			isLoading={!tableData}
+			isLoading={isLoading}
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadTemplateParticipantsButton />
@@ -79,11 +52,15 @@ export const Participants = () => {
 			<ListPage
 				placeholderField="Encontrar um participante"
 				className="lg:max-w-full"
+				search={search}
+				setSearch={setSearch}
 				moreFilter={
 					<>
 						<Select
 							placeholder="Selecione o evento"
 							options={formattedEvents}
+							value={eventId}
+							onChange={(e) => setEventId(e.target.value)}
 						/>
 						<Select
 							placeholder="Selecione o status"
@@ -94,9 +71,9 @@ export const Participants = () => {
 			>
 				<ListManager
 					handleClickRow={handleClickRow}
-					bodyData={tableData ?? []}
+					bodyData={formattedParticipants}
 					headerLabels={HEADER_LABELS}
-					isLoading={true}
+					isLoading={isLoading}
 					drawerId={MODALS_IDS.PARTICIPANT_DRAWER}
 					drawerTitle="Dados do participante"
 					drawerFooter={
@@ -111,14 +88,14 @@ export const Participants = () => {
 					}
 					drawerContent={
 						<>
-							<PersonalInfoCard userInfo={MOCKED_USER} />
+							{/* <PersonalInfoCard userInfo={MOCKED_USER} />
 							<AddressInfoCard addressInfo={MOCKED_USER.address} />
 							{MOCKED_USER.responsible.length ? (
 								<FamilyContactInfo responsibleInfo={MOCKED_USER.responsible} />
 							) : null}
 							{MOCKED_USER.healthInfo ? (
 								<HealthInfoCard healthInfo={MOCKED_USER.healthInfo} />
-							) : null}
+							) : null} */}
 						</>
 					}
 				/>
