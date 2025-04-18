@@ -2,7 +2,7 @@
 import { UUID } from 'crypto'
 
 import { Button, Select, Spinner } from '@/components/Atoms'
-import { ImportButton, ListManager } from '@/components/Molecules'
+import { ListManager } from '@/components/Molecules'
 import {
 	ListPage,
 	PageContent,
@@ -63,9 +63,6 @@ export const Volunteers = ({ volunteers }: VolunteersProps) => {
 							placeholder="Selecione o status"
 							options={StatusSelectOptions}
 						/>
-					}
-					actionButton={
-						<ImportButton modalId="teste" label="Importar voluntários" />
 					}
 				>
 					<ListManager

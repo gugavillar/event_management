@@ -2,9 +2,10 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
+import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { EventsFromAPI } from '../event.type'
@@ -16,18 +17,9 @@ export const useGetEvents = () => {
 
 	const debouceValue = useDebounce(search, 500)
 
-	useEffect(() => {
-		if (!debouceValue) {
-			return window.history.replaceState({}, '', window.location.pathname)
-		}
-
-		const params = new URLSearchParams(window.location.search)
-		params.set('search', debouceValue)
-
-		const newUrl = `${window.location.pathname}?${params.toString()}`
-
-		window.history.replaceState({}, '', newUrl)
-	}, [debouceValue, searchParams])
+	useAddSearchParams({
+		search: debouceValue,
+	})
 
 	const query: UseQueryResult<Array<EventsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue],

@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { FILES_TYPES } from '@/constants'
 
-export const ImportFileModalSchema = z.object({
+export const ImportParticipantsFileModalSchema = z.object({
 	eventId: z.string().uuid(),
 	file: z
 		.any()
@@ -14,4 +14,6 @@ export const ImportFileModalSchema = z.object({
 		}),
 })
 
-export type ImportFileModalType = z.infer<typeof ImportFileModalSchema>
+export type ImportParticipantsFileModalType = z.infer<
+	typeof ImportParticipantsFileModalSchema
+>

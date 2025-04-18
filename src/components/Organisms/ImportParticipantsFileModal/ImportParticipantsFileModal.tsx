@@ -11,28 +11,30 @@ import { useGetEvents } from '@/services/queries/events'
 import { useImportParticipantsData } from '@/services/queries/participants'
 
 import {
-	ImportFileModalSchema,
-	ImportFileModalType,
-} from './ImportFileModal.schema'
+	ImportParticipantsFileModalSchema,
+	ImportParticipantsFileModalType,
+} from './ImportParticipantsFileModal.schema'
 
-type ImportFileModalProps = {
+type ImportParticipantsFileModalProps = {
 	modalId: string
 }
 
-export const ImportFileModal = ({ modalId }: ImportFileModalProps) => {
-	const methods = useForm<ImportFileModalType>({
+export const ImportParticipantsFileModal = ({
+	modalId,
+}: ImportParticipantsFileModalProps) => {
+	const methods = useForm<ImportParticipantsFileModalType>({
 		defaultValues: {
 			eventId: '',
 			file: undefined,
 		},
-		resolver: zodResolver(ImportFileModalSchema),
+		resolver: zodResolver(ImportParticipantsFileModalSchema),
 	})
 	const { data: events } = useGetEvents()
 	const { importData, isPending } = useImportParticipantsData()
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
-	const handleSubmit = async (values: ImportFileModalType) => {
+	const handleSubmit = async (values: ImportParticipantsFileModalType) => {
 		await importData(
 			{ eventId: values.eventId, file: values.file[0] },
 			{

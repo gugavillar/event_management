@@ -13,7 +13,7 @@ export type SelectProps = ComponentPropsWithoutRef<'select'> & {
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 	({ options, className, isInvalid, placeholder, ...props }, ref) => {
-		if (!options || !options.length) return null
+		const hasOptions = options.length > 0
 
 		return (
 			<div className="relative w-full">
@@ -28,11 +28,12 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 					{...props}
 				>
 					{placeholder ? <option value="">{placeholder}</option> : null}
-					{options.map(({ label, value, isDisabled }) => (
-						<option key={value} value={value} disabled={isDisabled}>
-							{label}
-						</option>
-					))}
+					{hasOptions &&
+						options.map(({ label, value, isDisabled }) => (
+							<option key={value} value={value} disabled={isDisabled}>
+								{label}
+							</option>
+						))}
 				</select>
 			</div>
 		)

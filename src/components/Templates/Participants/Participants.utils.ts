@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { differenceInYears, format } from 'date-fns'
 
 import { formatPhone } from '@/formatters'
 import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
@@ -21,6 +21,10 @@ export const HEADER_LABELS = [
 		accessor: 'city',
 	},
 	{
+		label: 'Evento',
+		accessor: 'event',
+	},
+	{
 		label: 'Status',
 		accessor: 'status',
 	},
@@ -33,7 +37,8 @@ export const formatTableData = (data: Array<ParticipantsFromAPI>) => {
 		id: participant.id,
 		name: participant.name,
 		contact: formatPhone(participant.contact),
-		birthdate: format(participant.birthdate, 'dd/MM/yyyy'),
+		birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), participant.birthdate)} anos`,
 		city: participant.Address.map((address) => address.city),
+		event: participant.event.name,
 	}))
 }

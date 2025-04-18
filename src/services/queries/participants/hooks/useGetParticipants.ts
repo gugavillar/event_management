@@ -2,9 +2,10 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
+import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { ParticipantsFromAPI } from '../participants.type'
@@ -18,31 +19,10 @@ export const useGetParticipants = () => {
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
 
-	useEffect(() => {
-		if (!debounceEventId) {
-			return window.history.replaceState({}, '', window.location.pathname)
-		}
-
-		const params = new URLSearchParams(window.location.search)
-		params.set('eventId', debounceEventId)
-
-		const newUrl = `${window.location.pathname}?${params.toString()}`
-
-		window.history.replaceState({}, '', newUrl)
-	}, [debounceEventId, searchParams])
-
-	useEffect(() => {
-		if (!debounceSearch) {
-			return window.history.replaceState({}, '', window.location.pathname)
-		}
-
-		const params = new URLSearchParams(window.location.search)
-		params.set('search', debounceSearch)
-
-		const newUrl = `${window.location.pathname}?${params.toString()}`
-
-		window.history.replaceState({}, '', newUrl)
-	}, [debounceSearch, searchParams])
+	useAddSearchParams({
+		eventId: debounceEventId,
+		search: debounceSearch,
+	})
 
 	const query: UseQueryResult<Array<ParticipantsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.PARTICIPANTS, debounceEventId, debounceSearch],

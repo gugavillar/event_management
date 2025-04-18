@@ -1,6 +1,7 @@
 'use client'
 import { saveAs } from 'file-saver'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { BsFiletypeXls } from 'react-icons/bs'
 
 import { Button } from '@/components/Atoms'
@@ -9,21 +10,30 @@ import { useGetParticipantsTemplateFile } from '@/services/queries/participants'
 
 export const DownloadTemplateParticipantsButton = () => {
 	const [startDownload, setStartDownload] = useState(false)
-	const { data, isFetching } = useGetParticipantsTemplateFile(startDownload)
+	const { data, isError, isFetching } =
+		useGetParticipantsTemplateFile(startDownload)
 
 	const handleClick = async () => {
+		toast.loading('Gerando arquivo...')
 		setStartDownload(true)
 	}
 
 	useEffect(() => {
 		if (!data || !startDownload) return
 
+		if (isError) {
+			toast.error('Erro ao baixar arquivo')
+			setStartDownload(false)
+			return
+		}
+
 		const blob = new Blob([data as BlobPart], {
 			type: FILES_TYPES.xlsx,
 		})
 		saveAs(blob, 'template_participantes.xlsx')
 		setStartDownload(false)
-	}, [data, startDownload])
+		toast.success('Arquivo baixado com sucesso!')
+	}, [data, isError, startDownload])
 
 	return (
 		<Button

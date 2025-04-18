@@ -1,13 +1,17 @@
 import { MdOutlineCloudUpload } from 'react-icons/md'
 
 import { Button } from '@/components/Atoms'
+import { ImportParticipantsFileModal } from '@/components/Organisms'
 
-type ImportButtonProps = {
+type ImportParticipantsButtonProps = {
 	label: string
 	modalId: string
 }
 
-export const ImportButton = ({ label, modalId }: ImportButtonProps) => {
+export const ImportParticipantsButton = ({
+	label,
+	modalId,
+}: ImportParticipantsButtonProps) => {
 	return (
 		<>
 			<Button
@@ -18,6 +22,7 @@ export const ImportButton = ({ label, modalId }: ImportButtonProps) => {
 			>
 				{label}
 			</Button>
+			<ImportParticipantsFileModal modalId={modalId} />
 		</>
 	)
 }

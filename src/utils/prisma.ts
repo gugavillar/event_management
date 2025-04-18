@@ -73,7 +73,7 @@ export async function requestProcess<T>({
 		}
 
 		return NextResponse.json({
-			...(Array.isArray(data) ? { data } : { ...data }),
+			data,
 			...(successMessage && { message: successMessage }),
 		})
 	} catch (error) {
