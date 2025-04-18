@@ -1,20 +1,28 @@
 'use client'
 
+import { useState } from 'react'
+
 import { Select } from '@/components/Atoms'
 import { ImportParticipantsButton, ListManager } from '@/components/Molecules'
 import {
 	ListPage,
 	PageContent,
 	DownloadTemplateParticipantsButton,
+	ParticipantDeleteModal,
 } from '@/components/Organisms'
-import { MODALS_IDS, StatusSelectOptions } from '@/constants'
+import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
 import { useGetParticipants } from '@/services/queries/participants'
+import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
 
 export const Participants = () => {
+	const [selectedParticipant, setSelectedParticipant] = useState<
+		null | ParticipantsFromAPI['id']
+	>(null)
+
 	const { data: events } = useGetEvents()
 	const {
 		data: participants,
@@ -27,7 +35,17 @@ export const Participants = () => {
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
-	const formattedParticipants = formatTableData(participants ?? [])
+	const handleOpenModalToDeleteParticipant = async (
+		id: ParticipantsFromAPI['id'],
+	) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL)
+	}
+
+	const formattedParticipants = formatTableData(
+		participants ?? [],
+		handleOpenModalToDeleteParticipant,
+	)
 
 	return (
 		<PageContent
@@ -67,6 +85,11 @@ export const Participants = () => {
 					isLoading={isLoading}
 				/>
 			</ListPage>
+			<ParticipantDeleteModal
+				modalId={MODALS_IDS.PARTICIPANT_MODAL}
+				selectedParticipant={selectedParticipant}
+				setSelectedParticipant={setSelectedParticipant}
+			/>
 		</PageContent>
 	)
 }
