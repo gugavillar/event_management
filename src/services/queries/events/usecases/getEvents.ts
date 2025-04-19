@@ -2,13 +2,13 @@ import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
 type GetEventsParams = {
-	search?: string
+	searchEvent?: string
 }
 
-export const getEvents = async ({ search }: GetEventsParams) => {
+export const getEvents = async ({ searchEvent }: GetEventsParams) => {
 	const response = await api.get(ENDPOINTS.GET_EVENTS, {
 		params: {
-			...(search && { search }),
+			...(searchEvent && { searchEvent }),
 		},
 	})
 

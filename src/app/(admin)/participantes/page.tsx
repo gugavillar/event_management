@@ -8,21 +8,28 @@ export default async function ParticipantsPage({
 	searchParams,
 }: {
 	searchParams: {
-		search: string
+		searchParticipant: string
 		eventId: string
+		statusParticipant: string
 	}
 }) {
-	const debounceSearchValue = searchParams.search ?? ''
+	const debounceSearchValue = searchParams.searchParticipant ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
+	const debounceStatusValue = searchParams.statusParticipant ?? ''
 	const [getAllEvents, getAllParticipants] = await Promise.all([
-		async () => getEvents({ search: debounceEventIdValue }),
-		async () => getParticipants({ eventId: debounceSearchValue }),
+		async () => getEvents({ searchEvent: '' }),
+		async () =>
+			getParticipants({
+				searchParticipant: debounceSearchValue,
+				eventId: debounceEventIdValue,
+				statusParticipant: debounceStatusValue,
+			}),
 	])
 
 	return (
 		<HydrationProvider
 			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS, debounceEventIdValue]}
+			queryKey={[QUERY_KEYS.EVENTS, '']}
 		>
 			<HydrationProvider
 				queryFn={getAllParticipants}
@@ -30,6 +37,7 @@ export default async function ParticipantsPage({
 					QUERY_KEYS.PARTICIPANTS,
 					debounceEventIdValue,
 					debounceSearchValue,
+					debounceStatusValue,
 				]}
 			>
 				<Participants />

@@ -14,22 +14,38 @@ import { getParticipants } from '../usecases'
 export const useGetParticipants = () => {
 	const searchParams = useSearchParams()
 	const [eventId, setEventId] = useState(searchParams.get('eventId') || '')
-	const [search, setSearch] = useState(searchParams.get('search') || '')
+	const [search, setSearch] = useState(
+		searchParams.get('searchParticipant') || '',
+	)
+	const [status, setStatus] = useState(
+		searchParams.get('statusParticipant') || '',
+	)
 
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
+	const debounceStatus = useDebounce(status, 500)
 
 	useAddSearchParams({
 		eventId: debounceEventId,
-		search: debounceSearch,
+		searchParticipant: debounceSearch,
+		statusParticipant: debounceStatus,
 	})
 
 	const query: UseQueryResult<Array<ParticipantsFromAPI>> = useQuery({
-		queryKey: [QUERY_KEYS.PARTICIPANTS, debounceEventId, debounceSearch],
+		queryKey: [
+			QUERY_KEYS.PARTICIPANTS,
+			debounceEventId,
+			debounceSearch,
+			debounceStatus,
+		],
 		queryFn: () =>
-			getParticipants({ eventId: debounceEventId, search: debounceSearch }),
+			getParticipants({
+				eventId: debounceEventId,
+				searchParticipant: debounceSearch,
+				statusParticipant: debounceStatus,
+			}),
 		retry: 0,
 	})
 
-	return { ...query, eventId, setEventId, setSearch, search }
+	return { ...query, eventId, setEventId, setSearch, search, status, setStatus }
 }

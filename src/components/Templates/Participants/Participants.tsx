@@ -36,6 +36,8 @@ export const Participants = () => {
 		setSearch,
 		setEventId,
 		eventId,
+		status,
+		setStatus,
 	} = useGetParticipants()
 	useTooltip(Boolean(selectedParticipant))
 
@@ -91,6 +93,8 @@ export const Participants = () => {
 						<Select
 							placeholder="Selecione o status"
 							options={StatusSelectOptions}
+							value={status}
+							onChange={(e) => setStatus(e.target.value)}
 						/>
 					</>
 				}

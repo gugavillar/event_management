@@ -21,7 +21,9 @@ export default function RootLayout({
 	return (
 		<html lang="pt-BR">
 			<QueryProvider>
-				<body className={`h-screen w-screen ${roboto.className}`}>
+				<body
+					className={`flex h-dvh w-full flex-col overflow-y-hidden ${roboto.className}`}
+				>
 					{children}
 					<Toaster position="top-right" toastOptions={{ duration: 3000 }} />
 				</body>

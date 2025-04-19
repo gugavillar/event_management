@@ -13,17 +13,17 @@ import { getEvents } from '../usecases'
 
 export const useGetEvents = () => {
 	const searchParams = useSearchParams()
-	const [search, setSearch] = useState(searchParams.get('search') || '')
+	const [search, setSearch] = useState(searchParams.get('searchEvent') || '')
 
 	const debouceValue = useDebounce(search, 500)
 
 	useAddSearchParams({
-		search: debouceValue,
+		searchEvent: debouceValue,
 	})
 
 	const query: UseQueryResult<Array<EventsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue],
-		queryFn: () => getEvents({ search: debouceValue }),
+		queryFn: () => getEvents({ searchEvent: debouceValue }),
 		retry: 0,
 	})
 

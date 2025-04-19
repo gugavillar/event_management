@@ -1,35 +1,19 @@
-import { prisma } from '@/constants'
-
-const generateQuery = (eventId: string | null, search: string | null) => {
-	if (eventId && search) {
-		return {
-			where: {
-				eventId,
-				name: { startsWith: search },
-			},
-		}
-	}
-	if (eventId && !search) {
-		return {
-			where: { eventId },
-		}
-	}
-	if (!eventId && search) {
-		return {
-			where: {
-				name: { startsWith: search },
-			},
-		}
-	}
-}
+import { CHECK_IN_STATUS, prisma } from '@/constants'
 
 export const getAllParticipants = async (
 	eventId: string | null,
 	search: string | null,
+	status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS] | null,
 ) => {
 	try {
 		return await prisma.participant.findMany({
-			...generateQuery(eventId, search),
+			where: {
+				...(eventId && { eventId }),
+				...(search && { name: { startsWith: search } }),
+				...(status && {
+					checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
+				}),
+			},
 			include: {
 				Address: true,
 				event: true,

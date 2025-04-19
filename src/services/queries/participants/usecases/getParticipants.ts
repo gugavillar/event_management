@@ -3,16 +3,19 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 type GetParticipantsParams = {
 	eventId?: string
-	search?: string
+	searchParticipant?: string
+	statusParticipant?: string
 }
 export const getParticipants = async ({
 	eventId,
-	search,
+	searchParticipant,
+	statusParticipant,
 }: GetParticipantsParams) => {
 	const response = await api.get(ENDPOINTS.GET_PARTICIPANTS, {
 		params: {
 			...(eventId && { eventId }),
-			...(search && { search }),
+			...(searchParticipant && { searchParticipant }),
+			...(statusParticipant && { statusParticipant }),
 		},
 	})
 	return response.data

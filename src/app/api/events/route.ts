@@ -15,7 +15,7 @@ const handlerPost = async (request: NextRequest) => {
 }
 
 const handlerGet = async (request: NextRequest) => {
-	const searchParams = request.nextUrl.searchParams.get('search')
+	const searchParams = request.nextUrl.searchParams.get('searchEvent')
 
 	return await requestProcess({
 		functions: async () => await getAllEvents(searchParams),
