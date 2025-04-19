@@ -1,15 +1,16 @@
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { StatusType, StatusTypeAPI } from '@/constants'
+import { CHECK_IN_STATUS, StatusType } from '@/constants'
 
 type StatusTag = ComponentProps<'mark'> & {
-	status: StatusTypeAPI
+	status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS]
 }
 
 const STATUS_COLORS = {
-	[StatusTypeAPI.NOT_CONFIRMED]: 'bg-red-400 bg-opacity-30',
-	[StatusTypeAPI.CONFIRMED]: 'bg-emerald-400 bg-opacity-30',
+	[CHECK_IN_STATUS.WITHDREW]: 'bg-red-400 bg-opacity-30',
+	[CHECK_IN_STATUS.CONFIRMED]: 'bg-emerald-400 bg-opacity-30',
+	[CHECK_IN_STATUS.NOT_ANSWERED]: 'bg-gray-400 bg-opacity-30',
 }
 
 export const StatusTag = ({ status, className, ...props }: StatusTag) => {

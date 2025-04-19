@@ -4,8 +4,8 @@ import toast from 'react-hot-toast'
 import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
-import { useDeleteParticipant } from '@/services/queries/participants'
+import { CHECK_IN_STATUS, overlayClose } from '@/constants'
+import { useUpdateCheckInParticipant } from '@/services/queries/participants'
 import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
 
 type ParticipantCheckInModalProps = {
@@ -14,26 +14,38 @@ type ParticipantCheckInModalProps = {
 	setSelectedParticipant: Dispatch<
 		SetStateAction<ParticipantsFromAPI['id'] | null>
 	>
+	selectedEvent: ParticipantsFromAPI['eventId'] | null
+	setSelectedEvent: Dispatch<
+		SetStateAction<ParticipantsFromAPI['eventId'] | null>
+	>
 }
 
 export const ParticipantCheckInModal = ({
 	modalId,
 	selectedParticipant,
 	setSelectedParticipant,
+	selectedEvent,
+	setSelectedEvent,
 }: ParticipantCheckInModalProps) => {
-	const { remove, isPending } = useDeleteParticipant()
+	const { update, isPending } = useUpdateCheckInParticipant()
 
-	const handleCheckInParticipant = async () => {
-		if (!selectedParticipant) return
+	const handleCheckInParticipant = async (
+		status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS],
+	) => {
+		if (!selectedParticipant || !selectedEvent) return
 
-		await remove(selectedParticipant, {
-			onSuccess: () => {
-				setSelectedParticipant(null)
-				toast.success('Participante excluído com sucesso!')
-				overlayClose(modalId)
+		await update(
+			{ participantId: selectedParticipant, status, eventId: selectedEvent },
+			{
+				onSuccess: () => {
+					setSelectedParticipant(null)
+					setSelectedEvent(null)
+					toast.success('Participante marcado com o status selecionado!')
+					overlayClose(modalId)
+				},
+				onError: () => toast.error('Erro ao marcar status do participante'),
 			},
-			onError: () => toast.error('Erro ao excluir participante'),
-		})
+		)
 	}
 
 	return (
@@ -53,14 +65,18 @@ export const ParticipantCheckInModal = ({
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button
 							type="button"
-							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
+							className="w-full items-center justify-center bg-red-500 text-gray-50 transition-colors duration-500 hover:bg-red-400 hover:text-slate-800"
 							disabled={isPending}
+							isLoading={isPending}
+							onClick={() => handleCheckInParticipant(CHECK_IN_STATUS.WITHDREW)}
 						>
 							Desistir
 						</Button>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-							onClick={handleCheckInParticipant}
+							onClick={() =>
+								handleCheckInParticipant(CHECK_IN_STATUS.CONFIRMED)
+							}
 							isLoading={isPending}
 							disabled={isPending}
 						>

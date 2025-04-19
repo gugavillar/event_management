@@ -3,7 +3,8 @@ import { FaRegEdit } from 'react-icons/fa'
 import { LuTicketCheck } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 
-import { Tooltip } from '@/components/Atoms'
+import { StatusTag, Tooltip } from '@/components/Atoms'
+import { CHECK_IN_STATUS } from '@/constants'
 import { formatPhone } from '@/formatters'
 import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
 
@@ -41,7 +42,10 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	data: Array<ParticipantsFromAPI> | undefined,
 	handleDeleteParticipant: (id: ParticipantsFromAPI['id']) => void,
-	handleCheckInParticipant: (id: ParticipantsFromAPI['id']) => void,
+	handleCheckInParticipant: (
+		id: ParticipantsFromAPI['id'],
+		eventId: ParticipantsFromAPI['eventId'],
+	) => void,
 ) => {
 	if (!data) return []
 
@@ -50,8 +54,17 @@ export const formatTableData = (
 		name: participant.name,
 		contact: formatPhone(participant.contact),
 		birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), participant.birthdate)} anos`,
-		city: participant.Address.map((address) => address.city),
+		city: participant.Address.city,
 		event: participant.event.name,
+		status: (
+			<StatusTag
+				status={
+					!participant.checkIn
+						? CHECK_IN_STATUS.NOT_ANSWERED
+						: participant.checkIn
+				}
+			/>
+		),
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
@@ -66,7 +79,9 @@ export const formatTableData = (
 					<LuTicketCheck
 						className="cursor-pointer"
 						size={18}
-						onClick={() => handleCheckInParticipant(participant.id)}
+						onClick={() =>
+							handleCheckInParticipant(participant.id, participant.eventId)
+						}
 					/>
 					<Tooltip>Check-In</Tooltip>
 				</div>

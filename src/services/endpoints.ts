@@ -19,4 +19,6 @@ export const ENDPOINTS = {
 	GET_PARTICIPANTS: `${BASE_PATH.PARTICIPANTS}`,
 	DELETE_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
+	UPDATE_CHECK_IN_PARTICIPANT: (participant_id: string) =>
+		`${BASE_PATH.PARTICIPANTS}/${participant_id}/check-in`,
 }

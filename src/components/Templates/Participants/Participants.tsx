@@ -24,6 +24,9 @@ export const Participants = () => {
 	const [selectedParticipant, setSelectedParticipant] = useState<
 		null | ParticipantsFromAPI['id']
 	>(null)
+	const [selectedEvent, setSelectedEvent] = useState<
+		null | ParticipantsFromAPI['eventId']
+	>(null)
 
 	const { data: events } = useGetEvents()
 	const {
@@ -47,8 +50,10 @@ export const Participants = () => {
 
 	const handleOpenModalToCheckInParticipant = async (
 		id: ParticipantsFromAPI['id'],
+		eventId: ParticipantsFromAPI['eventId'],
 	) => {
 		setSelectedParticipant(id)
+		setSelectedEvent(eventId)
 		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
 	}
 
@@ -105,6 +110,8 @@ export const Participants = () => {
 				modalId={MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
+				selectedEvent={selectedEvent}
+				setSelectedEvent={setSelectedEvent}
 			/>
 		</PageContent>
 	)

@@ -1,15 +1,15 @@
 import { render } from '@testing-library/react'
 
-import { StatusType, StatusTypeAPI } from '@/constants'
+import { CHECK_IN_STATUS, StatusType } from '@/constants'
 
 import { StatusTag } from './StatusTag'
 
-const StatusTagArray = Object.values(StatusTypeAPI)
+const StatusTagArray = Object.values(CHECK_IN_STATUS)
 
 describe('PaymentTag component', () => {
 	it('renders correclty', () => {
 		const { getByTestId } = render(
-			<StatusTag status={StatusTypeAPI.CONFIRMED} data-testid="status-tag" />,
+			<StatusTag status={CHECK_IN_STATUS.CONFIRMED} data-testid="status-tag" />,
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -20,7 +20,7 @@ describe('PaymentTag component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<StatusTag
-				status={StatusTypeAPI.CONFIRMED}
+				status={CHECK_IN_STATUS.CONFIRMED}
 				data-testid="status-tag"
 				className="custom-class"
 			/>,
@@ -34,7 +34,7 @@ describe('PaymentTag component', () => {
 	it('applies custom props', () => {
 		const { getByTestId } = render(
 			<StatusTag
-				status={StatusTypeAPI.CONFIRMED}
+				status={CHECK_IN_STATUS.CONFIRMED}
 				data-testid="status-tag"
 				id="test"
 			/>,

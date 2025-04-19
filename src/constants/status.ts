@@ -19,23 +19,28 @@ export const PaymentSelectOptions = Object.values(PaymentTypeAPI).map(
 	(value) => ({ ...PaymentType[value] }),
 )
 
-export enum StatusTypeAPI {
-	CONFIRMED = 'CONFIRMED',
-	NOT_CONFIRMED = 'NOT_CONFIRMED',
-}
+export const CHECK_IN_STATUS = {
+	CONFIRMED: 'CONFIRMED',
+	WITHDREW: 'WITHDREW',
+	NOT_ANSWERED: 'NOT_ANSWERED',
+} as const
 
 export const StatusType = {
-	[StatusTypeAPI.CONFIRMED]: {
+	[CHECK_IN_STATUS.CONFIRMED]: {
 		label: 'Confirmado',
-		value: StatusTypeAPI.CONFIRMED,
+		value: CHECK_IN_STATUS.CONFIRMED,
 	},
-	[StatusTypeAPI.NOT_CONFIRMED]: {
+	[CHECK_IN_STATUS.WITHDREW]: {
 		label: 'Desistiu',
-		value: StatusTypeAPI.NOT_CONFIRMED,
+		value: CHECK_IN_STATUS.WITHDREW,
+	},
+	[CHECK_IN_STATUS.NOT_ANSWERED]: {
+		label: 'Sem resposta',
+		value: CHECK_IN_STATUS.NOT_ANSWERED,
 	},
 }
 
-export const StatusSelectOptions = Object.values(StatusTypeAPI).map(
+export const StatusSelectOptions = Object.values(CHECK_IN_STATUS).map(
 	(value) => ({ ...StatusType[value] }),
 )
 

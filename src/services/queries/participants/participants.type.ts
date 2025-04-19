@@ -1,5 +1,7 @@
 import { UUID } from 'crypto'
 
+import { CHECK_IN_STATUS } from '@/constants'
+
 import { EventsFromAPI } from '../events/event.type'
 
 export type ImportParticipantsDataValues = {
@@ -20,10 +22,11 @@ export type ParticipantsFromAPI = {
 	relationship: string
 	host: string
 	contactHost: string
+	checkIn: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS] | null
 	createdAt: string
 	updatedAt: string
 	eventId: UUID
-	Address: Array<{
+	Address: {
 		city: string
 		createdAt: string
 		id: UUID
@@ -33,6 +36,6 @@ export type ParticipantsFromAPI = {
 		state: string
 		street: string
 		updatedAt: string
-	}>
+	}
 	event: EventsFromAPI
 }
