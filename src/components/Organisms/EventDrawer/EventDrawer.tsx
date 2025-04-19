@@ -17,7 +17,7 @@ import {
 	useGetEvent,
 	useUpdateEvent,
 } from '@/services/queries/events'
-import { EventsFromAPI } from '@/services/queries/events/event.type'
+import { EventsFromAPI, FormEvent } from '@/services/queries/events/event.type'
 
 import { EventSchemaType } from './EventDrawer.schema'
 
@@ -46,7 +46,7 @@ export const EventDrawer = ({
 			volunteerPrice: Number(removeCurrencyFormat(values.volunteerPrice)),
 			initialDate: formatDateToSendToApi(values.initialDate),
 			finalDate: formatDateToSendToApi(values.finalDate),
-		}
+		} as FormEvent
 
 		if (selectedEvent) {
 			return await update(

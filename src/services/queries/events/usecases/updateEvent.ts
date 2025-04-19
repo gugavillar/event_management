@@ -1,11 +1,11 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { EventsFromAPI } from '../event.type'
+import { EventsFromAPI, FormEvent } from '../event.type'
 
 type UpdateEventArgs = {
 	eventId: EventsFromAPI['id']
-	data: any
+	data: FormEvent
 }
 
 export const updateEvent = async ({ eventId, data }: UpdateEventArgs) => {

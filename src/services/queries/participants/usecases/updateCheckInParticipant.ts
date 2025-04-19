@@ -4,7 +4,6 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 type UpdateCheckInParticipantArgs = {
 	participantId: string
-	eventId: string
 	status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS]
 }
 

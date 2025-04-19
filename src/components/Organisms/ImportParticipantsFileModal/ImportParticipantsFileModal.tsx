@@ -3,6 +3,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
+import { UUID } from 'crypto'
+
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { FileField, SelectField } from '@/components/Molecules'
 import { FILES_TYPES, overlayClose } from '@/constants'
@@ -32,11 +34,12 @@ export const ImportParticipantsFileModal = ({
 	const { data: events } = useGetEvents()
 	const { importData, isPending } = useImportParticipantsData()
 
-	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents: Array<{ value: UUID; label: string }> =
+		formatterFieldSelectValues(events, 'name', 'id')
 
 	const handleSubmit = async (values: ImportParticipantsFileModalType) => {
 		await importData(
-			{ eventId: values.eventId, file: values.file[0] },
+			{ eventId: values.eventId as UUID, file: values.file[0] },
 			{
 				onSuccess: () => {
 					toast.success('Participantes importados com sucesso!')

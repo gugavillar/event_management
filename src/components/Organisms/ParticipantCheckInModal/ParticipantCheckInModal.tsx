@@ -14,32 +14,25 @@ type ParticipantCheckInModalProps = {
 	setSelectedParticipant: Dispatch<
 		SetStateAction<ParticipantsFromAPI['id'] | null>
 	>
-	selectedEvent: ParticipantsFromAPI['eventId'] | null
-	setSelectedEvent: Dispatch<
-		SetStateAction<ParticipantsFromAPI['eventId'] | null>
-	>
 }
 
 export const ParticipantCheckInModal = ({
 	modalId,
 	selectedParticipant,
 	setSelectedParticipant,
-	selectedEvent,
-	setSelectedEvent,
 }: ParticipantCheckInModalProps) => {
 	const { update, isPending } = useUpdateCheckInParticipant()
 
 	const handleCheckInParticipant = async (
 		status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS],
 	) => {
-		if (!selectedParticipant || !selectedEvent) return
+		if (!selectedParticipant) return
 
 		await update(
-			{ participantId: selectedParticipant, status, eventId: selectedEvent },
+			{ participantId: selectedParticipant, status },
 			{
 				onSuccess: () => {
 					setSelectedParticipant(null)
-					setSelectedEvent(null)
 					toast.success('Participante marcado com o status selecionado!')
 					overlayClose(modalId)
 				},

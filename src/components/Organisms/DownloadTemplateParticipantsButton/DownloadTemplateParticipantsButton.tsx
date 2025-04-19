@@ -27,7 +27,7 @@ export const DownloadTemplateParticipantsButton = () => {
 			return
 		}
 
-		const blob = new Blob([data as BlobPart], {
+		const blob = new Blob([data], {
 			type: FILES_TYPES.xlsx,
 		})
 		saveAs(blob, 'template_participantes.xlsx')

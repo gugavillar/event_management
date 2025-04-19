@@ -6,7 +6,7 @@ import { EventsFromAPI } from '../events/event.type'
 
 export type ImportParticipantsDataValues = {
 	file: File
-	eventId: string
+	eventId: EventsFromAPI['id']
 }
 
 export type ParticipantsFromAPI = {
