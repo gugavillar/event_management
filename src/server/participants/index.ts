@@ -1,5 +1,7 @@
 export * from './getAllParticipants'
+export * from './getParticipantById'
 export * from './getTemplateFile'
 export * from './importParticipants'
 export * from './removeParticipantById'
 export * from './updateCheckInParticipant'
+export * from './updateParticipantById'

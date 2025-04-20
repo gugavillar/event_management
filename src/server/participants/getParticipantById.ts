@@ -1,0 +1,23 @@
+import { z } from 'zod'
+
+import { prisma } from '@/constants'
+
+export const getParticipantById = async (id: string) => {
+	try {
+		z.object({
+			id: z.string().uuid(),
+		}).parse({ id })
+
+		return await prisma.participant.findUnique({
+			where: {
+				id,
+			},
+			include: {
+				Address: true,
+			},
+		})
+	} catch (error) {
+		console.error('@getParticipantById error:', error)
+		throw Error
+	}
+}

@@ -1,5 +1,7 @@
 export * from './deleteParticipant'
+export * from './getParticipant'
 export * from './getParticipants'
 export * from './getParticipantsTemplateFile'
 export * from './importParticipantsData'
 export * from './updateCheckInParticipant'
+export * from './updateParticipant'

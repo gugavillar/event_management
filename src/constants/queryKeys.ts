@@ -17,8 +17,10 @@ let browserQueryClient: QueryClient | undefined
 
 export const QUERY_KEYS = {
 	EVENTS: 'events',
+	EVENT: 'event',
 	PARTICIPANTS_TEMPLATE_FILE: 'participants-template-file',
 	PARTICIPANTS: 'participants',
+	PARTICIPANT: 'participant',
 } as const
 
 export const getQueryClient = () => {

@@ -11,7 +11,7 @@ import { getEvent } from '../usecases'
 
 export const useGetEvent = (eventId: EventsFromAPI['id'] | null) => {
 	const query: UseQueryResult<EventsFromAPI> = useQuery({
-		queryKey: [QUERY_KEYS.EVENTS, eventId],
+		queryKey: [QUERY_KEYS.EVENT, eventId],
 		queryFn: () => getEvent(eventId as EventsFromAPI['id']),
 		retry: 0,
 		enabled: !!eventId,

@@ -1,13 +1,13 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
 
-import { updateCheckInParticipant } from '../usecases'
+import { updateParticipant } from '../usecases'
 
-export const useUpdateCheckInParticipant = () => {
+export const useUpdateParticipant = () => {
 	const queryClient = useQueryClient()
 
 	const mutation = useMutation({
-		mutationFn: updateCheckInParticipant,
+		mutationFn: updateParticipant,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PARTICIPANTS] })
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PARTICIPANT] })

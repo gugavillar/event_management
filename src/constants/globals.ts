@@ -8,6 +8,7 @@ export const MODALS_IDS = {
 	EVENT_REMOVE_MODAL: 'event_remove_modal',
 	PARTICIPANT_REMOVE_MODAL: 'participant_remove_modal',
 	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
+	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
 	ROOMS_DRAWER: 'rooms_manager',
 	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
 }
@@ -23,7 +24,7 @@ export const PARTICIPANTS_HEADER_TEMPLATE = [
 	'Nascimento', // 3
 	'Contato', // 4
 	'Estado civil', // 5
-	'Rua', // 6
+	'Endereço', // 6
 	'Bairro', // 7
 	'Número', // 8
 	'Cidade', // 9
@@ -65,3 +66,33 @@ export const TRANSLATE_PARTICIPANTS_HEADER = {
 export const FILES_TYPES = {
 	xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
+
+export const UF = [
+	{ label: 'Acre', value: 'AC' },
+	{ label: 'Alagoas', value: 'AL' },
+	{ label: 'Amapá', value: 'AP' },
+	{ label: 'Amazonas', value: 'AM' },
+	{ label: 'Bahia', value: 'BA' },
+	{ label: 'Ceará', value: 'CE' },
+	{ label: 'Distrito Federal', value: 'DF' },
+	{ label: 'Espírito Santo', value: 'ES' },
+	{ label: 'Goiás', value: 'GO' },
+	{ label: 'Maranhão', value: 'MA' },
+	{ label: 'Mato Grosso', value: 'MT' },
+	{ label: 'Mato Grosso do Sul', value: 'MS' },
+	{ label: 'Minas Gerais', value: 'MG' },
+	{ label: 'Pará', value: 'PA' },
+	{ label: 'Paraíba', value: 'PB' },
+	{ label: 'Paraná', value: 'PR' },
+	{ label: 'Pernambuco', value: 'PE' },
+	{ label: 'Piauí', value: 'PI' },
+	{ label: 'Rio de Janeiro', value: 'RJ' },
+	{ label: 'Rio Grande do Norte', value: 'RN' },
+	{ label: 'Rio Grande do Sul', value: 'RS' },
+	{ label: 'Rondônia', value: 'RO' },
+	{ label: 'Roraima', value: 'RR' },
+	{ label: 'Santa Catarina', value: 'SC' },
+	{ label: 'São Paulo', value: 'SP' },
+	{ label: 'Sergipe', value: 'SE' },
+	{ label: 'Tocantins', value: 'TO' },
+]

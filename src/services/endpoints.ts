@@ -17,7 +17,11 @@ export const ENDPOINTS = {
 	IMPORT_PARTICIPANTS_DATA: `${BASE_PATH.PARTICIPANTS}/files`,
 	GET_TEMPLATE_PARTICIPANTS_FILE: `${BASE_PATH.PARTICIPANTS}/files`,
 	GET_PARTICIPANTS: `${BASE_PATH.PARTICIPANTS}`,
+	GET_PARTICIPANT: (participant_id: string) =>
+		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
 	DELETE_PARTICIPANT: (participant_id: string) =>
+		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
+	UPDATE_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
 	UPDATE_CHECK_IN_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}/check-in`,

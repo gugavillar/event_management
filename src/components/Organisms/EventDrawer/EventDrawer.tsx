@@ -83,7 +83,7 @@ export const EventDrawer = ({
 	return (
 		<Drawer
 			drawerId={drawerId}
-			headingTitle="Novo evento"
+			headingTitle={selectedEvent ? 'Editar evento' : 'Novo evento'}
 			handleClose={() => setSelectedEvent(null)}
 		>
 			<DrawerBody isLoading={isLoading}>

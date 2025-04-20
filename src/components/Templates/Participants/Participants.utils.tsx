@@ -42,10 +42,8 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	data: Array<ParticipantsFromAPI> | undefined,
 	handleDeleteParticipant: (id: ParticipantsFromAPI['id']) => void,
-	handleCheckInParticipant: (
-		id: ParticipantsFromAPI['id'],
-		eventId: ParticipantsFromAPI['eventId'],
-	) => void,
+	handleCheckInParticipant: (id: ParticipantsFromAPI['id']) => void,
+	handleEditParticipant: (id: ParticipantsFromAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -71,7 +69,7 @@ export const formatTableData = (
 					<FaRegEdit
 						className="cursor-pointer"
 						size={18}
-						// onClick={() => handleOpenDrawer(event.id)}
+						onClick={() => handleEditParticipant(participant.id)}
 					/>
 					<Tooltip>Editar</Tooltip>
 				</div>
@@ -79,9 +77,7 @@ export const formatTableData = (
 					<LuTicketCheck
 						className="cursor-pointer"
 						size={18}
-						onClick={() =>
-							handleCheckInParticipant(participant.id, participant.eventId)
-						}
+						onClick={() => handleCheckInParticipant(participant.id)}
 					/>
 					<Tooltip>Check-In</Tooltip>
 				</div>

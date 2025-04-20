@@ -10,6 +10,7 @@ export const useUpdateEvent = () => {
 		mutationFn: updateEvent,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENTS] })
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENT] })
 		},
 	})
 

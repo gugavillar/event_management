@@ -1,6 +1,8 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Select } from '@/components/Atoms'
 import { ImportParticipantsButton, ListManager } from '@/components/Molecules'
@@ -10,7 +12,12 @@ import {
 	DownloadTemplateParticipantsButton,
 	ParticipantDeleteModal,
 	ParticipantCheckInModal,
+	ParticipantDrawer,
 } from '@/components/Organisms'
+import {
+	ParticipantSchema,
+	ParticipantType,
+} from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useTooltip } from '@/hooks'
@@ -25,6 +32,27 @@ export const Participants = () => {
 		null | ParticipantsFromAPI['id']
 	>(null)
 
+	const methods = useForm<ParticipantType>({
+		defaultValues: {
+			name: '',
+			email: '',
+			called: '',
+			birthdate: '',
+			contact: '',
+			maritalStatus: '',
+			city: '',
+			neighborhood: '',
+			number: '',
+			street: '',
+			parent: '',
+			contactParent: '',
+			relationship: '',
+			host: '',
+			contactHost: '',
+			state: '',
+		},
+		resolver: zodResolver(ParticipantSchema),
+	})
 	const { data: events } = useGetEvents()
 	const {
 		data: participants,
@@ -54,10 +82,18 @@ export const Participants = () => {
 		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
 	}
 
+	const handleOpenDrawerToEditParticipant = async (
+		id: ParticipantsFromAPI['id'],
+	) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
+	}
+
 	const formattedParticipants = formatTableData(
 		participants,
 		handleOpenModalToDeleteParticipant,
 		handleOpenModalToCheckInParticipant,
+		handleOpenDrawerToEditParticipant,
 	)
 
 	return (
@@ -110,6 +146,13 @@ export const Participants = () => {
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>
+			<FormProvider {...methods}>
+				<ParticipantDrawer
+					drawerId={MODALS_IDS.PARTICIPANT_EDIT_DRAWER}
+					selectedParticipant={selectedParticipant}
+					setSelectedParticipant={setSelectedParticipant}
+				/>
+			</FormProvider>
 		</PageContent>
 	)
 }

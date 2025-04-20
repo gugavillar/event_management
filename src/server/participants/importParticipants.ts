@@ -27,7 +27,9 @@ const verifyDate = z
 
 const verifyPhone = z.coerce
 	.string()
-	.refine((value) => (!value ? false : validatePhone(value)))
+	.refine((value) =>
+		!value || value.length < 15 ? false : validatePhone(value),
+	)
 	.transform((value) => value.replace(/\D/g, ''))
 
 const verifyUf = z
