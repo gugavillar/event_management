@@ -16,25 +16,21 @@ const verifyStringOrNumber = z.coerce.string().min(1)
 const verifyEmail = z
 	.string()
 	.email()
-	.refine((value) => (!value ? false : validateEmail(value)))
+	.refine((value) => validateEmail(value))
 
 const verifyDate = z
 	.string()
-	.refine((value) =>
-		/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateBirthdate(value) : false,
+	.refine(
+		(value) => /^\d{2}\/\d{2}\/\d{4}/g.test(value) && validateBirthdate(value),
 	)
 	.transform((value) => formatDateToSendToApi(value))
 
 const verifyPhone = z.coerce
 	.string()
-	.refine((value) =>
-		!value || value.length < 15 ? false : validatePhone(value),
-	)
+	.refine((value) => validatePhone(value))
 	.transform((value) => value.replace(/\D/g, ''))
 
-const verifyUf = z
-	.string()
-	.refine((value) => (!value ? false : validateUF(value)))
+const verifyUf = z.string().refine((value) => validateUF(value))
 
 const validateFields = z.array(
 	z.object(

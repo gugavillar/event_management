@@ -3,6 +3,7 @@ import { UseQueryResult } from '@tanstack/react-query'
 import { format } from 'date-fns'
 
 import { QUERY_KEYS } from '@/constants'
+import { formatPhone } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { ParticipantsFromAPI } from '../participants.type'
@@ -19,6 +20,9 @@ export const useGetParticipant = (
 		select: (data) => ({
 			...data,
 			birthdate: format(data.birthdate, 'dd/MM/yyyy'),
+			contact: formatPhone(data.contact),
+			contactParent: formatPhone(data.contactParent),
+			contactHost: formatPhone(data.contactHost),
 			street: data.Address.street,
 			neighborhood: data.Address.neighborhood,
 			number: data.Address.number,
