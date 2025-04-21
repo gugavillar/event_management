@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { useScreen } from 'usehooks-ts'
 
 import {
 	ApplicationAvatar,
@@ -10,6 +11,13 @@ import {
 
 export const Sidebar = () => {
 	const [collapsed, setCollapsed] = useState(false)
+	const { width } = useScreen()
+
+	useEffect(() => {
+		if (width <= 768) {
+			setCollapsed(true)
+		}
+	}, [width])
 	return (
 		<aside
 			className={twMerge(

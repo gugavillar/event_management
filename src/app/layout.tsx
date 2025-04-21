@@ -22,7 +22,7 @@ export default function RootLayout({
 		<html lang="pt-BR">
 			<QueryProvider>
 				<body
-					className={`flex h-dvh w-full flex-col overflow-y-hidden ${roboto.className}`}
+					className={`flex h-dvh w-full flex-col md:overflow-y-hidden ${roboto.className}`}
 				>
 					{children}
 					<Toaster position="top-right" toastOptions={{ duration: 3000 }} />
