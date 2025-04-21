@@ -25,7 +25,7 @@ enum Roles {
   WRITER
 }
 
-enum ParticipantStatus {
+enum ParticipantOrVolunteerStatus {
   CONFIRMED
   WITHDREW
 }
@@ -55,12 +55,13 @@ model Event {
   user             User          @relation(fields: [userId], references: [id])
   userId           String
   Participant      Participant[]
+  Volunteer        Volunteer[]
 
   @@map("events")
 }
 
 model Participant {
-  id            String             @id @default(uuid())
+  id            String                        @id @default(uuid())
   name          String
   email         String
   called        String
@@ -72,18 +73,18 @@ model Participant {
   relationship  String
   host          String
   contactHost   String
-  checkIn       ParticipantStatus?
-  createdAt     DateTime           @default(now())
-  updatedAt     DateTime           @updatedAt
+  checkIn       ParticipantOrVolunteerStatus?
+  createdAt     DateTime                      @default(now())
+  updatedAt     DateTime                      @updatedAt
   eventId       String
-  event         Event              @relation(fields: [eventId], references: [id])
-  Address       Address?
+  event         Event                         @relation(fields: [eventId], references: [id])
+  Address       ParticipantAddress?
 
   @@unique([email, eventId])
   @@map("participants")
 }
 
-model Address {
+model ParticipantAddress {
   id            String      @id @default(uuid())
   street        String
   neighborhood  String
@@ -95,5 +96,42 @@ model Address {
   participantId String      @unique
   participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
 
-  @@map("addresses")
+  @@map("participants_addresses")
+}
+
+model Volunteer {
+  id            String                        @id @default(uuid())
+  name          String
+  email         String
+  called        String
+  birthdate     DateTime
+  contact       String
+  maritalStatus String
+  parent        String
+  contactParent String
+  relationship  String
+  checkIn       ParticipantOrVolunteerStatus?
+  createdAt     DateTime                      @default(now())
+  updatedAt     DateTime                      @updatedAt
+  eventId       String
+  event         Event                         @relation(fields: [eventId], references: [id])
+  Address       VolunteerAddress?
+
+  @@unique([email, eventId])
+  @@map("volunteers")
+}
+
+model VolunteerAddress {
+  id           String    @id @default(uuid())
+  street       String
+  neighborhood String
+  number       String
+  city         String
+  state        String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  volunteerId  String    @unique
+  volunteer    Volunteer @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+
+  @@map("volunteers_addresses")
 }

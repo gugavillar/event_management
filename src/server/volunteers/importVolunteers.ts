@@ -5,9 +5,9 @@ import { read, utils } from 'xlsx'
 import { z } from 'zod'
 
 import {
-	PARTICIPANTS_HEADER_TEMPLATE,
 	prisma,
-	TRANSLATE_PARTICIPANTS_HEADER,
+	TRANSLATE_VOLUNTEERS_HEADER,
+	VOLUNTEERS_HEADER_TEMPLATE,
 } from '@/constants'
 import { formatDateToSendToApi, validateBirthdate } from '@/formatters'
 
@@ -34,7 +34,7 @@ const verifyUf = z.string().refine((value) => validateUF(value))
 
 const validateFields = z.array(
 	z.object(
-		PARTICIPANTS_HEADER_TEMPLATE.reduce(
+		VOLUNTEERS_HEADER_TEMPLATE.reduce(
 			(acc, field, index) => {
 				let validator: z.ZodTypeAny
 				switch (index) {
@@ -46,7 +46,6 @@ const validateFields = z.array(
 						break
 					case 4:
 					case 12:
-					case 15:
 						validator = verifyPhone
 						break
 					case 10:
@@ -66,11 +65,11 @@ const validateFields = z.array(
 const isHeadersInFileInvalid = (rows: Record<string, unknown>[]) => {
 	const fileHeaders = Object.keys(rows[0]).map((header) => header.trim())
 
-	if (fileHeaders.length !== PARTICIPANTS_HEADER_TEMPLATE.length) {
+	if (fileHeaders.length !== VOLUNTEERS_HEADER_TEMPLATE.length) {
 		return true
 	}
 
-	return PARTICIPANTS_HEADER_TEMPLATE.some(
+	return VOLUNTEERS_HEADER_TEMPLATE.some(
 		(header) => !fileHeaders.includes(header),
 	)
 }
@@ -79,14 +78,14 @@ const formatToAPI = (rows: Record<string, unknown>[]) => {
 	return rows.map((row) =>
 		Object.fromEntries(
 			Object.entries(row).map(([key, value]) => [
-				TRANSLATE_PARTICIPANTS_HEADER[key],
+				TRANSLATE_VOLUNTEERS_HEADER[key],
 				value,
 			]),
 		),
 	)
 }
 
-export const importParticipants = async (data: FormData) => {
+export const importVolunteers = async (data: FormData) => {
 	const file = data.get('file') as File
 	const eventId = data.get('eventId')
 	const arrayBuffer = await file.arrayBuffer()
@@ -128,38 +127,36 @@ export const importParticipants = async (data: FormData) => {
 
 		const resValues = validateFields.parse(rows)
 
-		const participants = formatToAPI(
+		const volunteers = formatToAPI(
 			resValues,
 		) as Prisma.ParticipantCreateManyInput[] &
-			Prisma.ParticipantAddressCreateManyInput[]
+			Prisma.VolunteerAddressCreateManyInput[]
 
 		return await prisma.$transaction(async (tx) => {
-			for (const p of participants) {
-				const participant = await tx.participant.create({
+			for (const v of volunteers) {
+				const volunteer = await tx.volunteer.create({
 					data: {
-						name: p.name,
-						email: p.email,
-						called: p.called,
-						birthdate: p.birthdate,
-						contact: p.contact,
-						maritalStatus: p.maritalStatus,
-						parent: p.parent,
-						contactParent: p.contactParent,
-						relationship: p.relationship,
-						host: p.host,
-						contactHost: p.contactHost,
+						name: v.name,
+						email: v.email,
+						called: v.called,
+						birthdate: v.birthdate,
+						contact: v.contact,
+						maritalStatus: v.maritalStatus,
+						parent: v.parent,
+						contactParent: v.contactParent,
+						relationship: v.relationship,
 						eventId: eventId as string,
 					},
 				})
 
-				await tx.participantAddress.create({
+				await tx.volunteerAddress.create({
 					data: {
-						street: p.street,
-						neighborhood: p.neighborhood,
-						number: p.number,
-						city: p.city,
-						state: p.state,
-						participantId: participant.id,
+						street: v.street,
+						neighborhood: v.neighborhood,
+						number: v.number,
+						city: v.city,
+						state: v.state,
+						volunteerId: volunteer.id,
 					},
 				})
 			}

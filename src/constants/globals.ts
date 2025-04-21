@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
 export const MODALS_IDS = {
-	VOLUNTEER_DRAWER: 'volunteer_manager',
 	PAYMENT_MODAL: 'payment_modal',
 	GROUP_DRAWER: 'group_manager',
 	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
@@ -10,8 +9,9 @@ export const MODALS_IDS = {
 	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
 	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
-	ROOMS_DRAWER: 'rooms_manager',
 	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
+	IMPORT_VOLUNTEERS_MODAL: 'import_volunteers_modal',
+	ROOMS_DRAWER: 'rooms_manager',
 }
 
 export const prisma = new PrismaClient({

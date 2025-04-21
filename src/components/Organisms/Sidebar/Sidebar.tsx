@@ -11,13 +11,13 @@ import {
 
 export const Sidebar = () => {
 	const [collapsed, setCollapsed] = useState(false)
-	const { width } = useScreen()
+	const screen = useScreen()
 
 	useEffect(() => {
-		if (width <= 768) {
+		if (screen?.width <= 768) {
 			setCollapsed(true)
 		}
-	}, [width])
+	}, [screen?.width])
 	return (
 		<aside
 			className={twMerge(

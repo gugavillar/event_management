@@ -1,7 +1,7 @@
 'use client'
 
 import { Select } from '@/components/Atoms'
-import { ImportParticipantsButton, ListManager } from '@/components/Molecules'
+import { ImportVolunteersButton, ListManager } from '@/components/Molecules'
 import {
 	DownloadTemplateVolunteersButton,
 	ListPage,
@@ -22,9 +22,9 @@ export const Volunteers = () => {
 		<PageContent subheadingPage="Listagem de voluntários" isLoading={false}>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadTemplateVolunteersButton />
-				<ImportParticipantsButton
-					label="Importar participantes"
-					modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL}
+				<ImportVolunteersButton
+					label="Importar voluntários"
+					modalId={MODALS_IDS.IMPORT_VOLUNTEERS_MODAL}
 				/>
 			</div>
 			<ListPage

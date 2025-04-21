@@ -27,7 +27,7 @@ export const updateParticipantById = async (
 					...participantData,
 				},
 			})
-			await tx.address.update({
+			await tx.participantAddress.update({
 				where: {
 					participantId: id,
 				},
