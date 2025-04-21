@@ -10,16 +10,29 @@ import {
 import { MODALS_IDS, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
+import { useGetVolunteers } from '@/services/queries/volunteers'
 
-import { HEADER_LABELS } from './Volunteers.utils'
+import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
 
 export const Volunteers = () => {
 	const { data: events } = useGetEvents()
+	const {
+		data,
+		isLoading,
+		search,
+		setSearch,
+		setEventId,
+		eventId,
+		status,
+		setStatus,
+	} = useGetVolunteers()
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
+	const formattedVolunteers = formatTableData(data)
+
 	return (
-		<PageContent subheadingPage="Listagem de voluntários" isLoading={false}>
+		<PageContent subheadingPage="Listagem de voluntários" isLoading={isLoading}>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadTemplateVolunteersButton />
 				<ImportVolunteersButton
@@ -30,23 +43,29 @@ export const Volunteers = () => {
 			<ListPage
 				placeholderField="Encontrar um voluntário"
 				className="lg:max-w-full"
+				search={search}
+				setSearch={setSearch}
 				moreFilter={
 					<>
 						<Select
 							placeholder="Selecione o evento"
 							options={formattedEvents}
+							value={eventId}
+							onChange={(e) => setEventId(e.target.value)}
 						/>
 						<Select
 							placeholder="Selecione o status"
 							options={StatusSelectOptions}
+							value={status}
+							onChange={(e) => setStatus(e.target.value)}
 						/>
 					</>
 				}
 			>
 				<ListManager
-					bodyData={[]}
+					bodyData={formattedVolunteers}
 					headerLabels={HEADER_LABELS}
-					isLoading={false}
+					isLoading={isLoading}
 				/>
 			</ListPage>
 		</PageContent>
