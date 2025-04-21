@@ -1,17 +1,12 @@
 'use client'
 import { UUID } from 'crypto'
 
-import { Button, Select, Spinner } from '@/components/Atoms'
+import { Select, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import {
-	ListPage,
-	PageContent,
-	PersonalInfoCard,
-	AddressInfoCard,
-} from '@/components/Organisms'
+import { ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 
-import { FAKE_VOLUNTEERS, MOCKED_USER } from './Volunteers.mocks'
+import { FAKE_VOLUNTEERS } from './Volunteers.mocks'
 
 const HEADER_LABELS = [
 	{
@@ -70,24 +65,6 @@ export const Volunteers = ({ volunteers }: VolunteersProps) => {
 						bodyData={volunteers}
 						headerLabels={HEADER_LABELS}
 						isLoading={false}
-						drawerId={MODALS_IDS.VOLUNTEER_DRAWER}
-						drawerTitle="Dados do voluntário"
-						drawerFooter={
-							<>
-								<Button className="w-full justify-center bg-red-500 text-gray-50 transition-colors duration-500 hover:bg-red-400 hover:text-gray-800">
-									Cancelar participação
-								</Button>
-								<Button className="w-full justify-center bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-gray-800">
-									Confirmar participação
-								</Button>
-							</>
-						}
-						drawerContent={
-							<>
-								<PersonalInfoCard userInfo={MOCKED_USER} />
-								<AddressInfoCard addressInfo={MOCKED_USER.address} />
-							</>
-						}
 					/>
 				</ListPage>
 			)}

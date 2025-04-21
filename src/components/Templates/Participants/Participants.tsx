@@ -13,6 +13,7 @@ import {
 	ParticipantDeleteModal,
 	ParticipantCheckInModal,
 	ParticipantDrawer,
+	ParticipantModalData,
 } from '@/components/Organisms'
 import {
 	ParticipantSchema,
@@ -89,6 +90,15 @@ export const Participants = () => {
 		overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
 	}
 
+	const handleOpenModalToShowParticipantData = async ({
+		id,
+	}: {
+		id: ParticipantsFromAPI['id']
+	}) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+	}
+
 	const formattedParticipants = formatTableData(
 		participants,
 		handleOpenModalToDeleteParticipant,
@@ -134,6 +144,7 @@ export const Participants = () => {
 					bodyData={formattedParticipants}
 					headerLabels={HEADER_LABELS}
 					isLoading={isLoading}
+					handleClickRow={handleOpenModalToShowParticipantData}
 				/>
 			</ListPage>
 			<ParticipantDeleteModal
@@ -153,6 +164,11 @@ export const Participants = () => {
 					setSelectedParticipant={setSelectedParticipant}
 				/>
 			</FormProvider>
+			<ParticipantModalData
+				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
+				selectedParticipant={selectedParticipant}
+				setSelectedParticipant={setSelectedParticipant}
+			/>
 		</PageContent>
 	)
 }

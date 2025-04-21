@@ -7,9 +7,11 @@ import { InfoBox } from '@/components/Molecules'
 type PersonalInfoCardProps = ComponentProps<'div'> & {
 	userInfo: {
 		name: string
-		firstName: string
+		email: string
+		called: string
 		birthdate: string
-		phone: string
+		contact: string
+		maritalStatus: string
 	}
 }
 
@@ -25,9 +27,11 @@ export const PersonalInfoCard = ({
 			{...props}
 		>
 			<InfoBox label="Nome" value={userInfo.name} />
-			<InfoBox label="Como quer ser chamado" value={userInfo.firstName} />
+			<InfoBox label="Email" value={userInfo.email} />
+			<InfoBox label="Como quer ser chamado" value={userInfo.called} />
 			<InfoBox label="Data de nascimento" value={userInfo.birthdate} />
-			<InfoBox label="Telefone" value={userInfo.phone} />
+			<InfoBox label="Telefone" value={userInfo.contact} />
+			<InfoBox label="Estado civil" value={userInfo.maritalStatus} />
 		</InformationCard>
 	)
 }

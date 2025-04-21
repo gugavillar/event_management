@@ -5,10 +5,13 @@ import { InformationCard } from '@/components/Atoms'
 import { InfoBox } from '@/components/Molecules'
 
 type FamilyContactInfoProps = ComponentProps<'div'> & {
-	responsibleInfo: Array<{
-		name: string
-		phone: string
-	}>
+	responsibleInfo: {
+		parent: string
+		contactParent: string
+		relationship: string
+		host: string
+		contactHost: string
+	}
 }
 
 export const FamilyContactInfo = ({
@@ -22,9 +25,17 @@ export const FamilyContactInfo = ({
 			className={twMerge('space-y-3 pb-6', className)}
 			{...props}
 		>
-			{responsibleInfo.map(({ name, phone }, index) => (
-				<InfoBox key={index} label={name} value={phone} />
-			))}
+			<InfoBox label="Parente próximo" value={responsibleInfo.parent} />
+			<InfoBox
+				label="Telefone do parente"
+				value={responsibleInfo.contactParent}
+			/>
+			<InfoBox label="Parentesco" value={responsibleInfo.relationship} />
+			<InfoBox label="Quem convidou" value={responsibleInfo.host} />
+			<InfoBox
+				label="Contato de quem convidou"
+				value={responsibleInfo.contactHost}
+			/>
 		</InformationCard>
 	)
 }

@@ -1,20 +1,32 @@
 import { ReactNode } from 'react'
 import { MdOutlineClose } from 'react-icons/md'
+import { twMerge } from 'tailwind-merge'
 
 type ModalProps = {
 	modalId: string
 	children: ReactNode
 	handleClose?: () => void
+	isLarge?: boolean
 }
 
-export const Modal = ({ modalId, children, handleClose }: ModalProps) => {
+export const Modal = ({
+	modalId,
+	children,
+	handleClose,
+	isLarge,
+}: ModalProps) => {
 	return (
 		<div
 			id={modalId}
 			className="hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden"
 			data-testid="modal"
 		>
-			<div className="m-3 mt-0 flex min-h-[calc(100%-3.5rem)] items-center opacity-0 transition-all ease-out hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 sm:mx-auto sm:w-full md:max-w-md">
+			<div
+				className={twMerge(
+					'm-3 mt-0 flex min-h-[calc(100%-3.5rem)] items-center opacity-0 transition-all ease-out hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 sm:mx-auto sm:w-full md:max-w-md',
+					isLarge && 'md:max-w-xl lg:max-w-6xl',
+				)}
+			>
 				<div className="pointer-events-auto relative flex w-full flex-col rounded-xl border bg-white p-6 shadow-sm">
 					<button
 						type="button"
