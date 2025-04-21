@@ -29,7 +29,9 @@ export const ParticipantModalData = ({
 			isLarge
 		>
 			<div className="flex flex-col space-y-4">
-				<Header>Dados do participante</Header>
+				<Header as="h3" className="text-center">
+					Dados do participante
+				</Header>
 				{isLoading || !data ? (
 					<div className="flex h-40 items-center justify-center">
 						<Spinner />

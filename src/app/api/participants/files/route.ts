@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 
-import { getTemplateFile, importParticipants } from '@/server'
+import { importParticipants, getTemplateParticipantsFile } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 const handlerPost = async (request: NextRequest) => {
@@ -13,7 +13,7 @@ const handlerPost = async (request: NextRequest) => {
 
 const handlerGet = async () => {
 	return await requestProcess({
-		functions: async () => await getTemplateFile(),
+		functions: async () => await getTemplateParticipantsFile(),
 	})
 }
 

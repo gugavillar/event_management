@@ -3,7 +3,7 @@ import { utils, write } from 'xlsx'
 
 import { PARTICIPANTS_HEADER_TEMPLATE } from '@/constants'
 
-export const getTemplateFile = async () => {
+export const getTemplateParticipantsFile = async () => {
 	try {
 		const worksheet = utils.json_to_sheet([], {
 			header: PARTICIPANTS_HEADER_TEMPLATE,

@@ -3,6 +3,7 @@ export const BASE_URL = process.env.API_BASE_URL
 const BASE_PATH = {
 	EVENTS: '/events',
 	PARTICIPANTS: '/participants',
+	VOLUNTEERS: '/volunteers',
 }
 
 export const ENDPOINTS = {
@@ -25,4 +26,7 @@ export const ENDPOINTS = {
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
 	UPDATE_CHECK_IN_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}/check-in`,
+
+	// Volunteers
+	GET_TEMPLATE_VOLUNTEERS_FILE: `${BASE_PATH.VOLUNTEERS}/files`,
 }

@@ -68,7 +68,7 @@ export const formatTableData = (
 				<div className="hs-tooltip">
 					<FaRegEdit
 						className="cursor-pointer"
-						size={18}
+						size={20}
 						onClick={() => handleEditParticipant(participant.id)}
 					/>
 					<Tooltip>Editar</Tooltip>
@@ -76,7 +76,7 @@ export const formatTableData = (
 				<div className="hs-tooltip">
 					<LuTicketCheck
 						className="cursor-pointer"
-						size={18}
+						size={20}
 						onClick={() => handleCheckInParticipant(participant.id)}
 					/>
 					<Tooltip>Check-In</Tooltip>
@@ -84,7 +84,7 @@ export const formatTableData = (
 				<div className="hs-tooltip">
 					<MdDelete
 						className="cursor-pointer"
-						size={18}
+						size={20}
 						onClick={() => handleDeleteParticipant(participant.id)}
 					/>
 					<Tooltip>Excluir</Tooltip>

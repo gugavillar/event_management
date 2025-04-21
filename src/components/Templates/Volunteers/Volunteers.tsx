@@ -1,73 +1,54 @@
 'use client'
-import { UUID } from 'crypto'
 
-import { Select, Spinner } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
-import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
+import { Select } from '@/components/Atoms'
+import { ImportParticipantsButton, ListManager } from '@/components/Molecules'
+import {
+	DownloadTemplateVolunteersButton,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
+import { MODALS_IDS, StatusSelectOptions } from '@/constants'
+import { formatterFieldSelectValues } from '@/formatters'
+import { useGetEvents } from '@/services/queries/events'
 
-import { FAKE_VOLUNTEERS } from './Volunteers.mocks'
+import { HEADER_LABELS } from './Volunteers.utils'
 
-const HEADER_LABELS = [
-	{
-		label: 'Nome',
-		accessor: 'name',
-	},
-	{
-		label: 'Função',
-		accessor: 'role',
-	},
-	{
-		label: 'Telefone',
-		accessor: 'phone',
-	},
-	{
-		label: 'Data de nascimento',
-		accessor: 'birthdate',
-	},
-	{
-		label: 'Função',
-		accessor: 'function',
-	},
-	{
-		label: 'Status',
-		accessor: 'status',
-	},
-]
+export const Volunteers = () => {
+	const { data: events } = useGetEvents()
 
-type VolunteersProps = {
-	volunteers: ReturnType<typeof FAKE_VOLUNTEERS>
-}
-
-export const Volunteers = ({ volunteers }: VolunteersProps) => {
-	const handleClickRow = async ({ id }: { id: UUID }) => {
-		console.log(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_DRAWER)
-	}
+	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
 	return (
-		<PageContent subheadingPage="Listagem de voluntários">
-			{!volunteers ? (
-				<Spinner />
-			) : (
-				<ListPage
-					placeholderField="Encontrar um voluntário"
-					className="lg:max-w-full"
-					moreFilter={
+		<PageContent subheadingPage="Listagem de voluntários" isLoading={false}>
+			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<DownloadTemplateVolunteersButton />
+				<ImportParticipantsButton
+					label="Importar participantes"
+					modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL}
+				/>
+			</div>
+			<ListPage
+				placeholderField="Encontrar um voluntário"
+				className="lg:max-w-full"
+				moreFilter={
+					<>
+						<Select
+							placeholder="Selecione o evento"
+							options={formattedEvents}
+						/>
 						<Select
 							placeholder="Selecione o status"
 							options={StatusSelectOptions}
 						/>
-					}
-				>
-					<ListManager
-						handleClickRow={handleClickRow}
-						bodyData={volunteers}
-						headerLabels={HEADER_LABELS}
-						isLoading={false}
-					/>
-				</ListPage>
-			)}
+					</>
+				}
+			>
+				<ListManager
+					bodyData={[]}
+					headerLabels={HEADER_LABELS}
+					isLoading={false}
+				/>
+			</ListPage>
 		</PageContent>
 	)
 }

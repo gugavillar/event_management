@@ -37,14 +37,6 @@ export const PARTICIPANTS_HEADER_TEMPLATE = [
 	'Contato anfitrião', // 15
 ]
 
-export const PARTICIPANTS_HEADER_ADDRESS = [
-	PARTICIPANTS_HEADER_TEMPLATE[6],
-	PARTICIPANTS_HEADER_TEMPLATE[7],
-	PARTICIPANTS_HEADER_TEMPLATE[8],
-	PARTICIPANTS_HEADER_TEMPLATE[9],
-	PARTICIPANTS_HEADER_TEMPLATE[10],
-]
-
 export const TRANSLATE_PARTICIPANTS_HEADER = {
 	[PARTICIPANTS_HEADER_TEMPLATE[0]]: 'name',
 	[PARTICIPANTS_HEADER_TEMPLATE[1]]: 'email',
@@ -97,3 +89,37 @@ export const UF = [
 	{ label: 'Sergipe', value: 'SE' },
 	{ label: 'Tocantins', value: 'TO' },
 ]
+
+export const VOLUNTEERS_HEADER_TEMPLATE = [
+	'Nome', // 0
+	'Email', // 1
+	'Chamado', // 2
+	'Nascimento', // 3
+	'Contato', // 4
+	'Estado civil', // 5
+	'Endereço', // 6
+	'Bairro', // 7
+	'Número', // 8
+	'Cidade', // 9
+	'Estado', // 10
+	'Parente', // 11
+	'Contato parente', // 12
+	'Parentesco', // 13
+]
+
+export const TRANSLATE_VOLUNTEERS_HEADER = {
+	[VOLUNTEERS_HEADER_TEMPLATE[0]]: 'name',
+	[VOLUNTEERS_HEADER_TEMPLATE[1]]: 'email',
+	[VOLUNTEERS_HEADER_TEMPLATE[2]]: 'called',
+	[VOLUNTEERS_HEADER_TEMPLATE[3]]: 'birthdate',
+	[VOLUNTEERS_HEADER_TEMPLATE[4]]: 'contact',
+	[VOLUNTEERS_HEADER_TEMPLATE[5]]: 'maritalStatus',
+	[VOLUNTEERS_HEADER_TEMPLATE[6]]: 'street',
+	[VOLUNTEERS_HEADER_TEMPLATE[7]]: 'neighborhood',
+	[VOLUNTEERS_HEADER_TEMPLATE[8]]: 'number',
+	[VOLUNTEERS_HEADER_TEMPLATE[9]]: 'city',
+	[VOLUNTEERS_HEADER_TEMPLATE[10]]: 'state',
+	[VOLUNTEERS_HEADER_TEMPLATE[11]]: 'parent',
+	[VOLUNTEERS_HEADER_TEMPLATE[12]]: 'contactParent',
+	[VOLUNTEERS_HEADER_TEMPLATE[13]]: 'relationship',
+} as const
