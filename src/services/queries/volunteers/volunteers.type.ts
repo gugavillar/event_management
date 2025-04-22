@@ -24,16 +24,22 @@ export type VolunteersFromAPI = {
 	createdAt: string
 	updatedAt: string
 	eventId: UUID
+	eventRolesId: UUID
 	Address: {
-		city: string
-		createdAt: string
 		id: UUID
+		street: string
 		neighborhood: string
 		number: string
-		participantId: UUID
+		city: string
 		state: string
-		street: string
+		createdAt: string
 		updatedAt: string
+		volunteerId: UUID
+	}
+	role: {
+		id: UUID
+		role: string
+		eventId: UUID
 	}
 	event: EventsFromAPI
 }

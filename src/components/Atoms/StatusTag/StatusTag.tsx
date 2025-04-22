@@ -17,7 +17,7 @@ export const StatusTag = ({ status, className, ...props }: StatusTag) => {
 	return (
 		<mark
 			className={twMerge(
-				'flex w-32 items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
+				'flex w-fit items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
 				className,
 				STATUS_COLORS[status],
 			)}

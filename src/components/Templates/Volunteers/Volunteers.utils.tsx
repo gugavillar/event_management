@@ -3,7 +3,7 @@ import { FaRegEdit } from 'react-icons/fa'
 import { LuTicketCheck } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 
-import { StatusTag, Tooltip } from '@/components/Atoms'
+import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
 import { formatPhone } from '@/formatters'
 import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -54,6 +54,7 @@ export const formatTableData = (
 	return data?.map((volunteer) => ({
 		id: volunteer.id,
 		name: volunteer.name,
+		role: <FunctionTag status={volunteer?.role?.role} />,
 		contact: formatPhone(volunteer.contact),
 		birthdate: `${format(volunteer.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), volunteer.birthdate)} anos`,
 		city: volunteer.Address.city,

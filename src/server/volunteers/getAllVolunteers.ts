@@ -17,6 +17,7 @@ export const getAllVolunteers = async (
 			include: {
 				Address: true,
 				event: true,
+				role: true,
 			},
 			orderBy: [{ name: 'asc' }, { createdAt: 'desc' }],
 		})

@@ -56,8 +56,17 @@ model Event {
   userId           String
   Participant      Participant[]
   Volunteer        Volunteer[]
+  EventRoles       EventRoles[]
 
   @@map("events")
+}
+
+model EventRoles {
+  id        String      @id @default(uuid())
+  role      String      @unique
+  eventId   String
+  event     Event       @relation(fields: [eventId], references: [id])
+  Volunteer Volunteer[]
 }
 
 model Participant {
@@ -115,6 +124,8 @@ model Volunteer {
   updatedAt     DateTime                      @updatedAt
   eventId       String
   event         Event                         @relation(fields: [eventId], references: [id])
+  eventRolesId  String?
+  role          EventRoles?                   @relation(fields: [eventRolesId], references: [id])
   Address       VolunteerAddress?
 
   @@unique([email, eventId])

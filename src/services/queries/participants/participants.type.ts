@@ -27,15 +27,15 @@ export type ParticipantsFromAPI = {
 	updatedAt: string
 	eventId: UUID
 	Address: {
-		city: string
-		createdAt: string
 		id: UUID
+		street: string
 		neighborhood: string
 		number: string
-		participantId: UUID
+		city: string
 		state: string
-		street: string
+		createdAt: string
 		updatedAt: string
+		volunteerId: UUID
 	}
 	event: EventsFromAPI
 }
