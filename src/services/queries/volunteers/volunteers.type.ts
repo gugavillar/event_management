@@ -43,3 +43,7 @@ export type VolunteersFromAPI = {
 	}
 	event: EventsFromAPI
 }
+
+export type VolunteersFunctionsForm = {
+	role: string
+}

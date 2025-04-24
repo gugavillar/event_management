@@ -23,6 +23,7 @@ export const QUERY_KEYS = {
 	PARTICIPANT: 'participant',
 	VOLUNTEERS_TEMPLATE_FILE: 'volunteers-template-file',
 	VOLUNTEERS: 'volunteers',
+	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
 } as const
 
 export const getQueryClient = () => {

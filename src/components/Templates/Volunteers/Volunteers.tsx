@@ -32,7 +32,11 @@ export const Volunteers = () => {
 	const formattedVolunteers = formatTableData(data)
 
 	return (
-		<PageContent subheadingPage="Listagem de voluntários" isLoading={isLoading}>
+		<PageContent
+			pageTitle="Voluntários"
+			subheadingPage="Listagem de voluntários"
+			isLoading={isLoading}
+		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadTemplateVolunteersButton />
 				<ImportVolunteersButton

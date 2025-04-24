@@ -6,6 +6,7 @@ import { HeaderPage } from '@/components/Molecules'
 
 type PageContentProps = ComponentProps<'div'> & {
 	subheadingPage: string
+	pageTitle?: string
 	isLoading?: boolean
 }
 
@@ -17,11 +18,12 @@ export const PageContent = ({
 	children,
 	subheadingPage,
 	isLoading,
+	pageTitle,
 	...props
 }: PageContentProps) => {
 	return (
 		<>
-			<HeaderPage>
+			<HeaderPage pageTitle={pageTitle}>
 				<Text className="opacity-50">{subheadingPage}</Text>
 			</HeaderPage>
 			<div

@@ -12,7 +12,7 @@ export const InputField = ({ children, fieldName }: InputFieldProps) => {
 	const { register, formState } = useFormContext()
 
 	return (
-		<div>
+		<div className="w-full">
 			<Label htmlFor={fieldName}>{children}</Label>
 			<Field
 				id={fieldName}

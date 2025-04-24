@@ -5,16 +5,19 @@ import { twMerge } from 'tailwind-merge'
 
 import { Header } from '@/components/Atoms'
 
-type HeaderPageProps = ComponentProps<'section'>
+type HeaderPageProps = ComponentProps<'section'> & {
+	pageTitle?: string
+}
 
 export const HeaderPage = ({
 	className,
 	children,
+	pageTitle,
 	...props
 }: HeaderPageProps) => {
 	const path = usePathname()
 
-	const title = path.replace('/', '')
+	const title = pageTitle ?? path.replace('/', '')
 
 	return (
 		<section

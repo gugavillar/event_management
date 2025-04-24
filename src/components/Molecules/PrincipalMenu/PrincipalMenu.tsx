@@ -9,6 +9,7 @@ import {
 	MdOutlineGroups,
 	MdEvent,
 } from 'react-icons/md'
+import { PiGearFill } from 'react-icons/pi'
 import { twMerge } from 'tailwind-merge'
 
 import { Link, Tooltip } from '@/components/Atoms'
@@ -24,6 +25,11 @@ export const MENU_LINKS = [
 		icon: <MdOutlineDashboard size={24} />,
 	},
 	{ label: 'Eventos', href: '/eventos', icon: <MdEvent size={24} /> },
+	{
+		label: 'Funções de voluntários',
+		href: '/funcoes_voluntarios',
+		icon: <GrUserSettings size={24} />,
+	},
 	{
 		label: 'Participantes',
 		href: '/participantes',
@@ -41,7 +47,7 @@ export const MENU_LINKS = [
 		href: '/pagamentos',
 		icon: <MdOutlinePayment size={24} />,
 	},
-	{ label: 'Gestão de acesso', href: '#', icon: <GrUserSettings size={24} /> },
+	{ label: 'Gestão de acesso', href: '#', icon: <PiGearFill size={24} /> },
 ] as const
 
 export const PrincipalMenu = ({ collapsed }: PrincipalMenuProps) => {

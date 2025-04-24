@@ -56,17 +56,8 @@ model Event {
   userId           String
   Participant      Participant[]
   Volunteer        Volunteer[]
-  EventRoles       EventRoles[]
 
   @@map("events")
-}
-
-model EventRoles {
-  id        String      @id @default(uuid())
-  role      String      @unique
-  eventId   String
-  event     Event       @relation(fields: [eventId], references: [id])
-  Volunteer Volunteer[]
 }
 
 model Participant {
@@ -108,25 +99,33 @@ model ParticipantAddress {
   @@map("participants_addresses")
 }
 
+model VolunteerRole {
+  id        String      @id @default(uuid())
+  role      String      @unique
+  Volunteer Volunteer[]
+
+  @@map("volunteers_roles")
+}
+
 model Volunteer {
-  id            String                        @id @default(uuid())
-  name          String
-  email         String
-  called        String
-  birthdate     DateTime
-  contact       String
-  maritalStatus String
-  parent        String
-  contactParent String
-  relationship  String
-  checkIn       ParticipantOrVolunteerStatus?
-  createdAt     DateTime                      @default(now())
-  updatedAt     DateTime                      @updatedAt
-  eventId       String
-  event         Event                         @relation(fields: [eventId], references: [id])
-  eventRolesId  String?
-  role          EventRoles?                   @relation(fields: [eventRolesId], references: [id])
-  Address       VolunteerAddress?
+  id              String                        @id @default(uuid())
+  name            String
+  email           String
+  called          String
+  birthdate       DateTime
+  contact         String
+  maritalStatus   String
+  parent          String
+  contactParent   String
+  relationship    String
+  checkIn         ParticipantOrVolunteerStatus?
+  createdAt       DateTime                      @default(now())
+  updatedAt       DateTime                      @updatedAt
+  eventId         String
+  event           Event                         @relation(fields: [eventId], references: [id])
+  volunteerRoleId String?
+  volunteerRole   VolunteerRole?                @relation(fields: [volunteerRoleId], references: [id])
+  Address         VolunteerAddress?
 
   @@unique([email, eventId])
   @@map("volunteers")
