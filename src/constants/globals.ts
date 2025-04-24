@@ -11,7 +11,7 @@ export const MODALS_IDS = {
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
 	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
 	IMPORT_VOLUNTEERS_MODAL: 'import_volunteers_modal',
-	CREATE_FUNCTION_MODAL: 'create_function_modal',
+	CREATE_OR_UPDATE_FUNCTION_MODAL: 'create_or_update_function_modal',
 	REMOVE_FUNCTION_MODAL: 'remove_function_modal',
 	ROOMS_DRAWER: 'rooms_manager',
 }

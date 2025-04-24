@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { ListManager } from '@/components/Molecules'
 import {
 	CreateVolunteerFunctionButton,
+	CreateVolunteerFunctionModal,
 	FunctionDeleteModal,
 	ListPage,
 	PageContent,
@@ -27,9 +28,17 @@ export const VolunteersFunctions = () => {
 		overlayOpen(MODALS_IDS.REMOVE_FUNCTION_MODAL)
 	}
 
+	const handleOpenModalToEditFunction = (
+		selected: VolunteersFunctionsFromAPI,
+	) => {
+		setSelectedFunction(selected)
+		overlayOpen(MODALS_IDS.CREATE_OR_UPDATE_FUNCTION_MODAL)
+	}
+
 	const formattedVolunteersFunctions = formatTableData(
 		data,
 		handleOpenModalToDeleteFunction,
+		handleOpenModalToEditFunction,
 	)
 	return (
 		<PageContent
@@ -40,7 +49,11 @@ export const VolunteersFunctions = () => {
 			<ListPage
 				placeholderField="Encontrar uma função"
 				className="lg:max-w-full"
-				actionButton={<CreateVolunteerFunctionButton />}
+				actionButton={
+					<CreateVolunteerFunctionButton
+						setSelectedFunction={setSelectedFunction}
+					/>
+				}
 				search={search}
 				setSearch={setSearch}
 			>
@@ -52,6 +65,11 @@ export const VolunteersFunctions = () => {
 			</ListPage>
 			<FunctionDeleteModal
 				modalId={MODALS_IDS.REMOVE_FUNCTION_MODAL}
+				selectedFunction={selectedFunction}
+				setSelectedFunction={setSelectedFunction}
+			/>
+			<CreateVolunteerFunctionModal
+				modalId={MODALS_IDS.CREATE_OR_UPDATE_FUNCTION_MODAL}
 				selectedFunction={selectedFunction}
 				setSelectedFunction={setSelectedFunction}
 			/>

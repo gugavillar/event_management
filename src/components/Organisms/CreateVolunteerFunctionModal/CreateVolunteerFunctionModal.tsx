@@ -1,12 +1,17 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal } from '@/components/Atoms'
 import { InputField } from '@/components/Molecules'
 import { overlayClose } from '@/constants'
-import { useCreateFunction } from '@/services/queries/volunteers'
+import {
+	useCreateFunction,
+	useUpdateFunction,
+} from '@/services/queries/volunteers'
+import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import {
 	FunctionSchema,
@@ -15,10 +20,16 @@ import {
 
 type CreateVolunteerFunctionModalProps = {
 	modalId: string
+	selectedFunction: VolunteersFunctionsFromAPI | null
+	setSelectedFunction: Dispatch<
+		SetStateAction<VolunteersFunctionsFromAPI | null>
+	>
 }
 
 export const CreateVolunteerFunctionModal = ({
 	modalId,
+	selectedFunction,
+	setSelectedFunction,
 }: CreateVolunteerFunctionModalProps) => {
 	const methods = useForm<FunctionSchemaType>({
 		defaultValues: {
@@ -26,26 +37,51 @@ export const CreateVolunteerFunctionModal = ({
 		},
 		resolver: zodResolver(FunctionSchema),
 	})
-	const { create, isPending } = useCreateFunction()
+	const { create, isPending: isPendingCreate } = useCreateFunction()
+	const { update, isPending: isPendingUpdate } = useUpdateFunction()
 
 	const handleSubmit: SubmitHandler<FunctionSchemaType> = async (values) => {
+		if (selectedFunction) {
+			return await update(
+				{ id: selectedFunction.id, ...values },
+				{
+					onSuccess: () => {
+						toast.success('Função atualizada com sucesso!')
+						methods.reset()
+						setSelectedFunction(null)
+						overlayClose(modalId)
+					},
+					onError: () => toast.error('Erro ao atualizar a função'),
+				},
+			)
+		}
 		await create(values, {
 			onSuccess: () => {
 				toast.success('Função cadastrada com sucesso!')
 				methods.reset()
 				overlayClose(modalId)
 			},
-			onError: () => toast.error('Erro ao cadastrar função'),
+			onError: () => toast.error('Erro ao cadastrar a função'),
 		})
 	}
 
+	useEffect(() => {
+		if (!selectedFunction) return methods.reset()
+		methods.reset(
+			{
+				role: selectedFunction.role,
+			},
+			{ keepDefaultValues: true },
+		)
+	}, [methods, selectedFunction])
+
 	return (
-		<Modal modalId={modalId}>
+		<Modal modalId={modalId} handleClose={() => setSelectedFunction(null)}>
 			<FormProvider {...methods}>
 				<div className="flex w-full flex-col items-center justify-center">
 					<div className="flex w-full flex-col items-center justify-between gap-6">
 						<Header as="h3" className="text-2xl">
-							Cadastrar função
+							{selectedFunction ? 'Editar' : 'Criar'} função
 						</Header>
 						<InputField fieldName="role">Função</InputField>
 						<Button
@@ -55,7 +91,7 @@ export const CreateVolunteerFunctionModal = ({
 							disabled={
 								!methods.formState.isValid || !methods.formState.isDirty
 							}
-							isLoading={isPending}
+							isLoading={isPendingCreate || isPendingUpdate}
 						>
 							Salvar
 						</Button>

@@ -18,6 +18,7 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	data: Array<VolunteersFunctionsFromAPI> | undefined,
 	handleDeleteFunction: (selected: VolunteersFunctionsFromAPI) => void,
+	handleEditFunction: (selected: VolunteersFunctionsFromAPI) => void,
 ) => {
 	if (!data) return []
 
@@ -27,7 +28,11 @@ export const formatTableData = (
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
-					<FaRegEdit className="cursor-pointer" size={20} />
+					<FaRegEdit
+						className="cursor-pointer"
+						size={20}
+						onClick={() => handleEditFunction(role)}
+					/>
 					<Tooltip>Editar</Tooltip>
 				</div>
 				<div className="hs-tooltip">
