@@ -102,6 +102,8 @@ model ParticipantAddress {
 model VolunteerRole {
   id        String      @id @default(uuid())
   role      String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   Volunteer Volunteer[]
 
   @@map("volunteers_roles")

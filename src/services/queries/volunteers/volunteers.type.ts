@@ -47,3 +47,10 @@ export type VolunteersFromAPI = {
 export type VolunteersFunctionsForm = {
 	role: string
 }
+
+export type VolunteersFunctionsFromAPI = {
+	id: UUID
+	role: string
+	createdAt: string
+	updatedAt: string
+}

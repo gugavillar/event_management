@@ -12,6 +12,7 @@ export const MODALS_IDS = {
 	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
 	IMPORT_VOLUNTEERS_MODAL: 'import_volunteers_modal',
 	CREATE_FUNCTION_MODAL: 'create_function_modal',
+	REMOVE_FUNCTION_MODAL: 'remove_function_modal',
 	ROOMS_DRAWER: 'rooms_manager',
 }
 

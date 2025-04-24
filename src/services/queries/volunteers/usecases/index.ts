@@ -1,4 +1,6 @@
 export * from './createFunction'
+export * from './deleteFunction'
 export * from './getVolunteers'
+export * from './getVolunteersFunctions'
 export * from './getVolunteersTemplateFile'
 export * from './importVolunteersData'
