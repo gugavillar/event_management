@@ -1,10 +1,10 @@
-import { ReactNode } from 'react'
-
 import { Sidebar } from '@/components/Organisms'
 
 export default function AdminLayout({
 	children,
-}: Readonly<{ children: ReactNode }>) {
+}: Readonly<{
+	children: React.ReactNode
+}>) {
 	return (
 		<main className="grid h-full grid-cols-1 md:grid-cols-admin">
 			<Sidebar />

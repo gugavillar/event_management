@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 
-import { MENU_LINKS, PrincipalMenu } from './PrincipalMenu'
+import { PrincipalMenu } from './PrincipalMenu'
+import { MENU_LINKS } from './PrincipalMenu.utils'
 
 jest.mock('next/dist/client/router', () => ({
 	useRouter: jest.fn(),

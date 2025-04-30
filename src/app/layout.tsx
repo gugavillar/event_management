@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
 
-import { Toaster } from 'react-hot-toast'
-
-import PrelineScript from '@/loaders/Preline'
-import { QueryProvider } from '@/providers/QueryProvider'
+import { Providers } from '@/providers/Providers'
 import { roboto } from '@/theme'
 
 import './globals.css'
@@ -20,15 +17,11 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="pt-BR">
-			<QueryProvider>
-				<body
-					className={`flex h-dvh w-full flex-col md:overflow-y-hidden ${roboto.className}`}
-				>
-					{children}
-					<Toaster position="top-right" toastOptions={{ duration: 3000 }} />
-				</body>
-			</QueryProvider>
-			<PrelineScript />
+			<body
+				className={`flex h-dvh w-full flex-col md:overflow-y-hidden ${roboto.className}`}
+			>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	)
 }

@@ -6,7 +6,7 @@ import {
 } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-export const handleUpdate = async (request: NextRequest) => {
+const handleUpdate = async (request: NextRequest) => {
 	const body: UpdateCheckInParticipantArgs = await request.json()
 
 	return await requestProcess({
