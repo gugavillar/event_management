@@ -1,7 +1,7 @@
 import { differenceInYears, format } from 'date-fns'
 import { FaRegEdit } from 'react-icons/fa'
 import { LuTicketCheck } from 'react-icons/lu'
-import { MdDelete } from 'react-icons/md'
+import { MdAssignmentInd, MdDelete } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
@@ -49,6 +49,7 @@ export const formatTableData = (
 	handleCheckInVolunteer: (id: VolunteersFromAPI['id']) => void,
 	handleDeleteVolunteer: (id: VolunteersFromAPI['id']) => void,
 	handleEditVolunteer: (id: VolunteersFromAPI['id']) => void,
+	handleAssignFunctionVolunteer: (id: VolunteersFromAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -58,7 +59,7 @@ export const formatTableData = (
 		return {
 			id: volunteer.id,
 			name: volunteer.name,
-			role: <FunctionTag status={volunteer?.role?.role} />,
+			role: <FunctionTag status={volunteer?.volunteerRole?.role} />,
 			contact: formatPhone(volunteer.contact),
 			birthdate: `${format(volunteer.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), volunteer.birthdate)} anos`,
 			city: volunteer.Address.city,
@@ -81,6 +82,14 @@ export const formatTableData = (
 							onClick={() => handleEditVolunteer(volunteer.id)}
 						/>
 						<Tooltip>Editar</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<MdAssignmentInd
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleAssignFunctionVolunteer(volunteer.id)}
+						/>
+						<Tooltip>Atribuir função</Tooltip>
 					</div>
 					<div className="hs-tooltip">
 						<LuTicketCheck

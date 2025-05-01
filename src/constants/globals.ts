@@ -17,6 +17,7 @@ export const MODALS_IDS = {
 	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
 	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
 	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
+	VOLUNTEER_ASSIGN_FUNCTION_MODAL: 'volunteer_assign_function_modal',
 }
 
 export const prisma = new PrismaClient({

@@ -11,7 +11,7 @@ import {
 	PageContent,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
-import { useGetVolunteersFunctions } from '@/services/queries/volunteers/hooks/useGetVolunteersFunctions'
+import { useGetVolunteersFunctions } from '@/services/queries/volunteers'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './VolunteersFunctions.utils'

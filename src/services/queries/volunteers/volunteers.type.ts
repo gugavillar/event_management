@@ -9,6 +9,13 @@ export type ImportVolunteersDataValues = {
 	eventId: EventsFromAPI['id']
 }
 
+export type VolunteersFunctionsFromAPI = {
+	id: UUID
+	role: string
+	createdAt: string
+	updatedAt: string
+}
+
 export type VolunteersFromAPI = {
 	id: UUID
 	name: string
@@ -24,7 +31,7 @@ export type VolunteersFromAPI = {
 	createdAt: string
 	updatedAt: string
 	eventId: UUID
-	eventRolesId: UUID
+	event: EventsFromAPI
 	Address: {
 		id: UUID
 		street: string
@@ -36,23 +43,12 @@ export type VolunteersFromAPI = {
 		updatedAt: string
 		volunteerId: UUID
 	}
-	role: {
-		id: UUID
-		role: string
-		eventId: UUID
-	}
-	event: EventsFromAPI
+	volunteerRoleId: UUID
+	volunteerRole: VolunteersFunctionsFromAPI
 }
 
 export type VolunteersFunctionsForm = {
 	role: string
-}
-
-export type VolunteersFunctionsFromAPI = {
-	id: UUID
-	role: string
-	createdAt: string
-	updatedAt: string
 }
 
 export type FormVolunteer = {

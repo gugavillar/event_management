@@ -2,7 +2,10 @@ import { Volunteers } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import { getVolunteers } from '@/services/queries/volunteers'
+import {
+	getVolunteers,
+	getVolunteersFunctions,
+} from '@/services/queries/volunteers'
 
 export default async function VolunteersPage({
 	searchParams,
@@ -16,7 +19,7 @@ export default async function VolunteersPage({
 	const debounceSearchValue = searchParams.searchVolunteer ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debounceStatusValue = searchParams.statusVolunteer ?? ''
-	const [getAllEvents, getAllVolunteers] = await Promise.all([
+	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
 		async () => getEvents({ searchEvent: '' }),
 		async () =>
 			getVolunteers({
@@ -24,6 +27,7 @@ export default async function VolunteersPage({
 				eventId: debounceEventIdValue,
 				statusVolunteer: debounceStatusValue,
 			}),
+		async () => getVolunteersFunctions({ searchFunction: '' }),
 	])
 	return (
 		<HydrationProvider
@@ -39,7 +43,12 @@ export default async function VolunteersPage({
 					debounceStatusValue,
 				]}
 			>
-				<Volunteers />
+				<HydrationProvider
+					queryFn={getAllFunctions}
+					queryKey={[QUERY_KEYS.VOLUNTEERS_FUNCTIONS, '']}
+				>
+					<Volunteers />
+				</HydrationProvider>
 			</HydrationProvider>
 		</HydrationProvider>
 	)

@@ -1,5 +1,6 @@
 export * from './AddressInfoCard'
 export * from './AgesChart'
+export * from './AssignFunctionVolunteerModal'
 export * from './CitiesChart'
 export * from './ConfirmationsChart'
 export * from './CreateEventButton'

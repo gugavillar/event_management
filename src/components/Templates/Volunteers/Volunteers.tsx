@@ -7,6 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Select } from '@/components/Atoms'
 import { ImportVolunteersButton, ListManager } from '@/components/Molecules'
 import {
+	AssignFunctionVolunteerModal,
 	DownloadTemplateVolunteersButton,
 	ListPage,
 	PageContent,
@@ -86,11 +87,19 @@ export const Volunteers = () => {
 		overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
 	}
 
+	const handleOpenAssignFunctionVolunteerModal = async (
+		id: VolunteersFromAPI['id'],
+	) => {
+		setSelectedVolunteer(id)
+		overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
+	}
+
 	const formattedVolunteers = formatTableData(
 		data,
 		handleOpenModalToCheckInVolunteer,
 		handleOpenModalToDeleteVolunteer,
 		handleOpenDrawerToEditVolunteer,
+		handleOpenAssignFunctionVolunteerModal,
 	)
 
 	return (
@@ -151,6 +160,11 @@ export const Volunteers = () => {
 					setSelectedVolunteer={setSelectedVolunteer}
 				/>
 			</FormProvider>
+			<AssignFunctionVolunteerModal
+				modalId={MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL}
+				selectedVolunteer={selectedVolunteer}
+				setSelectedVolunteer={setSelectedVolunteer}
+			/>
 		</PageContent>
 	)
 }
