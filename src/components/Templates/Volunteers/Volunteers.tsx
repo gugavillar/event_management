@@ -1,6 +1,8 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Select } from '@/components/Atoms'
 import { ImportVolunteersButton, ListManager } from '@/components/Molecules'
@@ -10,7 +12,12 @@ import {
 	PageContent,
 	VolunteerCheckInModal,
 	VolunteerDeleteModal,
+	VolunteerDrawer,
 } from '@/components/Organisms'
+import {
+	VolunteerSchema,
+	VolunteerType,
+} from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
@@ -36,6 +43,26 @@ export const Volunteers = () => {
 		setStatus,
 	} = useGetVolunteers()
 
+	const methods = useForm<VolunteerType>({
+		defaultValues: {
+			name: '',
+			email: '',
+			called: '',
+			birthdate: '',
+			contact: '',
+			maritalStatus: '',
+			city: '',
+			neighborhood: '',
+			number: '',
+			street: '',
+			parent: '',
+			contactParent: '',
+			relationship: '',
+			state: '',
+		},
+		resolver: zodResolver(VolunteerSchema),
+	})
+
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
 	const handleOpenModalToCheckInVolunteer = async (
@@ -52,10 +79,18 @@ export const Volunteers = () => {
 		overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
 	}
 
+	const handleOpenDrawerToEditVolunteer = async (
+		id: VolunteersFromAPI['id'],
+	) => {
+		setSelectedVolunteer(id)
+		overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
+	}
+
 	const formattedVolunteers = formatTableData(
 		data,
 		handleOpenModalToCheckInVolunteer,
 		handleOpenModalToDeleteVolunteer,
+		handleOpenDrawerToEditVolunteer,
 	)
 
 	return (
@@ -109,6 +144,13 @@ export const Volunteers = () => {
 				selectedVolunteer={selectedVolunteer}
 				setSelectedVolunteer={setSelectedVolunteer}
 			/>
+			<FormProvider {...methods}>
+				<VolunteerDrawer
+					drawerId={MODALS_IDS.VOLUNTEER_EDIT_DRAWER}
+					selectedVolunteer={selectedVolunteer}
+					setSelectedVolunteer={setSelectedVolunteer}
+				/>
+			</FormProvider>
 		</PageContent>
 	)
 }

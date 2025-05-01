@@ -48,7 +48,7 @@ export const formatTableData = (
 	data: Array<VolunteersFromAPI> | undefined,
 	handleCheckInVolunteer: (id: VolunteersFromAPI['id']) => void,
 	handleDeleteVolunteer: (id: VolunteersFromAPI['id']) => void,
-	// handleEditParticipant: (id: VolunteersFromAPI['id']) => void,
+	handleEditVolunteer: (id: VolunteersFromAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -75,7 +75,11 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FaRegEdit className="cursor-pointer" size={20} />
+						<FaRegEdit
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleEditVolunteer(volunteer.id)}
+						/>
 						<Tooltip>Editar</Tooltip>
 					</div>
 					<div className="hs-tooltip">

@@ -31,6 +31,8 @@ export const ENDPOINTS = {
 	GET_TEMPLATE_VOLUNTEERS_FILE: `${BASE_PATH.VOLUNTEERS}/files`,
 	IMPORT_VOLUNTEERS_DATA: `${BASE_PATH.VOLUNTEERS}/files`,
 	GET_VOLUNTEERS: `${BASE_PATH.VOLUNTEERS}`,
+	GET_VOLUNTEER: (volunteer_id: string) =>
+		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 	CREATE_FUNCTION: `${BASE_PATH.VOLUNTEERS}/functions`,
 	GET_VOLUNTEERS_FUNCTIONS: `${BASE_PATH.VOLUNTEERS}/functions`,
 	DELETE_VOLUNTEER_FUNCTION: (function_id: string) =>
@@ -41,4 +43,6 @@ export const ENDPOINTS = {
 		`${BASE_PATH.VOLUNTEERS}/functions/${function_id}`,
 	UPDATE_CHECK_IN_VOLUNTEER: (volunteer_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}/check-in`,
+	UPDATE_VOLUNTEER: (volunteer_id: string) =>
+		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 }

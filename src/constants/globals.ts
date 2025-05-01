@@ -16,6 +16,7 @@ export const MODALS_IDS = {
 	ROOMS_DRAWER: 'rooms_manager',
 	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
 	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
+	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
 }
 
 export const prisma = new PrismaClient({

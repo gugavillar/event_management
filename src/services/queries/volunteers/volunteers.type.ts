@@ -54,3 +54,20 @@ export type VolunteersFunctionsFromAPI = {
 	createdAt: string
 	updatedAt: string
 }
+
+export type FormVolunteer = {
+	name: string
+	email: string
+	called: string
+	birthdate: string
+	contact: string
+	maritalStatus: string
+	parent: string
+	contactParent: string
+	relationship: string
+	city: string
+	neighborhood: string
+	number: string
+	state: string
+	street: string
+}
