@@ -35,6 +35,10 @@ export const ENDPOINTS = {
 	GET_VOLUNTEERS_FUNCTIONS: `${BASE_PATH.VOLUNTEERS}/functions`,
 	DELETE_VOLUNTEER_FUNCTION: (function_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/functions/${function_id}`,
+	DELETE_VOLUNTEER: (volunteer_id: string) =>
+		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 	UPDATE_VOLUNTEER_FUNCTION: (function_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/functions/${function_id}`,
+	UPDATE_CHECK_IN_VOLUNTEER: (volunteer_id: string) =>
+		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}/check-in`,
 }

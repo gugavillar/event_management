@@ -23,6 +23,7 @@ export const QUERY_KEYS = {
 	PARTICIPANT: 'participant',
 	VOLUNTEERS_TEMPLATE_FILE: 'volunteers-template-file',
 	VOLUNTEERS: 'volunteers',
+	VOLUNTEER: 'volunteer',
 	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
 } as const
 

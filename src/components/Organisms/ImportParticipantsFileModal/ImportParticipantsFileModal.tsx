@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 
 import { UUID } from 'crypto'
 
-import { Button, Header, Modal, Text } from '@/components/Atoms'
+import { Alert, Button, Header, Modal, Text } from '@/components/Atoms'
 import { FileField, SelectField } from '@/components/Molecules'
 import { FILES_TYPES, overlayClose } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
@@ -61,6 +61,7 @@ export const ImportParticipantsFileModal = ({
 							</Header>
 							<Text>Selecione o evento e o arquivo que deseja importar</Text>
 						</div>
+						<Alert description="Importe um arquivo .xlsx com todos os campos formatados como texto, incluindo números e datas" />
 						<SelectField
 							fieldName="eventId"
 							placeholder="Selecione o evento"

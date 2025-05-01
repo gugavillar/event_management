@@ -14,6 +14,8 @@ export const MODALS_IDS = {
 	CREATE_OR_UPDATE_FUNCTION_MODAL: 'create_or_update_function_modal',
 	REMOVE_FUNCTION_MODAL: 'remove_function_modal',
 	ROOMS_DRAWER: 'rooms_manager',
+	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
+	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
 }
 
 export const prisma = new PrismaClient({

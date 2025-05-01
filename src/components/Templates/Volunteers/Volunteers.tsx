@@ -1,20 +1,29 @@
 'use client'
 
+import { useState } from 'react'
+
 import { Select } from '@/components/Atoms'
 import { ImportVolunteersButton, ListManager } from '@/components/Molecules'
 import {
 	DownloadTemplateVolunteersButton,
 	ListPage,
 	PageContent,
+	VolunteerCheckInModal,
+	VolunteerDeleteModal,
 } from '@/components/Organisms'
-import { MODALS_IDS, StatusSelectOptions } from '@/constants'
+import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
 import { useGetVolunteers } from '@/services/queries/volunteers'
+import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
 
 export const Volunteers = () => {
+	const [selectedVolunteer, setSelectedVolunteer] = useState<
+		VolunteersFromAPI['id'] | null
+	>(null)
+
 	const { data: events } = useGetEvents()
 	const {
 		data,
@@ -29,7 +38,25 @@ export const Volunteers = () => {
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
-	const formattedVolunteers = formatTableData(data)
+	const handleOpenModalToCheckInVolunteer = async (
+		id: VolunteersFromAPI['id'],
+	) => {
+		setSelectedVolunteer(id)
+		overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
+	}
+
+	const handleOpenModalToDeleteVolunteer = async (
+		id: VolunteersFromAPI['id'],
+	) => {
+		setSelectedVolunteer(id)
+		overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
+	}
+
+	const formattedVolunteers = formatTableData(
+		data,
+		handleOpenModalToCheckInVolunteer,
+		handleOpenModalToDeleteVolunteer,
+	)
 
 	return (
 		<PageContent
@@ -72,6 +99,16 @@ export const Volunteers = () => {
 					isLoading={isLoading}
 				/>
 			</ListPage>
+			<VolunteerCheckInModal
+				modalId={MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL}
+				selectedVolunteer={selectedVolunteer}
+				setSelectedVolunteer={setSelectedVolunteer}
+			/>
+			<VolunteerDeleteModal
+				modalId={MODALS_IDS.VOLUNTEER_REMOVE_MODAL}
+				selectedVolunteer={selectedVolunteer}
+				setSelectedVolunteer={setSelectedVolunteer}
+			/>
 		</PageContent>
 	)
 }

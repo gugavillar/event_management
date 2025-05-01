@@ -26,7 +26,7 @@ export const updateCheckInParticipant = async ({
 			},
 		})
 	} catch (error) {
-		console.error('@getAllParticipants error:', error)
+		console.error('@updateCheckInParticipant error:', error)
 		throw Error
 	}
 }
