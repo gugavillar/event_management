@@ -2,7 +2,6 @@ import { differenceInYears, format } from 'date-fns'
 import { FaRegEdit } from 'react-icons/fa'
 import { LuTicketCheck } from 'react-icons/lu'
 import { MdAssignmentInd, MdDelete } from 'react-icons/md'
-import { twMerge } from 'tailwind-merge'
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
@@ -54,8 +53,6 @@ export const formatTableData = (
 	if (!data) return []
 
 	return data?.map((volunteer) => {
-		const hasNotCheckInYet = !volunteer.checkIn
-		const hasCheckIn = !!volunteer.checkIn
 		return {
 			id: volunteer.id,
 			name: volunteer.name,
@@ -93,27 +90,17 @@ export const formatTableData = (
 					</div>
 					<div className="hs-tooltip">
 						<LuTicketCheck
-							className={twMerge(
-								'cursor-pointer',
-								hasCheckIn && 'cursor-not-allowed opacity-50',
-							)}
+							className="cursor-pointer"
 							size={20}
-							{...(hasNotCheckInYet && {
-								onClick: () => handleCheckInVolunteer(volunteer.id),
-							})}
+							onClick={() => handleCheckInVolunteer(volunteer.id)}
 						/>
 						<Tooltip>Check-In</Tooltip>
 					</div>
 					<div className="hs-tooltip">
 						<MdDelete
-							className={twMerge(
-								'cursor-pointer',
-								hasCheckIn && 'cursor-not-allowed opacity-50',
-							)}
+							className="cursor-pointer"
 							size={20}
-							{...(hasNotCheckInYet && {
-								onClick: () => handleDeleteVolunteer(volunteer.id),
-							})}
+							onClick={() => handleDeleteVolunteer(volunteer.id)}
 						/>
 						<Tooltip>Excluir</Tooltip>
 					</div>
