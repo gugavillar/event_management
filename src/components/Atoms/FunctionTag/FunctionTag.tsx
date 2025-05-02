@@ -2,7 +2,7 @@ import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FunctionTagProps = ComponentProps<'mark'> & {
-	status: string | null
+	status?: string
 }
 
 export const FunctionTag = ({
@@ -19,7 +19,7 @@ export const FunctionTag = ({
 			)}
 			{...props}
 		>
-			{status || 'Sem função'}
+			{status ?? 'Sem função'}
 		</mark>
 	)
 }
