@@ -1,6 +1,9 @@
-import { MdLogout } from 'react-icons/md'
+import { Fragment } from 'react'
+import { BsChevronExpand } from 'react-icons/bs'
+import { PiUserCircleGearFill } from 'react-icons/pi'
+import { twMerge } from 'tailwind-merge'
 
-import { Avatar, Button, Text, Tooltip } from '@/components/Atoms'
+import { Avatar } from '@/components/Atoms'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -8,26 +11,45 @@ type UserAvatarProps = {
 
 export const UserAvatar = ({ collapsed }: UserAvatarProps) => {
 	return (
-		<section className="mt-auto flex flex-col space-y-6">
-			<div className="flex items-center gap-x-4">
-				<Avatar>Usuário Teste</Avatar>
-				{!collapsed && (
-					<div>
-						<Text className="font-bold text-gray-100">Usuário Teste</Text>
-						<Text className="text-sm text-gray-100/40">Admin</Text>
+		<footer className="mt-auto border-t border-gray-200 p-2">
+			<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
+				<button
+					id="footer-dropdown"
+					type="button"
+					className={twMerge(
+						'focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 hover:bg-slate-900/80',
+						collapsed && 'justify-center px-0',
+					)}
+					aria-haspopup="menu"
+					aria-expanded="false"
+					aria-label="Dropdown"
+				>
+					{!collapsed ? (
+						<Fragment>
+							<Avatar>Usuário teste</Avatar>
+							Usuário teste
+							<BsChevronExpand className="ml-auto" size={20} />
+						</Fragment>
+					) : (
+						<PiUserCircleGearFill size={32} />
+					)}
+				</button>
+
+				<div
+					className="hs-dropdown-menu duration z-20 hidden w-60 rounded-lg border border-gray-200 bg-white opacity-0 shadow-lg transition-[opacity,margin] hs-dropdown-open:opacity-100"
+					role="menu"
+					aria-orientation="vertical"
+				>
+					<div className="p-1">
+						<a
+							className="focus:outline-hidden flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+							href="#"
+						>
+							Sign out
+						</a>
 					</div>
-				)}
+				</div>
 			</div>
-			{collapsed ? (
-				<Button className="hs-tooltip inline-flex items-center justify-center gap-x-0 rounded-lg border-none p-2 text-lg font-medium text-gray-100 transition-colors duration-500 [--placement:right] hover:bg-slate-900/80">
-					<Tooltip>Sair</Tooltip>
-					<MdLogout />
-				</Button>
-			) : (
-				<Button className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800">
-					Sair
-				</Button>
-			)}
-		</section>
+		</footer>
 	)
 }

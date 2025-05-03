@@ -1,84 +1,54 @@
 'use client'
-import { useEffect, useState } from 'react'
 
-import { UUID } from 'crypto'
-
-import { Select, Spinner } from '@/components/Atoms'
+import { Select } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
-import {
-	CollaboratorTypeSelectOptions,
-	MODALS_IDS,
-	overlayOpen,
-} from '@/constants'
+import { ListPage, PageContent } from '@/components/Organisms'
+import { CollaboratorTypeSelectOptions } from '@/constants'
+import { formatterFieldSelectValues } from '@/formatters'
+import { useGetEvents } from '@/services/queries/events'
+import { useGetParticipants } from '@/services/queries/participants'
+import { useGetVolunteers } from '@/services/queries/volunteers'
 
-import { FAKE_COLLABORATORS } from './Payments.mocks'
-
-const HEADER_LABELS = [
-	{
-		label: 'Nome',
-		accessor: 'name',
-	},
-	{
-		label: 'Telefone',
-		accessor: 'phone',
-	},
-	{
-		label: 'Tipo de colaborador',
-		accessor: 'collaboratorType',
-	},
-	{
-		label: 'Valor pago',
-		accessor: 'valuePayed',
-	},
-	{
-		label: 'Status',
-		accessor: 'payment',
-	},
-]
+import { formatTableData, HEADER_LABELS } from './Payments.utils'
 
 export const Payments = () => {
-	const [tableData, setTableData] = useState<null | ReturnType<
-		typeof FAKE_COLLABORATORS
-	>>()
+	const { data: events } = useGetEvents()
+	const { data: participants, isLoading: isLoadingParticipants } =
+		useGetParticipants()
+	const { data: volunteers, isLoading: isLoadingVolunteers } =
+		useGetVolunteers()
 
-	const handleClickRow = async ({ id }: { id: UUID }) => {
-		console.log(id)
-		overlayOpen(MODALS_IDS.PAYMENT_MODAL)
-	}
+	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
-	useEffect(() => {
-		if (tableData) return
-
-		setTableData(FAKE_COLLABORATORS())
-	}, [tableData])
+	const formattedData = formatTableData(participants, volunteers)
 
 	return (
-		<>
-			<PageContent subheadingPage="Listagem de colaboradores do evento">
-				{!tableData ? (
-					<Spinner />
-				) : (
-					<ListPage
-						placeholderField="Encontrar um colaborador"
-						className="lg:max-w-full"
-						moreFilter={
-							<Select
-								placeholder="Selecione o tipo do colaborador"
-								options={CollaboratorTypeSelectOptions}
-							/>
-						}
-					>
-						<ListManager
-							bodyData={tableData}
-							headerLabels={HEADER_LABELS}
-							handleClickRow={handleClickRow}
-							isLoading={false}
+		<PageContent subheadingPage="Listagem de colaboradores do evento">
+			<ListPage
+				placeholderField="Encontrar um colaborador"
+				className="lg:max-w-full"
+				moreFilter={
+					<>
+						<Select
+							placeholder="Selecione o evento"
+							options={formattedEvents}
+							// value={eventId}
+							// onChange={(e) => setEventId(e.target.value)}
 						/>
-					</ListPage>
-				)}
-			</PageContent>
-			<PaymentModal modalId={MODALS_IDS.PAYMENT_MODAL} />
-		</>
+						<Select
+							placeholder="Selecione o tipo do colaborador"
+							options={CollaboratorTypeSelectOptions}
+						/>
+					</>
+				}
+			>
+				<ListManager
+					bodyData={formattedData}
+					headerLabels={HEADER_LABELS}
+					// handleClickRow={handleClickRow}
+					isLoading={isLoadingVolunteers || isLoadingParticipants}
+				/>
+			</ListPage>
+		</PageContent>
 	)
 }
