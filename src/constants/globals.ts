@@ -1,23 +1,29 @@
 import { PrismaClient } from '@prisma/client'
 
 export const MODALS_IDS = {
+	// PARTICIPANT
 	PARTICIPANT_PAYMENT_MODAL: 'participant_payment_modal',
-	GROUP_DRAWER: 'group_manager',
-	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
-	EVENT_REMOVE_MODAL: 'event_remove_modal',
 	PARTICIPANT_REMOVE_MODAL: 'participant_remove_modal',
 	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
 	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
 	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
+
+	GROUP_DRAWER: 'group_manager',
+	ROOMS_DRAWER: 'rooms_manager',
+	// EVENT
+	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
+	EVENT_REMOVE_MODAL: 'event_remove_modal',
+
+	// VOLUNTEER
 	IMPORT_VOLUNTEERS_MODAL: 'import_volunteers_modal',
 	CREATE_OR_UPDATE_FUNCTION_MODAL: 'create_or_update_function_modal',
 	REMOVE_FUNCTION_MODAL: 'remove_function_modal',
-	ROOMS_DRAWER: 'rooms_manager',
 	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
 	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
 	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
 	VOLUNTEER_ASSIGN_FUNCTION_MODAL: 'volunteer_assign_function_modal',
+	VOLUNTEER_PAYMENT_MODAL: 'volunteer_payment_modal',
 }
 
 export const prisma = new PrismaClient({

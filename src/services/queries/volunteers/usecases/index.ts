@@ -1,6 +1,7 @@
 export * from './createFunction'
 export * from './deleteFunction'
 export * from './deleteVolunteer'
+export * from './getPayments'
 export * from './getVolunteer'
 export * from './getVolunteers'
 export * from './getVolunteersFunctions'

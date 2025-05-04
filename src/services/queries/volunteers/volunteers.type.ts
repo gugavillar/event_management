@@ -1,6 +1,6 @@
 import { UUID } from 'crypto'
 
-import { CHECK_IN_STATUS } from '@/constants'
+import { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
 
 import { EventsFromAPI } from '../events/event.type'
 
@@ -66,4 +66,16 @@ export type FormVolunteer = {
 	number: string
 	state: string
 	street: string
+}
+
+export type VolunteersPaymentsFromAPI = {
+	id: UUID
+	paymentValue: string
+	paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null
+	eventId: UUID
+	event: EventsFromAPI
+	volunteerId: UUID
+	volunteer: VolunteersFromAPI
+	createdAt: string
+	updatedAt: string
 }

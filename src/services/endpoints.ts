@@ -50,4 +50,5 @@ export const ENDPOINTS = {
 		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 	UPDATE_VOLUNTEER_ROLE: (volunteer_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}/function`,
+	GET_VOLUNTEERS_PAYMENTS: `${BASE_PATH.VOLUNTEERS}/payments`,
 }
