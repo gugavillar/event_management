@@ -3,9 +3,10 @@
 import { Select } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
+import { PaymentSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
-import { useGetParticipants } from '@/services/queries/participants'
+import { useGetPayments } from '@/services/queries/participants'
 
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
 
@@ -18,7 +19,9 @@ export const ParticipantsPayments = () => {
 		setSearch,
 		setEventId,
 		eventId,
-	} = useGetParticipants()
+		setPaymentType,
+		paymentType,
+	} = useGetPayments()
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
@@ -42,6 +45,12 @@ export const ParticipantsPayments = () => {
 							options={formattedEvents}
 							value={eventId}
 							onChange={(e) => setEventId(e.target.value)}
+						/>
+						<Select
+							placeholder="Selecione o tipo de pagamento"
+							options={PaymentSelectOptions}
+							value={paymentType}
+							onChange={(e) => setPaymentType(e.target.value)}
 						/>
 					</>
 				}

@@ -26,6 +26,7 @@ export const ENDPOINTS = {
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
 	UPDATE_CHECK_IN_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}/check-in`,
+	GET_PARTICIPANTS_PAYMENTS: `${BASE_PATH.PARTICIPANTS}/payments`,
 
 	// Volunteers
 	GET_TEMPLATE_VOLUNTEERS_FILE: `${BASE_PATH.VOLUNTEERS}/files`,

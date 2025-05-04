@@ -1,7 +1,7 @@
 import { PaymentTag } from '@/components/Atoms'
 import { PaymentTypeAPI } from '@/constants'
-import { formatPhone } from '@/formatters'
-import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
+import { currencyValue, formatPhone } from '@/formatters'
+import { ParticipantsPaymentsFromAPI } from '@/services/queries/participants/participants.type'
 
 export const HEADER_LABELS = [
 	{
@@ -11,6 +11,10 @@ export const HEADER_LABELS = [
 	{
 		label: 'Telefone',
 		accessor: 'phone',
+	},
+	{
+		label: 'Evento',
+		accessor: 'eventName',
 	},
 	{
 		label: 'Valor evento',
@@ -26,15 +30,22 @@ export const HEADER_LABELS = [
 	},
 ]
 
-export const formatTableData = (participants?: ParticipantsFromAPI[]) => {
-	if (!participants) return []
+export const formatTableData = (payments?: ParticipantsPaymentsFromAPI[]) => {
+	if (!payments) return []
 
-	return participants.map((participant) => ({
-		id: participant.id,
-		name: participant.name,
-		phone: formatPhone(participant.contact),
-		valuePayed: 'R$ 0,00',
-		eventValue: 'R$ 0,00',
-		payment: <PaymentTag status={PaymentTypeAPI.CASH} />,
+	return payments.map((payment) => ({
+		id: payment.id,
+		name: payment.participant.name,
+		phone: formatPhone(payment.participant.contact),
+		valuePayed: currencyValue(Number(payment.paymentValue)),
+		eventName: payment.event.name,
+		eventValue: currencyValue(Number(payment.event.participantPrice)),
+		payment: (
+			<PaymentTag
+				status={
+					!payment.paymentType ? PaymentTypeAPI.OPEN : payment.paymentType
+				}
+			/>
+		),
 	}))
 }

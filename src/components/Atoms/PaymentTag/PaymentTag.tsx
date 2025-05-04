@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { PaymentTypeAPI, PaymentType } from '@/constants'
 
 type PaymentTagProps = ComponentProps<'mark'> & {
-	status: PaymentTypeAPI
+	status: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI]
 }
 
 const STATUS_COLORS = {
@@ -12,6 +12,7 @@ const STATUS_COLORS = {
 	[PaymentTypeAPI.CASH]: 'bg-yellow-400 bg-opacity-30',
 	[PaymentTypeAPI.PIX]: 'bg-green-500 bg-opacity-30',
 	[PaymentTypeAPI.DONATION]: 'bg-purple-400 bg-opacity-30',
+	[PaymentTypeAPI.OPEN]: 'bg-gray-400 bg-opacity-30',
 }
 
 export const PaymentTag = ({

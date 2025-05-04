@@ -2,7 +2,7 @@ import { ParticipantsPayments } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import { getParticipants } from '@/services/queries/participants'
+import { getPayments } from '@/services/queries/participants'
 
 export default async function ParticipantsPaymentsPage({
 	searchParams,
@@ -10,19 +10,19 @@ export default async function ParticipantsPaymentsPage({
 	searchParams: {
 		searchParticipant: string
 		eventId: string
-		statusParticipant: string
+		paymentType: string
 	}
 }) {
 	const debounceSearchValue = searchParams.searchParticipant ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
-	const debounceStatusValue = searchParams.statusParticipant ?? ''
+	const debouncePaymentType = searchParams.paymentType ?? ''
 	const [getAllEvents, getAllParticipants] = await Promise.all([
 		async () => getEvents({ searchEvent: '' }),
 		async () =>
-			getParticipants({
+			getPayments({
 				searchParticipant: debounceSearchValue,
 				eventId: debounceEventIdValue,
-				statusParticipant: debounceStatusValue,
+				paymentType: debouncePaymentType,
 			}),
 	])
 	return (
@@ -32,7 +32,7 @@ export default async function ParticipantsPaymentsPage({
 				QUERY_KEYS.PARTICIPANTS,
 				debounceEventIdValue,
 				debounceSearchValue,
-				debounceStatusValue,
+				debouncePaymentType,
 			]}
 		>
 			<HydrationProvider

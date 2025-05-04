@@ -1,4 +1,5 @@
 export * from './getAllParticipants'
+export * from './getAllParticipantsPayments'
 export * from './getParticipantById'
 export * from './getTemplateParticipantsFile'
 export * from './importParticipants'

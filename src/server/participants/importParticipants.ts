@@ -162,6 +162,14 @@ export const importParticipants = async (data: FormData) => {
 						participantId: participant.id,
 					},
 				})
+
+				await tx.participantPayment.create({
+					data: {
+						participantId: participant.id,
+						eventId: eventId as string,
+						paymentValue: 0,
+					},
+				})
 			}
 		})
 	} catch (error) {

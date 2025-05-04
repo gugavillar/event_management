@@ -109,15 +109,15 @@ model ParticipantAddress {
 }
 
 model ParticipantPayment {
-  id            String      @id @default(uuid())
+  id            String       @id @default(uuid())
   paymentValue  Decimal
-  paymentType   PaymentType
+  paymentType   PaymentType?
   eventId       String
-  event         Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
   participantId String
-  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  participant   Participant  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@map("participants_payments")
 }

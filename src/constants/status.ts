@@ -1,9 +1,10 @@
-export enum PaymentTypeAPI {
-	CARD = 'CARD',
-	PIX = 'PIX',
-	CASH = 'CASH',
-	DONATION = 'DONATION',
-}
+export const PaymentTypeAPI = {
+	CARD: 'CARD',
+	PIX: 'PIX',
+	CASH: 'CASH',
+	DONATION: 'DONATION',
+	OPEN: 'OPEN',
+} as const
 
 export const PaymentType = {
 	[PaymentTypeAPI.CARD]: { label: 'Cartão', value: PaymentTypeAPI.CARD },
@@ -12,6 +13,10 @@ export const PaymentType = {
 	[PaymentTypeAPI.DONATION]: {
 		label: 'Doação',
 		value: PaymentTypeAPI.DONATION,
+	},
+	[PaymentTypeAPI.OPEN]: {
+		label: 'Em aberto',
+		value: PaymentTypeAPI.OPEN,
 	},
 }
 
