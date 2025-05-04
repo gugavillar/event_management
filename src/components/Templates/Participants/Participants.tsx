@@ -110,6 +110,7 @@ export const Participants = () => {
 		<PageContent
 			subheadingPage="Listagem de participantes"
 			isLoading={isLoading}
+			pageTitle="Lista de participantes"
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadTemplateParticipantsButton />

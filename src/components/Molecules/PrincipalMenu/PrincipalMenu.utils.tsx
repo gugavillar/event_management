@@ -45,7 +45,7 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		buttonIcon: <FaClipboardUser size={24} />,
 		hasSubMenu: true,
 		links: [
-			{ label: 'Listagem', href: '/participantes' },
+			{ label: 'Listagem', href: '/participantes/listagem' },
 			{ label: 'Pagamentos', href: '/participantes/pagamentos' },
 			{ label: 'Grupos', href: '/participantes/grupos' },
 			{ label: 'Quartos', href: '/participantes/quartos' },
@@ -56,7 +56,7 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		buttonIcon: <GrUserWorker size={24} />,
 		hasSubMenu: true,
 		links: [
-			{ label: 'Listagem', href: '/voluntarios' },
+			{ label: 'Listagem', href: '/voluntarios/listagem' },
 			{ label: 'Funções', href: '/voluntarios/funcoes' },
 			{ label: 'Pagamentos', href: '/voluntarios/pagamentos' },
 			{ label: 'Grupos', href: '/voluntarios/grupos' },

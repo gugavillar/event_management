@@ -7,7 +7,7 @@ import { PaymentTag } from './PaymentTag'
 const PaymentTagStatusArray = Object.values(PaymentTypeAPI)
 
 describe('PaymentTag component', () => {
-	it('renders correclty', () => {
+	it('renders correctly', () => {
 		const { getByTestId } = render(
 			<PaymentTag status={PaymentTypeAPI.CARD} data-testid="payment-tag" />,
 		)

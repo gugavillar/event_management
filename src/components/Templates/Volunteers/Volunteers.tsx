@@ -104,7 +104,7 @@ export const Volunteers = () => {
 
 	return (
 		<PageContent
-			pageTitle="Voluntários"
+			pageTitle="Lista de voluntários"
 			subheadingPage="Listagem de voluntários"
 			isLoading={isLoading}
 		>

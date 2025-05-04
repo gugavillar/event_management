@@ -42,7 +42,7 @@ export const VolunteersFunctions = () => {
 	)
 	return (
 		<PageContent
-			pageTitle="Funções voluntários"
+			pageTitle="Lista das funções"
 			subheadingPage="Listagem das funções de voluntários"
 			isLoading={isLoading}
 		>
