@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 export const MODALS_IDS = {
-	PAYMENT_MODAL: 'payment_modal',
+	PARTICIPANT_PAYMENT_MODAL: 'participant_payment_modal',
 	GROUP_DRAWER: 'group_manager',
 	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
 	EVENT_REMOVE_MODAL: 'event_remove_modal',

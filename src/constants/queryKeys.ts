@@ -21,6 +21,7 @@ export const QUERY_KEYS = {
 	PARTICIPANTS_TEMPLATE_FILE: 'participants-template-file',
 	PARTICIPANTS: 'participants',
 	PARTICIPANT: 'participant',
+	PAYMENT_PARTICIPANTS: 'payment-participants',
 	VOLUNTEERS_TEMPLATE_FILE: 'volunteers-template-file',
 	VOLUNTEERS: 'volunteers',
 	VOLUNTEER: 'volunteer',

@@ -33,7 +33,7 @@ export const useGetPayments = () => {
 
 	const query: UseQueryResult<Array<ParticipantsPaymentsFromAPI>> = useQuery({
 		queryKey: [
-			QUERY_KEYS.PARTICIPANTS,
+			QUERY_KEYS.PAYMENT_PARTICIPANTS,
 			debounceEventId,
 			debounceSearch,
 			debouncePaymentType,

@@ -8,14 +8,21 @@ export type RadioProps = ComponentPropsWithoutRef<'input'> & {
 		description: string
 		value: string
 	}>
+	position?: 'column' | 'row'
 }
 
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(
-	({ options, isInvalid, ...props }, ref) => {
+	({ options, isInvalid, position = 'column', ...props }, ref) => {
 		if (!options?.length) return null
 
 		return (
-			<div className="grid space-y-3" data-testid="radio">
+			<div
+				className={twMerge(
+					'grid',
+					position === 'column' ? 'space-y-3' : 'grid-cols-2',
+				)}
+				data-testid="radio"
+			>
 				{options?.map((option) => (
 					<div className="relative flex items-start" key={option.value}>
 						<div className="mt-1 flex h-5 items-center">
