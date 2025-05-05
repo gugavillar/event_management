@@ -1,15 +1,24 @@
 'use client'
 
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 import { Select } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MODALS_IDS, overlayOpen, PaymentSelectOptions } from '@/constants'
+import {
+	MODALS_IDS,
+	overlayClose,
+	overlayOpen,
+	PaymentSelectOptions,
+} from '@/constants'
 import { formatterFieldSelectValues, removeCurrencyFormat } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
-import { useGetPayments } from '@/services/queries/volunteers'
+import {
+	useGetPayments,
+	useUpdateVolunteerPayment,
+} from '@/services/queries/volunteers'
 import { VolunteersPaymentsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './VolunteersPayments.utils'
@@ -28,7 +37,7 @@ export const VolunteersPayments = () => {
 		setPaymentType,
 		paymentType,
 	} = useGetPayments()
-	// const { update, isPending } = useUpdateParticipantPayment()
+	const { update, isPending } = useUpdateVolunteerPayment()
 
 	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
 
@@ -53,22 +62,21 @@ export const VolunteersPayments = () => {
 				values.paid === 'partial' && values.paymentValue
 					? Number(removeCurrencyFormat(values.paymentValue))
 					: Number(
-							removeCurrencyFormat(selectedVolunteer.event.participantPrice),
+							removeCurrencyFormat(selectedVolunteer.event.volunteerPrice),
 						),
 		}
-		console.log(formatValues)
-		// await update(
-		// 	{ paymentId: selectedVolunteer.id, data: formatValues },
-		// 	{
-		// 		onSuccess: () => {
-		// 			setSelectedVolunteer(null)
-		// 			toast.success('Pagamento do participante atualizado com sucesso!')
-		// 			overlayClose(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
-		// 		},
-		// 		onError: () =>
-		// 			toast.error('Erro ao atualizar pagamento do participante'),
-		// 	},
-		// )
+
+		await update(
+			{ paymentId: selectedVolunteer.id, data: formatValues },
+			{
+				onSuccess: () => {
+					setSelectedVolunteer(null)
+					toast.success('Pagamento do voluntário atualizado com sucesso!')
+					overlayClose(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
+				},
+				onError: () => toast.error('Erro ao atualizar pagamento do voluntário'),
+			},
+		)
 	}
 
 	return (
@@ -109,7 +117,7 @@ export const VolunteersPayments = () => {
 				modalId={MODALS_IDS.VOLUNTEER_PAYMENT_MODAL}
 				modalType="voluntário"
 				handleSubmit={handleUpdate}
-				isPending={false}
+				isPending={isPending}
 			/>
 		</PageContent>
 	)
