@@ -135,3 +135,11 @@ export const TRANSLATE_VOLUNTEERS_HEADER = {
 	[VOLUNTEERS_HEADER_TEMPLATE[12]]: 'contactParent',
 	[VOLUNTEERS_HEADER_TEMPLATE[13]]: 'relationship',
 } as const
+
+export const ageRanges = {
+	'14–19': 0,
+	'20–29': 0,
+	'30–39': 0,
+	'40–49': 0,
+	'50+': 0,
+}

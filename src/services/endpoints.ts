@@ -4,6 +4,7 @@ const BASE_PATH = {
 	EVENTS: '/events',
 	PARTICIPANTS: '/participants',
 	VOLUNTEERS: '/volunteers',
+	DASHBOARD: '/dashboard',
 }
 
 export const ENDPOINTS = {
@@ -53,4 +54,7 @@ export const ENDPOINTS = {
 	GET_VOLUNTEERS_PAYMENTS: `${BASE_PATH.VOLUNTEERS}/payments`,
 	UPDATE_VOLUNTEER_PAYMENT: (payment_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}`,
+
+	// Dashboard
+	GET_DASHBOARD: `${BASE_PATH.DASHBOARD}`,
 }

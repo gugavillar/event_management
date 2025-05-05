@@ -65,6 +65,9 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 	},
 	tooltip: {
 		followCursor: false,
+		custom: ({ series, seriesIndex, dataPointIndex, w }) => {
+			return `<div class="bg-gray-900 flex flex-col gap-1 text-white rounded-md p-2"><p class="font-semibold">${w.globals.labels[dataPointIndex]}</p><p>Total: ${series[seriesIndex][dataPointIndex]}</p></div>`
+		},
 	},
 }
 

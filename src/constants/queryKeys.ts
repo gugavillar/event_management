@@ -27,6 +27,7 @@ export const QUERY_KEYS = {
 	VOLUNTEER: 'volunteer',
 	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
 	PAYMENT_VOLUNTEERS: 'payment-volunteers',
+	DASHBOARD: 'dashboard',
 } as const
 
 export const getQueryClient = () => {
