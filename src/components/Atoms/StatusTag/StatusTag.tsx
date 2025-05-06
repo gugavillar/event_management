@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { CHECK_IN_STATUS, StatusType } from '@/constants'
 
 type StatusTag = ComponentProps<'mark'> & {
-	status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS]
+	status: CHECK_IN_STATUS
 }
 
 const STATUS_COLORS = {

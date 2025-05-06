@@ -4,7 +4,7 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 type UpdateCheckInVolunteerArgs = {
 	volunteerId: string
-	status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS]
+	status: CHECK_IN_STATUS
 }
 
 export const updateCheckInVolunteer = async (

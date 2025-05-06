@@ -4,8 +4,6 @@ import { PaymentTypeAPI } from '@/constants'
 
 import { paymentOptionsRadio } from './PaymentModal.utils'
 
-export type PaymentType = 'CARD' | 'CASH' | 'PIX' | 'DONATION'
-
 export const PaymentModalSchema = z
 	.object({
 		paid: z.enum([paymentOptionsRadio[0].value, paymentOptionsRadio[1].value], {
@@ -35,7 +33,7 @@ export const PaymentModalSchema = z
 						PaymentTypeAPI.CASH,
 						PaymentTypeAPI.PIX,
 						PaymentTypeAPI.DONATION,
-					].includes(val as PaymentType),
+					].includes(val as PaymentTypeAPI),
 				{
 					message: 'Campo obrigatório',
 				},

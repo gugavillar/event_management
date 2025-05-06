@@ -3,7 +3,7 @@ import { CHECK_IN_STATUS, prisma } from '@/constants'
 export const getAllParticipants = async (
 	eventId: string | null,
 	search: string | null,
-	status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS] | null,
+	status: CHECK_IN_STATUS | null,
 ) => {
 	try {
 		return await prisma.participant.findMany({

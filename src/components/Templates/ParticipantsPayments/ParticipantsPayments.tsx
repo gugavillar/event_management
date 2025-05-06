@@ -6,11 +6,13 @@ import toast from 'react-hot-toast'
 import { Select } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
+import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
-	PaymentModalType,
-	PaymentType,
-} from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MODALS_IDS, overlayOpen, PaymentSelectOptions } from '@/constants'
+	MODALS_IDS,
+	overlayOpen,
+	PaymentSelectOptions,
+	PaymentTypeAPI,
+} from '@/constants'
 import { formatterFieldSelectValues, removeCurrencyFormat } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
 import {
@@ -55,7 +57,7 @@ export const ParticipantsPayments = () => {
 		if (!selectedParticipant) return
 
 		const formatValues = {
-			paymentType: values.paymentType as PaymentType,
+			paymentType: values.paymentType as PaymentTypeAPI,
 			paymentValue:
 				values.paid === 'partial' && values.paymentValue
 					? Number(removeCurrencyFormat(values.paymentValue))

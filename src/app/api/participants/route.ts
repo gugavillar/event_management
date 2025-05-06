@@ -14,7 +14,7 @@ const handlerGet = async (request: NextRequest) => {
 			await getAllParticipants(
 				eventIdParams,
 				searchParams,
-				statusParams as (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS],
+				statusParams as CHECK_IN_STATUS,
 			),
 	})
 }

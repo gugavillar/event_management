@@ -27,7 +27,7 @@ export type VolunteersFromAPI = {
 	parent: string
 	contactParent: string
 	relationship: string
-	checkIn: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS] | null
+	checkIn: CHECK_IN_STATUS | null
 	createdAt: string
 	updatedAt: string
 	eventId: UUID

@@ -1,10 +1,10 @@
-export const PaymentTypeAPI = {
-	CARD: 'CARD',
-	PIX: 'PIX',
-	CASH: 'CASH',
-	DONATION: 'DONATION',
-	OPEN: 'OPEN',
-} as const
+export enum PaymentTypeAPI {
+	CARD = 'CARD',
+	PIX = 'PIX',
+	CASH = 'CASH',
+	DONATION = 'DONATION',
+	OPEN = 'OPEN',
+}
 
 export const PaymentType = {
 	[PaymentTypeAPI.CARD]: { label: 'Cartão', value: PaymentTypeAPI.CARD },
@@ -24,11 +24,11 @@ export const PaymentSelectOptions = Object.values(PaymentTypeAPI).map(
 	(value) => ({ ...PaymentType[value] }),
 )
 
-export const CHECK_IN_STATUS = {
-	CONFIRMED: 'CONFIRMED',
-	WITHDREW: 'WITHDREW',
-	NOT_ANSWERED: 'NOT_ANSWERED',
-} as const
+export enum CHECK_IN_STATUS {
+	CONFIRMED = 'CONFIRMED',
+	WITHDREW = 'WITHDREW',
+	NOT_ANSWERED = 'NOT_ANSWERED',
+}
 
 export const StatusType = {
 	[CHECK_IN_STATUS.CONFIRMED]: {

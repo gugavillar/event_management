@@ -23,9 +23,7 @@ export const ParticipantCheckInModal = ({
 }: ParticipantCheckInModalProps) => {
 	const { update, isPending } = useUpdateCheckInParticipant()
 
-	const handleCheckInParticipant = async (
-		status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS],
-	) => {
+	const handleCheckInParticipant = async (status: CHECK_IN_STATUS) => {
 		if (!selectedParticipant) return
 
 		await update(

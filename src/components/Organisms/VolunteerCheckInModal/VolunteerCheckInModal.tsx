@@ -21,9 +21,7 @@ export const VolunteerCheckInModal = ({
 }: VolunteerCheckInModalProps) => {
 	const { update, isPending } = useUpdateCheckInVolunteer()
 
-	const handleCheckInVolunteer = async (
-		status: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS],
-	) => {
+	const handleCheckInVolunteer = async (status: CHECK_IN_STATUS) => {
 		if (!selectedVolunteer) return
 
 		await update(

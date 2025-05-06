@@ -22,7 +22,7 @@ export type ParticipantsFromAPI = {
 	relationship: string
 	host: string
 	contactHost: string
-	checkIn: (typeof CHECK_IN_STATUS)[keyof typeof CHECK_IN_STATUS] | null
+	checkIn: CHECK_IN_STATUS | null
 	createdAt: string
 	updatedAt: string
 	eventId: UUID
@@ -62,7 +62,7 @@ export type FormParticipant = {
 export type ParticipantsPaymentsFromAPI = {
 	id: UUID
 	paymentValue: string
-	paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null
+	paymentType: PaymentTypeAPI | null
 	eventId: UUID
 	event: EventsFromAPI
 	participantId: UUID
