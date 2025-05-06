@@ -27,14 +27,20 @@ export const Dashboard = () => {
 				onChange={(e) => setEventId(e.target.value)}
 			/>
 			<DashboardCards isLoading={isLoading} data={data} />
-			<CitiesChart />
+			<CitiesChart
+				categories={data?.participantsCities?.labels}
+				series={data?.participantsCities?.data}
+				isLoading={isLoading}
+			/>
 			<PaymentsChart
-				categories={data?.paymentsTypes.labels}
-				series={data?.paymentsTypes.data}
+				categories={data?.paymentsTypes?.labels}
+				series={data?.paymentsTypes?.data}
+				isLoading={isLoading}
 			/>
 			<AgesChart
-				categories={Object.keys(data?.ageRanges || {})}
-				series={Object.values(data?.ageRanges || {})}
+				categories={data?.ageRanges?.labels}
+				series={data?.ageRanges?.data}
+				isLoading={isLoading}
 			/>
 		</PageContent>
 	)

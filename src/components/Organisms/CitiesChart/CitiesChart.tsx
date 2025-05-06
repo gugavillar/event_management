@@ -1,15 +1,23 @@
-import { BarChart } from '@/components/Atoms'
-import { ChartContainer } from '@/components/Molecules'
+import {
+	ChartContainer,
+	ChartValidation,
+	ChartValidationProps,
+} from '@/components/Molecules'
 
-export const CitiesChart = () => {
+export const CitiesChart = ({
+	categories,
+	series,
+	isLoading,
+}: ChartValidationProps) => {
 	return (
 		<ChartContainer
 			headingText="Cidades"
-			subheadingText="Quantitativo de cadastros por cidades"
+			subheadingText="Quantitativo de participantes por cidade"
 		>
-			<BarChart
-				categories={['Gravatá', 'Bezerros', 'Caruaru', 'Chã grande']}
-				series={[{ data: [50, 30, 10, 25] }]}
+			<ChartValidation
+				isLoading={isLoading}
+				categories={categories}
+				series={series}
 			/>
 		</ChartContainer>
 	)

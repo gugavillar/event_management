@@ -1,5 +1,3 @@
-import { ageRanges } from '@/constants'
-
 export type DashboardFromAPI = {
 	participants: number
 	volunteers: number
@@ -11,5 +9,12 @@ export type DashboardFromAPI = {
 		labels: Array<string>
 		data: Array<number>
 	}
-	ageRanges: typeof ageRanges
+	ageRanges: {
+		labels: Array<string>
+		data: Array<number>
+	}
+	participantsCities: {
+		labels: Array<string>
+		data: Array<number>
+	}
 }

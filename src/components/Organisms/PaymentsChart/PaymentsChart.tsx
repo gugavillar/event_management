@@ -1,25 +1,24 @@
-import { BarChart, Spinner } from '@/components/Atoms'
-import { ChartContainer } from '@/components/Molecules'
+import {
+	ChartContainer,
+	ChartValidation,
+	ChartValidationProps,
+} from '@/components/Molecules'
 
-type PaymentsChartsProps = {
-	categories?: string[]
-	series?: number[]
-}
-
-export const PaymentsChart = ({ categories, series }: PaymentsChartsProps) => {
-	const hasData = !!series
+export const PaymentsChart = ({
+	categories,
+	series,
+	isLoading,
+}: ChartValidationProps) => {
 	return (
 		<ChartContainer
 			headingText="Pagamentos"
-			subheadingText="Distribuição de pagamentos por tipo"
+			subheadingText="Quantitativo de pagamentos por tipo"
 		>
-			{hasData ? (
-				<BarChart categories={categories} series={[{ data: series }]} />
-			) : (
-				<div className="flex h-32 items-center justify-center">
-					<Spinner className="size-12" />
-				</div>
-			)}
+			<ChartValidation
+				isLoading={isLoading}
+				categories={categories}
+				series={series}
+			/>
 		</ChartContainer>
 	)
 }

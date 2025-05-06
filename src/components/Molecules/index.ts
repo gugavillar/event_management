@@ -1,5 +1,6 @@
 export * from './ApplicationAvatar'
 export * from './ChartContainer'
+export * from './ChartValidation'
 export * from './CurrencyInputField'
 export * from './HeaderPage'
 export * from './ImportParticipantsButton'

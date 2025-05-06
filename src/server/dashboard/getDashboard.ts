@@ -1,11 +1,6 @@
 import { differenceInYears } from 'date-fns'
 
-import {
-	ageRanges,
-	CHECK_IN_STATUS,
-	PaymentSelectOptions,
-	prisma,
-} from '@/constants'
+import { CHECK_IN_STATUS, PaymentSelectOptions, prisma } from '@/constants'
 
 const calculationAge = (birthdate: Date) => {
 	return differenceInYears(new Date(), birthdate)
@@ -23,6 +18,7 @@ const queries = async (eventId: string | null) => {
 		participantPaymentByType,
 		participantsAges,
 		volunteersAges,
+		participantsCities,
 	] = await Promise.all([
 		await prisma.participant.count({
 			where: {
@@ -92,6 +88,13 @@ const queries = async (eventId: string | null) => {
 				birthdate: true,
 			},
 		}),
+		await prisma.participantAddress.groupBy({
+			where: {
+				...(eventId && { participant: { eventId } }),
+			},
+			by: ['city'],
+			_count: true,
+		}),
 	])
 
 	return {
@@ -105,6 +108,7 @@ const queries = async (eventId: string | null) => {
 		participantPaymentByType,
 		participantsAges,
 		volunteersAges,
+		participantsCities,
 	}
 }
 
@@ -115,11 +119,22 @@ export const getDashboard = async (eventId: string | null) => {
 			participantPaymentByType,
 			participantsAges,
 			volunteersAges,
+			participantsCities,
 			...rest
 		} = await queries(eventId)
 
+		const ageRanges = {
+			'14–19': 0,
+			'20–29': 0,
+			'30–39': 0,
+			'40–49': 0,
+			'50+': 0,
+		}
+
+		console.log('ages', participantsAges, volunteersAges)
+
 		const labelsToFilter = PaymentSelectOptions.map((opt) => opt.value)
-		const labels = PaymentSelectOptions.map((opt) => opt.label)
+		const paymentsTypes = PaymentSelectOptions.map((opt) => opt.label)
 
 		const paymentsTypesCounts = labelsToFilter.map((label) => {
 			const valueVolunteer =
@@ -136,29 +151,42 @@ export const getDashboard = async (eventId: string | null) => {
 
 		participantsAges.forEach((p) => {
 			const age = calculationAge(new Date(p.birthdate))
-			if (age <= 19) ageRanges['14–19']++
-			else if (age <= 29) ageRanges['20–29']++
-			else if (age <= 39) ageRanges['30–39']++
-			else if (age <= 49) ageRanges['40–49']++
-			else ageRanges['50+']++
+			if (age <= 19) return ageRanges['14–19']++
+			if (age <= 29) return ageRanges['20–29']++
+			if (age <= 39) return ageRanges['30–39']++
+			if (age <= 49) return ageRanges['40–49']++
+			return ageRanges['50+']++
 		})
 
 		volunteersAges.forEach((v) => {
 			const age = calculationAge(new Date(v.birthdate))
-			if (age <= 19) ageRanges['14–19']++
-			else if (age <= 29) ageRanges['20–29']++
-			else if (age <= 39) ageRanges['30–39']++
-			else if (age <= 49) ageRanges['40–49']++
-			else ageRanges['50+']++
+			if (age <= 19) return ageRanges['14–19']++
+			if (age <= 29) return ageRanges['20–29']++
+			if (age <= 39) return ageRanges['30–39']++
+			if (age <= 49) return ageRanges['40–49']++
+			return ageRanges['50+']++
 		})
+
+		const cities = participantsCities.map((c) => c.city)
+		const citiesCounts = participantsCities.map((c) => c._count)
+
+		const ages = Object.keys(ageRanges)
+		const agesCounts = Object.values(ageRanges)
 
 		return {
 			...rest,
+			ageRanges: {
+				labels: ages,
+				data: agesCounts,
+			},
 			paymentsTypes: {
-				labels,
+				labels: paymentsTypes,
 				data: paymentsTypesCounts,
 			},
-			ageRanges,
+			participantsCities: {
+				labels: cities,
+				data: citiesCounts,
+			},
 		}
 	} catch (error) {
 		console.error('@getDashboard error:', error)

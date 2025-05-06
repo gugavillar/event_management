@@ -23,22 +23,6 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 					</Header>
 				</div>
 			</InformationCard>
-			<InformationCard headingText="Pagas">
-				<div className="flex h-full flex-col items-center justify-end p-4 md:p-5">
-					<Text className="text-lg font-semibold">
-						<Text as="span" className="text-base font-normal opacity-50">
-							Participantes:
-						</Text>{' '}
-						{isLoading ? <Spinner /> : data?.participantPayment}
-					</Text>
-					<Text className="text-lg font-semibold">
-						<Text as="span" className="text-base font-normal opacity-50">
-							Voluntários:
-						</Text>{' '}
-						{isLoading ? <Spinner /> : data?.volunteerPayment}
-					</Text>
-				</div>
-			</InformationCard>
 			<InformationCard headingText="Confirmadas">
 				<div className="flex h-full flex-col items-center justify-end p-4 md:p-5">
 					<Text className="text-lg font-semibold">
@@ -52,6 +36,22 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 							Voluntários:
 						</Text>{' '}
 						{isLoading ? <Spinner /> : data?.confirmedVolunteers}
+					</Text>
+				</div>
+			</InformationCard>
+			<InformationCard headingText="Pagas">
+				<div className="flex h-full flex-col items-center justify-end p-4 md:p-5">
+					<Text className="text-lg font-semibold">
+						<Text as="span" className="text-base font-normal opacity-50">
+							Participantes:
+						</Text>{' '}
+						{isLoading ? <Spinner /> : data?.participantPayment}
+					</Text>
+					<Text className="text-lg font-semibold">
+						<Text as="span" className="text-base font-normal opacity-50">
+							Voluntários:
+						</Text>{' '}
+						{isLoading ? <Spinner /> : data?.volunteerPayment}
 					</Text>
 				</div>
 			</InformationCard>
