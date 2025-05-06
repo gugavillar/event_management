@@ -131,8 +131,6 @@ export const getDashboard = async (eventId: string | null) => {
 			'50+': 0,
 		}
 
-		console.log('ages', participantsAges, volunteersAges)
-
 		const labelsToFilter = PaymentSelectOptions.map((opt) => opt.value)
 		const paymentsTypes = PaymentSelectOptions.map((opt) => opt.label)
 
