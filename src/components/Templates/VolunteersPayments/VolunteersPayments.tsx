@@ -80,8 +80,8 @@ export const VolunteersPayments = () => {
 
 	return (
 		<PageContent
-			pageTitle="Lista de pagamentos voluntários"
-			subheadingPage="Listagem de pagamento dos voluntários"
+			pageTitle="Pagamentos dos voluntários"
+			subheadingPage="Lista de pagamentos"
 			isLoading={isLoadingParticipants}
 		>
 			<ListPage

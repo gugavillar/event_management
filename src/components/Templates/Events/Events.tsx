@@ -41,7 +41,7 @@ export const Events = () => {
 	)
 
 	return (
-		<PageContent subheadingPage="Listagem de eventos" isLoading={isLoading}>
+		<PageContent subheadingPage="Lista de eventos" isLoading={isLoading}>
 			<ListPage
 				placeholderField="Encontrar um evento"
 				className="w-full lg:max-w-full"

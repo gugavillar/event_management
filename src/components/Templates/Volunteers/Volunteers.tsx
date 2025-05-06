@@ -104,8 +104,8 @@ export const Volunteers = () => {
 
 	return (
 		<PageContent
-			pageTitle="Lista de voluntários"
-			subheadingPage="Listagem de voluntários"
+			pageTitle="Voluntários"
+			subheadingPage="Lista de voluntários"
 			isLoading={isLoading}
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">

@@ -42,8 +42,8 @@ export const VolunteersFunctions = () => {
 	)
 	return (
 		<PageContent
-			pageTitle="Lista das funções"
-			subheadingPage="Listagem das funções de voluntários"
+			pageTitle="Funções"
+			subheadingPage="Lista das funções"
 			isLoading={isLoading}
 		>
 			<ListPage
