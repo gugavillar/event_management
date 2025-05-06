@@ -37,6 +37,10 @@ export const ImportVolunteersFileModal = ({
 	const formattedEvents: Array<{ value: UUID; label: string }> =
 		formatterFieldSelectValues(events, 'name', 'id')
 
+	const handleClose = () => {
+		methods.reset()
+	}
+
 	const handleSubmit: SubmitHandler<ImportVolunteersFileModalType> = async (
 		values,
 	) => {
@@ -53,7 +57,7 @@ export const ImportVolunteersFileModal = ({
 		)
 	}
 	return (
-		<Modal modalId={modalId}>
+		<Modal modalId={modalId} handleClose={handleClose}>
 			<FormProvider {...methods}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
