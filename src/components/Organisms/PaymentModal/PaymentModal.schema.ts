@@ -4,6 +4,8 @@ import { PaymentTypeAPI } from '@/constants'
 
 import { paymentOptionsRadio } from './PaymentModal.utils'
 
+export type PaymentType = 'CARD' | 'CASH' | 'PIX' | 'DONATION'
+
 export const PaymentModalSchema = z
 	.object({
 		paid: z.enum([paymentOptionsRadio[0].value, paymentOptionsRadio[1].value], {
@@ -12,7 +14,6 @@ export const PaymentModalSchema = z
 		}),
 		paymentType: z
 			.union([
-				z.literal(''),
 				z.enum(
 					[
 						PaymentTypeAPI.CARD,
@@ -25,8 +26,20 @@ export const PaymentModalSchema = z
 						message: 'Campo obrigatório',
 					},
 				),
+				z.string(),
 			])
-			.refine((val) => val !== '', { message: 'Campo obrigatório' }),
+			.refine(
+				(val) =>
+					[
+						PaymentTypeAPI.CARD,
+						PaymentTypeAPI.CASH,
+						PaymentTypeAPI.PIX,
+						PaymentTypeAPI.DONATION,
+					].includes(val as PaymentType),
+				{
+					message: 'Campo obrigatório',
+				},
+			),
 		paymentValue: z.string().optional(),
 	})
 	.superRefine((data, ctx) => {

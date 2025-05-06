@@ -1,6 +1,6 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal } from '@/components/Atoms'
@@ -17,7 +17,7 @@ import { paymentOptionsRadio } from './PaymentModal.utils'
 type PaymentModalProps = {
 	modalId: string
 	modalType: 'participante' | 'voluntário'
-	handleSubmit: (values: PaymentModalType) => void
+	handleSubmit: (values: PaymentModalType) => Promise<void>
 	isPending: boolean
 }
 
@@ -30,7 +30,7 @@ export const PaymentModal = ({
 	const methods = useForm<PaymentModalType>({
 		defaultValues: {
 			paid: undefined,
-			paymentType: undefined,
+			paymentType: '',
 			paymentValue: '',
 		},
 		resolver: zodResolver(PaymentModalSchema),
@@ -41,6 +41,11 @@ export const PaymentModal = ({
 		overlayClose(modalId)
 	}
 
+	const onSubmit: SubmitHandler<PaymentModalType> = async (values) => {
+		await handleSubmit(values)
+		handleClose()
+	}
+
 	const paymentOptions = PaymentSelectOptions.filter(
 		(item) => item.value !== PaymentTypeAPI.OPEN,
 	)
@@ -48,11 +53,11 @@ export const PaymentModal = ({
 	const isPartialPayment = methods.watch('paid') === 'partial'
 
 	return (
-		<Modal modalId={modalId}>
+		<Modal modalId={modalId} handleClose={handleClose}>
 			<FormProvider {...methods}>
 				<form
 					className="flex flex-col items-center justify-center gap-y-6"
-					onSubmit={methods.handleSubmit(handleSubmit)}
+					onSubmit={methods.handleSubmit(onSubmit)}
 				>
 					<div className="flex flex-col items-center justify-between gap-2">
 						<IoMdAlert size={32} className="text-amber-300" />

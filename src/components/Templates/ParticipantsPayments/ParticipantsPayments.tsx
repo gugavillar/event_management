@@ -6,13 +6,11 @@ import toast from 'react-hot-toast'
 import { Select } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
-import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
-	MODALS_IDS,
-	overlayClose,
-	overlayOpen,
-	PaymentSelectOptions,
-} from '@/constants'
+	PaymentModalType,
+	PaymentType,
+} from '@/components/Organisms/PaymentModal/PaymentModal.schema'
+import { MODALS_IDS, overlayOpen, PaymentSelectOptions } from '@/constants'
 import { formatterFieldSelectValues, removeCurrencyFormat } from '@/formatters'
 import { useGetEvents } from '@/services/queries/events'
 import {
@@ -57,7 +55,7 @@ export const ParticipantsPayments = () => {
 		if (!selectedParticipant) return
 
 		const formatValues = {
-			paymentType: values.paymentType,
+			paymentType: values.paymentType as PaymentType,
 			paymentValue:
 				values.paid === 'partial' && values.paymentValue
 					? Number(removeCurrencyFormat(values.paymentValue))
@@ -71,7 +69,6 @@ export const ParticipantsPayments = () => {
 				onSuccess: () => {
 					setSelectedParticipant(null)
 					toast.success('Pagamento do participante atualizado com sucesso!')
-					overlayClose(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
 				},
 				onError: () =>
 					toast.error('Erro ao atualizar pagamento do participante'),
