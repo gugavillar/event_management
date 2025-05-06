@@ -116,7 +116,7 @@ export const Participants = () => {
 				<DownloadTemplateParticipantsButton />
 				<ImportParticipantsButton
 					label="Importar participantes"
-					modalId={MODALS_IDS.IMPORT_PARTICIPANTS_MODAL}
+					modalId={MODALS_IDS.PARTICIPANT_IMPORT_MODAL}
 				/>
 			</div>
 			<ListPage

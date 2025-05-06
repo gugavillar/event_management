@@ -25,14 +25,14 @@ export const VolunteersFunctions = () => {
 		selected: VolunteersFunctionsFromAPI,
 	) => {
 		setSelectedFunction(selected)
-		overlayOpen(MODALS_IDS.REMOVE_FUNCTION_MODAL)
+		overlayOpen(MODALS_IDS.FUNCTION_REMOVE_MODAL)
 	}
 
 	const handleOpenModalToEditFunction = (
 		selected: VolunteersFunctionsFromAPI,
 	) => {
 		setSelectedFunction(selected)
-		overlayOpen(MODALS_IDS.CREATE_OR_UPDATE_FUNCTION_MODAL)
+		overlayOpen(MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL)
 	}
 
 	const formattedVolunteersFunctions = formatTableData(
@@ -51,6 +51,7 @@ export const VolunteersFunctions = () => {
 				className="lg:max-w-full"
 				actionButton={
 					<CreateVolunteerFunctionButton
+						modalId={MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL}
 						setSelectedFunction={setSelectedFunction}
 					/>
 				}
@@ -64,12 +65,12 @@ export const VolunteersFunctions = () => {
 				/>
 			</ListPage>
 			<FunctionDeleteModal
-				modalId={MODALS_IDS.REMOVE_FUNCTION_MODAL}
+				modalId={MODALS_IDS.FUNCTION_REMOVE_MODAL}
 				selectedFunction={selectedFunction}
 				setSelectedFunction={setSelectedFunction}
 			/>
 			<CreateVolunteerFunctionModal
-				modalId={MODALS_IDS.CREATE_OR_UPDATE_FUNCTION_MODAL}
+				modalId={MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL}
 				selectedFunction={selectedFunction}
 				setSelectedFunction={setSelectedFunction}
 			/>

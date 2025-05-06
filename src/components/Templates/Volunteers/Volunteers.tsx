@@ -112,7 +112,7 @@ export const Volunteers = () => {
 				<DownloadTemplateVolunteersButton />
 				<ImportVolunteersButton
 					label="Importar voluntários"
-					modalId={MODALS_IDS.IMPORT_VOLUNTEERS_MODAL}
+					modalId={MODALS_IDS.VOLUNTEER_IMPORT_MODAL}
 				/>
 			</div>
 			<ListPage

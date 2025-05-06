@@ -7,18 +7,21 @@ export const MODALS_IDS = {
 	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
 	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
-	IMPORT_PARTICIPANTS_MODAL: 'import_participants_modal',
+	PARTICIPANT_IMPORT_MODAL: 'participant_import_modal',
 
 	GROUP_DRAWER: 'group_manager',
 	ROOMS_DRAWER: 'rooms_manager',
+
 	// EVENT
 	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
 	EVENT_REMOVE_MODAL: 'event_remove_modal',
 
+	// FUNCTION
+	FUNCTION_CREATE_OR_UPDATE_MODAL: 'function_create_or_update_modal',
+	FUNCTION_REMOVE_MODAL: 'function_remove_modal',
+
 	// VOLUNTEER
-	IMPORT_VOLUNTEERS_MODAL: 'import_volunteers_modal',
-	CREATE_OR_UPDATE_FUNCTION_MODAL: 'create_or_update_function_modal',
-	REMOVE_FUNCTION_MODAL: 'remove_function_modal',
+	VOLUNTEER_IMPORT_MODAL: 'volunteer_import_modal',
 	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
 	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
 	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
