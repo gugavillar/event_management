@@ -1,5 +1,5 @@
 'use client'
-import { Select } from '@/components/Atoms'
+import { ComboBox } from '@/components/Molecules'
 import {
 	AgesChart,
 	CitiesChart,
@@ -7,7 +7,7 @@ import {
 	PageContent,
 	PaymentsChart,
 } from '@/components/Organisms'
-import { formatterFieldSelectValues } from '@/formatters'
+import { formatterComboBoxValues } from '@/formatters'
 import { useGetDashboardData } from '@/services/queries/dashboard'
 import { useGetEvents } from '@/services/queries/events'
 
@@ -15,16 +15,18 @@ export const Dashboard = () => {
 	const { data: events } = useGetEvents()
 	const { data, eventId, setEventId, isLoading } = useGetDashboardData()
 
-	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents = formatterComboBoxValues(events, 'name', 'id', true)
 
 	return (
 		<PageContent subheadingPage="Veja estatísticas totais ou apenas do evento selecionado">
-			<Select
-				placeholder="Selecione o evento"
+			<ComboBox
 				className="max-w-sm"
+				keyOptionLabel="label"
+				keyOptionValue="value"
 				options={formattedEvents}
-				value={eventId}
-				onChange={(e) => setEventId(e.target.value)}
+				selectedValue={eventId}
+				setSelectedValue={setEventId}
+				label="Selecione o evento"
 			/>
 			<DashboardCards isLoading={isLoading} data={data} />
 			<CitiesChart
