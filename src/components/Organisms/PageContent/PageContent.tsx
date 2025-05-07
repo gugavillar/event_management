@@ -28,13 +28,13 @@ export const PageContent = ({
 			</HeaderPage>
 			<div
 				className={twMerge(
-					'w-full space-y-8 px-6 py-12',
+					'flex h-page-content w-full flex-col space-y-8 px-6 py-12',
 					isLoading && loadingClasses,
 					className,
 				)}
 				{...props}
 			>
-				{isLoading ? <Spinner /> : children}
+				{isLoading ? <Spinner className="size-12" /> : children}
 			</div>
 		</>
 	)

@@ -81,8 +81,8 @@ export const ComboBox = <T,>({
 				<button
 					type="button"
 					className={twMerge(
-						'border-cod-gray-300 focus:ring-midnight-100 inline-flex w-full items-center justify-between rounded-lg border bg-white px-3 py-2 text-left shadow-sm focus:ring-2',
-						error && 'border-maroon-flush-300 ring-maroon-flush-100',
+						'inline-flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2 text-left shadow-sm focus:ring-2',
+						error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
 					)}
 					onClick={() => setIsOpen((prev) => !prev)}
 				>

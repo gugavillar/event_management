@@ -9,6 +9,9 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			height: {
+				'page-content': 'calc(100vh - 7.5rem)',
+			},
 			gridTemplateColumns: {
 				appLg: 'minmax(0, 60rem) 30rem',
 				admin: 'auto 1fr',

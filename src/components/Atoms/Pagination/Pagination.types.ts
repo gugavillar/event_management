@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react'
 
 export type PaginationProps = {
-	totalPages: number
+	totalPages?: number
 	currentPage: number
 	setPage: Dispatch<SetStateAction<number>>
 }

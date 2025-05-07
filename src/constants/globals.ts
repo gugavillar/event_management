@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
+export const LIMIT_PER_PAGE = 10
+
 export const MODALS_IDS = {
 	// PARTICIPANT
 	PARTICIPANT_PAYMENT_MODAL: 'participant_payment_modal',

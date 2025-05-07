@@ -25,7 +25,7 @@ const PageButton = ({ label, setPage, isActive }: PageButtonProps) => {
 			className={twMerge(
 				'focus:outline-hidden flex min-h-9 min-w-9 items-center justify-center border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm first:rounded-s-lg last:rounded-e-lg hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-50',
 				isActive &&
-					'bg-jungle-green-200 text-jungle-green-800 hover:bg-jungle-green-200 hover:text-jungle-green-800',
+					'border-none bg-teal-500 text-white hover:bg-teal-500 hover:text-white',
 			)}
 			aria-current="page"
 			onClick={() => setPage(label)}
@@ -37,7 +37,7 @@ const PageButton = ({ label, setPage, isActive }: PageButtonProps) => {
 
 export const Pagination = ({
 	currentPage,
-	totalPages,
+	totalPages = 1,
 	setPage,
 }: PaginationProps) => {
 	const isFirstPage = currentPage === 1
@@ -49,7 +49,7 @@ export const Pagination = ({
 	})
 	return (
 		<nav
-			className="flex w-full items-center justify-center -space-x-px"
+			className="!mt-auto flex w-full items-center justify-center -space-x-px"
 			aria-label="Pagination"
 		>
 			<button
