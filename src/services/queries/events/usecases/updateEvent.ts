@@ -1,10 +1,10 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { EventsFromAPI, FormEvent } from '../event.type'
+import { EventsAPI, FormEvent } from '../event.type'
 
 type UpdateEventArgs = {
-	eventId: EventsFromAPI['id']
+	eventId: EventsAPI['id']
 	data: FormEvent
 }
 

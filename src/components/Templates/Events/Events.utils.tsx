@@ -5,7 +5,7 @@ import { MdDelete } from 'react-icons/md'
 import { Tooltip } from '@/components/Atoms'
 import { GenderType } from '@/constants'
 import { currencyValue } from '@/formatters'
-import { EventsFromAPI } from '@/services/queries/events/event.type'
+import { EventsAPI } from '@/services/queries/events/event.type'
 
 export const HEADER_LABELS = [
 	{
@@ -39,9 +39,9 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	data: Array<EventsFromAPI> | undefined,
-	handleOpenDrawer: (id: EventsFromAPI['id']) => void,
-	handleDeleteEvent: (id: EventsFromAPI['id']) => void,
+	data: Array<EventsAPI> | undefined,
+	handleOpenDrawer: (id: EventsAPI['id']) => void,
+	handleDeleteEvent: (id: EventsAPI['id']) => void,
 ) => {
 	if (!data) return []
 

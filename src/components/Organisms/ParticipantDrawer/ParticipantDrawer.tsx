@@ -15,16 +15,14 @@ import {
 	useGetParticipant,
 	useUpdateParticipant,
 } from '@/services/queries/participants'
-import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { ParticipantType } from './ParticipantDrawer.schema'
 
 type ParticipantDrawerProps = {
 	drawerId: string
-	selectedParticipant: null | ParticipantsFromAPI['id']
-	setSelectedParticipant: Dispatch<
-		SetStateAction<ParticipantsFromAPI['id'] | null>
-	>
+	selectedParticipant: null | ParticipantsAPI['id']
+	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
 }
 
 export const ParticipantDrawer = ({

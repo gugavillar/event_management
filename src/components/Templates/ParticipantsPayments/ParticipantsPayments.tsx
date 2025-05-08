@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { Select } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { Pagination, Select } from '@/components/Atoms'
+import { ComboBox, ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
@@ -13,22 +13,28 @@ import {
 	PaymentSelectOptions,
 	PaymentTypeAPI,
 } from '@/constants'
-import { formatterFieldSelectValues, removeCurrencyFormat } from '@/formatters'
-import { useGetEvents } from '@/services/queries/events'
+import { formatterComboBoxValues, removeCurrencyFormat } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
 import {
 	useGetPayments,
 	useUpdateParticipantPayment,
 } from '@/services/queries/participants'
-import { ParticipantsPaymentsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
 
 export const ParticipantsPayments = () => {
 	const [selectedParticipant, setSelectedParticipant] =
-		useState<ParticipantsPaymentsFromAPI | null>(null)
-	const { data: events } = useGetEvents()
+		useState<ParticipantsPaymentsAPI | null>(null)
 	const {
-		data: participants,
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
+	const {
+		data: participantsPayments,
 		isLoading: isLoadingParticipants,
 		search,
 		setSearch,
@@ -36,20 +42,33 @@ export const ParticipantsPayments = () => {
 		eventId,
 		setPaymentType,
 		paymentType,
+		page,
+		setPage,
 	} = useGetPayments()
 	const { update, isPending } = useUpdateParticipantPayment()
 
-	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+		true,
+	)
+
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
 
 	const handleOpenModalToPaymentParticipant = (
-		payment: ParticipantsPaymentsFromAPI,
+		payment: ParticipantsPaymentsAPI,
 	) => {
 		setSelectedParticipant(payment)
 		overlayOpen(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
 	}
 
 	const formattedData = formatTableData(
-		participants,
+		participantsPayments?.data,
 		handleOpenModalToPaymentParticipant,
 	)
 
@@ -78,6 +97,9 @@ export const ParticipantsPayments = () => {
 		)
 	}
 
+	const hasMoreThanOnePage =
+		!!participantsPayments?.totalPages && participantsPayments.totalPages > 1
+
 	return (
 		<PageContent
 			pageTitle="Pagamentos dos participantes"
@@ -91,11 +113,13 @@ export const ParticipantsPayments = () => {
 				setSearch={setSearch}
 				moreFilter={
 					<>
-						<Select
-							placeholder="Selecione o evento"
+						<ComboBox
+							keyOptionLabel="label"
+							keyOptionValue="value"
 							options={formattedEvents}
-							value={eventId}
-							onChange={(e) => setEventId(e.target.value)}
+							selectedValue={eventId}
+							setSelectedValue={setEventId}
+							lastItemRef={lastItemRef}
 						/>
 						<Select
 							placeholder="Selecione o tipo de pagamento"
@@ -109,9 +133,15 @@ export const ParticipantsPayments = () => {
 				<ListManager
 					bodyData={formattedData}
 					headerLabels={HEADER_LABELS}
-					// handleClickRow={handleClickRow}
 					isLoading={isLoadingParticipants}
 				/>
+				{hasMoreThanOnePage && (
+					<Pagination
+						currentPage={page}
+						totalPages={participantsPayments?.totalPages}
+						setPage={setPage}
+					/>
+				)}
 			</ListPage>
 			<PaymentModal
 				modalId={MODALS_IDS.PARTICIPANT_PAYMENT_MODAL}

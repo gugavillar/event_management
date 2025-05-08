@@ -20,6 +20,9 @@ export const useGetParticipants = () => {
 	const [status, setStatus] = useState(
 		searchParams.get('statusParticipant') || '',
 	)
+	const [page, setPage] = useState(
+		Number(searchParams.get('pageParticipant')) || 1,
+	)
 
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
@@ -29,23 +32,36 @@ export const useGetParticipants = () => {
 		eventId: debounceEventId,
 		searchParticipant: debounceSearch,
 		statusParticipant: debounceStatus,
+		pageParticipant: page.toString(),
 	})
 
-	const query: UseQueryResult<Array<ParticipantsFromAPI>> = useQuery({
+	const query: UseQueryResult<ParticipantsFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.PARTICIPANTS,
 			debounceEventId,
 			debounceSearch,
 			debounceStatus,
+			page,
 		],
 		queryFn: () =>
 			getParticipants({
 				eventId: debounceEventId,
 				searchParticipant: debounceSearch,
 				statusParticipant: debounceStatus,
+				page,
 			}),
 		retry: 0,
 	})
 
-	return { ...query, eventId, setEventId, setSearch, search, status, setStatus }
+	return {
+		...query,
+		eventId,
+		setEventId,
+		setSearch,
+		search,
+		status,
+		setStatus,
+		page,
+		setPage,
+	}
 }

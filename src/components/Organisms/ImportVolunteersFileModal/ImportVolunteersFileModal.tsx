@@ -1,15 +1,21 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
+import {
+	Controller,
+	FormProvider,
+	type SubmitHandler,
+	useForm,
+} from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { UUID } from 'crypto'
 
 import { Alert, Button, Header, Modal, Text } from '@/components/Atoms'
-import { FileField, SelectField } from '@/components/Molecules'
+import { ComboBox, FileField } from '@/components/Molecules'
 import { FILES_TYPES, overlayClose } from '@/constants'
-import { formatterFieldSelectValues } from '@/formatters'
-import { useGetEvents } from '@/services/queries/events'
+import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
 import { useImportVolunteersData } from '@/services/queries/volunteers'
 
 import {
@@ -31,11 +37,26 @@ export const ImportVolunteersFileModal = ({
 		},
 		resolver: zodResolver(ImportVolunteersFileModalSchema),
 	})
-	const { data: events } = useGetEvents()
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 	const { importData, isPending } = useImportVolunteersData()
 
-	const formattedEvents: Array<{ value: UUID; label: string }> =
-		formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+		true,
+	)
+
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
 
 	const handleClose = () => {
 		methods.reset()
@@ -68,13 +89,21 @@ export const ImportVolunteersFileModal = ({
 							<Text>Selecione o evento e o arquivo que deseja importar</Text>
 						</div>
 						<Alert description="Importe um arquivo .xlsx com todos os campos formatados como texto, incluindo números e datas" />
-						<SelectField
-							fieldName="eventId"
-							placeholder="Selecione o evento"
-							options={formattedEvents}
-						>
-							Evento
-						</SelectField>
+						<Controller
+							name="eventId"
+							control={methods.control}
+							render={({ field }) => (
+								<ComboBox
+									keyOptionLabel="label"
+									keyOptionValue="value"
+									options={formattedEvents}
+									selectedValue={field.value}
+									setSelectedValue={field.onChange}
+									lastItemRef={lastItemRef}
+									label="Evento"
+								/>
+							)}
+						/>
 						<FileField fieldName="file" accept={FILES_TYPES.xlsx}>
 							Arquivo
 						</FileField>

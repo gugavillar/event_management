@@ -1,5 +1,6 @@
 import { Volunteers } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
+import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 import {
@@ -20,7 +21,7 @@ export default async function VolunteersPage({
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debounceStatusValue = searchParams.statusVolunteer ?? ''
 	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
-		async () => getEvents({ searchEvent: '' }),
+		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
 			getVolunteers({
 				searchVolunteer: debounceSearchValue,
@@ -30,9 +31,10 @@ export default async function VolunteersPage({
 		async () => getVolunteersFunctions({ searchFunction: '' }),
 	])
 	return (
-		<HydrationProvider
+		<HydrationInfinityProvider
 			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS, '']}
+			queryKey={[QUERY_KEYS.EVENTS]}
+			initialPageParam={1}
 		>
 			<HydrationProvider
 				queryFn={getAllVolunteers}
@@ -50,6 +52,6 @@ export default async function VolunteersPage({
 					<Volunteers />
 				</HydrationProvider>
 			</HydrationProvider>
-		</HydrationProvider>
+		</HydrationInfinityProvider>
 	)
 }

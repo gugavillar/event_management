@@ -3,7 +3,7 @@ import { MdPayment } from 'react-icons/md'
 import { PaymentTag, Tooltip } from '@/components/Atoms'
 import { PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
-import { ParticipantsPaymentsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
 
 export const HEADER_LABELS = [
 	{
@@ -37,8 +37,8 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	payments: ParticipantsPaymentsFromAPI[] | undefined,
-	handlePaymentModal: (payment: ParticipantsPaymentsFromAPI) => void,
+	payments: Array<ParticipantsPaymentsAPI> | undefined,
+	handlePaymentModal: (payment: ParticipantsPaymentsAPI) => void,
 ) => {
 	if (!payments) return []
 

@@ -6,7 +6,7 @@ import { MdDelete } from 'react-icons/md'
 import { StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
 import { formatPhone } from '@/formatters'
-import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 export const HEADER_LABELS = [
 	{
@@ -40,10 +40,10 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	data: Array<ParticipantsFromAPI> | undefined,
-	handleDeleteParticipant: (id: ParticipantsFromAPI['id']) => void,
-	handleCheckInParticipant: (id: ParticipantsFromAPI['id']) => void,
-	handleEditParticipant: (id: ParticipantsFromAPI['id']) => void,
+	data: Array<ParticipantsAPI> | undefined,
+	handleDeleteParticipant: (id: ParticipantsAPI['id']) => void,
+	handleCheckInParticipant: (id: ParticipantsAPI['id']) => void,
+	handleEditParticipant: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!data) return []
 

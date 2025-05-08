@@ -6,14 +6,12 @@ import { IoMdAlert } from 'react-icons/io'
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { CHECK_IN_STATUS, overlayClose } from '@/constants'
 import { useUpdateCheckInParticipant } from '@/services/queries/participants'
-import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 type ParticipantCheckInModalProps = {
 	modalId: string
-	selectedParticipant: ParticipantsFromAPI['id'] | null
-	setSelectedParticipant: Dispatch<
-		SetStateAction<ParticipantsFromAPI['id'] | null>
-	>
+	selectedParticipant: ParticipantsAPI['id'] | null
+	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
 }
 
 export const ParticipantCheckInModal = ({

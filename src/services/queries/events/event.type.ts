@@ -11,7 +11,7 @@ export type FormEvent = {
 	volunteerPrice: number
 }
 
-export type EventsFromAPI = {
+export type EventsAPI = {
 	id: UUID
 	name: string
 	gender: GenderTypeAPI
@@ -22,4 +22,12 @@ export type EventsFromAPI = {
 	createdAt: string
 	updatedAt: string
 	userId: UUID
+}
+
+export type EventsFromAPI = {
+	data: Array<EventsAPI>
+	currentPage: number
+	perPage: number
+	totalCount: number
+	totalPages: number
 }

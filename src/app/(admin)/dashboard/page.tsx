@@ -1,5 +1,6 @@
 import { Dashboard } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
+import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getDashboardData } from '@/services/queries/dashboard'
 import { getEvents } from '@/services/queries/events'
@@ -14,7 +15,7 @@ export default async function DashboardPage({
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const [dashboardData, getAllEvents] = await Promise.all([
 		async () => await getDashboardData({ eventId: debounceEventIdValue }),
-		async () => getEvents({ searchEvent: '' }),
+		async () => getEvents({ searchEvent: '', page: 1 }),
 	])
 
 	return (
@@ -22,12 +23,13 @@ export default async function DashboardPage({
 			queryFn={dashboardData}
 			queryKey={[QUERY_KEYS.DASHBOARD, debounceEventIdValue]}
 		>
-			<HydrationProvider
+			<HydrationInfinityProvider
 				queryFn={getAllEvents}
-				queryKey={[QUERY_KEYS.EVENTS, '']}
+				queryKey={[QUERY_KEYS.EVENTS]}
+				initialPageParam={1}
 			>
 				<Dashboard />
-			</HydrationProvider>
+			</HydrationInfinityProvider>
 		</HydrationProvider>
 	)
 }

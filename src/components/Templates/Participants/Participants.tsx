@@ -4,8 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Select } from '@/components/Atoms'
-import { ImportParticipantsButton, ListManager } from '@/components/Molecules'
+import { Pagination, Select } from '@/components/Atoms'
+import {
+	ComboBox,
+	ImportParticipantsButton,
+	ListManager,
+} from '@/components/Molecules'
 import {
 	ListPage,
 	PageContent,
@@ -20,17 +24,17 @@ import {
 	ParticipantType,
 } from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
-import { formatterFieldSelectValues } from '@/formatters'
-import { useTooltip } from '@/hooks'
-import { useGetEvents } from '@/services/queries/events'
+import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver, useTooltip } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetParticipants } from '@/services/queries/participants'
-import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
 
 export const Participants = () => {
 	const [selectedParticipant, setSelectedParticipant] = useState<
-		null | ParticipantsFromAPI['id']
+		null | ParticipantsAPI['id']
 	>(null)
 
 	const methods = useForm<ParticipantType>({
@@ -54,7 +58,12 @@ export const Participants = () => {
 		},
 		resolver: zodResolver(ParticipantSchema),
 	})
-	const { data: events } = useGetEvents()
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 	const {
 		data: participants,
 		isLoading,
@@ -64,27 +73,40 @@ export const Participants = () => {
 		eventId,
 		status,
 		setStatus,
+		page,
+		setPage,
 	} = useGetParticipants()
 	useTooltip(Boolean(selectedParticipant))
 
-	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+		true,
+	)
+
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
 
 	const handleOpenModalToDeleteParticipant = async (
-		id: ParticipantsFromAPI['id'],
+		id: ParticipantsAPI['id'],
 	) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
 	}
 
 	const handleOpenModalToCheckInParticipant = async (
-		id: ParticipantsFromAPI['id'],
+		id: ParticipantsAPI['id'],
 	) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
 	}
 
 	const handleOpenDrawerToEditParticipant = async (
-		id: ParticipantsFromAPI['id'],
+		id: ParticipantsAPI['id'],
 	) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
@@ -93,18 +115,21 @@ export const Participants = () => {
 	const handleOpenModalToShowParticipantData = async ({
 		id,
 	}: {
-		id: ParticipantsFromAPI['id']
+		id: ParticipantsAPI['id']
 	}) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
 	}
 
 	const formattedParticipants = formatTableData(
-		participants,
+		participants?.data,
 		handleOpenModalToDeleteParticipant,
 		handleOpenModalToCheckInParticipant,
 		handleOpenDrawerToEditParticipant,
 	)
+
+	const hasMoreThanOnePage =
+		!!participants?.totalPages && participants.totalPages > 1
 
 	return (
 		<PageContent
@@ -126,11 +151,13 @@ export const Participants = () => {
 				setSearch={setSearch}
 				moreFilter={
 					<>
-						<Select
-							placeholder="Selecione o evento"
+						<ComboBox
+							keyOptionLabel="label"
+							keyOptionValue="value"
 							options={formattedEvents}
-							value={eventId}
-							onChange={(e) => setEventId(e.target.value)}
+							selectedValue={eventId}
+							setSelectedValue={setEventId}
+							lastItemRef={lastItemRef}
 						/>
 						<Select
 							placeholder="Selecione o status"
@@ -147,6 +174,13 @@ export const Participants = () => {
 					isLoading={isLoading}
 					handleClickRow={handleOpenModalToShowParticipantData}
 				/>
+				{hasMoreThanOnePage && (
+					<Pagination
+						currentPage={page}
+						totalPages={participants?.totalPages}
+						setPage={setPage}
+					/>
+				)}
 			</ListPage>
 			<ParticipantDeleteModal
 				modalId={MODALS_IDS.PARTICIPANT_REMOVE_MODAL}

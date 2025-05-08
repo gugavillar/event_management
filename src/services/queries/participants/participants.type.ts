@@ -2,14 +2,14 @@ import { UUID } from 'crypto'
 
 import { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
 
-import { EventsFromAPI } from '../events/event.type'
+import { EventsAPI } from '../events/event.type'
 
 export type ImportParticipantsDataValues = {
 	file: File
-	eventId: EventsFromAPI['id']
+	eventId: EventsAPI['id']
 }
 
-export type ParticipantsFromAPI = {
+export type ParticipantsAPI = {
 	id: UUID
 	name: string
 	email: string
@@ -37,7 +37,15 @@ export type ParticipantsFromAPI = {
 		updatedAt: string
 		volunteerId: UUID
 	}
-	event: EventsFromAPI
+	event: EventsAPI
+}
+
+export type ParticipantsFromAPI = {
+	data: Array<ParticipantsAPI>
+	currentPage: number
+	perPage: number
+	totalCount: number
+	totalPages: number
 }
 
 export type FormParticipant = {
@@ -59,14 +67,22 @@ export type FormParticipant = {
 	street: string
 }
 
-export type ParticipantsPaymentsFromAPI = {
+export type ParticipantsPaymentsAPI = {
 	id: UUID
 	paymentValue: string
 	paymentType: PaymentTypeAPI | null
 	eventId: UUID
-	event: EventsFromAPI
+	event: EventsAPI
 	participantId: UUID
-	participant: ParticipantsFromAPI
+	participant: ParticipantsAPI
 	createdAt: string
 	updatedAt: string
+}
+
+export type ParticipantsPaymentsFromAPI = {
+	data: Array<ParticipantsPaymentsAPI>
+	currentPage: number
+	perPage: number
+	totalCount: number
+	totalPages: number
 }

@@ -6,14 +6,17 @@ import { getEvents } from '@/services/queries/events'
 export default async function EventsPage({
 	searchParams,
 }: {
-	searchParams: { searchEvent: string }
+	searchParams: { searchEvent: string; pageEvent: string }
 }) {
 	const debounceValue = searchParams.searchEvent ?? ''
-	const getAllEvents = async () => getEvents({ searchEvent: debounceValue })
+	const page = Number(searchParams.pageEvent) ?? 1
+
+	const getAllEvents = async () =>
+		getEvents({ searchEvent: debounceValue, page })
 	return (
 		<HydrationProvider
 			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS, debounceValue]}
+			queryKey={[QUERY_KEYS.EVENTS, debounceValue, page]}
 		>
 			<Events />
 		</HydrationProvider>

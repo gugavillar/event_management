@@ -6,15 +6,15 @@ import { QUERY_KEYS } from '@/constants'
 import { formatPhone } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
 
-import { ParticipantsFromAPI } from '../participants.type'
+import { ParticipantsAPI } from '../participants.type'
 import { getParticipant } from '../usecases'
 
 export const useGetParticipant = (
-	participantId: ParticipantsFromAPI['id'] | null,
+	participantId: ParticipantsAPI['id'] | null,
 ) => {
-	const query: UseQueryResult<ParticipantsFromAPI> = useQuery({
+	const query: UseQueryResult<ParticipantsAPI> = useQuery({
 		queryKey: [QUERY_KEYS.PARTICIPANT, participantId],
-		queryFn: () => getParticipant(participantId as ParticipantsFromAPI['id']),
+		queryFn: () => getParticipant(participantId as ParticipantsAPI['id']),
 		retry: 0,
 		enabled: !!participantId,
 		select: (data) => ({

@@ -76,12 +76,12 @@ export const ComboBox = <T,>({
 
 	return (
 		<div className={twMerge('w-full', className)}>
-			<Label {...(error && { 'aria-invalid': true })}>{label}</Label>
+			{label && <Label {...(error && { 'aria-invalid': true })}>{label}</Label>}
 			<div className="relative w-full" ref={containerRef}>
 				<button
 					type="button"
 					className={twMerge(
-						'inline-flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2 text-left shadow-sm focus:ring-2',
+						'inline-flex w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-sm shadow-sm focus:ring-2',
 						error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
 					)}
 					onClick={() => setIsOpen((prev) => !prev)}

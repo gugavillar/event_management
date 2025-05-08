@@ -1,5 +1,6 @@
 import { ParticipantsPayments } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
+import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 import { getPayments } from '@/services/queries/participants'
@@ -11,36 +12,42 @@ export default async function ParticipantsPaymentsPage({
 		searchParticipant: string
 		eventId: string
 		paymentType: string
+		pageParticipantPayment: string
 	}
 }) {
 	const debounceSearchValue = searchParams.searchParticipant ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debouncePaymentType = searchParams.paymentType ?? ''
-	const [getAllEvents, getAllParticipants] = await Promise.all([
-		async () => getEvents({ searchEvent: '' }),
+	const page = Number(searchParams.pageParticipantPayment) ?? 1
+
+	const [getAllEvents, getAllPayments] = await Promise.all([
+		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
 			getPayments({
 				searchParticipant: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				paymentType: debouncePaymentType,
+				page,
 			}),
 	])
 	return (
 		<HydrationProvider
-			queryFn={getAllParticipants}
+			queryFn={getAllPayments}
 			queryKey={[
 				QUERY_KEYS.PAYMENT_PARTICIPANTS,
 				debounceEventIdValue,
 				debounceSearchValue,
 				debouncePaymentType,
+				page,
 			]}
 		>
-			<HydrationProvider
+			<HydrationInfinityProvider
 				queryFn={getAllEvents}
-				queryKey={[QUERY_KEYS.EVENTS, '']}
+				queryKey={[QUERY_KEYS.EVENTS]}
+				initialPageParam={1}
 			>
 				<ParticipantsPayments />
-			</HydrationProvider>
+			</HydrationInfinityProvider>
 		</HydrationProvider>
 	)
 }

@@ -6,15 +6,15 @@ import { LuCalendarPlus } from 'react-icons/lu'
 
 import { Button } from '@/components/Atoms'
 import { overlayOpen } from '@/constants'
-import { EventsFromAPI } from '@/services/queries/events/event.type'
+import { EventsAPI } from '@/services/queries/events/event.type'
 
 import { EventDrawer } from '../EventDrawer'
 import { EventSchema, EventSchemaType } from '../EventDrawer/EventDrawer.schema'
 
 type CreateEventButtonProps = {
 	drawerId: string
-	selectedEvent: null | EventsFromAPI['id']
-	setSelectedEvent: Dispatch<SetStateAction<EventsFromAPI['id'] | null>>
+	selectedEvent: null | EventsAPI['id']
+	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
 }
 
 export const CreateEventButton = ({

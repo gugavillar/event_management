@@ -1,12 +1,12 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { ParticipantsPaymentsFromAPI } from '../participants.type'
+import { ParticipantsPaymentsAPI } from '../participants.type'
 
 type UpdateParticipantPaymentArgs = {
-	paymentId: ParticipantsPaymentsFromAPI['id']
+	paymentId: ParticipantsPaymentsAPI['id']
 	data: {
-		paymentType: ParticipantsPaymentsFromAPI['paymentType']
+		paymentType: ParticipantsPaymentsAPI['paymentType']
 		paymentValue: number
 	}
 }

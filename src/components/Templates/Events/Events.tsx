@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 
+import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import {
 	CreateEventButton,
@@ -11,34 +12,43 @@ import {
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useTooltip } from '@/hooks'
 import { useGetEvents } from '@/services/queries/events'
-import { EventsFromAPI } from '@/services/queries/events/event.type'
+import { EventsAPI } from '@/services/queries/events/event.type'
 
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
 export const Events = () => {
-	const [selectedEvent, setSelectedEvent] = useState<
-		null | EventsFromAPI['id']
-	>(null)
+	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(
+		null,
+	)
 
-	const { data, isLoading, search, setSearch } = useGetEvents()
+	const {
+		data: events,
+		isLoading,
+		search,
+		setSearch,
+		page,
+		setPage,
+	} = useGetEvents()
 
 	useTooltip(Boolean(selectedEvent))
 
-	const handleEditEvent = (id: EventsFromAPI['id']) => {
+	const handleEditEvent = (id: EventsAPI['id']) => {
 		setSelectedEvent(id)
 		overlayOpen(MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER)
 	}
 
-	const handleOpenModalToDeleteEvent = async (id: EventsFromAPI['id']) => {
+	const handleOpenModalToDeleteEvent = async (id: EventsAPI['id']) => {
 		setSelectedEvent(id)
 		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
 	}
 
 	const formatData = formatTableData(
-		data,
+		events?.data,
 		handleEditEvent,
 		handleOpenModalToDeleteEvent,
 	)
+
+	const hasMoreThanOnePage = !!events?.totalPages && events.totalPages > 1
 
 	return (
 		<PageContent subheadingPage="Lista de eventos" isLoading={isLoading}>
@@ -60,6 +70,13 @@ export const Events = () => {
 					headerLabels={HEADER_LABELS}
 					isLoading={isLoading}
 				/>
+				{hasMoreThanOnePage && (
+					<Pagination
+						currentPage={page}
+						totalPages={events?.totalPages}
+						setPage={setPage}
+					/>
+				)}
 			</ListPage>
 			<EventDeleteModal
 				modalId={MODALS_IDS.EVENT_REMOVE_MODAL}

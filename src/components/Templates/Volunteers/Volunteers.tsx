@@ -5,7 +5,11 @@ import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Select } from '@/components/Atoms'
-import { ImportVolunteersButton, ListManager } from '@/components/Molecules'
+import {
+	ComboBox,
+	ImportVolunteersButton,
+	ListManager,
+} from '@/components/Molecules'
 import {
 	AssignFunctionVolunteerModal,
 	DownloadTemplateVolunteersButton,
@@ -20,8 +24,9 @@ import {
 	VolunteerType,
 } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
-import { formatterFieldSelectValues } from '@/formatters'
-import { useGetEvents } from '@/services/queries/events'
+import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetVolunteers } from '@/services/queries/volunteers'
 import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -32,7 +37,12 @@ export const Volunteers = () => {
 		VolunteersFromAPI['id'] | null
 	>(null)
 
-	const { data: events } = useGetEvents()
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 	const {
 		data,
 		isLoading,
@@ -64,7 +74,18 @@ export const Volunteers = () => {
 		resolver: zodResolver(VolunteerSchema),
 	})
 
-	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+		true,
+	)
+
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
 
 	const handleOpenModalToCheckInVolunteer = async (
 		id: VolunteersFromAPI['id'],
@@ -122,11 +143,13 @@ export const Volunteers = () => {
 				setSearch={setSearch}
 				moreFilter={
 					<>
-						<Select
-							placeholder="Selecione o evento"
+						<ComboBox
+							keyOptionLabel="label"
+							keyOptionValue="value"
 							options={formattedEvents}
-							value={eventId}
-							onChange={(e) => setEventId(e.target.value)}
+							selectedValue={eventId}
+							setSelectedValue={setEventId}
+							lastItemRef={lastItemRef}
 						/>
 						<Select
 							placeholder="Selecione o status"

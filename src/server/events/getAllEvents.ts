@@ -1,22 +1,43 @@
-import { prisma } from '@/constants'
+import { LIMIT_PER_PAGE, prisma } from '@/constants'
 
-export const getAllEvents = async (search: string | null) => {
+export const getAllEvents = async (search: string | null, page = 1) => {
 	try {
-		return await prisma.event.findMany({
-			...(search && {
-				where: {
-					name: { startsWith: search },
-				},
-				orderBy: {
-					name: 'asc',
-				},
+		const skip = (page - 1) * LIMIT_PER_PAGE
+
+		const [events, totalOfEvents] = await Promise.all([
+			prisma.event.findMany({
+				...(search && {
+					where: {
+						name: { startsWith: search },
+					},
+					orderBy: {
+						name: 'asc',
+					},
+				}),
+				...(!search && {
+					orderBy: {
+						createdAt: 'desc',
+					},
+				}),
+				skip,
+				take: LIMIT_PER_PAGE,
 			}),
-			...(!search && {
-				orderBy: {
-					createdAt: 'desc',
-				},
+			prisma.event.count({
+				...(search && {
+					where: {
+						name: { startsWith: search },
+					},
+				}),
 			}),
-		})
+		])
+
+		return {
+			data: events,
+			currentPage: page,
+			perPage: LIMIT_PER_PAGE,
+			totalCount: totalOfEvents,
+			totalPages: Math.ceil(totalOfEvents / LIMIT_PER_PAGE),
+		}
 	} catch (error) {
 		console.error('@getAllEvents error:', error)
 		throw Error

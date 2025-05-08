@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 
 import { Header, Modal, Spinner } from '@/components/Atoms'
 import { useGetParticipant } from '@/services/queries/participants'
-import { ParticipantsFromAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { AddressInfoCard } from '../AddressInfoCard'
 import { FamilyContactInfo } from '../FamilyContactInfo'
@@ -10,10 +10,8 @@ import { PersonalInfoCard } from '../PersonalInfoCard'
 
 type ParticipantModalDataProps = {
 	modalId: string
-	selectedParticipant: ParticipantsFromAPI['id'] | null
-	setSelectedParticipant: Dispatch<
-		SetStateAction<ParticipantsFromAPI['id'] | null>
-	>
+	selectedParticipant: ParticipantsAPI['id'] | null
+	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
 }
 
 export const ParticipantModalData = ({

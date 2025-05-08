@@ -8,7 +8,7 @@ export type ComboBoxProps<T = string> = Omit<
 	ComponentProps<'select'>,
 	'value' | 'onChange'
 > & {
-	label: string
+	label?: string
 	error?: string
 	isLoading?: boolean
 	selectedValue?: T

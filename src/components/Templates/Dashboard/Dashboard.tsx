@@ -8,14 +8,31 @@ import {
 	PaymentsChart,
 } from '@/components/Organisms'
 import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetDashboardData } from '@/services/queries/dashboard'
-import { useGetEvents } from '@/services/queries/events'
+import { useGetInfinityEvents } from '@/services/queries/events'
 
 export const Dashboard = () => {
-	const { data: events } = useGetEvents()
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 	const { data, eventId, setEventId, isLoading } = useGetDashboardData()
 
-	const formattedEvents = formatterComboBoxValues(events, 'name', 'id', true)
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+		true,
+	)
+
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
 
 	return (
 		<PageContent subheadingPage="Veja estatísticas totais ou apenas do evento selecionado">
@@ -27,6 +44,7 @@ export const Dashboard = () => {
 				selectedValue={eventId}
 				setSelectedValue={setEventId}
 				label="Selecione o evento"
+				lastItemRef={lastItemRef}
 			/>
 			<DashboardCards isLoading={isLoading} data={data} />
 			<CitiesChart

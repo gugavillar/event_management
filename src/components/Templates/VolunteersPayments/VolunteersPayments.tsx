@@ -4,7 +4,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Select } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { ComboBox, ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
@@ -13,8 +13,9 @@ import {
 	PaymentSelectOptions,
 	PaymentTypeAPI,
 } from '@/constants'
-import { formatterFieldSelectValues, removeCurrencyFormat } from '@/formatters'
-import { useGetEvents } from '@/services/queries/events'
+import { formatterComboBoxValues, removeCurrencyFormat } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
 import {
 	useGetPayments,
 	useUpdateVolunteerPayment,
@@ -26,7 +27,12 @@ import { formatTableData, HEADER_LABELS } from './VolunteersPayments.utils'
 export const VolunteersPayments = () => {
 	const [selectedVolunteer, setSelectedVolunteer] =
 		useState<VolunteersPaymentsFromAPI | null>(null)
-	const { data: events } = useGetEvents()
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 	const {
 		data: volunteers,
 		isLoading: isLoadingParticipants,
@@ -39,7 +45,18 @@ export const VolunteersPayments = () => {
 	} = useGetPayments()
 	const { update, isPending } = useUpdateVolunteerPayment()
 
-	const formattedEvents = formatterFieldSelectValues(events, 'name', 'id')
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+		true,
+	)
+
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
 
 	const handleOpenModalToPaymentVolunteer = (
 		payment: VolunteersPaymentsFromAPI,
@@ -91,11 +108,13 @@ export const VolunteersPayments = () => {
 				setSearch={setSearch}
 				moreFilter={
 					<>
-						<Select
-							placeholder="Selecione o evento"
+						<ComboBox
+							keyOptionLabel="label"
+							keyOptionValue="value"
 							options={formattedEvents}
-							value={eventId}
-							onChange={(e) => setEventId(e.target.value)}
+							selectedValue={eventId}
+							setSelectedValue={setEventId}
+							lastItemRef={lastItemRef}
 						/>
 						<Select
 							placeholder="Selecione o tipo de pagamento"

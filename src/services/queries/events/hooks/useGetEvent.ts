@@ -6,13 +6,13 @@ import { QUERY_KEYS } from '@/constants'
 import { currencyValue } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
 
-import { EventsFromAPI } from '../event.type'
+import { EventsAPI } from '../event.type'
 import { getEvent } from '../usecases'
 
-export const useGetEvent = (eventId: EventsFromAPI['id'] | null) => {
-	const query: UseQueryResult<EventsFromAPI> = useQuery({
+export const useGetEvent = (eventId: EventsAPI['id'] | null) => {
+	const query: UseQueryResult<EventsAPI> = useQuery({
 		queryKey: [QUERY_KEYS.EVENT, eventId],
-		queryFn: () => getEvent(eventId as EventsFromAPI['id']),
+		queryFn: () => getEvent(eventId as EventsAPI['id']),
 		retry: 0,
 		enabled: !!eventId,
 		select: (data) => ({

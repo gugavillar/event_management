@@ -16,9 +16,10 @@ const handlerPost = async (request: NextRequest) => {
 
 const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('searchEvent')
+	const pageParams = Number(request.nextUrl.searchParams.get('pageEvent')) || 1
 
 	return await requestProcess({
-		functions: async () => await getAllEvents(searchParams),
+		functions: async () => await getAllEvents(searchParams, pageParams),
 	})
 }
 

@@ -1,5 +1,6 @@
 import { Participants } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
+import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 import { getParticipants } from '@/services/queries/participants'
@@ -11,25 +12,30 @@ export default async function ParticipantsPage({
 		searchParticipant: string
 		eventId: string
 		statusParticipant: string
+		pageParticipant: string
 	}
 }) {
 	const debounceSearchValue = searchParams.searchParticipant ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debounceStatusValue = searchParams.statusParticipant ?? ''
+	const page = Number(searchParams.pageParticipant) ?? 1
+
 	const [getAllEvents, getAllParticipants] = await Promise.all([
-		async () => getEvents({ searchEvent: '' }),
+		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
 			getParticipants({
 				searchParticipant: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				statusParticipant: debounceStatusValue,
+				page,
 			}),
 	])
 
 	return (
-		<HydrationProvider
+		<HydrationInfinityProvider
 			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS, '']}
+			queryKey={[QUERY_KEYS.EVENTS]}
+			initialPageParam={1}
 		>
 			<HydrationProvider
 				queryFn={getAllParticipants}
@@ -38,10 +44,11 @@ export default async function ParticipantsPage({
 					debounceEventIdValue,
 					debounceSearchValue,
 					debounceStatusValue,
+					page,
 				]}
 			>
 				<Participants />
 			</HydrationProvider>
-		</HydrationProvider>
+		</HydrationInfinityProvider>
 	)
 }

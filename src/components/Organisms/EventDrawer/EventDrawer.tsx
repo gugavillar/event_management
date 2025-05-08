@@ -17,14 +17,14 @@ import {
 	useGetEvent,
 	useUpdateEvent,
 } from '@/services/queries/events'
-import { EventsFromAPI, FormEvent } from '@/services/queries/events/event.type'
+import { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
 
 import { EventSchemaType } from './EventDrawer.schema'
 
 type EventDrawerProps = {
 	drawerId: string
-	selectedEvent: null | EventsFromAPI['id']
-	setSelectedEvent: Dispatch<SetStateAction<EventsFromAPI['id'] | null>>
+	selectedEvent: null | EventsAPI['id']
+	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
 }
 
 export const EventDrawer = ({

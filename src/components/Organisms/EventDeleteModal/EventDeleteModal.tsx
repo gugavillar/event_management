@@ -6,12 +6,12 @@ import { IoMdAlert } from 'react-icons/io'
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteEvent } from '@/services/queries/events'
-import { EventsFromAPI } from '@/services/queries/events/event.type'
+import { EventsAPI } from '@/services/queries/events/event.type'
 
 type EventDeleteModalProps = {
 	modalId: string
-	selectedEvent: EventsFromAPI['id'] | null
-	setSelectedEvent: Dispatch<SetStateAction<EventsFromAPI['id'] | null>>
+	selectedEvent: EventsAPI['id'] | null
+	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
 }
 
 export const EventDeleteModal = ({

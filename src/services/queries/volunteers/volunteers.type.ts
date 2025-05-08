@@ -2,11 +2,11 @@ import { UUID } from 'crypto'
 
 import { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
 
-import { EventsFromAPI } from '../events/event.type'
+import { EventsAPI } from '../events/event.type'
 
 export type ImportVolunteersDataValues = {
 	file: File
-	eventId: EventsFromAPI['id']
+	eventId: EventsAPI['id']
 }
 
 export type VolunteersFunctionsFromAPI = {
@@ -31,7 +31,7 @@ export type VolunteersFromAPI = {
 	createdAt: string
 	updatedAt: string
 	eventId: UUID
-	event: EventsFromAPI
+	event: EventsAPI
 	Address: {
 		id: UUID
 		street: string
@@ -73,7 +73,7 @@ export type VolunteersPaymentsFromAPI = {
 	paymentValue: string
 	paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null
 	eventId: UUID
-	event: EventsFromAPI
+	event: EventsAPI
 	volunteerId: UUID
 	volunteer: VolunteersFromAPI
 	createdAt: string
