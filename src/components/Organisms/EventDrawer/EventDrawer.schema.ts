@@ -1,10 +1,7 @@
 import { z } from 'zod'
 
 import { GenderTypeAPI } from '@/constants'
-import {
-	isEqualOrIsBeforeFirstDate,
-	validateDateAndFutureDate,
-} from '@/formatters'
+import { isEqualOrIsBeforeFirstDate, isValidateDate } from '@/formatters'
 
 export const EventSchema = z
 	.object({
@@ -34,9 +31,7 @@ export const EventSchema = z
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 			.refine(
 				(value) =>
-					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-						? validateDateAndFutureDate(value)
-						: false,
+					/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? isValidateDate(value) : false,
 				{ message: 'A data não é valida' },
 			),
 		finalDate: z
@@ -44,9 +39,7 @@ export const EventSchema = z
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 			.refine(
 				(value) =>
-					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-						? validateDateAndFutureDate(value)
-						: false,
+					/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? isValidateDate(value) : false,
 				{ message: 'A data não é valida' },
 			),
 		participantPrice: z

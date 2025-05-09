@@ -4,14 +4,14 @@ import {
 	formatToBrazilianDate,
 	formatToISODate,
 	isEqualOrIsBeforeFirstDate,
-	validateDateAndFutureDate,
+	isValidateDate,
 } from './date'
 
 describe('date formatters', () => {
 	it('formatToBrazilianDate format correctly', () => {
 		const dateFormatted = formatToBrazilianDate(new Date().toISOString())
 		expect(dateFormatted).toBe(
-			`${new Date().getDate()}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`,
+			`${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`,
 		)
 	})
 
@@ -36,7 +36,7 @@ describe('date formatters', () => {
 	})
 
 	it('its return false when no date is passed to validate date and future date', () => {
-		const isFuture = validateDateAndFutureDate('')
+		const isFuture = isValidateDate('')
 		expect(isFuture).toBe(false)
 	})
 
@@ -44,7 +44,7 @@ describe('date formatters', () => {
 		const today = new Date()
 		const tomorrow = today.setDate(today.getDate() + 1)
 		const dateTomorrow = new Date(tomorrow)
-		const isFuture = validateDateAndFutureDate(
+		const isFuture = isValidateDate(
 			`${dateTomorrow.getDate()}/${dateTomorrow.getMonth() + 1}/${dateTomorrow.getFullYear()}`,
 		)
 		expect(isFuture).toBe(true)

@@ -4,7 +4,6 @@ import {
 	formatISO,
 	isBefore,
 	isEqual,
-	isFuture,
 	isPast,
 	isValid,
 	parse,
@@ -38,12 +37,12 @@ export const formatToISODate = (date: string, startOrEnd: boolean) => {
 	return formatISO(formattedDate)
 }
 
-export const validateDateAndFutureDate = (date: string) => {
+export const isValidateDate = (date: string) => {
 	if (!date) return false
 
 	const numberedDate = getNumberDate(date, 'dd/MM/yyyy')
 
-	return isValid(numberedDate) && isFuture(numberedDate)
+	return isValid(numberedDate)
 }
 
 export const isEqualOrIsBeforeFirstDate = (

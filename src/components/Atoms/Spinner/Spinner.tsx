@@ -5,5 +5,7 @@ import { twMerge } from 'tailwind-merge'
 export type SpinnerProps = ComponentProps<'div'>
 
 export const Spinner = ({ className }: SpinnerProps) => {
-	return <LiaSpinnerSolid className={twMerge('animate-spin', className)} />
+	return (
+		<LiaSpinnerSolid className={twMerge('size-8 animate-spin', className)} />
+	)
 }

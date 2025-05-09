@@ -28,7 +28,7 @@ export const PageContent = ({
 			</HeaderPage>
 			<div
 				className={twMerge(
-					'flex h-page-content w-full flex-col space-y-8 px-6 py-12',
+					'flex w-full flex-col space-y-8 px-6 py-12',
 					isLoading && loadingClasses,
 					className,
 				)}
