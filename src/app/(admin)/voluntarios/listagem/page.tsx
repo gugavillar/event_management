@@ -15,11 +15,14 @@ export default async function VolunteersPage({
 		searchVolunteer: string
 		eventId: string
 		statusVolunteer: string
+		pageVolunteer: string
 	}
 }) {
 	const debounceSearchValue = searchParams.searchVolunteer ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debounceStatusValue = searchParams.statusVolunteer ?? ''
+	const page = Number(searchParams.pageVolunteer) ?? 1
+
 	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
@@ -27,9 +30,11 @@ export default async function VolunteersPage({
 				searchVolunteer: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				statusVolunteer: debounceStatusValue,
+				page,
 			}),
 		async () => getVolunteersFunctions({ searchFunction: '' }),
 	])
+
 	return (
 		<HydrationInfinityProvider
 			queryFn={getAllEvents}
@@ -43,6 +48,7 @@ export default async function VolunteersPage({
 					debounceEventIdValue,
 					debounceSearchValue,
 					debounceStatusValue,
+					page,
 				]}
 			>
 				<HydrationProvider

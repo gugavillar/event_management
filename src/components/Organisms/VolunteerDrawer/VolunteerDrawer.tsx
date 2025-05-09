@@ -15,14 +15,14 @@ import {
 	useGetVolunteer,
 	useUpdateVolunteer,
 } from '@/services/queries/volunteers'
-import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { VolunteerType } from './VolunteerDrawer.schema'
 
 type VolunteerDrawerProps = {
 	drawerId: string
-	selectedVolunteer: null | VolunteersFromAPI['id']
-	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersFromAPI['id'] | null>>
+	selectedVolunteer: null | VolunteersAPI['id']
+	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersAPI['id'] | null>>
 }
 
 export const VolunteerDrawer = ({

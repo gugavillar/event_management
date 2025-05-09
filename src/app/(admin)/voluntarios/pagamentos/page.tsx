@@ -12,28 +12,34 @@ export default async function VolunteersPaymentsPage({
 		searchVolunteer: string
 		eventId: string
 		paymentType: string
+		pageVolunteerPayment: string
 	}
 }) {
 	const debounceSearchValue = searchParams.searchVolunteer ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debouncePaymentType = searchParams.paymentType ?? ''
-	const [getAllEvents, getAllVolunteers] = await Promise.all([
+	const page = Number(searchParams.pageVolunteerPayment) ?? 1
+
+	const [getAllEvents, getAllPayments] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
 			getPayments({
 				searchVolunteer: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				paymentType: debouncePaymentType,
+				page,
 			}),
 	])
+
 	return (
 		<HydrationProvider
-			queryFn={getAllVolunteers}
+			queryFn={getAllPayments}
 			queryKey={[
 				QUERY_KEYS.PAYMENT_VOLUNTEERS,
 				debounceEventIdValue,
 				debounceSearchValue,
 				debouncePaymentType,
+				page,
 			]}
 		>
 			<HydrationInfinityProvider

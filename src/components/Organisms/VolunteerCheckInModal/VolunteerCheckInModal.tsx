@@ -6,12 +6,12 @@ import { IoMdAlert } from 'react-icons/io'
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { CHECK_IN_STATUS, overlayClose } from '@/constants'
 import { useUpdateCheckInVolunteer } from '@/services/queries/volunteers'
-import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 type VolunteerCheckInModalProps = {
 	modalId: string
-	selectedVolunteer: VolunteersFromAPI['id'] | null
-	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersFromAPI['id'] | null>>
+	selectedVolunteer: VolunteersAPI['id'] | null
+	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersAPI['id'] | null>>
 }
 
 export const VolunteerCheckInModal = ({

@@ -20,6 +20,9 @@ export const useGetPayments = () => {
 	const [paymentType, setPaymentType] = useState(
 		searchParams.get('paymentType') || '',
 	)
+	const [page, setPage] = useState(
+		Number(searchParams.get('pageVolunteerPayment')) || 1,
+	)
 
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
@@ -29,20 +32,23 @@ export const useGetPayments = () => {
 		eventId: debounceEventId,
 		searchVolunteer: debounceSearch,
 		paymentType: debouncePaymentType,
+		pageVolunteerPayment: page.toString(),
 	})
 
-	const query: UseQueryResult<Array<VolunteersPaymentsFromAPI>> = useQuery({
+	const query: UseQueryResult<VolunteersPaymentsFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.PAYMENT_VOLUNTEERS,
 			debounceEventId,
 			debounceSearch,
 			debouncePaymentType,
+			page,
 		],
 		queryFn: () =>
 			getPayments({
 				eventId: debounceEventId,
 				searchVolunteer: debounceSearch,
 				paymentType: debouncePaymentType,
+				page,
 			}),
 		retry: 0,
 	})
@@ -55,5 +61,7 @@ export const useGetPayments = () => {
 		search,
 		paymentType,
 		setPaymentType,
+		page,
+		setPage,
 	}
 }

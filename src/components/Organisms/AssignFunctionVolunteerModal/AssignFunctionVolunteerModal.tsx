@@ -12,7 +12,7 @@ import {
 	useGetVolunteersFunctions,
 	useUpdateVolunteerFunction,
 } from '@/services/queries/volunteers'
-import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import {
 	AssignFunctionSchema,
@@ -21,8 +21,8 @@ import {
 
 type CreateVolunteerFunctionModalProps = {
 	modalId: string
-	selectedVolunteer: VolunteersFromAPI['id'] | null
-	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersFromAPI['id'] | null>>
+	selectedVolunteer: VolunteersAPI['id'] | null
+	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersAPI['id'] | null>>
 }
 
 export const AssignFunctionVolunteerModal = ({

@@ -8,6 +8,8 @@ const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('searchVolunteer')
 	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 	const paymentTypeParams = request.nextUrl.searchParams.get('paymentType')
+	const pageParams =
+		Number(request.nextUrl.searchParams.get('pageVolunteerPayment')) || 1
 
 	return await requestProcess({
 		functions: async () =>
@@ -15,6 +17,7 @@ const handlerGet = async (request: NextRequest) => {
 				eventIdParams,
 				searchParams,
 				paymentTypeParams as (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI],
+				pageParams,
 			),
 	})
 }

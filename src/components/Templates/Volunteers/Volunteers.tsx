@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Select } from '@/components/Atoms'
+import { Pagination, Select } from '@/components/Atoms'
 import {
 	ComboBox,
 	ImportVolunteersButton,
@@ -28,13 +28,13 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetVolunteers } from '@/services/queries/volunteers'
-import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
 
 export const Volunteers = () => {
 	const [selectedVolunteer, setSelectedVolunteer] = useState<
-		VolunteersFromAPI['id'] | null
+		VolunteersAPI['id'] | null
 	>(null)
 
 	const {
@@ -44,7 +44,7 @@ export const Volunteers = () => {
 		fetchNextPage,
 	} = useGetInfinityEvents()
 	const {
-		data,
+		data: volunteers,
 		isLoading,
 		search,
 		setSearch,
@@ -52,6 +52,8 @@ export const Volunteers = () => {
 		eventId,
 		status,
 		setStatus,
+		page,
+		setPage,
 	} = useGetVolunteers()
 
 	const methods = useForm<VolunteerType>({
@@ -87,41 +89,38 @@ export const Volunteers = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToCheckInVolunteer = async (
-		id: VolunteersFromAPI['id'],
-	) => {
+	const handleOpenModalToCheckInVolunteer = async (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
 	}
 
-	const handleOpenModalToDeleteVolunteer = async (
-		id: VolunteersFromAPI['id'],
-	) => {
+	const handleOpenModalToDeleteVolunteer = async (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
 	}
 
-	const handleOpenDrawerToEditVolunteer = async (
-		id: VolunteersFromAPI['id'],
-	) => {
+	const handleOpenDrawerToEditVolunteer = async (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
 	}
 
 	const handleOpenAssignFunctionVolunteerModal = async (
-		id: VolunteersFromAPI['id'],
+		id: VolunteersAPI['id'],
 	) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
 	}
 
 	const formattedVolunteers = formatTableData(
-		data,
+		volunteers?.data,
 		handleOpenModalToCheckInVolunteer,
 		handleOpenModalToDeleteVolunteer,
 		handleOpenDrawerToEditVolunteer,
 		handleOpenAssignFunctionVolunteerModal,
 	)
+
+	const hasMoreThanOnePage =
+		!!volunteers?.totalPages && volunteers.totalPages > 1
 
 	return (
 		<PageContent
@@ -165,6 +164,13 @@ export const Volunteers = () => {
 					headerLabels={HEADER_LABELS}
 					isLoading={isLoading}
 				/>
+				{hasMoreThanOnePage && (
+					<Pagination
+						currentPage={page}
+						setPage={setPage}
+						totalPages={volunteers?.totalPages}
+					/>
+				)}
 			</ListPage>
 			<VolunteerCheckInModal
 				modalId={MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL}

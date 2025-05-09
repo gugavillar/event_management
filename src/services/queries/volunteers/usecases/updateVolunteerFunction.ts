@@ -1,10 +1,10 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { VolunteersFromAPI } from '../volunteers.type'
+import { VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerFunctionArgs = {
-	volunteerId: VolunteersFromAPI['id']
+	volunteerId: VolunteersAPI['id']
 	roleId: string
 }
 

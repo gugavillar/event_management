@@ -20,6 +20,9 @@ export const useGetVolunteers = () => {
 	const [status, setStatus] = useState(
 		searchParams.get('statusVolunteer') || '',
 	)
+	const [page, setPage] = useState(
+		Number(searchParams.get('pageVolunteer')) || 1,
+	)
 
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
@@ -29,23 +32,36 @@ export const useGetVolunteers = () => {
 		eventId: debounceEventId,
 		searchParticipant: debounceSearch,
 		statusParticipant: debounceStatus,
+		pageVolunteer: page.toString(),
 	})
 
-	const query: UseQueryResult<Array<VolunteersFromAPI>> = useQuery({
+	const query: UseQueryResult<VolunteersFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS,
 			debounceEventId,
 			debounceSearch,
 			debounceStatus,
+			page,
 		],
 		queryFn: () =>
 			getVolunteers({
 				eventId: debounceEventId,
 				searchVolunteer: debounceSearch,
 				statusVolunteer: debounceStatus,
+				page,
 			}),
 		retry: 0,
 	})
 
-	return { ...query, eventId, setEventId, setSearch, search, status, setStatus }
+	return {
+		...query,
+		eventId,
+		setEventId,
+		setSearch,
+		search,
+		status,
+		setStatus,
+		page,
+		setPage,
+	}
 }

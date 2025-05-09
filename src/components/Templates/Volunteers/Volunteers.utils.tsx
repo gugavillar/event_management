@@ -6,7 +6,7 @@ import { MdAssignmentInd, MdDelete } from 'react-icons/md'
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
 import { formatPhone } from '@/formatters'
-import { VolunteersFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 export const HEADER_LABELS = [
 	{
@@ -44,11 +44,11 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	data: Array<VolunteersFromAPI> | undefined,
-	handleCheckInVolunteer: (id: VolunteersFromAPI['id']) => void,
-	handleDeleteVolunteer: (id: VolunteersFromAPI['id']) => void,
-	handleEditVolunteer: (id: VolunteersFromAPI['id']) => void,
-	handleAssignFunctionVolunteer: (id: VolunteersFromAPI['id']) => void,
+	data: Array<VolunteersAPI> | undefined,
+	handleCheckInVolunteer: (id: VolunteersAPI['id']) => void,
+	handleDeleteVolunteer: (id: VolunteersAPI['id']) => void,
+	handleEditVolunteer: (id: VolunteersAPI['id']) => void,
+	handleAssignFunctionVolunteer: (id: VolunteersAPI['id']) => void,
 ) => {
 	if (!data) return []
 

@@ -7,14 +7,12 @@ import { formatPhone } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { getVolunteer } from '../usecases'
-import { VolunteersFromAPI } from '../volunteers.type'
+import { VolunteersAPI } from '../volunteers.type'
 
-export const useGetVolunteer = (
-	volunteerId: VolunteersFromAPI['id'] | null,
-) => {
-	const query: UseQueryResult<VolunteersFromAPI> = useQuery({
+export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
+	const query: UseQueryResult<VolunteersAPI> = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEER, volunteerId],
-		queryFn: () => getVolunteer(volunteerId as VolunteersFromAPI['id']),
+		queryFn: () => getVolunteer(volunteerId as VolunteersAPI['id']),
 		retry: 0,
 		enabled: !!volunteerId,
 		select: (data) => ({

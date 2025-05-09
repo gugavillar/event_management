@@ -16,7 +16,7 @@ export type VolunteersFunctionsFromAPI = {
 	updatedAt: string
 }
 
-export type VolunteersFromAPI = {
+export type VolunteersAPI = {
 	id: UUID
 	name: string
 	email: string
@@ -47,6 +47,14 @@ export type VolunteersFromAPI = {
 	volunteerRole: VolunteersFunctionsFromAPI
 }
 
+export type VolunteersFromAPI = {
+	data: Array<VolunteersAPI>
+	currentPage: number
+	perPage: number
+	totalCount: number
+	totalPages: number
+}
+
 export type VolunteersFunctionsForm = {
 	role: string
 }
@@ -68,14 +76,22 @@ export type FormVolunteer = {
 	street: string
 }
 
-export type VolunteersPaymentsFromAPI = {
+export type VolunteersPaymentsAPI = {
 	id: UUID
 	paymentValue: string
 	paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null
 	eventId: UUID
 	event: EventsAPI
 	volunteerId: UUID
-	volunteer: VolunteersFromAPI
+	volunteer: VolunteersAPI
 	createdAt: string
 	updatedAt: string
+}
+
+export type VolunteersPaymentsFromAPI = {
+	data: Array<VolunteersPaymentsAPI>
+	currentPage: number
+	perPage: number
+	totalCount: number
+	totalPages: number
 }

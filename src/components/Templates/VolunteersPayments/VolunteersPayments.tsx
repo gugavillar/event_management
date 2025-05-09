@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { Select } from '@/components/Atoms'
+import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
 import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
@@ -20,13 +20,13 @@ import {
 	useGetPayments,
 	useUpdateVolunteerPayment,
 } from '@/services/queries/volunteers'
-import { VolunteersPaymentsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './VolunteersPayments.utils'
 
 export const VolunteersPayments = () => {
 	const [selectedVolunteer, setSelectedVolunteer] =
-		useState<VolunteersPaymentsFromAPI | null>(null)
+		useState<VolunteersPaymentsAPI | null>(null)
 	const {
 		data: events,
 		hasNextPage,
@@ -34,7 +34,7 @@ export const VolunteersPayments = () => {
 		fetchNextPage,
 	} = useGetInfinityEvents()
 	const {
-		data: volunteers,
+		data: volunteersPayments,
 		isLoading: isLoadingParticipants,
 		search,
 		setSearch,
@@ -42,6 +42,8 @@ export const VolunteersPayments = () => {
 		eventId,
 		setPaymentType,
 		paymentType,
+		page,
+		setPage,
 	} = useGetPayments()
 	const { update, isPending } = useUpdateVolunteerPayment()
 
@@ -59,14 +61,14 @@ export const VolunteersPayments = () => {
 	})
 
 	const handleOpenModalToPaymentVolunteer = (
-		payment: VolunteersPaymentsFromAPI,
+		payment: VolunteersPaymentsAPI,
 	) => {
 		setSelectedVolunteer(payment)
 		overlayOpen(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
 	}
 
 	const formattedData = formatTableData(
-		volunteers,
+		volunteersPayments?.data,
 		handleOpenModalToPaymentVolunteer,
 	)
 
@@ -94,6 +96,9 @@ export const VolunteersPayments = () => {
 			},
 		)
 	}
+
+	const hasMoreThanOnePage =
+		!!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
 
 	return (
 		<PageContent
@@ -130,6 +135,13 @@ export const VolunteersPayments = () => {
 					headerLabels={HEADER_LABELS}
 					isLoading={isLoadingParticipants}
 				/>
+				{hasMoreThanOnePage && (
+					<Pagination
+						currentPage={page}
+						setPage={setPage}
+						totalPages={volunteersPayments?.totalPages}
+					/>
+				)}
 			</ListPage>
 			<PaymentModal
 				modalId={MODALS_IDS.VOLUNTEER_PAYMENT_MODAL}

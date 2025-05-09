@@ -3,7 +3,7 @@ import { MdPayment } from 'react-icons/md'
 import { PaymentTag, Tooltip } from '@/components/Atoms'
 import { PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
-import { VolunteersPaymentsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
 
 export const HEADER_LABELS = [
 	{
@@ -37,8 +37,8 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	payments: VolunteersPaymentsFromAPI[] | undefined,
-	handlePaymentModal: (payment: VolunteersPaymentsFromAPI) => void,
+	payments: Array<VolunteersPaymentsAPI> | undefined,
+	handlePaymentModal: (payment: VolunteersPaymentsAPI) => void,
 ) => {
 	if (!payments) return []
 
