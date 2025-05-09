@@ -1,5 +1,5 @@
 import { Events } from '@/components/Templates'
-import { QUERY_KEYS } from '@/constants'
+import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 
@@ -9,7 +9,7 @@ export default async function EventsPage({
 	searchParams: { searchEvent: string; pageEvent: string }
 }) {
 	const debounceValue = searchParams.searchEvent ?? ''
-	const page = Number(searchParams.pageEvent) ?? 1
+	const page = generatePage(searchParams.pageEvent)
 
 	const getAllEvents = async () =>
 		getEvents({ searchEvent: debounceValue, page })

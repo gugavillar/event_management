@@ -8,3 +8,9 @@ export const overlayOpen = async (elementId: string) => {
 	overlay.HSOverlay.autoInit()
 	overlay.HSOverlay.open(document.getElementById(elementId) as HTMLElement)
 }
+
+export const generatePage = (page: string | undefined) => {
+	if (!page) return 1
+
+	return Number(page)
+}

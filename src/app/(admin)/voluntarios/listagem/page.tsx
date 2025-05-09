@@ -1,5 +1,5 @@
 import { Volunteers } from '@/components/Templates'
-import { QUERY_KEYS } from '@/constants'
+import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
@@ -21,7 +21,7 @@ export default async function VolunteersPage({
 	const debounceSearchValue = searchParams.searchVolunteer ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debounceStatusValue = searchParams.statusVolunteer ?? ''
-	const page = Number(searchParams.pageVolunteer) ?? 1
+	const page = generatePage(searchParams.pageVolunteer)
 
 	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),

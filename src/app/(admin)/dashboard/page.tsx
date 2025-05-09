@@ -13,6 +13,7 @@ export default async function DashboardPage({
 	}
 }) {
 	const debounceEventIdValue = searchParams.eventId ?? ''
+
 	const [dashboardData, getAllEvents] = await Promise.all([
 		async () => await getDashboardData({ eventId: debounceEventIdValue }),
 		async () => getEvents({ searchEvent: '', page: 1 }),

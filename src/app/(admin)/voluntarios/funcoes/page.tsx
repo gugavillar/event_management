@@ -9,8 +9,10 @@ export default async function VolunteersFunctionsPage({
 	searchParams: { searchFunction: string }
 }) {
 	const debounceValue = searchParams.searchFunction ?? ''
+
 	const getAllFunctions = async () =>
 		getVolunteersFunctions({ searchFunction: debounceValue })
+
 	return (
 		<HydrationProvider
 			queryFn={getAllFunctions}
