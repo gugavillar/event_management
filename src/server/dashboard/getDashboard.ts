@@ -2,8 +2,8 @@ import { differenceInYears } from 'date-fns'
 
 import { CHECK_IN_STATUS, PaymentSelectOptions, prisma } from '@/constants'
 
-const calculationAge = (birthdate: Date) => {
-	return differenceInYears(new Date(), birthdate)
+const calculationAge = (birthdate: Date, finalEventDate: Date) => {
+	return differenceInYears(finalEventDate, birthdate)
 }
 
 const queries = async (eventId: string | null) => {
@@ -78,6 +78,11 @@ const queries = async (eventId: string | null) => {
 			},
 			select: {
 				birthdate: true,
+				event: {
+					select: {
+						finalDate: true,
+					},
+				},
 			},
 		}),
 		await prisma.volunteer.findMany({
@@ -86,6 +91,11 @@ const queries = async (eventId: string | null) => {
 			},
 			select: {
 				birthdate: true,
+				event: {
+					select: {
+						finalDate: true,
+					},
+				},
 			},
 		}),
 		await prisma.participantAddress.groupBy({
@@ -148,7 +158,10 @@ export const getDashboard = async (eventId: string | null) => {
 		})
 
 		participantsAges.forEach((p) => {
-			const age = calculationAge(new Date(p.birthdate))
+			const age = calculationAge(
+				new Date(p.birthdate),
+				new Date(p.event.finalDate),
+			)
 			if (age <= 19) return ageRanges['14–19']++
 			if (age <= 29) return ageRanges['20–29']++
 			if (age <= 39) return ageRanges['30–39']++
@@ -157,7 +170,10 @@ export const getDashboard = async (eventId: string | null) => {
 		})
 
 		volunteersAges.forEach((v) => {
-			const age = calculationAge(new Date(v.birthdate))
+			const age = calculationAge(
+				new Date(v.birthdate),
+				new Date(v.event.finalDate),
+			)
 			if (age <= 19) return ageRanges['14–19']++
 			if (age <= 29) return ageRanges['20–29']++
 			if (age <= 39) return ageRanges['30–39']++
