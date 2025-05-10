@@ -32,7 +32,7 @@ export const Drawer = ({
 					onClick={handleClose}
 				>
 					<span className="sr-only">Close modal</span>
-					<MdOutlineClose />
+					<MdOutlineClose size={20} />
 				</button>
 			</div>
 			{children}

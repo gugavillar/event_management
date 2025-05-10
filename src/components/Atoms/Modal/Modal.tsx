@@ -35,7 +35,7 @@ export const Modal = ({
 						onClick={handleClose}
 					>
 						<span className="sr-only">Close</span>
-						<MdOutlineClose />
+						<MdOutlineClose size={20} />
 					</button>
 					{children}
 				</div>

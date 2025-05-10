@@ -1,4 +1,4 @@
-import { MdPayment } from 'react-icons/md'
+import { GiReceiveMoney } from 'react-icons/gi'
 
 import { PaymentTag, Tooltip } from '@/components/Atoms'
 import { PaymentTypeAPI } from '@/constants'
@@ -59,7 +59,7 @@ export const formatTableData = (
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
-					<MdPayment
+					<GiReceiveMoney
 						className="cursor-pointer"
 						size={20}
 						onClick={() => handlePaymentModal(payment)}

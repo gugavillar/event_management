@@ -8,13 +8,15 @@ import { Button } from '@/components/Atoms'
 import { FILES_TYPES } from '@/constants'
 import { useGetVolunteersTemplateFile } from '@/services/queries/volunteers'
 
+const TOAST_ID = 'download-template-volunteers'
+
 export const DownloadTemplateVolunteersButton = () => {
 	const [startDownload, setStartDownload] = useState(false)
 	const { data, isError, isFetching } =
 		useGetVolunteersTemplateFile(startDownload)
 
 	const handleClick = async () => {
-		toast.loading('Gerando arquivo...')
+		toast.loading('Gerando arquivo...', { id: TOAST_ID })
 		setStartDownload(true)
 	}
 
@@ -32,6 +34,7 @@ export const DownloadTemplateVolunteersButton = () => {
 		})
 		saveAs(blob, 'template_voluntários.xlsx')
 		setStartDownload(false)
+		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
 	}, [data, isError, startDownload])
 

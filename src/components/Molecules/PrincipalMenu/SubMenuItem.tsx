@@ -16,6 +16,11 @@ export const SubMenuItem = ({
 	links,
 	path,
 }: SubMenuItemProps) => {
+	const validateLabelPath = buttonLabel
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
+
 	return (
 		<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
 			<button
@@ -23,7 +28,7 @@ export const SubMenuItem = ({
 				className={twMerge(
 					'hs-tooltip focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 hover:bg-slate-900/80',
 					collapsed && 'justify-center px-0',
-					path.includes(buttonLabel) && 'bg-slate-900/80',
+					path.includes(validateLabelPath) && 'bg-slate-900/80',
 				)}
 			>
 				<Tooltip
