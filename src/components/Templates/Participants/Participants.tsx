@@ -25,7 +25,7 @@ import {
 } from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
-import { useInfiniteScrollObserver, useTooltip } from '@/hooks'
+import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetParticipants } from '@/services/queries/participants'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
@@ -76,7 +76,6 @@ export const Participants = () => {
 		page,
 		setPage,
 	} = useGetParticipants()
-	useTooltip(Boolean(selectedParticipant))
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -91,32 +90,22 @@ export const Participants = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToDeleteParticipant = async (
-		id: ParticipantsAPI['id'],
-	) => {
+	const handleOpenModalToDeleteParticipant = (id: ParticipantsAPI['id']) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
 	}
 
-	const handleOpenModalToCheckInParticipant = async (
-		id: ParticipantsAPI['id'],
-	) => {
+	const handleOpenModalToCheckInParticipant = (id: ParticipantsAPI['id']) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
 	}
 
-	const handleOpenDrawerToEditParticipant = async (
-		id: ParticipantsAPI['id'],
-	) => {
+	const handleOpenDrawerToEditParticipant = (id: ParticipantsAPI['id']) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
 	}
 
-	const handleOpenModalToShowParticipantData = async ({
-		id,
-	}: {
-		id: ParticipantsAPI['id']
-	}) => {
+	const handleOpenModalToShowParticipantData = (id: ParticipantsAPI['id']) => {
 		setSelectedParticipant(id)
 		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
 	}
@@ -126,6 +115,7 @@ export const Participants = () => {
 		handleOpenModalToDeleteParticipant,
 		handleOpenModalToCheckInParticipant,
 		handleOpenDrawerToEditParticipant,
+		handleOpenModalToShowParticipantData,
 	)
 
 	const hasMoreThanOnePage =
@@ -172,7 +162,6 @@ export const Participants = () => {
 					bodyData={formattedParticipants}
 					headerLabels={HEADER_LABELS}
 					isLoading={isLoading}
-					handleClickRow={handleOpenModalToShowParticipantData}
 				/>
 				{hasMoreThanOnePage && (
 					<Pagination

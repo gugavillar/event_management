@@ -89,24 +89,22 @@ export const Volunteers = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToCheckInVolunteer = async (id: VolunteersAPI['id']) => {
+	const handleOpenModalToCheckInVolunteer = (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
 	}
 
-	const handleOpenModalToDeleteVolunteer = async (id: VolunteersAPI['id']) => {
+	const handleOpenModalToDeleteVolunteer = (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
 	}
 
-	const handleOpenDrawerToEditVolunteer = async (id: VolunteersAPI['id']) => {
+	const handleOpenDrawerToEditVolunteer = (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
 	}
 
-	const handleOpenAssignFunctionVolunteerModal = async (
-		id: VolunteersAPI['id'],
-	) => {
+	const handleOpenAssignFunctionVolunteerModal = (id: VolunteersAPI['id']) => {
 		setSelectedVolunteer(id)
 		overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
 	}

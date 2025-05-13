@@ -1,5 +1,6 @@
 import { differenceInYears, format } from 'date-fns'
 import { FaRegEdit } from 'react-icons/fa'
+import { FaCircleInfo } from 'react-icons/fa6'
 import { LuTicketCheck } from 'react-icons/lu'
 import { MdDelete } from 'react-icons/md'
 
@@ -44,6 +45,7 @@ export const formatTableData = (
 	handleDeleteParticipant: (id: ParticipantsAPI['id']) => void,
 	handleCheckInParticipant: (id: ParticipantsAPI['id']) => void,
 	handleEditParticipant: (id: ParticipantsAPI['id']) => void,
+	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -66,6 +68,14 @@ export const formatTableData = (
 			),
 			actions: (
 				<div className="flex space-x-4">
+					<div className="hs-tooltip">
+						<FaCircleInfo
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleShowParticipant(participant.id)}
+						/>
+						<Tooltip>Informações</Tooltip>
+					</div>
 					<div className="hs-tooltip">
 						<FaRegEdit
 							className="cursor-pointer"

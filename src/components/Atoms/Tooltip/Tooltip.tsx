@@ -1,9 +1,20 @@
-import { ComponentProps } from 'react'
+'use client'
+import { ComponentProps, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type TooltipProps = ComponentProps<'span'>
 
 export const Tooltip = ({ children, className, ...props }: TooltipProps) => {
+	useEffect(() => {
+		const load = async () => {
+			if (typeof window === 'undefined') return
+
+			const { HSTooltip } = await import('preline/preline')
+			HSTooltip.autoInit()
+		}
+		load()
+	}, [])
+
 	return (
 		<span
 			className={twMerge(

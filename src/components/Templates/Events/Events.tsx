@@ -10,7 +10,6 @@ import {
 	PageContent,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
-import { useTooltip } from '@/hooks'
 import { useGetEvents } from '@/services/queries/events'
 import { EventsAPI } from '@/services/queries/events/event.type'
 
@@ -30,14 +29,12 @@ export const Events = () => {
 		setPage,
 	} = useGetEvents()
 
-	useTooltip(Boolean(selectedEvent))
-
 	const handleEditEvent = (id: EventsAPI['id']) => {
 		setSelectedEvent(id)
 		overlayOpen(MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER)
 	}
 
-	const handleOpenModalToDeleteEvent = async (id: EventsAPI['id']) => {
+	const handleOpenModalToDeleteEvent = (id: EventsAPI['id']) => {
 		setSelectedEvent(id)
 		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
 	}
