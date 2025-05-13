@@ -1,4 +1,5 @@
 export * from './useDeleteParticipant'
+export * from './useGetInfinityParticipants'
 export * from './useGetParticipant'
 export * from './useGetParticipants'
 export * from './useGetParticipantsTemplateFile'
