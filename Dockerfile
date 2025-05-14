@@ -1,6 +1,6 @@
 # Stage 1: Base image with dependencies
-FROM node:20-slim AS base
-RUN apk add --no-cache libc6-compat
+FROM node:18 AS base
+RUN apt-get update && apt-get install -y libc6
 RUN npm i -g pnpm
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
@@ -15,8 +15,8 @@ RUN pnpm build
 RUN pnpm prune --prod
 
 # Stage 3: Production image
-FROM node:20-slim AS release
-RUN apk add --no-cache libc6-compat
+FROM node:18 AS release
+RUN apt-get update && apt-get install -y libc6
 WORKDIR /app
 
 # Copia arquivos necessários da build
