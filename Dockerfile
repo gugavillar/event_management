@@ -21,8 +21,6 @@ RUN pnpm prisma generate
 # Build do Next.js
 RUN pnpm build
 
-RUN pnpm prune --prod
-
 # Stage 3: Final image
 FROM node:18 AS release
 RUN apt-get update && apt-get install -y libc6
