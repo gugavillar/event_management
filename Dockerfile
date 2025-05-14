@@ -1,5 +1,5 @@
 # Stage 1: Base image with dependencies
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 RUN apk add --no-cache libc6-compat
 RUN npm i -g pnpm
 WORKDIR /app
@@ -11,14 +11,19 @@ FROM base AS builder
 COPY . .
 RUN pnpm build
 
-# Stage 3: Production image
-FROM node:20-alpine AS release
-RUN apk add --no-cache libc6-compat
-RUN npm i -g pnpm
-WORKDIR /app
-COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+# Instala apenas as dependências de produção
+RUN pnpm prune --prod
 
-CMD ["pnpm", "start"]
+# Stage 3: Production image
+FROM node:20-slim AS release
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Copia arquivos necessários da build
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./
+
+# Comando para iniciar a aplicação Next.js
+CMD ["node_modules/.bin/next", "start"]
