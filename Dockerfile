@@ -13,7 +13,7 @@ FROM base AS builder
 COPY . .
 
 # Evita estouro de memória
-ENV NODE_OPTIONS="--max_old_space_size=1024"
+ENV NODE_OPTIONS="--max_old_space_size=2048"
 
 # Gera cliente Prisma antes do build
 RUN pnpm prisma generate
