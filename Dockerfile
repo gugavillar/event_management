@@ -1,23 +1,24 @@
-# Etapa 1: build
-FROM node:23-alpine AS builder
-
+# Stage 1: Base image with dependencies
+FROM node:20-alpine AS base
+RUN apk add --no-cache libc6-compat
+RUN npm i -g pnpm
 WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
-COPY package*.json ./
+# Stage 2: Build the application
+FROM base AS builder
 COPY . .
+RUN pnpm build
 
-RUN npm install
-RUN npm run build
-
-# Etapa 2: produção
-FROM node:23-alpine AS runner
-
+# Stage 3: Production image
+FROM node:20-alpine AS release
+RUN apk add --no-cache libc6-compat
+RUN npm i -g pnpm
 WORKDIR /app
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
-ENV NODE_ENV=production
-
-COPY --from=builder /app ./
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
