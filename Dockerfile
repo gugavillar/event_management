@@ -28,7 +28,7 @@ ENV API_BASE_URL=${API_BASE_URL}
 
 # Copy only the necessary files
 COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static .next/static
+COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/public ./public
 
 EXPOSE 3000
