@@ -21,6 +21,10 @@ RUN pnpm run build
 FROM base AS dokploy
 WORKDIR /app
 ENV NODE_ENV=production
+ARG DATABASE_URL
+ARG API_BASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+ENV API_BASE_URL=${API_BASE_URL}
 
 # Copy only the necessary files
 COPY --from=build /app/.next ./.next
