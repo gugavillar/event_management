@@ -5,6 +5,12 @@ RUN corepack enable
 
 FROM base AS build
 WORKDIR /app
+
+ARG DATABASE_URL
+ARG API_BASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+ENV API_BASE_URL=${API_BASE_URL}
+
 COPY . .
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
