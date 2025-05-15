@@ -13,7 +13,7 @@ FROM base AS builder
 COPY . .
 
 # Evita estouro de memória
-ENV NODE_OPTIONS="--max_old_space_size=2048"
+ENV NODE_OPTIONS="--max_old_space_size=1536"
 
 # Gera cliente Prisma antes do build
 RUN pnpm prisma generate
@@ -33,4 +33,6 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/.env ./.env
 
-CMD ["pnpm", "start"]
+EXPOSE 8080
+
+CMD ["pnpm", "exec", "next", "start", "-p", "8080"]
