@@ -28,6 +28,7 @@ COPY --from=build /app/public ./public
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/next.config.mjs ./next.config.mjs
+COPY --from=build /app/prisma ./prisma
 
 EXPOSE 3000
-CMD ["pnpm", "start"]
+CMD ["sh", "-c", "pnpm prisma migrate deploy && pnpm start"]
