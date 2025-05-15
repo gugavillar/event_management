@@ -5,7 +5,7 @@ RUN npm i -g pnpm
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --production
+RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build application
 FROM base AS builder
