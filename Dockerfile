@@ -9,6 +9,7 @@ COPY . .
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ENV NODE_ENV=production
+RUN pnpm prisma generate
 RUN pnpm run build
 
 FROM base AS dokploy
