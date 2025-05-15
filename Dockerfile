@@ -27,11 +27,9 @@ ENV DATABASE_URL=${DATABASE_URL}
 ENV API_BASE_URL=${API_BASE_URL}
 
 # Copy only the necessary files
-COPY --from=build /app/.next ./.next
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static .next/static
 COPY --from=build /app/public ./public
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/next.config.mjs ./next.config.mjs
 
 EXPOSE 3000
 CMD ["pnpm", "start"]
