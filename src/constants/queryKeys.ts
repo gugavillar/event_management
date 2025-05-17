@@ -5,10 +5,6 @@ const makeQueryClient = () =>
 		defaultOptions: {
 			queries: {
 				staleTime: 60 * 1000,
-				refetchOnMount: false,
-				refetchOnWindowFocus: false,
-				refetchOnReconnect: false,
-				retry: false,
 			},
 		},
 	})
@@ -16,17 +12,24 @@ const makeQueryClient = () =>
 let browserQueryClient: QueryClient | undefined
 
 export const QUERY_KEYS = {
+	// Events
 	EVENTS: 'events',
 	EVENT: 'event',
+
+	// Participants
 	PARTICIPANTS_TEMPLATE_FILE: 'participants-template-file',
 	PARTICIPANTS: 'participants',
 	PARTICIPANT: 'participant',
 	PAYMENT_PARTICIPANTS: 'payment-participants',
+
+	// Volunteers
 	VOLUNTEERS_TEMPLATE_FILE: 'volunteers-template-file',
 	VOLUNTEERS: 'volunteers',
 	VOLUNTEER: 'volunteer',
 	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
 	PAYMENT_VOLUNTEERS: 'payment-volunteers',
+
+	// Dashboard
 	DASHBOARD: 'dashboard',
 } as const
 

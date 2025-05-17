@@ -25,15 +25,24 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 	plotOptions: {
 		bar: {
 			horizontal: false,
-			columnWidth: '16px',
+			columnWidth: '18px',
 			borderRadius: 0,
+			dataLabels: {
+				position: 'top',
+			},
 		},
 	},
 	legend: {
 		show: false,
 	},
 	dataLabels: {
-		enabled: false,
+		enabled: true,
+		textAnchor: 'start',
+		offsetY: -15,
+		style: {
+			fontSize: '14px',
+			colors: ['#304758'],
+		},
 	},
 	stroke: {
 		show: true,
