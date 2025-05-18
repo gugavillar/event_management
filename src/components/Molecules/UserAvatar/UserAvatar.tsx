@@ -8,6 +8,7 @@ import { PiUserCircleGearFill } from 'react-icons/pi'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar } from '@/components/Atoms'
+import { ROLES } from '@/constants'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -56,12 +57,14 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 					aria-orientation="vertical"
 				>
 					<div className="p-1">
-						<button
-							className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
-							onClick={() => push('/usuarios')}
-						>
-							Gerenciar usuários
-						</button>
+						{user?.role === ROLES.ADMIN && (
+							<button
+								className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+								onClick={() => push('/usuarios')}
+							>
+								Gerenciar usuários
+							</button>
+						)}
 						<button
 							className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 							onClick={handleLogout}

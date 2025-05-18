@@ -5,6 +5,10 @@ const makeQueryClient = () =>
 		defaultOptions: {
 			queries: {
 				staleTime: 60 * 1000,
+				refetchOnMount: false,
+				refetchOnReconnect: false,
+				refetchOnWindowFocus: false,
+				retry: false,
 			},
 		},
 	})
