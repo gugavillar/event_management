@@ -1,3 +1,5 @@
+import { User } from 'next-auth'
+import { signOut } from 'next-auth/react'
 import { Fragment } from 'react'
 import { BsChevronExpand } from 'react-icons/bs'
 import { PiUserCircleGearFill } from 'react-icons/pi'
@@ -7,9 +9,19 @@ import { Avatar } from '@/components/Atoms'
 
 type UserAvatarProps = {
 	collapsed: boolean
+	user?: User
 }
 
-export const UserAvatar = ({ collapsed }: UserAvatarProps) => {
+export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
+	const avatar = user?.name ?? 'Usuário'
+
+	const handleLogout = async () => {
+		await signOut({
+			callbackUrl: '/',
+			redirect: true,
+		})
+	}
+
 	return (
 		<footer className="mt-auto border-t border-gray-200 p-2">
 			<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
@@ -26,8 +38,8 @@ export const UserAvatar = ({ collapsed }: UserAvatarProps) => {
 				>
 					{!collapsed ? (
 						<Fragment>
-							<Avatar>Usuário teste</Avatar>
-							Usuário teste
+							<Avatar>{avatar}</Avatar>
+							{user?.name}
 							<BsChevronExpand className="ml-auto" size={20} />
 						</Fragment>
 					) : (
@@ -41,12 +53,12 @@ export const UserAvatar = ({ collapsed }: UserAvatarProps) => {
 					aria-orientation="vertical"
 				>
 					<div className="p-1">
-						<a
-							className="focus:outline-hidden flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
-							href="#"
+						<button
+							className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+							onClick={handleLogout}
 						>
-							Sign out
-						</a>
+							Sair
+						</button>
 					</div>
 				</div>
 			</div>

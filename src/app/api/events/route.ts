@@ -10,7 +10,7 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () =>
-			await createEvent(body, '7b323ec3-5323-4636-856e-b0c1fcf6cabe'),
+			await createEvent(body, '57224ca8-e115-4df2-abed-e545b866d902'),
 	})
 }
 

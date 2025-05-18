@@ -1,14 +1,19 @@
 'use client'
+import { ComponentProps } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { Field, HelperErrorText, Label } from '@/components/Atoms'
 
-type InputFieldProps = {
+type InputFieldProps = ComponentProps<'input'> & {
 	children: string
 	fieldName: string
 }
 
-export const InputField = ({ children, fieldName }: InputFieldProps) => {
+export const InputField = ({
+	children,
+	fieldName,
+	...props
+}: InputFieldProps) => {
 	const { register, formState } = useFormContext()
 
 	return (
@@ -18,6 +23,7 @@ export const InputField = ({ children, fieldName }: InputFieldProps) => {
 				id={fieldName}
 				{...register(fieldName)}
 				isInvalid={!!formState?.errors?.[fieldName]?.message}
+				{...props}
 			/>
 			{formState.errors[fieldName] ? (
 				<HelperErrorText className="text-red-500">

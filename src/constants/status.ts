@@ -102,3 +102,17 @@ export const TrueOrFalseRadioOptions = [
 		value: TrueOrFalseAPI.FALSE,
 	},
 ]
+
+export enum ROLES {
+	USER = 'USER',
+	ADMIN = 'ADMIN',
+}
+
+export const RolesTypes = {
+	[ROLES.ADMIN]: { label: 'Administrador', value: ROLES.ADMIN },
+	[ROLES.USER]: { label: 'Usuário', value: ROLES.USER },
+}
+
+export const RolesTypesSelectOptions = Object.values(ROLES).map((value) => ({
+	...RolesTypes[value],
+}))

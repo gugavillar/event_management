@@ -20,9 +20,8 @@ enum Gender {
 }
 
 enum Roles {
-  MASTER
-  READ
-  WRITER
+  USER
+  ADMIN
 }
 
 enum ParticipantOrVolunteerStatus {
@@ -38,13 +37,16 @@ enum PaymentType {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Roles
-  Event     Event[]
+  id           String    @id @default(uuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  firstAccess  Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  role         Roles     @default(USER)
+  Event        Event[]
 
   @@map("users")
 }

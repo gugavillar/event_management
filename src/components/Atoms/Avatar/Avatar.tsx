@@ -10,6 +10,7 @@ export const Avatar = ({ className, children, ...props }: AvatarProps) => {
 		children.length > 2
 			? children.slice(0, 2).toUpperCase()
 			: children.toUpperCase()
+
 	return (
 		<span
 			className={twMerge(
