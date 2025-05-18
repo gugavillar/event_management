@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
 import { ZodError } from 'zod'
 
-import { prisma } from '@/constants'
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
+import { prisma, ROLES } from '@/constants'
 import { formatZodValidationErrors } from '@/formatters'
 
 const isDevelopmentEnvironment = process.env.NODE_ENV !== 'production'
@@ -14,52 +16,51 @@ type RequestProcessProps<T> = {
 }
 export async function requestProcess<T>({
 	functions,
-	// isProtectedRoute,
-	// isNecessarySession = true,
+	isProtectedRoute,
+	isNecessarySession = true,
 	successMessage,
 }: RequestProcessProps<T>) {
-	// const session = await getServerSession(authOptions)
+	const session = await getServerSession(authOptions)
 
-	// if (isNecessarySession) {
-	// 	if (!session?.user) {
-	// 		return NextResponse.json(
-	// 			{
-	// 				error: 'Usuário não autenticado!',
-	// 				message: 'Usuário não autenticado!',
-	// 			},
-	// 			{ status: 401 },
-	// 		)
-	// 	}
+	if (isNecessarySession) {
+		if (!session?.user) {
+			return NextResponse.json(
+				{
+					error: 'Usuário não autenticado!',
+					message: 'Usuário não autenticado!',
+				},
+				{ status: 401 },
+			)
+		}
 
-	// 	const isValidUser = await prisma.user.findUnique({
-	// 		where: {
-	// 			email: session.user.email as string,
-	// 			companyId: session.user.company_id,
-	// 		},
-	// 	})
+		const isValidUser = await prisma.user.findUnique({
+			where: {
+				email: session.user.email as string,
+			},
+		})
 
-	// 	if (!isValidUser) {
-	// 		return NextResponse.json(
-	// 			{
-	// 				error: 'Erro de autenticação.',
-	// 				message: 'Usuário não encontrado!',
-	// 			},
-	// 			{
-	// 				status: 409,
-	// 			},
-	// 		)
-	// 	}
-	// }
+		if (!isValidUser) {
+			return NextResponse.json(
+				{
+					error: 'Erro de autenticação.',
+					message: 'Usuário não encontrado!',
+				},
+				{
+					status: 409,
+				},
+			)
+		}
+	}
 
-	// if (isProtectedRoute && session?.user?.role !== RoleTypes.ADMIN) {
-	// 	return NextResponse.json(
-	// 		{
-	// 			error: 'Usuário sem permissão!',
-	// 			message: 'Usuário sem permissão!',
-	// 		},
-	// 		{ status: 403 },
-	// 	)
-	// }
+	if (isProtectedRoute && session?.user?.role !== ROLES.ADMIN) {
+		return NextResponse.json(
+			{
+				error: 'Usuário sem permissão!',
+				message: 'Usuário sem permissão!',
+			},
+			{ status: 403 },
+		)
+	}
 
 	try {
 		const data = await functions()

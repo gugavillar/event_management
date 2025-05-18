@@ -31,6 +31,9 @@ export const QUERY_KEYS = {
 
 	// Dashboard
 	DASHBOARD: 'dashboard',
+
+	// Users
+	USERS: 'users',
 } as const
 
 export const getQueryClient = () => {

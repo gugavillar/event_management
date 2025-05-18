@@ -5,12 +5,13 @@ const BASE_PATH = {
 	PARTICIPANTS: '/participants',
 	VOLUNTEERS: '/volunteers',
 	DASHBOARD: '/dashboard',
+	USERS: '/users',
 }
 
 export const ENDPOINTS = {
 	// Events
-	CREATE_EVENT: `${BASE_PATH.EVENTS}`,
-	GET_EVENTS: `${BASE_PATH.EVENTS}`,
+	CREATE_EVENT: BASE_PATH.EVENTS,
+	GET_EVENTS: BASE_PATH.EVENTS,
 	GET_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
 	DELETE_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
 	UPDATE_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
@@ -18,7 +19,7 @@ export const ENDPOINTS = {
 	// Participants
 	IMPORT_PARTICIPANTS_DATA: `${BASE_PATH.PARTICIPANTS}/files`,
 	GET_TEMPLATE_PARTICIPANTS_FILE: `${BASE_PATH.PARTICIPANTS}/files`,
-	GET_PARTICIPANTS: `${BASE_PATH.PARTICIPANTS}`,
+	GET_PARTICIPANTS: BASE_PATH.PARTICIPANTS,
 	GET_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}`,
 	DELETE_PARTICIPANT: (participant_id: string) =>
@@ -34,7 +35,7 @@ export const ENDPOINTS = {
 	// Volunteers
 	GET_TEMPLATE_VOLUNTEERS_FILE: `${BASE_PATH.VOLUNTEERS}/files`,
 	IMPORT_VOLUNTEERS_DATA: `${BASE_PATH.VOLUNTEERS}/files`,
-	GET_VOLUNTEERS: `${BASE_PATH.VOLUNTEERS}`,
+	GET_VOLUNTEERS: BASE_PATH.VOLUNTEERS,
 	GET_VOLUNTEER: (volunteer_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 	CREATE_FUNCTION: `${BASE_PATH.VOLUNTEERS}/functions`,
@@ -56,5 +57,9 @@ export const ENDPOINTS = {
 		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}`,
 
 	// Dashboard
-	GET_DASHBOARD: `${BASE_PATH.DASHBOARD}`,
+	GET_DASHBOARD: BASE_PATH.DASHBOARD,
+
+	// Users
+	GET_USERS: BASE_PATH.USERS,
+	CREATE_USER: BASE_PATH.USERS,
 }

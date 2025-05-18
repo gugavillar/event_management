@@ -1,3 +1,5 @@
+'use client'
+import { useRouter } from 'next/navigation'
 import { User } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import { Fragment } from 'react'
@@ -14,6 +16,7 @@ type UserAvatarProps = {
 
 export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 	const avatar = user?.name ?? 'Usuário'
+	const { push } = useRouter()
 
 	const handleLogout = async () => {
 		await signOut({
@@ -53,6 +56,12 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 					aria-orientation="vertical"
 				>
 					<div className="p-1">
+						<button
+							className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+							onClick={() => push('/usuarios')}
+						>
+							Gerenciar usuários
+						</button>
 						<button
 							className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 							onClick={handleLogout}
