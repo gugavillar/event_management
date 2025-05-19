@@ -7,11 +7,13 @@ import { updatePassword } from '../usecases'
 export const useUpdatePassword = () => {
 	const mutation = useMutation({
 		mutationFn: updatePassword,
-		onSuccess: async () => {
-			await signOut({
-				callbackUrl: '/',
-				redirect: true,
-			})
+		onSuccess: () => {
+			setTimeout(async () => {
+				await signOut({
+					callbackUrl: '/',
+					redirect: true,
+				})
+			}, 2000)
 		},
 	})
 
