@@ -1,12 +1,15 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useLayoutEffect } from 'react'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button, Header } from '@/components/Atoms'
 import { InputField } from '@/components/Molecules'
+import { convertToBoolean } from '@/formatters'
 import { useLogin } from '@/services/queries/auth'
 
+import { DefinedNewPassword } from './DefinedNewPassword'
 import { LoginButtonSchema, LoginButtonSchemaType } from './LoginButton.schema'
 
 export const LoginButton = () => {
@@ -18,7 +21,12 @@ export const LoginButton = () => {
 		resolver: zodResolver(LoginButtonSchema),
 		mode: 'onChange',
 	})
-	const { login, isPending } = useLogin()
+	const {
+		login,
+		isPending,
+		hasToDefineNewPassword,
+		setHasToDefineNewPassword,
+	} = useLogin()
 
 	const handleSubmitLogin: SubmitHandler<LoginButtonSchemaType> = async (
 		values,
@@ -27,6 +35,16 @@ export const LoginButton = () => {
 			email: values.email,
 			password: values.password,
 		})
+	}
+
+	useLayoutEffect(() => {
+		setHasToDefineNewPassword(
+			convertToBoolean(sessionStorage.getItem('hasToDefineNewPassword')),
+		)
+	}, [setHasToDefineNewPassword])
+
+	if (hasToDefineNewPassword) {
+		return <DefinedNewPassword />
 	}
 
 	return (

@@ -5,7 +5,7 @@ import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
-import { useUpdateUserPassword } from '@/services/queries/users'
+import { useResetPassword } from '@/services/queries/users'
 import { UserAPI } from '@/services/queries/users/users.type'
 
 type UserResetPasswordModalProps = {
@@ -19,7 +19,7 @@ export const UserResetPasswordModal = ({
 	selectedUser,
 	setSelectedUser,
 }: UserResetPasswordModalProps) => {
-	const { update, isPending } = useUpdateUserPassword()
+	const { update, isPending } = useResetPassword()
 
 	const handleResetPassword = async () => {
 		if (!selectedUser) return

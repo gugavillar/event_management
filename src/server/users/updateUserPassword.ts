@@ -5,21 +5,25 @@ import { z } from 'zod'
 import { prisma } from '@/constants'
 
 export const updateUserPassword = async (
-	userId: string,
 	userIdLogged: string,
+	newPassword: string,
 ) => {
 	try {
 		z.object({
-			userId: z.string().uuid(),
 			userIdLogged: z.string().uuid(),
-		}).parse({ userId, userIdLogged })
+			newPassword: z.string().min(6),
+		}).parse({ userIdLogged, newPassword })
 
-		const isSameUser = userId === userIdLogged
+		const isUserExist = await prisma.user.findUnique({
+			where: {
+				id: userIdLogged,
+			},
+		})
 
-		if (isSameUser) {
+		if (!isUserExist) {
 			return NextResponse.json(
 				{
-					error: 'Você não pode redefinir sua própria senha',
+					error: 'Usuário nao encontrado',
 				},
 				{
 					status: 400,
@@ -29,11 +33,11 @@ export const updateUserPassword = async (
 
 		return await prisma.user.update({
 			where: {
-				id: userId,
+				id: userIdLogged,
 			},
 			data: {
-				passwordHash: bcrypt.hashSync('123456', 10),
-				firstAccess: true,
+				passwordHash: bcrypt.hashSync(newPassword, 10),
+				firstAccess: false,
 			},
 		})
 	} catch (error) {

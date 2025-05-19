@@ -1,8 +1,11 @@
 import { NextRequest } from 'next/server'
+import { getServerSession } from 'next-auth'
 
 import { UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
-import { createUser, getAllUsers } from '@/server'
+import { createUser, getAllUsers, updateUserPassword } from '@/server'
 import { requestProcess } from '@/utils/prisma'
+
+import { authOptions } from '../auth/[...nextauth]/authOptions'
 
 const handlerPost = async (request: NextRequest) => {
 	const body: UserSchemaType = await request.json()
@@ -23,4 +26,14 @@ const handlerGet = async (request: NextRequest) => {
 	})
 }
 
-export { handlerPost as POST, handlerGet as GET }
+const handleUpdate = async (request: NextRequest) => {
+	const session = await getServerSession(authOptions)
+	const body: { password: string } = await request.json()
+
+	return await requestProcess({
+		functions: async () =>
+			await updateUserPassword(session?.user?.id as string, body.password),
+	})
+}
+
+export { handlerPost as POST, handlerGet as GET, handleUpdate as PATCH }

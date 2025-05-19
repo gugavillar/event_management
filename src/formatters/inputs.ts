@@ -30,3 +30,8 @@ export const formatterComboBoxValues = (
 	}
 	return formattedValues
 }
+
+export const convertToBoolean = (value: string | null) => {
+	if (!value) return false
+	return value === 'true'
+}

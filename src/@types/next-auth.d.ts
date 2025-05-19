@@ -7,6 +7,7 @@ import { ROLES } from '@/constants'
 declare module 'next-auth' {
 	interface User {
 		role: ROLES
+		firstAccess: boolean
 	}
 
 	interface Session extends DefaultSession {
@@ -18,5 +19,6 @@ declare module 'next-auth/jwt' {
 	interface JWT {
 		role: ROLES
 		id: UUID
+		firstAccess: boolean
 	}
 }

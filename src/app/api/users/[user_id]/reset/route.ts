@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
-import { updateUserPassword } from '@/server'
+import { resetUserPassword } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 const handleUpdate = async (
@@ -13,7 +13,7 @@ const handleUpdate = async (
 
 	return await requestProcess({
 		functions: async () =>
-			await updateUserPassword(params.user_id, session?.user?.id as string),
+			await resetUserPassword(params.user_id, session?.user?.id as string),
 		isProtectedRoute: true,
 	})
 }

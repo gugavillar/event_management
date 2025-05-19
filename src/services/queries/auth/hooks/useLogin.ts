@@ -1,11 +1,17 @@
+'use client'
 import { useRouter } from 'next/navigation'
 import { getSession, signIn, SignInResponse } from 'next-auth/react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { LoginButtonSchemaType } from '@/components/Organisms/LoginButton/LoginButton.schema'
+import { convertToBoolean } from '@/formatters'
 import { useMutation } from '@/providers/QueryProvider'
 
 export const useLogin = () => {
+	const [hasToDefineNewPassword, setHasToDefineNewPassword] = useState(
+		convertToBoolean(''),
+	)
 	const { push } = useRouter()
 
 	const query = useMutation({
@@ -23,8 +29,17 @@ export const useLogin = () => {
 				loading: 'Verificando credenciais...',
 				success: (data) => {
 					const userRole = data?.user?.role
+					const isFirstAccess = data?.user?.firstAccess
+
+					console.log(data)
 
 					if (!userRole) throw new Error('Usuário sem permissão')
+
+					if (isFirstAccess) {
+						sessionStorage.setItem('hasToDefineNewPassword', 'true')
+						setHasToDefineNewPassword(true)
+						return 'Primeiro acesso, defina uma senha'
+					}
 
 					setTimeout(() => push('/dashboard'), 1000)
 
@@ -40,6 +55,8 @@ export const useLogin = () => {
 
 	return {
 		...query,
+		hasToDefineNewPassword,
+		setHasToDefineNewPassword,
 		login: query.mutateAsync,
 	}
 }

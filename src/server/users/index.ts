@@ -1,4 +1,5 @@
 export * from './createUser'
 export * from './getAllUsers'
-export * from './updateUserRole'
+export * from './resetUserPassword'
 export * from './updateUserPassword'
+export * from './updateUserRole'
