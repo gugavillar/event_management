@@ -10,6 +10,7 @@ import {
 	CreateUserButton,
 	ListPage,
 	PageContent,
+	UserResetPasswordModal,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetUsers } from '@/services/queries/users'
@@ -37,10 +38,16 @@ export const Users = ({ userId }: UsersProps) => {
 		overlayOpen(MODALS_IDS.USER_CHANGE_ROLE_MODAL)
 	}
 
+	const handleOpenResetPasswordModal = (id: UserAPI['id']) => {
+		setSelectedUser(id)
+		overlayOpen(MODALS_IDS.USER_RESET_PASSWORD_MODAL)
+	}
+
 	const formatData = formatTableData(
 		users?.data,
 		userId,
 		handleOpenChangeRoleModal,
+		handleOpenResetPasswordModal,
 	)
 
 	const hasMoreThanOnePage = !!users?.totalPages && users.totalPages > 1
@@ -77,6 +84,11 @@ export const Users = ({ userId }: UsersProps) => {
 				modalId={MODALS_IDS.USER_CHANGE_ROLE_MODAL}
 				setSelectedUser={setSelectedUser}
 				selectedUser={selectedUser}
+			/>
+			<UserResetPasswordModal
+				modalId={MODALS_IDS.USER_RESET_PASSWORD_MODAL}
+				selectedUser={selectedUser}
+				setSelectedUser={setSelectedUser}
 			/>
 		</PageContent>
 	)

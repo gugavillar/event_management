@@ -1,4 +1,4 @@
-import { GrUserSettings } from 'react-icons/gr'
+import { FaUserLock, FaUserCog } from 'react-icons/fa'
 
 import { Tooltip } from '@/components/Atoms'
 import { RolesTypes } from '@/constants'
@@ -31,6 +31,7 @@ export const formatTableData = (
 	data: Array<UserAPI> | undefined,
 	userId: string,
 	handleChangeRole: (id: UserAPI['id']) => void,
+	handleResetPassword: (id: UserAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -42,12 +43,20 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<GrUserSettings
+						<FaUserCog
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleChangeRole(user.id)}
 						/>
 						<Tooltip>Alterar permissão</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<FaUserLock
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleResetPassword(user.id)}
+						/>
+						<Tooltip>Redefinir senha</Tooltip>
 					</div>
 				</div>
 			),

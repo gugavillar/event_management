@@ -16,6 +16,7 @@ export const LoginButton = () => {
 			password: '',
 		},
 		resolver: zodResolver(LoginButtonSchema),
+		mode: 'onChange',
 	})
 	const { login, isPending } = useLogin()
 
@@ -43,7 +44,7 @@ export const LoginButton = () => {
 					<Button
 						className="items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 						isLoading={isPending}
-						disabled={!methods.formState.isValid || !methods.formState.isDirty}
+						disabled={!methods.formState.isValid}
 					>
 						Entrar
 					</Button>

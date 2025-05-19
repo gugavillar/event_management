@@ -63,4 +63,6 @@ export const ENDPOINTS = {
 	GET_USERS: BASE_PATH.USERS,
 	CREATE_USER: BASE_PATH.USERS,
 	UPDATE_USER_ROLE: (user_id: string) => `${BASE_PATH.USERS}/${user_id}/role`,
+	UPDATE_USER_PASSWORD: (user_id: string) =>
+		`${BASE_PATH.USERS}/${user_id}/password`,
 }
