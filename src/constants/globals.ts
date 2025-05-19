@@ -32,6 +32,7 @@ export const MODALS_IDS = {
 
 	// USERS
 	USER_CREATE_MODAL: 'user_create_modal',
+	USER_CHANGE_ROLE_MODAL: 'user_change_role_modal',
 }
 
 export const prisma = new PrismaClient({

@@ -47,7 +47,7 @@ export const AssignFunctionVolunteerModal = ({
 			{
 				onSuccess: () => {
 					setSelectedVolunteer(null)
-					toast.success('Função atribuida com sucesso!')
+					toast.success('Função atribuída com sucesso!')
 					overlayClose(modalId)
 				},
 				onError: () => toast.error('Erro ao atribuir a função'),

@@ -1,14 +1,28 @@
 'use client'
 
+import { User } from 'next-auth'
+import { useState } from 'react'
+
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { CreateUserButton, ListPage, PageContent } from '@/components/Organisms'
-import { MODALS_IDS } from '@/constants'
+import {
+	ChangeRoleUserModal,
+	CreateUserButton,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
+import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetUsers } from '@/services/queries/users'
+import { UserAPI } from '@/services/queries/users/users.type'
 
 import { formatTableData, HEADER_LABELS } from './Users.utils'
 
-export const Users = () => {
+type UsersProps = {
+	userId: User['id']
+}
+
+export const Users = ({ userId }: UsersProps) => {
+	const [selectedUser, setSelectedUser] = useState<UserAPI['id'] | null>(null)
 	const {
 		data: users,
 		isLoading,
@@ -18,7 +32,16 @@ export const Users = () => {
 		setPage,
 	} = useGetUsers()
 
-	const formatData = formatTableData(users?.data)
+	const handleOpenChangeRoleModal = (id: UserAPI['id']) => {
+		setSelectedUser(id)
+		overlayOpen(MODALS_IDS.USER_CHANGE_ROLE_MODAL)
+	}
+
+	const formatData = formatTableData(
+		users?.data,
+		userId,
+		handleOpenChangeRoleModal,
+	)
 
 	const hasMoreThanOnePage = !!users?.totalPages && users.totalPages > 1
 
@@ -50,6 +73,11 @@ export const Users = () => {
 					/>
 				)}
 			</ListPage>
+			<ChangeRoleUserModal
+				modalId={MODALS_IDS.USER_CHANGE_ROLE_MODAL}
+				setSelectedUser={setSelectedUser}
+				selectedUser={selectedUser}
+			/>
 		</PageContent>
 	)
 }

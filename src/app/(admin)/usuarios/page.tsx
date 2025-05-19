@@ -27,7 +27,7 @@ export default async function UsersPage({
 			queryFn={getAllUsers}
 			queryKey={[QUERY_KEYS.USERS, debounceValue, page]}
 		>
-			<Users />
+			<Users userId={session.user.id} />
 		</HydrationProvider>
 	)
 }
