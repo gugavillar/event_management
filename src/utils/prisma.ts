@@ -50,6 +50,18 @@ export async function requestProcess<T>({
 				},
 			)
 		}
+
+		if (isValidUser.deletedAt) {
+			return NextResponse.json(
+				{
+					error: 'Erro de autenticação.',
+					message: 'Usuário bloqueado!',
+				},
+				{
+					status: 409,
+				},
+			)
+		}
 	}
 
 	if (isProtectedRoute && session?.user?.role !== ROLES.ADMIN) {

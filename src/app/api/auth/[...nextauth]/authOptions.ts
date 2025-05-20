@@ -51,6 +51,10 @@ export const authOptions: NextAuthOptions = {
 					throw new Error('Usuário sem permissão!')
 				}
 
+				if (user.deletedAt) {
+					throw new Error('Usuário bloqueado!')
+				}
+
 				return {
 					id: user.id,
 					email: user.email,
@@ -64,10 +68,6 @@ export const authOptions: NextAuthOptions = {
 
 	pages: {
 		signIn: '/',
-		// newUser: '/cadastro',
-		// signOut: '/sair',
-		// error: '/auth/error',
-		// verifyRequest: '/auth/verify-request',
 	},
 	secret: process.env.NEXTAUTH_SECRET,
 
