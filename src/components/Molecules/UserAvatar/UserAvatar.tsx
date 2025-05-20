@@ -8,7 +8,7 @@ import { PiUserCircleGearFill } from 'react-icons/pi'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar } from '@/components/Atoms'
-import { ROLES } from '@/constants'
+import { PRINCIPAL_LINKS, ROLES } from '@/constants'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -21,7 +21,7 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 
 	const handleLogout = async () => {
 		await signOut({
-			callbackUrl: '/',
+			callbackUrl: PRINCIPAL_LINKS.LOGIN,
 			redirect: true,
 		})
 	}
@@ -60,7 +60,7 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 						{user?.role === ROLES.ADMIN && (
 							<button
 								className="focus:outline-hidden flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
-								onClick={() => push('/usuarios')}
+								onClick={() => push(PRINCIPAL_LINKS.USERS)}
 							>
 								Gerenciar usuários
 							</button>

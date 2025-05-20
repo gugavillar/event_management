@@ -1,5 +1,6 @@
 import { signOut } from 'next-auth/react'
 
+import { PRINCIPAL_LINKS } from '@/constants'
 import { useMutation } from '@/providers/QueryProvider'
 
 import { updatePassword } from '../usecases'
@@ -10,7 +11,7 @@ export const useUpdatePassword = () => {
 		onSuccess: () => {
 			setTimeout(async () => {
 				await signOut({
-					callbackUrl: '/',
+					callbackUrl: PRINCIPAL_LINKS.LOGIN,
 					redirect: true,
 				})
 			}, 2000)

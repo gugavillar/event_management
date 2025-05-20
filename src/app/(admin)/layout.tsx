@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
 import { Sidebar } from '@/components/Organisms'
+import { PRINCIPAL_LINKS } from '@/constants'
 import { SessionProvider } from '@/providers/SessionProvider'
 
 import { authOptions } from '../api/auth/[...nextauth]/authOptions'
@@ -14,7 +15,7 @@ export default async function AdminLayout({
 	const session = await getServerSession(authOptions)
 
 	if (!session?.user || session.user.firstAccess) {
-		redirect('/')
+		redirect(PRINCIPAL_LINKS.LOGIN)
 	}
 
 	return (

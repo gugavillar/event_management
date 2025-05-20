@@ -145,3 +145,9 @@ export const TRANSLATE_VOLUNTEERS_HEADER = {
 	[VOLUNTEERS_HEADER_TEMPLATE[12]]: 'contactParent',
 	[VOLUNTEERS_HEADER_TEMPLATE[13]]: 'relationship',
 } as const
+
+export enum PRINCIPAL_LINKS {
+	LOGIN = '/',
+	DASHBOARD = '/dashboard',
+	USERS = '/usuarios',
+}

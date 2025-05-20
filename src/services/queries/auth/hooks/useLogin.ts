@@ -5,6 +5,7 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { LoginButtonSchemaType } from '@/components/Organisms/LoginButton/LoginButton.schema'
+import { PRINCIPAL_LINKS } from '@/constants'
 import { convertToBoolean } from '@/formatters'
 import { useMutation } from '@/providers/QueryProvider'
 
@@ -41,7 +42,7 @@ export const useLogin = () => {
 						return 'Primeiro acesso, defina uma senha'
 					}
 
-					setTimeout(() => push('/dashboard'), 1000)
+					setTimeout(() => push(PRINCIPAL_LINKS.DASHBOARD), 1000)
 
 					return 'Redirecionando para o dashboard'
 				},
