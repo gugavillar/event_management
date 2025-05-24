@@ -16,6 +16,7 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 						email: true,
 						role: true,
 						firstAccess: true,
+						deletedAt: true,
 					},
 					orderBy: {
 						name: 'asc',
@@ -28,6 +29,7 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 						email: true,
 						role: true,
 						firstAccess: true,
+						deletedAt: true,
 					},
 					orderBy: {
 						createdAt: 'desc',

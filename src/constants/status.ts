@@ -116,3 +116,8 @@ export const RolesTypes = {
 export const RolesTypesSelectOptions = Object.values(ROLES).map((value) => ({
 	...RolesTypes[value],
 }))
+
+export enum USER_STATUS {
+	ACTIVE = 'Ativo',
+	INACTIVE = 'Inativo',
+}

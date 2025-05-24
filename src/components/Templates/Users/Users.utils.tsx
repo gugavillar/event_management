@@ -1,7 +1,8 @@
 import { FaUserLock, FaUserCog } from 'react-icons/fa'
+import { MdLockReset } from 'react-icons/md'
 
-import { Tooltip } from '@/components/Atoms'
-import { RolesTypes } from '@/constants'
+import { Tooltip, UserTag } from '@/components/Atoms'
+import { RolesTypes, USER_STATUS } from '@/constants'
 import { UserAPI } from '@/services/queries/users/users.type'
 
 export const HEADER_LABELS = [
@@ -22,6 +23,10 @@ export const HEADER_LABELS = [
 		accessor: 'firstAccess',
 	},
 	{
+		label: 'Status',
+		accessor: 'status',
+	},
+	{
 		label: '',
 		accessor: 'actions',
 	},
@@ -32,6 +37,7 @@ export const formatTableData = (
 	userId: string,
 	handleChangeRole: (id: UserAPI['id']) => void,
 	handleResetPassword: (id: UserAPI['id']) => void,
+	handleBlockUser: (id: UserAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -40,6 +46,11 @@ export const formatTableData = (
 			...user,
 			firstAccess: user.firstAccess ? 'Sim' : 'Não',
 			role: RolesTypes[user.role].label,
+			status: (
+				<UserTag
+					status={!user.deletedAt ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE}
+				/>
+			),
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
@@ -51,12 +62,20 @@ export const formatTableData = (
 						<Tooltip>Alterar permissão</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<FaUserLock
+						<MdLockReset
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleResetPassword(user.id)}
 						/>
 						<Tooltip>Redefinir senha</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<FaUserLock
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleBlockUser(user.id)}
+						/>
+						<Tooltip>Bloquear usuário</Tooltip>
 					</div>
 				</div>
 			),

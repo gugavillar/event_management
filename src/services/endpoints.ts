@@ -66,4 +66,6 @@ export const ENDPOINTS = {
 	RESET_USER_PASSWORD: (user_id: string) =>
 		`${BASE_PATH.USERS}/${user_id}/reset`,
 	UPDATE_USER_PASSWORD: BASE_PATH.USERS,
+	BLOCK_OR_UNBLOCK_USER: (user_id: string) =>
+		`${BASE_PATH.USERS}/${user_id}/block`,
 }

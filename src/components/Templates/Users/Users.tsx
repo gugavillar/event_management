@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import {
+	BlockUserModal,
 	ChangeRoleUserModal,
 	CreateUserButton,
 	ListPage,
@@ -43,11 +44,17 @@ export const Users = ({ userId }: UsersProps) => {
 		overlayOpen(MODALS_IDS.USER_RESET_PASSWORD_MODAL)
 	}
 
+	const handleOpenBlockUserModal = (id: UserAPI['id']) => {
+		setSelectedUser(id)
+		overlayOpen(MODALS_IDS.USER_BLOCK_MODAL)
+	}
+
 	const formatData = formatTableData(
 		users?.data,
 		userId,
 		handleOpenChangeRoleModal,
 		handleOpenResetPasswordModal,
+		handleOpenBlockUserModal,
 	)
 
 	const hasMoreThanOnePage = !!users?.totalPages && users.totalPages > 1
@@ -87,6 +94,11 @@ export const Users = ({ userId }: UsersProps) => {
 			/>
 			<UserResetPasswordModal
 				modalId={MODALS_IDS.USER_RESET_PASSWORD_MODAL}
+				selectedUser={selectedUser}
+				setSelectedUser={setSelectedUser}
+			/>
+			<BlockUserModal
+				modalId={MODALS_IDS.USER_BLOCK_MODAL}
 				selectedUser={selectedUser}
 				setSelectedUser={setSelectedUser}
 			/>

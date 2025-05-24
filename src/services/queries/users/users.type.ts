@@ -8,6 +8,7 @@ export type UserAPI = {
 	email: string
 	role: ROLES
 	firstAccess: boolean
+	deletedAt: string | null
 }
 
 export type UsersFromAPI = {
