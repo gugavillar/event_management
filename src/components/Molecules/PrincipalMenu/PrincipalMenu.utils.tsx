@@ -58,5 +58,4 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 			// { label: 'Quartos', href: '/voluntarios/quartos' },
 		],
 	},
-	// { label: 'Gestão de acesso', href: '#', icon: <PiGearFill size={24} /> },
 ]

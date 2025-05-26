@@ -1,15 +1,15 @@
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { generateLettersAvatar } from './Avatar.utils'
+
 type AvatarProps = ComponentProps<'span'> & {
 	children: string
 }
 
 export const Avatar = ({ className, children, ...props }: AvatarProps) => {
-	const letters =
-		children.length > 2
-			? children.slice(0, 2).toUpperCase()
-			: children.toUpperCase()
+	const letters = generateLettersAvatar(children)
+
 	return (
 		<span
 			className={twMerge(

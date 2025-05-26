@@ -1,6 +1,9 @@
 import { Dispatch, SetStateAction } from 'react'
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { IoTicket } from 'react-icons/io5'
+import {
+	TbLayoutSidebarRightCollapseFilled,
+	TbLayoutSidebarLeftCollapseFilled,
+} from 'react-icons/tb'
 import { twMerge } from 'tailwind-merge'
 
 import { Button, Text } from '@/components/Atoms'
@@ -17,7 +20,7 @@ export const ApplicationAvatar = ({
 	return (
 		<section
 			className={twMerge(
-				'flex items-center gap-x-4',
+				'relative flex items-center gap-x-4',
 				collapsed && 'justify-center',
 			)}
 			data-testid="application-avatar"
@@ -40,9 +43,16 @@ export const ApplicationAvatar = ({
 			<Button
 				type="button"
 				onClick={() => handleCollapse(!collapsed)}
-				className="inline-flex items-center justify-center gap-x-0 rounded-lg border-none p-2 text-lg font-medium text-gray-100 transition-colors duration-500 [--placement:right] hover:bg-slate-900/80"
+				className={twMerge(
+					'absolute -top-3 inline-flex items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500',
+					collapsed ? 'left-12' : 'left-64',
+				)}
 			>
-				{collapsed ? <IoIosArrowForward /> : <IoIosArrowBack />}
+				{collapsed ? (
+					<TbLayoutSidebarRightCollapseFilled size={28} />
+				) : (
+					<TbLayoutSidebarLeftCollapseFilled size={28} />
+				)}
 			</Button>
 		</section>
 	)

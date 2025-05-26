@@ -29,6 +29,12 @@ export const MODALS_IDS = {
 	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
 	VOLUNTEER_ASSIGN_FUNCTION_MODAL: 'volunteer_assign_function_modal',
 	VOLUNTEER_PAYMENT_MODAL: 'volunteer_payment_modal',
+
+	// USERS
+	USER_CREATE_MODAL: 'user_create_modal',
+	USER_CHANGE_ROLE_MODAL: 'user_change_role_modal',
+	USER_RESET_PASSWORD_MODAL: 'user_reset_password_modal',
+	USER_BLOCK_MODAL: 'user_block_modal',
 }
 
 export const prisma = new PrismaClient({
@@ -140,3 +146,25 @@ export const TRANSLATE_VOLUNTEERS_HEADER = {
 	[VOLUNTEERS_HEADER_TEMPLATE[12]]: 'contactParent',
 	[VOLUNTEERS_HEADER_TEMPLATE[13]]: 'relationship',
 } as const
+
+export enum PRINCIPAL_LINKS {
+	LOGIN = '/',
+	DASHBOARD = '/dashboard',
+	USERS = '/usuarios',
+}
+
+export const YES_OR_NO_SELECT_OPTIONS = [
+	{ label: 'Sim', value: 'Yes' },
+	{ label: 'Não', value: 'No' },
+]
+
+export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [
+	{ label: 'Dinheiro/Cartão', value: 'Cash/Card' },
+	{ label: 'PIX', value: 'PIX' },
+]
+
+export const PIX = {
+	key: '+5581999999999',
+	name: 'Igreja Anglicana Vida',
+	city: 'Gravatá',
+}

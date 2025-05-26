@@ -39,7 +39,7 @@ export const ParticipantModalData = ({
 						<PersonalInfoCard userInfo={{ ...data }} />
 						<AddressInfoCard
 							addressInfo={{
-								...data.Address,
+								...data.address,
 							}}
 						/>
 						<FamilyContactInfo responsibleInfo={{ ...data }} />

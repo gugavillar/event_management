@@ -1,16 +1,18 @@
 import { NextRequest } from 'next/server'
+import { getServerSession } from 'next-auth'
 
 import { createEvent, getAllEvents } from '@/server'
 import { FormEvent } from '@/services/queries/events/event.type'
 import { requestProcess } from '@/utils/prisma'
 
+import { authOptions } from '../auth/[...nextauth]/authOptions'
+
 const handlerPost = async (request: NextRequest) => {
 	const body: FormEvent = await request.json()
-	// TODO: pegar id do usuário via next auth
+	const session = await getServerSession(authOptions)
 
 	return await requestProcess({
-		functions: async () =>
-			await createEvent(body, '7b323ec3-5323-4636-856e-b0c1fcf6cabe'),
+		functions: async () => await createEvent(body, session?.user?.id as string),
 	})
 }
 

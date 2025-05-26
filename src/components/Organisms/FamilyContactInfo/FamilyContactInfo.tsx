@@ -6,11 +6,10 @@ import { InfoBox } from '@/components/Molecules'
 
 type FamilyContactInfoProps = ComponentProps<'div'> & {
 	responsibleInfo: {
-		parent: string
-		contactParent: string
-		relationship: string
+		responsible: string
+		responsiblePhone: string
 		host: string
-		contactHost: string
+		hostPhone: string
 	}
 }
 
@@ -25,16 +24,15 @@ export const FamilyContactInfo = ({
 			className={twMerge('space-y-3 pb-6', className)}
 			{...props}
 		>
-			<InfoBox label="Parente próximo" value={responsibleInfo.parent} />
+			<InfoBox label="Responsável" value={responsibleInfo.responsible} />
 			<InfoBox
-				label="Telefone do parente"
-				value={responsibleInfo.contactParent}
+				label="Telefone do responsável"
+				value={responsibleInfo.responsiblePhone}
 			/>
-			<InfoBox label="Parentesco" value={responsibleInfo.relationship} />
 			<InfoBox label="Quem convidou" value={responsibleInfo.host} />
 			<InfoBox
 				label="Contato de quem convidou"
-				value={responsibleInfo.contactHost}
+				value={responsibleInfo.hostPhone}
 			/>
 		</InformationCard>
 	)

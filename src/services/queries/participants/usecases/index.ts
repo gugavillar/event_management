@@ -1,3 +1,4 @@
+export * from './createParticipant'
 export * from './deleteParticipant'
 export * from './getParticipant'
 export * from './getParticipants'

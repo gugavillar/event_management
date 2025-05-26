@@ -15,8 +15,7 @@ export const updateParticipantById = async (
 			})
 			.parse({ ...data, id })
 
-		const { street, city, neighborhood, number, state, ...participantData } =
-			data
+		const { address, ...participantData } = data
 
 		return await prisma.$transaction(async (tx) => {
 			await tx.participant.update({
@@ -32,11 +31,7 @@ export const updateParticipantById = async (
 					participantId: id,
 				},
 				data: {
-					street,
-					city,
-					neighborhood,
-					number,
-					state,
+					...address,
 				},
 			})
 		})

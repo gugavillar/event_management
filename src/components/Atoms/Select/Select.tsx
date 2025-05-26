@@ -13,7 +13,7 @@ export type SelectProps = ComponentPropsWithoutRef<'select'> & {
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 	({ options, className, isInvalid, placeholder, ...props }, ref) => {
-		const hasOptions = options.length > 0
+		const hasOptions = options?.length > 0
 
 		return (
 			<div className="relative w-full">

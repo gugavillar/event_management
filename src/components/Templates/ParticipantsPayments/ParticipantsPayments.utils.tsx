@@ -45,7 +45,7 @@ export const formatTableData = (
 	return payments.map((payment) => ({
 		id: payment.id,
 		name: payment.participant.name,
-		phone: formatPhone(payment.participant.contact),
+		phone: formatPhone(payment.participant.phone),
 		valuePayed: currencyValue(Number(payment.paymentValue)),
 		eventName: payment.event.name,
 		eventValue: currencyValue(Number(payment.event.participantPrice)),
