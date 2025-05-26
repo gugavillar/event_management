@@ -49,3 +49,4 @@ jobs:
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
             API_BASE_URL=${{ secrets.API_BASE_URL }}
+             API_IBGE_UF=${{ secrets.API_IBGE_UF }}
