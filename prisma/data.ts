@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 
-import { ROLES } from '@/constants'
+import { ROLES } from '../src/constants/status'
 
 export const adminUser = {
 	name: 'Administrador',

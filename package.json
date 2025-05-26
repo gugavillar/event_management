@@ -2,6 +2,9 @@
 	"name": "event_management",
 	"version": "0.1.0",
 	"private": true,
+	"prisma": {
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+	},
 	"scripts": {
 		"dev": "next dev",
 		"prebuild": "next telemetry disable",
@@ -13,7 +16,8 @@
 		"prepare": "husky",
 		"check-types": "tsc --noemit",
 		"pstudio": "pnpx prisma studio",
-		"migrate:dev": "pnpx prisma migrate dev"
+		"migrate:dev": "pnpx prisma migrate dev",
+		"seed": "pnpx prisma db seed"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.10.0",

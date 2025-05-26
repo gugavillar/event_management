@@ -1,6 +1,5 @@
-import { prisma } from '@/constants'
-
 import { adminUser } from './data'
+import { prisma } from '../src/constants/globals'
 
 async function main() {
 	try {

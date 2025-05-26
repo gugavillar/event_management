@@ -1,36 +1,37 @@
 import { useFormContext } from 'react-hook-form'
 
 import { InputField, SelectField } from '@/components/Molecules'
+import { ExternalParticipantFormType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { UF } from '@/constants'
 import { useGetCities } from '@/services/queries/cities'
 
 export const AddressExternalForm = () => {
-	const { watch } = useFormContext()
+	const { watch } = useFormContext<ExternalParticipantFormType>()
 
-	const selectedUF = watch('state')
+	const selectedUF = watch('address.state')
 
 	const { data: cities } = useGetCities({
 		nome: selectedUF,
 	})
 	return (
 		<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-			<InputField fieldName="address">Endereço</InputField>
-			<InputField fieldName="number">Número</InputField>
+			<InputField fieldName="address.street">Endereço</InputField>
+			<InputField fieldName="address.number">Número</InputField>
 			<SelectField
-				fieldName="state"
+				fieldName="address.state"
 				placeholder="Selecione o estado"
 				options={UF}
 			>
 				Estado
 			</SelectField>
 			<SelectField
-				fieldName="city"
+				fieldName="address.city"
 				placeholder="Selecione a cidade"
 				options={cities ?? []}
 			>
 				Cidade
 			</SelectField>
-			<InputField fieldName="neighborhood">Bairro</InputField>
+			<InputField fieldName="address.neighborhood">Bairro</InputField>
 		</div>
 	)
 }

@@ -30,15 +30,16 @@ export default async function RegistrationPage({
 	}
 
 	return (
-		<div className="grid h-dvh w-full grid-cols-1 lg:grid-cols-2">
-			<div className="hidden lg:flex">
+		<div className="grid h-dvh w-full lg:grid-cols-2">
+			<div className="flex max-md:h-fit">
 				<Image
 					src="/background_hb.png"
 					width={0}
 					height={0}
 					sizes="100vw"
-					className="size-full object-cover"
+					className="h-3/5 w-full object-cover lg:size-full"
 					alt="Background image"
+					priority
 				/>
 			</div>
 			<div className="size-full overflow-y-auto">

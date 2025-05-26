@@ -138,16 +138,14 @@ export const importParticipants = async (data: FormData) => {
 				const participant = await tx.participant.create({
 					data: {
 						name: p.name,
-						email: p.email,
 						called: p.called,
+						email: p.email,
+						phone: p.phone,
 						birthdate: p.birthdate,
-						contact: p.contact,
-						maritalStatus: p.maritalStatus,
-						parent: p.parent,
-						contactParent: p.contactParent,
-						relationship: p.relationship,
+						responsible: p.responsible,
+						responsiblePhone: p.responsiblePhone,
 						host: p.host,
-						contactHost: p.contactHost,
+						hostPhone: p.hostPhone,
 						eventId: eventId as string,
 					},
 				})

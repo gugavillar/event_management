@@ -154,8 +154,8 @@ export enum PRINCIPAL_LINKS {
 }
 
 export const YES_OR_NO_SELECT_OPTIONS = [
-	{ label: 'Sim', value: 'Sim' },
-	{ label: 'Não', value: 'Não' },
+	{ label: 'Sim', value: 'Yes' },
+	{ label: 'Não', value: 'No' },
 ]
 
 export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [

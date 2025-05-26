@@ -53,7 +53,7 @@ export const formatTableData = (
 		return {
 			id: participant.id,
 			name: participant.name,
-			contact: formatPhone(participant.contact),
+			contact: formatPhone(participant.phone),
 			birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), participant.birthdate)} anos`,
 			city: participant.Address.city,
 			event: participant.event.name,

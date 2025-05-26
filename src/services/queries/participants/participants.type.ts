@@ -12,16 +12,14 @@ export type ImportParticipantsDataValues = {
 export type ParticipantsAPI = {
 	id: UUID
 	name: string
-	email: string
 	called: string
+	email: string
+	phone: string
 	birthdate: string
-	contact: string
-	maritalStatus: string
-	parent: string
-	contactParent: string
-	relationship: string
+	responsible: string
+	responsiblePhone: string
 	host: string
-	contactHost: string
+	hostPhone: string
 	checkIn: CHECK_IN_STATUS | null
 	createdAt: string
 	updatedAt: string

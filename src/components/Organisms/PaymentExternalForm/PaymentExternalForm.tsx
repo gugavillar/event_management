@@ -8,6 +8,7 @@ import QRCode from 'react-qr-code'
 import { Button, Spinner } from '@/components/Atoms'
 import { SelectField } from '@/components/Molecules'
 import { ExternalParticipantFormProps } from '@/components/Templates'
+import { ExternalParticipantFormType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
 
 type PaymentExternalFormProps = ExternalParticipantFormProps
@@ -16,7 +17,7 @@ export const PaymentExternalForm = ({
 	registrationValue,
 }: PaymentExternalFormProps) => {
 	const [pixValue, setPixValue] = useState<string | null>(null)
-	const { watch } = useFormContext()
+	const { watch } = useFormContext<ExternalParticipantFormType>()
 
 	const isPixPayment =
 		watch('paymentMethod') === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value

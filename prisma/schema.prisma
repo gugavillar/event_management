@@ -74,16 +74,15 @@ model Event {
 model Participant {
   id                 String                        @id @default(uuid())
   name               String
-  email              String
   called             String
+  email              String
+  phone              String
   birthdate          DateTime
-  contact            String
-  maritalStatus      String
-  parent             String
-  contactParent      String
-  relationship       String
+  religion           String?
+  responsible        String
+  responsiblePhone   String
   host               String
-  contactHost        String
+  hostPhone          String
   checkIn            ParticipantOrVolunteerStatus?
   createdAt          DateTime                      @default(now())
   updatedAt          DateTime                      @updatedAt
