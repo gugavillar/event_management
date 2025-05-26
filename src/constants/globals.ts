@@ -152,3 +152,19 @@ export enum PRINCIPAL_LINKS {
 	DASHBOARD = '/dashboard',
 	USERS = '/usuarios',
 }
+
+export const YES_OR_NO_SELECT_OPTIONS = [
+	{ label: 'Sim', value: 'Sim' },
+	{ label: 'Não', value: 'Não' },
+]
+
+export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [
+	{ label: 'Dinheiro/Cartão', value: 'Dinheiro/Cartão' },
+	{ label: 'PIX', value: 'PIX' },
+]
+
+export const PIX = {
+	key: '+5581999999999',
+	name: 'Igreja Anglicana Vida',
+	city: 'Gravatá',
+}

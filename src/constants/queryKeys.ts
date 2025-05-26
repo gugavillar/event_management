@@ -38,6 +38,9 @@ export const QUERY_KEYS = {
 
 	// Users
 	USERS: 'users',
+
+	// Cities
+	CITIES: 'cities',
 } as const
 
 export const getQueryClient = () => {

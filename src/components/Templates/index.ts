@@ -1,5 +1,6 @@
 export * from './Dashboard'
 export * from './Events'
+export * from './ExternalParticipantForm'
 export * from './Groups'
 export * from './Login'
 export * from './Participants'
