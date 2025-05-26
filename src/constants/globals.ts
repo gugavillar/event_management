@@ -159,7 +159,7 @@ export const YES_OR_NO_SELECT_OPTIONS = [
 ]
 
 export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [
-	{ label: 'Dinheiro/Cartão', value: 'Dinheiro/Cartão' },
+	{ label: 'Dinheiro/Cartão', value: 'Cash/Card' },
 	{ label: 'PIX', value: 'PIX' },
 ]
 

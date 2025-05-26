@@ -1,3 +1,4 @@
+export * from './createParticipant'
 export * from './getAllParticipants'
 export * from './getAllParticipantsPayments'
 export * from './getParticipantById'

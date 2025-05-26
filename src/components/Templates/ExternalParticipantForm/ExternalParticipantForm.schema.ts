@@ -31,7 +31,6 @@ export const ExternalParticipantFormSchemaStepOne = z
 				(value) => {
 					if (/^\d{2}\/\d{2}\/\d{4}/g.test(value)) {
 						const age = differenceInYears(new Date(), new Date(value))
-						console.log(age)
 						return age >= 14 && age <= 19
 					}
 					return false
@@ -100,7 +99,7 @@ export const ExternalParticipantFormSchemaStepTwo = z.object({
 })
 
 export const ExternalParticipantFormSchemaStepThree = z.object({
-	paymentMethod: z.enum(['PIX', 'Dinheiro/Cartão'], {
+	paymentMethod: z.enum(['PIX', 'Cash/Card'], {
 		required_error: 'Campo obrigatório',
 	}),
 })

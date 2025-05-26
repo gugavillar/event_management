@@ -9,8 +9,9 @@ import {
 	MaskedInputField,
 	SelectField,
 } from '@/components/Molecules'
-import { overlayClose, UF } from '@/constants'
+import { overlayClose, UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 import { formatDateToSendToApi } from '@/formatters'
+import { useGetCities } from '@/services/queries/cities'
 import {
 	useGetParticipant,
 	useUpdateParticipant,
@@ -34,22 +35,37 @@ export const ParticipantDrawer = ({
 	const {
 		handleSubmit,
 		reset,
+		watch,
 		formState: { isValid, isDirty },
 	} = useFormContext<ParticipantType>()
 	const { isPending, update } = useUpdateParticipant()
 
+	const selectedUF = watch('address.state')
+	const hasReligion = watch('hasReligion')
+
+	const { data: cities } = useGetCities({
+		nome: selectedUF,
+	})
+
 	const handleSubmitForm: SubmitHandler<ParticipantType> = async (values) => {
 		if (!selectedParticipant) return
+
+		const { hasReligion, religion, ...data } = values
+
+		const formattedData = {
+			...data,
+			...(hasReligion === 'Yes' && { religion }),
+			birthdate: formatDateToSendToApi(data.birthdate),
+			phone: data.phone.replace(/\D/g, ''),
+			hostPhone: data.hostPhone.replace(/\D/g, ''),
+			responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
+		}
 
 		await update(
 			{
 				participantId: selectedParticipant,
 				data: {
-					...values,
-					birthdate: formatDateToSendToApi(values.birthdate),
-					contact: values.contact.replace(/\D/g, ''),
-					contactHost: values.contactHost.replace(/\D/g, ''),
-					contactParent: values.contactParent.replace(/\D/g, ''),
+					...formattedData,
 				},
 			},
 			{
@@ -78,41 +94,52 @@ export const ParticipantDrawer = ({
 		>
 			<DrawerBody isLoading={isLoading}>
 				<InputField fieldName="name">Nome completo</InputField>
-				<InputField fieldName="email">E-mail</InputField>
 				<InputField fieldName="called">
 					Como você gostaria de ser chamado(a)?
 				</InputField>
+				<InputField fieldName="email">E-mail</InputField>
+				<MaskedInputField format="(##) #####-####" fieldName="phone">
+					Telefone
+				</MaskedInputField>
 				<MaskedInputField format="##/##/####" fieldName="birthdate">
-					Data de nascimento (DD/MM/AAAA)
+					Data de nascimento
 				</MaskedInputField>
-				<MaskedInputField format="(##) #####-####" fieldName="contact">
-					Telefone para contato
-				</MaskedInputField>
-				<InputField fieldName="maritalStatus">Estado civil</InputField>
-				<InputField fieldName="street">Endereço</InputField>
-				<InputField fieldName="neighborhood">Bairro</InputField>
-				<InputField fieldName="number">Número</InputField>
-				<InputField fieldName="city">Cidade</InputField>
 				<SelectField
-					fieldName="state"
+					fieldName="hasReligion"
+					placeholder="Selecione uma opção"
+					options={YES_OR_NO_SELECT_OPTIONS}
+				>
+					Tem religião?
+				</SelectField>
+				{hasReligion === 'Yes' && (
+					<InputField fieldName="religion">Qual?</InputField>
+				)}
+				<InputField fieldName="responsible">Responsável</InputField>
+				<MaskedInputField format="(##) #####-####" fieldName="responsiblePhone">
+					Telefone responsável
+				</MaskedInputField>
+
+				<InputField fieldName="host">Quem convidou</InputField>
+				<MaskedInputField format="(##) #####-####" fieldName="hostPhone">
+					Telefone quem convidou
+				</MaskedInputField>
+				<InputField fieldName="address.street">Endereço</InputField>
+				<InputField fieldName="address.number">Número</InputField>
+				<SelectField
+					fieldName="address.state"
 					placeholder="Selecione o estado"
 					options={UF}
 				>
 					Estado
 				</SelectField>
-				<InputField fieldName="parent">
-					Nome do responsável ou parente
-				</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="contactParent">
-					Telefone do responsável ou parente
-				</MaskedInputField>
-				<InputField fieldName="relationship">
-					Parentesco (ex: mãe, tio, avó...)
-				</InputField>
-				<InputField fieldName="host">Nome de quem te convidou</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="contactHost">
-					Telefone de quem te convidou
-				</MaskedInputField>
+				<SelectField
+					fieldName="address.city"
+					placeholder="Selecione a cidade"
+					options={cities ?? []}
+				>
+					Cidade
+				</SelectField>
+				<InputField fieldName="address.neighborhood">Bairro</InputField>
 			</DrawerBody>
 			<DrawerFooter>
 				<Button

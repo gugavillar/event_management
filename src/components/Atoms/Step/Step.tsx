@@ -2,6 +2,8 @@ import { ReactNode } from 'react'
 import { FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { twMerge } from 'tailwind-merge'
 
+import { Button } from '../Button'
+
 type StepProps = {
 	currentStep: number
 	steps: Array<{
@@ -11,6 +13,7 @@ type StepProps = {
 	handleNext: VoidFunction
 	handlePrev: VoidFunction
 	handleFinish: VoidFunction
+	isPending: boolean
 }
 
 export const Step = ({
@@ -19,6 +22,7 @@ export const Step = ({
 	currentStep,
 	handleNext,
 	handlePrev,
+	isPending,
 }: StepProps) => {
 	const isLastStep = currentStep === steps.length - 1
 	return (
@@ -69,26 +73,30 @@ export const Step = ({
 					type="button"
 					className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:bg-gray-50 disabled:pointer-events-none disabled:opacity-50"
 					onClick={handlePrev}
+					disabled={isPending}
 				>
 					<FaChevronLeft className="size-3" />
 					Voltar
 				</button>
-				<button
-					type="button"
-					className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
-					onClick={handleNext}
-				>
-					Próximo
-					<FaChevronRight className="size-3" />
-				</button>
-				{isLastStep && (
+				{!isLastStep && (
 					<button
 						type="button"
+						className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
+						onClick={handleNext}
+					>
+						Próximo
+						<FaChevronRight className="size-3" />
+					</button>
+				)}
+				{isLastStep && (
+					<Button
+						type="button"
+						isLoading={isPending}
 						className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
 						onClick={handleFinish}
 					>
 						Finalizar
-					</button>
+					</Button>
 				)}
 			</div>
 		</>

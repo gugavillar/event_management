@@ -32,8 +32,6 @@ export const useLogin = () => {
 					const userRole = data?.user?.role
 					const isFirstAccess = data?.user?.firstAccess
 
-					console.log(data)
-
 					if (!userRole) throw new Error('Usuário sem permissão')
 
 					if (isFirstAccess) {

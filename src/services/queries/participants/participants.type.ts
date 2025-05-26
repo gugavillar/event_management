@@ -18,6 +18,7 @@ export type ParticipantsAPI = {
 	birthdate: string
 	responsible: string
 	responsiblePhone: string
+	religion?: string
 	host: string
 	hostPhone: string
 	checkIn: CHECK_IN_STATUS | null
@@ -48,21 +49,21 @@ export type ParticipantsFromAPI = {
 
 export type FormParticipant = {
 	name: string
-	email: string
 	called: string
+	email: string
+	phone: string
 	birthdate: string
-	contact: string
-	maritalStatus: string
-	parent: string
-	contactParent: string
-	relationship: string
+	responsible: string
+	responsiblePhone: string
 	host: string
-	contactHost: string
-	city: string
-	neighborhood: string
-	number: string
-	state: string
-	street: string
+	hostPhone: string
+	address: {
+		street: string
+		neighborhood: string
+		number: string
+		city: string
+		state: string
+	}
 }
 
 export type ParticipantsPaymentsAPI = {
