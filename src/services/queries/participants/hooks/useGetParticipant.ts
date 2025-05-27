@@ -31,8 +31,8 @@ export const useGetParticipant = (
 			phone: formatPhone(data.phone),
 			responsiblePhone: formatPhone(data.responsiblePhone),
 			hostPhone: formatPhone(data.hostPhone),
-			hasReligion: data.religion ? 'Yes' : 'No',
-			hasHealth: data.health ? 'Yes' : 'No',
+			hasReligion: data.religion ? 'Yes' : ('No' as 'Yes' | 'No'),
+			hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
 			address: {
 				...Address,
 			},
