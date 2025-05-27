@@ -50,6 +50,8 @@ export const Participants = () => {
 			hostPhone: '',
 			hasReligion: undefined,
 			religion: '',
+			hasHealth: undefined,
+			health: '',
 			address: {
 				city: '',
 				neighborhood: '',

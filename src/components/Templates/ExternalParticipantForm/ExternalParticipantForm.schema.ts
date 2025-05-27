@@ -9,10 +9,10 @@ export const ExternalParticipantFormSchemaStepOne = z
 	.object({
 		name: z.string().trim().min(1, 'Campo obrigatório'),
 		email: z
-			.string()
+			.string({ required_error: 'Campo obrigatório' })
 			.trim()
-			.email({ message: 'Campo obrigatório' })
-			.refine((value) => validateEmail(value)),
+			.email({ message: 'Email inválido' })
+			.refine((value) => validateEmail(value), { message: 'Email inválido' }),
 		called: z
 			.string({ required_error: 'Campo obrigatório' })
 			.trim()
@@ -54,8 +54,14 @@ export const ExternalParticipantFormSchemaStepOne = z
 			),
 		hasReligion: z.enum(['Yes', 'No'], {
 			required_error: 'Campo obrigatório',
+			message: 'Campo obrigatório',
 		}),
 		religion: z.string().optional(),
+		hasHealth: z.enum(['Yes', 'No'], {
+			required_error: 'Campo obrigatório',
+			message: 'Campo obrigatório',
+		}),
+		health: z.string().optional(),
 		host: z.string().trim().min(1, 'Campo obrigatório'),
 		hostPhone: z
 			.string({ required_error: 'Campo obrigatório' })
@@ -71,6 +77,13 @@ export const ExternalParticipantFormSchemaStepOne = z
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['religion'],
+			})
+		}
+		if (value.hasHealth === 'Yes' && !value.health?.trim()) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Campo obrigatório',
+				path: ['health'],
 			})
 		}
 		validatePhonesNotEquals(

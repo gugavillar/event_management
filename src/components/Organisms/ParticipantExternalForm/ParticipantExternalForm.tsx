@@ -13,6 +13,7 @@ import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 export const ParticipantExternalForm = () => {
 	const { watch } = useFormContext<ExternalParticipantFormType>()
 	const hasReligion = watch('hasReligion')
+	const hasHealth = watch('hasHealth')
 	return (
 		<div className="space-y-6">
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -38,6 +39,18 @@ export const ParticipantExternalForm = () => {
 				</SelectField>
 				{hasReligion === 'Yes' && (
 					<InputField fieldName="religion">Qual?</InputField>
+				)}
+			</div>
+			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+				<SelectField
+					fieldName="hasHealth"
+					placeholder="Selecione uma opção"
+					options={YES_OR_NO_SELECT_OPTIONS}
+				>
+					Tem restrição saúde/alimentar?
+				</SelectField>
+				{hasHealth === 'Yes' && (
+					<InputField fieldName="health">Descreva?</InputField>
 				)}
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">

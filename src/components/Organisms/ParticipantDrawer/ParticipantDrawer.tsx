@@ -42,6 +42,7 @@ export const ParticipantDrawer = ({
 
 	const selectedUF = watch('address.state')
 	const hasReligion = watch('hasReligion')
+	const hasHealth = watch('hasHealth')
 
 	const { data: cities } = useGetCities({
 		nome: selectedUF,
@@ -50,11 +51,12 @@ export const ParticipantDrawer = ({
 	const handleSubmitForm: SubmitHandler<ParticipantType> = async (values) => {
 		if (!selectedParticipant) return
 
-		const { hasReligion, religion, ...data } = values
+		const { hasReligion, religion, hasHealth, health, ...data } = values
 
 		const formattedData = {
 			...data,
 			...(hasReligion === 'Yes' && { religion }),
+			...(hasHealth === 'Yes' && { health }),
 			birthdate: formatDateToSendToApi(data.birthdate),
 			phone: data.phone.replace(/\D/g, ''),
 			hostPhone: data.hostPhone.replace(/\D/g, ''),
@@ -113,6 +115,16 @@ export const ParticipantDrawer = ({
 				</SelectField>
 				{hasReligion === 'Yes' && (
 					<InputField fieldName="religion">Qual?</InputField>
+				)}
+				<SelectField
+					fieldName="hasHealth"
+					placeholder="Selecione uma opção"
+					options={YES_OR_NO_SELECT_OPTIONS}
+				>
+					Tem restrição saúde/alimentar?
+				</SelectField>
+				{hasHealth === 'Yes' && (
+					<InputField fieldName="health">Descreva?</InputField>
 				)}
 				<InputField fieldName="responsible">Responsável</InputField>
 				<MaskedInputField format="(##) #####-####" fieldName="responsiblePhone">

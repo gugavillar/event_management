@@ -43,6 +43,8 @@ export const ExternalParticipantForm = ({
 			responsible: '',
 			responsiblePhone: '',
 			hasReligion: undefined,
+			hasHealth: undefined,
+			health: '',
 			religion: '',
 			host: '',
 			hostPhone: '',
@@ -80,12 +82,13 @@ export const ExternalParticipantForm = ({
 	const onSubmit: SubmitHandler<ExternalParticipantFormType> = async () => {
 		if (!eventId) return
 
-		const { hasReligion, religion, paymentMethod, ...data } =
+		const { hasReligion, religion, hasHealth, health, paymentMethod, ...data } =
 			methods.getValues()
 
 		const formattedData = {
 			...data,
 			...(hasReligion === 'Yes' && { religion }),
+			...(hasHealth === 'Yes' && { health }),
 			birthdate: formatDateToSendToApi(data.birthdate),
 			phone: data.phone.replace(/\D/g, ''),
 			hostPhone: data.hostPhone.replace(/\D/g, ''),

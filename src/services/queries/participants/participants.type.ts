@@ -19,6 +19,7 @@ export type ParticipantsAPI = {
 	responsible: string
 	responsiblePhone: string
 	religion?: string
+	health?: string
 	host: string
 	hostPhone: string
 	checkIn: CHECK_IN_STATUS | null
@@ -55,6 +56,8 @@ export type FormParticipant = {
 	birthdate: string
 	responsible: string
 	responsiblePhone: string
+	religion?: string
+	health?: string
 	host: string
 	hostPhone: string
 	address: {
