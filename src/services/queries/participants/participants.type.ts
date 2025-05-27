@@ -56,8 +56,8 @@ export type FormParticipant = {
 	birthdate: string
 	responsible: string
 	responsiblePhone: string
-	religion?: string
-	health?: string
+	religion?: string | null
+	health?: string | null
 	host: string
 	hostPhone: string
 	address: {

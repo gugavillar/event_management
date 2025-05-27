@@ -45,12 +45,12 @@ export const ParticipantSchema = z
 			required_error: 'Campo obrigatório',
 			message: 'Campo obrigatório',
 		}),
-		religion: z.string().optional(),
+		religion: z.string().nullable().optional(),
 		hasHealth: z.enum(['Yes', 'No'], {
 			required_error: 'Campo obrigatório',
 			message: 'Campo obrigatório',
 		}),
-		health: z.string().optional(),
+		health: z.string().nullable().optional(),
 		host: z.string().trim().min(1, 'Campo obrigatório'),
 		hostPhone: z
 			.string({ required_error: 'Campo obrigatório' })
