@@ -1,5 +1,5 @@
 # Base image with pnpm
-FROM node:18-alpine AS base
+FROM node:24.1.0-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -20,7 +20,7 @@ RUN pnpm prisma generate
 RUN pnpm run build
 
 # Final stage with minimal runtime
-FROM node:18-alpine AS dokploy
+FROM node:24.1.0-alpine AS dokploy
 WORKDIR /app
 ENV NODE_ENV=production
 
