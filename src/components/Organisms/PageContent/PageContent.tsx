@@ -1,40 +1,36 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { Spinner, Text } from '@/components/Atoms'
+import { Text } from '@/components/Atoms'
 import { HeaderPage } from '@/components/Molecules'
 
 type PageContentProps = ComponentProps<'div'> & {
 	subheadingPage: string
 	pageTitle?: string
-	isLoading?: boolean
 }
-
-const loadingClasses =
-	'flex h-[calc(100dvh-7.5rem)] flex-col items-center justify-center'
 
 export const PageContent = ({
 	className,
 	children,
 	subheadingPage,
-	isLoading,
 	pageTitle,
 	...props
 }: PageContentProps) => {
+	const memoSubheadingPage = useMemo(
+		() => <Text className="opacity-50">{subheadingPage}</Text>,
+		[subheadingPage],
+	)
 	return (
 		<>
-			<HeaderPage pageTitle={pageTitle}>
-				<Text className="opacity-50">{subheadingPage}</Text>
-			</HeaderPage>
+			<HeaderPage pageTitle={pageTitle}>{memoSubheadingPage}</HeaderPage>
 			<div
 				className={twMerge(
 					'flex w-full flex-col space-y-8 px-6 py-12',
-					isLoading && loadingClasses,
 					className,
 				)}
 				{...props}
 			>
-				{isLoading ? <Spinner className="size-12" /> : children}
+				{children}
 			</div>
 		</>
 	)

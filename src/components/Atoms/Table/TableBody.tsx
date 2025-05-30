@@ -39,7 +39,7 @@ export const TableBody = ({
 				<tr>
 					<td
 						colSpan={headerLabels.length}
-						className="py-36 text-center"
+						className="place-items-center py-36 text-center"
 						data-testid="no-data"
 					>
 						{isLoading ? <Spinner /> : 'Nenhum registro encontrado'}

@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Pagination, Select } from '@/components/Atoms'
@@ -94,25 +94,37 @@ export const Participants = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToDeleteParticipant = (id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
-	}
+	const handleOpenModalToDeleteParticipant = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
+		},
+		[],
+	)
 
-	const handleOpenModalToCheckInParticipant = (id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
-	}
+	const handleOpenModalToCheckInParticipant = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
+		},
+		[],
+	)
 
-	const handleOpenDrawerToEditParticipant = (id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
-	}
+	const handleOpenDrawerToEditParticipant = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
+		},
+		[],
+	)
 
-	const handleOpenModalToShowParticipantData = (id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
-	}
+	const handleOpenModalToShowParticipantData = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+		},
+		[],
+	)
 
 	const formattedParticipants = formatTableData(
 		participants?.data,
@@ -128,7 +140,6 @@ export const Participants = () => {
 	return (
 		<PageContent
 			subheadingPage="Lista de participantes"
-			isLoading={isLoading}
 			pageTitle="Participantes"
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">

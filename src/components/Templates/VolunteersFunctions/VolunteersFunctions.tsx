@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { ListManager } from '@/components/Molecules'
 import {
@@ -21,19 +21,21 @@ export const VolunteersFunctions = () => {
 		useState<null | VolunteersFunctionsFromAPI>(null)
 	const { data, isLoading, search, setSearch } = useGetVolunteersFunctions()
 
-	const handleOpenModalToDeleteFunction = (
-		selected: VolunteersFunctionsFromAPI,
-	) => {
-		setSelectedFunction(selected)
-		overlayOpen(MODALS_IDS.FUNCTION_REMOVE_MODAL)
-	}
+	const handleOpenModalToDeleteFunction = useCallback(
+		(selected: VolunteersFunctionsFromAPI) => {
+			setSelectedFunction(selected)
+			overlayOpen(MODALS_IDS.FUNCTION_REMOVE_MODAL)
+		},
+		[],
+	)
 
-	const handleOpenModalToEditFunction = (
-		selected: VolunteersFunctionsFromAPI,
-	) => {
-		setSelectedFunction(selected)
-		overlayOpen(MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL)
-	}
+	const handleOpenModalToEditFunction = useCallback(
+		(selected: VolunteersFunctionsFromAPI) => {
+			setSelectedFunction(selected)
+			overlayOpen(MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL)
+		},
+		[],
+	)
 
 	const formattedVolunteersFunctions = formatTableData(
 		data,
@@ -41,11 +43,7 @@ export const VolunteersFunctions = () => {
 		handleOpenModalToEditFunction,
 	)
 	return (
-		<PageContent
-			pageTitle="Funções"
-			subheadingPage="Lista das funções"
-			isLoading={isLoading}
-		>
+		<PageContent pageTitle="Funções" subheadingPage="Lista das funções">
 			<ListPage
 				placeholderField="Encontrar uma função"
 				className="lg:max-w-full"

@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Pagination, Select } from '@/components/Atoms'
@@ -89,25 +89,37 @@ export const Volunteers = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToCheckInVolunteer = (id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
-	}
+	const handleOpenModalToCheckInVolunteer = useCallback(
+		(id: VolunteersAPI['id']) => {
+			setSelectedVolunteer(id)
+			overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
+		},
+		[],
+	)
 
-	const handleOpenModalToDeleteVolunteer = (id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
-	}
+	const handleOpenModalToDeleteVolunteer = useCallback(
+		(id: VolunteersAPI['id']) => {
+			setSelectedVolunteer(id)
+			overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
+		},
+		[],
+	)
 
-	const handleOpenDrawerToEditVolunteer = (id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
-	}
+	const handleOpenDrawerToEditVolunteer = useCallback(
+		(id: VolunteersAPI['id']) => {
+			setSelectedVolunteer(id)
+			overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
+		},
+		[],
+	)
 
-	const handleOpenAssignFunctionVolunteerModal = (id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
-	}
+	const handleOpenAssignFunctionVolunteerModal = useCallback(
+		(id: VolunteersAPI['id']) => {
+			setSelectedVolunteer(id)
+			overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
+		},
+		[],
+	)
 
 	const formattedVolunteers = formatTableData(
 		volunteers?.data,
@@ -121,11 +133,7 @@ export const Volunteers = () => {
 		!!volunteers?.totalPages && volunteers.totalPages > 1
 
 	return (
-		<PageContent
-			pageTitle="Voluntários"
-			subheadingPage="Lista de voluntários"
-			isLoading={isLoading}
-		>
+		<PageContent pageTitle="Voluntários" subheadingPage="Lista de voluntários">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadTemplateVolunteersButton />
 				<ImportVolunteersButton

@@ -1,7 +1,7 @@
 'use client'
 
 import { User } from 'next-auth'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
@@ -34,20 +34,20 @@ export const Users = ({ userId }: UsersProps) => {
 		setPage,
 	} = useGetUsers()
 
-	const handleOpenChangeRoleModal = (id: UserAPI['id']) => {
+	const handleOpenChangeRoleModal = useCallback((id: UserAPI['id']) => {
 		setSelectedUser(id)
 		overlayOpen(MODALS_IDS.USER_CHANGE_ROLE_MODAL)
-	}
+	}, [])
 
-	const handleOpenResetPasswordModal = (id: UserAPI['id']) => {
+	const handleOpenResetPasswordModal = useCallback((id: UserAPI['id']) => {
 		setSelectedUser(id)
 		overlayOpen(MODALS_IDS.USER_RESET_PASSWORD_MODAL)
-	}
+	}, [])
 
-	const handleOpenBlockUserModal = (id: UserAPI['id']) => {
+	const handleOpenBlockUserModal = useCallback((id: UserAPI['id']) => {
 		setSelectedUser(id)
 		overlayOpen(MODALS_IDS.USER_BLOCK_MODAL)
-	}
+	}, [])
 
 	const formatData = formatTableData(
 		users?.data,
@@ -60,11 +60,7 @@ export const Users = ({ userId }: UsersProps) => {
 	const hasMoreThanOnePage = !!users?.totalPages && users.totalPages > 1
 
 	return (
-		<PageContent
-			title="Usuários"
-			subheadingPage="Lista de usuários"
-			isLoading={isLoading}
-		>
+		<PageContent title="Usuários" subheadingPage="Lista de usuários">
 			<ListPage
 				search={search}
 				setSearch={setSearch}
@@ -77,7 +73,7 @@ export const Users = ({ userId }: UsersProps) => {
 				<ListManager
 					bodyData={formatData}
 					headerLabels={HEADER_LABELS}
-					isLoading={false}
+					isLoading={isLoading}
 				/>
 				{hasMoreThanOnePage && (
 					<Pagination

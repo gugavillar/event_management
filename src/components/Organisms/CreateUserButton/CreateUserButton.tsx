@@ -1,5 +1,6 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { memo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { LuCalendarPlus } from 'react-icons/lu'
 
@@ -13,7 +14,7 @@ type CreateUserButtonProps = {
 	drawerId: string
 }
 
-export const CreateUserButton = ({ drawerId }: CreateUserButtonProps) => {
+export const CreateUserButton = memo(({ drawerId }: CreateUserButtonProps) => {
 	const methods = useForm<UserSchemaType>({
 		defaultValues: {
 			name: '',
@@ -43,4 +44,6 @@ export const CreateUserButton = ({ drawerId }: CreateUserButtonProps) => {
 			</FormProvider>
 		</>
 	)
-}
+})
+
+CreateUserButton.displayName = 'CreateUserButton'

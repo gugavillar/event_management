@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
@@ -35,7 +35,7 @@ export const VolunteersPayments = () => {
 	} = useGetInfinityEvents()
 	const {
 		data: volunteersPayments,
-		isLoading: isLoadingParticipants,
+		isLoading: isLoadingPayments,
 		search,
 		setSearch,
 		setEventId,
@@ -60,42 +60,47 @@ export const VolunteersPayments = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToPaymentVolunteer = (
-		payment: VolunteersPaymentsAPI,
-	) => {
-		setSelectedVolunteer(payment)
-		overlayOpen(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
-	}
+	const handleOpenModalToPaymentVolunteer = useCallback(
+		(payment: VolunteersPaymentsAPI) => {
+			setSelectedVolunteer(payment)
+			overlayOpen(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
+		},
+		[],
+	)
 
 	const formattedData = formatTableData(
 		volunteersPayments?.data,
 		handleOpenModalToPaymentVolunteer,
 	)
 
-	const handleUpdate = async (values: PaymentModalType) => {
-		if (!selectedVolunteer) return
+	const handleUpdate = useCallback(
+		async (values: PaymentModalType) => {
+			if (!selectedVolunteer) return
 
-		const formatValues = {
-			paymentType: values.paymentType as PaymentTypeAPI,
-			paymentValue:
-				values.paid === 'partial' && values.paymentValue
-					? Number(removeCurrencyFormat(values.paymentValue))
-					: Number(
-							removeCurrencyFormat(selectedVolunteer.event.volunteerPrice),
-						),
-		}
+			const formatValues = {
+				paymentType: values.paymentType as PaymentTypeAPI,
+				paymentValue:
+					values.paid === 'partial' && values.paymentValue
+						? Number(removeCurrencyFormat(values.paymentValue))
+						: Number(
+								removeCurrencyFormat(selectedVolunteer.event.volunteerPrice),
+							),
+			}
 
-		await update(
-			{ paymentId: selectedVolunteer.id, data: formatValues },
-			{
-				onSuccess: () => {
-					setSelectedVolunteer(null)
-					toast.success('Pagamento do voluntário atualizado com sucesso!')
+			await update(
+				{ paymentId: selectedVolunteer.id, data: formatValues },
+				{
+					onSuccess: () => {
+						setSelectedVolunteer(null)
+						toast.success('Pagamento do voluntário atualizado com sucesso!')
+					},
+					onError: () =>
+						toast.error('Erro ao atualizar pagamento do voluntário'),
 				},
-				onError: () => toast.error('Erro ao atualizar pagamento do voluntário'),
-			},
-		)
-	}
+			)
+		},
+		[selectedVolunteer, update],
+	)
 
 	const hasMoreThanOnePage =
 		!!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
@@ -104,7 +109,6 @@ export const VolunteersPayments = () => {
 		<PageContent
 			pageTitle="Pagamentos dos voluntários"
 			subheadingPage="Lista de pagamentos"
-			isLoading={isLoadingParticipants}
 		>
 			<ListPage
 				placeholderField="Encontrar um voluntário"
@@ -133,7 +137,7 @@ export const VolunteersPayments = () => {
 				<ListManager
 					bodyData={formattedData}
 					headerLabels={HEADER_LABELS}
-					isLoading={isLoadingParticipants}
+					isLoading={isLoadingPayments}
 				/>
 				{hasMoreThanOnePage && (
 					<Pagination

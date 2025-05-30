@@ -58,7 +58,7 @@ export const Groups = () => {
 	})
 
 	return (
-		<PageContent subheadingPage="Listagem de grupos" isLoading={false}>
+		<PageContent subheadingPage="Listagem de grupos">
 			<ListPage
 				placeholderField="Encontrar um participante"
 				className="w-full lg:max-w-full"

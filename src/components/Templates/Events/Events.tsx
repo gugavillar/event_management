@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
@@ -29,15 +29,15 @@ export const Events = () => {
 		setPage,
 	} = useGetEvents()
 
-	const handleEditEvent = (id: EventsAPI['id']) => {
+	const handleEditEvent = useCallback((id: EventsAPI['id']) => {
 		setSelectedEvent(id)
 		overlayOpen(MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER)
-	}
+	}, [])
 
-	const handleOpenModalToDeleteEvent = (id: EventsAPI['id']) => {
+	const handleOpenModalToDeleteEvent = useCallback((id: EventsAPI['id']) => {
 		setSelectedEvent(id)
 		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
-	}
+	}, [])
 
 	const formatData = formatTableData(
 		events?.data,
@@ -48,7 +48,7 @@ export const Events = () => {
 	const hasMoreThanOnePage = !!events?.totalPages && events.totalPages > 1
 
 	return (
-		<PageContent subheadingPage="Lista de eventos" isLoading={isLoading}>
+		<PageContent subheadingPage="Lista de eventos">
 			<ListPage
 				placeholderField="Encontrar um evento"
 				className="w-full lg:max-w-full"

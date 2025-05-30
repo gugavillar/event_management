@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
@@ -35,7 +35,7 @@ export const ParticipantsPayments = () => {
 	} = useGetInfinityEvents()
 	const {
 		data: participantsPayments,
-		isLoading: isLoadingParticipants,
+		isLoading: isLoadingPayments,
 		search,
 		setSearch,
 		setEventId,
@@ -60,42 +60,48 @@ export const ParticipantsPayments = () => {
 		fetchNextPage,
 	})
 
-	const handleOpenModalToPaymentParticipant = (
-		payment: ParticipantsPaymentsAPI,
-	) => {
-		setSelectedParticipant(payment)
-		overlayOpen(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
-	}
+	const handleOpenModalToPaymentParticipant = useCallback(
+		(payment: ParticipantsPaymentsAPI) => {
+			setSelectedParticipant(payment)
+			overlayOpen(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
+		},
+		[],
+	)
 
 	const formattedData = formatTableData(
 		participantsPayments?.data,
 		handleOpenModalToPaymentParticipant,
 	)
 
-	const handleUpdate = async (values: PaymentModalType) => {
-		if (!selectedParticipant) return
+	const handleUpdate = useCallback(
+		async (values: PaymentModalType) => {
+			if (!selectedParticipant) return
 
-		const formatValues = {
-			paymentType: values.paymentType as PaymentTypeAPI,
-			paymentValue:
-				values.paid === 'partial' && values.paymentValue
-					? Number(removeCurrencyFormat(values.paymentValue))
-					: Number(
-							removeCurrencyFormat(selectedParticipant.event.participantPrice),
-						),
-		}
-		await update(
-			{ paymentId: selectedParticipant.id, data: formatValues },
-			{
-				onSuccess: () => {
-					setSelectedParticipant(null)
-					toast.success('Pagamento do participante atualizado com sucesso!')
+			const formatValues = {
+				paymentType: values.paymentType as PaymentTypeAPI,
+				paymentValue:
+					values.paid === 'partial' && values.paymentValue
+						? Number(removeCurrencyFormat(values.paymentValue))
+						: Number(
+								removeCurrencyFormat(
+									selectedParticipant.event.participantPrice,
+								),
+							),
+			}
+			await update(
+				{ paymentId: selectedParticipant.id, data: formatValues },
+				{
+					onSuccess: () => {
+						setSelectedParticipant(null)
+						toast.success('Pagamento do participante atualizado com sucesso!')
+					},
+					onError: () =>
+						toast.error('Erro ao atualizar pagamento do participante'),
 				},
-				onError: () =>
-					toast.error('Erro ao atualizar pagamento do participante'),
-			},
-		)
-	}
+			)
+		},
+		[selectedParticipant, update],
+	)
 
 	const hasMoreThanOnePage =
 		!!participantsPayments?.totalPages && participantsPayments.totalPages > 1
@@ -104,7 +110,6 @@ export const ParticipantsPayments = () => {
 		<PageContent
 			pageTitle="Pagamentos dos participantes"
 			subheadingPage="Lista de pagamentos"
-			isLoading={isLoadingParticipants}
 		>
 			<ListPage
 				placeholderField="Encontrar um participante"
@@ -133,7 +138,7 @@ export const ParticipantsPayments = () => {
 				<ListManager
 					bodyData={formattedData}
 					headerLabels={HEADER_LABELS}
-					isLoading={isLoadingParticipants}
+					isLoading={isLoadingPayments}
 				/>
 				{hasMoreThanOnePage && (
 					<Pagination

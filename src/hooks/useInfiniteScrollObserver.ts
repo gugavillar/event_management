@@ -6,11 +6,11 @@ type UseInfiniteScrollObserverParams = {
 	fetchNextPage: () => void
 }
 
-export function useInfiniteScrollObserver({
+export const useInfiniteScrollObserver = ({
 	hasNextPage,
 	isFetchingNextPage,
 	fetchNextPage,
-}: UseInfiniteScrollObserverParams) {
+}: UseInfiniteScrollObserverParams) => {
 	const observerRef = useRef<IntersectionObserver | null>(null)
 
 	const lastItemRef = useCallback(
