@@ -1,12 +1,11 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 
 import { ListManager } from '@/components/Molecules'
 import {
 	CreateVolunteerFunctionButton,
-	CreateVolunteerFunctionModal,
-	FunctionDeleteModal,
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
@@ -15,6 +14,10 @@ import { useGetVolunteersFunctions } from '@/services/queries/volunteers'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './VolunteersFunctions.utils'
+
+const FunctionDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.FunctionDeleteModal),
+)
 
 export const VolunteersFunctions = () => {
 	const [selectedFunction, setSelectedFunction] =
@@ -49,6 +52,7 @@ export const VolunteersFunctions = () => {
 				className="lg:max-w-full"
 				actionButton={
 					<CreateVolunteerFunctionButton
+						selectedFunction={selectedFunction}
 						modalId={MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL}
 						setSelectedFunction={setSelectedFunction}
 					/>
@@ -64,11 +68,6 @@ export const VolunteersFunctions = () => {
 			</ListPage>
 			<FunctionDeleteModal
 				modalId={MODALS_IDS.FUNCTION_REMOVE_MODAL}
-				selectedFunction={selectedFunction}
-				setSelectedFunction={setSelectedFunction}
-			/>
-			<CreateVolunteerFunctionModal
-				modalId={MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL}
 				selectedFunction={selectedFunction}
 				setSelectedFunction={setSelectedFunction}
 			/>

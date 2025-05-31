@@ -1,18 +1,12 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { User } from 'next-auth'
 import { useCallback, useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import {
-	BlockUserModal,
-	ChangeRoleUserModal,
-	CreateUserButton,
-	ListPage,
-	PageContent,
-	UserResetPasswordModal,
-} from '@/components/Organisms'
+import { CreateUserButton, ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetUsers } from '@/services/queries/users'
 import { UserAPI } from '@/services/queries/users/users.type'
@@ -22,6 +16,18 @@ import { formatTableData, HEADER_LABELS } from './Users.utils'
 type UsersProps = {
 	userId: User['id']
 }
+
+const BlockUserModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.BlockUserModal),
+)
+
+const ChangeRoleUserModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ChangeRoleUserModal),
+)
+
+const UserResetPasswordModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.UserResetPasswordModal),
+)
 
 export const Users = ({ userId }: UsersProps) => {
 	const [selectedUser, setSelectedUser] = useState<UserAPI['id'] | null>(null)
