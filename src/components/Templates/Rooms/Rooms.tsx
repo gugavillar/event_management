@@ -1,8 +1,8 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ConciergeBell } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { MdRoomService } from 'react-icons/md'
 
 import { Button, Header, Spinner } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
@@ -78,7 +78,7 @@ export const Rooms = () => {
 						<Button
 							type="button"
 							data-hs-overlay={`#${MODALS_IDS.ROOMS_DRAWER}`}
-							leftIcon={<MdRoomService />}
+							leftIcon={<ConciergeBell />}
 							className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 						>
 							Criar um novo quarto

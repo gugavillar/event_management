@@ -1,9 +1,5 @@
+import { PanelRightClose, PanelRightOpen, Tickets } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
-import { IoTicket } from 'react-icons/io5'
-import {
-	TbLayoutSidebarRightCollapseFilled,
-	TbLayoutSidebarLeftCollapseFilled,
-} from 'react-icons/tb'
 import { twMerge } from 'tailwind-merge'
 
 import { Button, Text } from '@/components/Atoms'
@@ -27,7 +23,7 @@ export const ApplicationAvatar = ({
 		>
 			{!collapsed && (
 				<>
-					<IoTicket
+					<Tickets
 						size={48}
 						className="text-slate-100"
 						data-testid="ticket-icon"
@@ -49,9 +45,9 @@ export const ApplicationAvatar = ({
 				)}
 			>
 				{collapsed ? (
-					<TbLayoutSidebarRightCollapseFilled size={28} />
+					<PanelRightClose size={28} />
 				) : (
-					<TbLayoutSidebarLeftCollapseFilled size={28} />
+					<PanelRightOpen size={28} />
 				)}
 			</Button>
 		</section>

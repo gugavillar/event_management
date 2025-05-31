@@ -1,6 +1,6 @@
 'use client'
+import { UserRoundPlus } from 'lucide-react'
 import { memo } from 'react'
-import { FaPlus } from 'react-icons/fa6'
 
 import { Button } from '@/components/Atoms'
 
@@ -14,7 +14,7 @@ export const CreateParticipantButton = memo(
 			<Button
 				type="button"
 				onClick={handleCreateParticipant}
-				leftIcon={<FaPlus />}
+				leftIcon={<UserRoundPlus />}
 				className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 			>
 				Criar participante

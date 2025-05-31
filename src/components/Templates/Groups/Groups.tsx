@@ -1,8 +1,8 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { UsersRound } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { MdOutlineGroups } from 'react-icons/md'
 
 import { Button, Header } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
@@ -66,7 +66,7 @@ export const Groups = () => {
 					<Button
 						type="button"
 						data-hs-overlay={`#${MODALS_IDS.GROUP_DRAWER}`}
-						leftIcon={<MdOutlineGroups />}
+						leftIcon={<UsersRound />}
 						className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					>
 						Criar um novo grupo

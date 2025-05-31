@@ -1,5 +1,5 @@
+import { TriangleAlert } from 'lucide-react'
 import { ComponentPropsWithRef, forwardRef, ReactNode } from 'react'
-import { PiWarningCircleBold } from 'react-icons/pi'
 import { twMerge } from 'tailwind-merge'
 
 type FieldProps = ComponentPropsWithRef<'input'> & {
@@ -13,7 +13,7 @@ const Warning = () => {
 			className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3"
 			data-testid="warning-icon"
 		>
-			<PiWarningCircleBold className="size-4 shrink-0 text-red-500" />
+			<TriangleAlert className="size-4 shrink-0 text-red-500" />
 		</div>
 	)
 }

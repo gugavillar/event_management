@@ -1,5 +1,5 @@
+import { Search } from 'lucide-react'
 import { ComponentProps, Dispatch, ReactNode, SetStateAction } from 'react'
-import { IoMdSearch } from 'react-icons/io'
 import { twMerge } from 'tailwind-merge'
 
 import { Field } from '@/components/Atoms'
@@ -33,7 +33,7 @@ export const ListPage = ({
 			>
 				<Field
 					placeholder={placeholderField}
-					rightIcon={<IoMdSearch size={24} />}
+					rightIcon={<Search size={24} />}
 					className="ps-11"
 					value={search}
 					onChange={(event) => setSearch?.(event.target.value)}

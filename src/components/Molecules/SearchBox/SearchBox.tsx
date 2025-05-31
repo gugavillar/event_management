@@ -1,6 +1,6 @@
 'use client'
+import { ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { FaChevronDown } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
 
 import { Field, Label } from '@/components/Atoms'
@@ -106,7 +106,7 @@ export const SearchBox = <T,>({
 						disabled={disabled}
 					>
 						{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
-						<FaChevronDown size={12} />
+						<ChevronDown size={12} />
 					</button>
 				)}
 				{isOpen && (

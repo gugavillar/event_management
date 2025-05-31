@@ -1,7 +1,7 @@
 'use client'
+import { OctagonAlert } from 'lucide-react'
 import { Dispatch, memo, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
-import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
@@ -40,7 +40,7 @@ export const BlockUserModal = memo(
 			<Modal modalId={modalId} handleClose={() => setSelectedUser(null)}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
-						<IoMdAlert size={64} className="text-amber-300" />
+						<OctagonAlert size={64} className="text-amber-300" />
 						<div className="space-y-4 text-center">
 							<Header as="h3" className="text-2xl">
 								Deseja bloquear ou desbloquear acesso desse usuário?

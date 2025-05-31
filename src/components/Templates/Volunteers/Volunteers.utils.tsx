@@ -1,7 +1,10 @@
 import { differenceInYears, format } from 'date-fns'
-import { FaRegEdit } from 'react-icons/fa'
-import { LuTicketCheck } from 'react-icons/lu'
-import { MdAssignmentInd, MdDelete } from 'react-icons/md'
+import {
+	BriefcaseBusiness,
+	SquarePen,
+	TicketCheck,
+	UserRoundX,
+} from 'lucide-react'
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
@@ -73,7 +76,7 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FaRegEdit
+						<SquarePen
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleEditVolunteer(volunteer.id)}
@@ -81,7 +84,7 @@ export const formatTableData = (
 						<Tooltip>Editar</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<MdAssignmentInd
+						<BriefcaseBusiness
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleAssignFunctionVolunteer(volunteer.id)}
@@ -89,7 +92,7 @@ export const formatTableData = (
 						<Tooltip>Atribuir função</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<LuTicketCheck
+						<TicketCheck
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleCheckInVolunteer(volunteer.id)}
@@ -97,7 +100,7 @@ export const formatTableData = (
 						<Tooltip>Check-In</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<MdDelete
+						<UserRoundX
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleDeleteVolunteer(volunteer.id)}

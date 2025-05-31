@@ -1,8 +1,8 @@
 'use client'
 import { saveAs } from 'file-saver'
+import { FileDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { BsFiletypeXls } from 'react-icons/bs'
 
 import { Button } from '@/components/Atoms'
 import { FILES_TYPES } from '@/constants'
@@ -41,7 +41,7 @@ export const DownloadTemplateParticipantsButton = () => {
 	return (
 		<Button
 			className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-			leftIcon={<BsFiletypeXls />}
+			leftIcon={<FileDown />}
 			onClick={handleClick}
 			isLoading={isFetching}
 		>

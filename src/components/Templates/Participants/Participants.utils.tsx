@@ -1,8 +1,5 @@
 import { differenceInYears, format } from 'date-fns'
-import { FaRegEdit } from 'react-icons/fa'
-import { FaCircleInfo } from 'react-icons/fa6'
-import { LuTicketCheck } from 'react-icons/lu'
-import { MdDelete } from 'react-icons/md'
+import { FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
 
 import { StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
@@ -69,7 +66,7 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FaCircleInfo
+						<FileUser
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleShowParticipant(participant.id)}
@@ -77,7 +74,7 @@ export const formatTableData = (
 						<Tooltip>Informações</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<FaRegEdit
+						<SquarePen
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleEditParticipant(participant.id)}
@@ -85,7 +82,7 @@ export const formatTableData = (
 						<Tooltip>Editar</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<LuTicketCheck
+						<TicketCheck
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleCheckInParticipant(participant.id)}
@@ -93,7 +90,7 @@ export const formatTableData = (
 						<Tooltip>Check-In</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<MdDelete
+						<UserRoundX
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleDeleteParticipant(participant.id)}

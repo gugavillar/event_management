@@ -1,6 +1,6 @@
 'use client'
+import { ChevronDown } from 'lucide-react'
 import { useRef, useState } from 'react'
-import { FaChevronDown } from 'react-icons/fa6'
 import { twMerge } from 'tailwind-merge'
 
 import { Label } from '@/components/Atoms'
@@ -87,7 +87,7 @@ export const ComboBox = <T,>({
 					onClick={() => setIsOpen((prev) => !prev)}
 				>
 					{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
-					<FaChevronDown size={12} />
+					<ChevronDown size={12} />
 				</button>
 				{isOpen && (
 					<ComboBoxOptions

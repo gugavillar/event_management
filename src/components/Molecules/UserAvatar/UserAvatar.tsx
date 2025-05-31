@@ -1,10 +1,9 @@
 'use client'
+import { ChevronUp, UserRoundCog } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { User } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import { Fragment } from 'react'
-import { BsChevronExpand } from 'react-icons/bs'
-import { PiUserCircleGearFill } from 'react-icons/pi'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar } from '@/components/Atoms'
@@ -44,10 +43,10 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 						<Fragment>
 							<Avatar>{avatar}</Avatar>
 							{user?.name}
-							<BsChevronExpand className="ml-auto" size={20} />
+							<ChevronUp className="ml-auto" size={20} />
 						</Fragment>
 					) : (
-						<PiUserCircleGearFill size={32} />
+						<UserRoundCog size={32} />
 					)}
 				</button>
 

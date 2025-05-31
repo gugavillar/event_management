@@ -1,5 +1,4 @@
-import { FaChevronRight, FaChevronLeft } from 'react-icons/fa6'
-import { MdOutlineMoreHoriz } from 'react-icons/md'
+import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 import { PageButtonProps, PaginationProps } from './Pagination.types'
@@ -12,7 +11,7 @@ const SpreadButton = () => {
 				type="button"
 				className="focus:outline-hidden flex min-h-9 min-w-9 items-center justify-center px-3 py-2 text-sm text-gray-800 first:rounded-s-lg last:rounded-e-lg focus:bg-gray-300 disabled:pointer-events-none disabled:opacity-50"
 			>
-				<MdOutlineMoreHoriz size={20} />
+				<Ellipsis size={20} />
 			</button>
 		</div>
 	)
@@ -59,7 +58,7 @@ export const Pagination = ({
 				disabled={isFirstPage}
 				onClick={() => setPage(currentPage - 1)}
 			>
-				<FaChevronLeft size={14} />
+				<ChevronLeft size={14} />
 				<span>Anterior</span>
 			</button>
 			<div className="flex items-center gap-x-1">
@@ -84,7 +83,7 @@ export const Pagination = ({
 				onClick={() => setPage(currentPage + 1)}
 			>
 				<span>Próxima</span>
-				<FaChevronRight size={14} />
+				<ChevronRight size={14} />
 			</button>
 		</nav>
 	)

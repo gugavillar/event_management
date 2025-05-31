@@ -1,5 +1,4 @@
-import { FaRegEdit } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md'
+import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -28,7 +27,7 @@ export const formatTableData = (
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
-					<FaRegEdit
+					<SquarePen
 						className="cursor-pointer"
 						size={20}
 						onClick={() => handleEditFunction(role)}
@@ -36,7 +35,7 @@ export const formatTableData = (
 					<Tooltip>Editar</Tooltip>
 				</div>
 				<div className="hs-tooltip">
-					<MdDelete
+					<Trash2
 						className="cursor-pointer"
 						size={20}
 						onClick={() => handleDeleteFunction(role)}

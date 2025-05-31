@@ -1,8 +1,7 @@
+'use client'
 import { format } from 'date-fns'
+import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
 import Link from 'next/link'
-import { FaRegEdit } from 'react-icons/fa'
-import { FaClipboardUser } from 'react-icons/fa6'
-import { MdDelete } from 'react-icons/md'
 
 import { Tooltip } from '@/components/Atoms'
 import { GenderType } from '@/constants'
@@ -41,6 +40,7 @@ export const HEADER_LABELS = [
 ]
 
 const generateLink = (link: string, type: 'voluntario' | 'participante') => {
+	if (!link) return ''
 	return `${window.location.origin}/inscricao/${link}/${type}`
 }
 
@@ -62,12 +62,12 @@ export const formatTableData = (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
 					<Link href={generateLink(event.id, 'participante')} target="_blank">
-						<FaClipboardUser className="cursor-pointer" size={18} />
+						<Link2 className="cursor-pointer" size={18} />
 					</Link>
 					<Tooltip>Link de inscrição participantes</Tooltip>
 				</div>
 				<div className="hs-tooltip">
-					<FaRegEdit
+					<SquarePen
 						className="cursor-pointer"
 						size={18}
 						onClick={() => handleOpenDrawer(event.id)}
@@ -75,7 +75,7 @@ export const formatTableData = (
 					<Tooltip>Editar</Tooltip>
 				</div>
 				<div className="hs-tooltip">
-					<MdDelete
+					<CalendarMinus
 						className="cursor-pointer"
 						size={18}
 						onClick={() => handleDeleteEvent(event.id)}

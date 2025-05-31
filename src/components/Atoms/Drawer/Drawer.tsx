@@ -1,5 +1,5 @@
+import { CircleX } from 'lucide-react'
 import { ReactNode } from 'react'
-import { MdOutlineClose } from 'react-icons/md'
 
 import { Header } from '../Header'
 
@@ -32,7 +32,7 @@ export const Drawer = ({
 					onClick={handleClose}
 				>
 					<span className="sr-only">Close modal</span>
-					<MdOutlineClose size={20} />
+					<CircleX size={20} />
 				</button>
 			</div>
 			{children}

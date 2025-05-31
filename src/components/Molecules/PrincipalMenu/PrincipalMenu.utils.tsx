@@ -1,6 +1,9 @@
-import { FaClipboardUser } from 'react-icons/fa6'
-import { GrUserWorker } from 'react-icons/gr'
-import { MdEvent, MdOutlineDashboard } from 'react-icons/md'
+import {
+	BriefcaseBusiness,
+	Calendar,
+	CircleUserRound,
+	Gauge,
+} from 'lucide-react'
 
 type BaseMenuLink = {
 	buttonLabel: string
@@ -26,18 +29,18 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 	{
 		buttonLabel: 'Dashboard',
 		href: '/dashboard',
-		buttonIcon: <MdOutlineDashboard size={24} />,
+		buttonIcon: <Gauge size={24} />,
 		hasSubMenu: false,
 	},
 	{
 		buttonLabel: 'Eventos',
 		href: '/eventos',
-		buttonIcon: <MdEvent size={24} />,
+		buttonIcon: <Calendar size={24} />,
 		hasSubMenu: false,
 	},
 	{
 		buttonLabel: 'Participantes',
-		buttonIcon: <FaClipboardUser size={24} />,
+		buttonIcon: <CircleUserRound size={24} />,
 		hasSubMenu: true,
 		links: [
 			{ label: 'Listagem', href: '/participantes/listagem' },
@@ -48,7 +51,7 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 	},
 	{
 		buttonLabel: 'Voluntários',
-		buttonIcon: <GrUserWorker size={24} />,
+		buttonIcon: <BriefcaseBusiness size={24} />,
 		hasSubMenu: true,
 		links: [
 			{ label: 'Listagem', href: '/voluntarios/listagem' },

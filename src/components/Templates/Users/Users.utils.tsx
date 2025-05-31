@@ -1,5 +1,4 @@
-import { FaUserLock, FaUserCog } from 'react-icons/fa'
-import { MdLockReset } from 'react-icons/md'
+import { UserLock, UserRoundCog, UserRoundPen } from 'lucide-react'
 
 import { Tooltip, UserTag } from '@/components/Atoms'
 import { RolesTypes, USER_STATUS } from '@/constants'
@@ -54,7 +53,7 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FaUserCog
+						<UserRoundPen
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleChangeRole(user.id)}
@@ -62,7 +61,7 @@ export const formatTableData = (
 						<Tooltip>Alterar permissão</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<MdLockReset
+						<UserRoundCog
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleResetPassword(user.id)}
@@ -70,7 +69,7 @@ export const formatTableData = (
 						<Tooltip>Redefinir senha</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<FaUserLock
+						<UserLock
 							className="cursor-pointer"
 							size={20}
 							onClick={() => handleBlockUser(user.id)}

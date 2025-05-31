@@ -1,5 +1,5 @@
+import { CircleX } from 'lucide-react'
 import { ReactNode } from 'react'
-import { MdOutlineClose } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 
 type ModalProps = {
@@ -35,7 +35,7 @@ export const Modal = ({
 						onClick={handleClose}
 					>
 						<span className="sr-only">Close</span>
-						<MdOutlineClose size={20} />
+						<CircleX size={20} />
 					</button>
 					{children}
 				</div>

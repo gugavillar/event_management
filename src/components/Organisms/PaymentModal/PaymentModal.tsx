@@ -1,8 +1,8 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
-import { IoMdAlert } from 'react-icons/io'
 
 import { Button, Header, Modal } from '@/components/Atoms'
 import {
@@ -57,7 +57,7 @@ export const PaymentModal = memo(
 						onSubmit={methods.handleSubmit(onSubmit)}
 					>
 						<div className="flex flex-col items-center justify-between gap-2">
-							<IoMdAlert size={32} className="text-amber-300" />
+							<OctagonAlert size={32} className="text-amber-300" />
 							<Header as="h3" className="text-center text-lg">
 								Você deseja confirmar o pagamento do {modalType}?
 							</Header>

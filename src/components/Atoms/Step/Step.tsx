@@ -1,5 +1,5 @@
+import { Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ReactNode } from 'react'
-import { FaCheck, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { twMerge } from 'tailwind-merge'
 
 import { Button } from '../Button'
@@ -50,7 +50,7 @@ export const Step = ({
 									{currentStep === index || !isSuccess ? (
 										<span className="block">{index + 1}</span>
 									) : (
-										<FaCheck className="block size-3 shrink-0" />
+										<Check className="block size-3 shrink-0" />
 									)}
 								</span>
 								<span className="ms-2 text-sm font-medium text-gray-800">
@@ -75,7 +75,7 @@ export const Step = ({
 					onClick={handlePrev}
 					disabled={isPending}
 				>
-					<FaChevronLeft className="size-3" />
+					<ChevronLeft className="size-3" />
 					Voltar
 				</button>
 				{!isLastStep && (
@@ -85,7 +85,7 @@ export const Step = ({
 						onClick={handleNext}
 					>
 						Próximo
-						<FaChevronRight className="size-3" />
+						<ChevronRight className="size-3" />
 					</button>
 				)}
 				{isLastStep && (

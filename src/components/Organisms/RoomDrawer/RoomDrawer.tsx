@@ -1,12 +1,12 @@
 'use client'
 
+import { UserRoundPlus } from 'lucide-react'
 import { useEffect } from 'react'
 import {
 	type SubmitHandler,
 	useFieldArray,
 	useFormContext,
 } from 'react-hook-form'
-import { FiUserPlus } from 'react-icons/fi'
 
 import {
 	Button,
@@ -117,7 +117,7 @@ export const RoomDrawer = ({ drawerId, leaders }: RoomDrawerProps) => {
 				) : null}
 				<FieldArrayContainerWithAppendButton
 					handleAppendField={() => append({ selected: '' })}
-					leftIcon={<FiUserPlus size={18} />}
+					leftIcon={<UserRoundPlus size={18} />}
 				>
 					{fields.map((field, index) => (
 						<div key={field.id} {...(!index && { style: { marginTop: 0 } })}>
