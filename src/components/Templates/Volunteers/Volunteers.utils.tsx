@@ -19,7 +19,7 @@ export const HEADER_LABELS = [
 	},
 	{
 		label: 'Telefone',
-		accessor: 'contact',
+		accessor: 'phone',
 	},
 	{
 		label: 'Data de nascimento',

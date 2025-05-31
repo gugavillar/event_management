@@ -1,24 +1,17 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Pagination, Select } from '@/components/Atoms'
 import {
 	ComboBox,
-	ImportVolunteersButton,
+	CreateVolunteerButton,
 	ListManager,
 } from '@/components/Molecules'
-import {
-	AssignFunctionVolunteerModal,
-	DownloadTemplateVolunteersButton,
-	ListPage,
-	PageContent,
-	VolunteerCheckInModal,
-	VolunteerDeleteModal,
-	VolunteerDrawer,
-} from '@/components/Organisms'
+import { ListPage, PageContent } from '@/components/Organisms'
 import {
 	VolunteerSchema,
 	VolunteerType,
@@ -31,6 +24,24 @@ import { useGetVolunteers } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
+
+const AssignFunctionVolunteerModal = dynamic(() =>
+	import('@/components/Organisms').then(
+		(mod) => mod.AssignFunctionVolunteerModal,
+	),
+)
+
+const VolunteerCheckInModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.VolunteerCheckInModal),
+)
+
+const VolunteerDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.VolunteerDeleteModal),
+)
+
+const VolunteerDrawer = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.VolunteerDrawer),
+)
 
 export const Volunteers = () => {
 	const [selectedVolunteer, setSelectedVolunteer] = useState<
@@ -111,9 +122,13 @@ export const Volunteers = () => {
 		[],
 	)
 
-	const handleOpenDrawerToEditVolunteer = useCallback(
-		(id: VolunteersAPI['id']) => {
-			setSelectedVolunteer(id)
+	const handleOpenDrawerToCreateOrEditVolunteer = useCallback(
+		(id?: VolunteersAPI['id']) => {
+			if (id) {
+				setSelectedVolunteer(id)
+			} else {
+				setSelectedVolunteer(null)
+			}
 			overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
 		},
 		[],
@@ -131,7 +146,7 @@ export const Volunteers = () => {
 		volunteers?.data,
 		handleOpenModalToCheckInVolunteer,
 		handleOpenModalToDeleteVolunteer,
-		handleOpenDrawerToEditVolunteer,
+		handleOpenDrawerToCreateOrEditVolunteer,
 		handleOpenAssignFunctionVolunteerModal,
 	)
 
@@ -141,10 +156,10 @@ export const Volunteers = () => {
 	return (
 		<PageContent pageTitle="Voluntários" subheadingPage="Lista de voluntários">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<DownloadTemplateVolunteersButton />
-				<ImportVolunteersButton
-					label="Importar voluntários"
-					modalId={MODALS_IDS.VOLUNTEER_IMPORT_MODAL}
+				<CreateVolunteerButton
+					handleCreateVolunteer={() =>
+						handleOpenDrawerToCreateOrEditVolunteer()
+					}
 				/>
 			</div>
 			<ListPage

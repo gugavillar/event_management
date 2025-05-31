@@ -125,7 +125,7 @@ export const VolunteerDrawer = memo(
 		}
 
 		useEffect(() => {
-			if (!data) return
+			if (!data) return reset({}, { keepDefaultValues: true })
 
 			reset({ ...data }, { keepDefaultValues: true })
 		}, [data, reset])

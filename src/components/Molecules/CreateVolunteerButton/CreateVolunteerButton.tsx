@@ -4,23 +4,23 @@ import { FaPlus } from 'react-icons/fa6'
 
 import { Button } from '@/components/Atoms'
 
-type CreateParticipantButtonProps = {
-	handleCreateParticipant: VoidFunction
+type CreateVolunteerButtonProps = {
+	handleCreateVolunteer: VoidFunction
 }
 
-export const CreateParticipantButton = memo(
-	({ handleCreateParticipant }: CreateParticipantButtonProps) => {
+export const CreateVolunteerButton = memo(
+	({ handleCreateVolunteer }: CreateVolunteerButtonProps) => {
 		return (
 			<Button
 				type="button"
-				onClick={handleCreateParticipant}
+				onClick={handleCreateVolunteer}
 				leftIcon={<FaPlus />}
 				className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 			>
-				Criar participante
+				Criar voluntário
 			</Button>
 		)
 	},
 )
 
-CreateParticipantButton.displayName = 'CreateParticipantButton'
+CreateVolunteerButton.displayName = 'CreateVolunteerButton'
