@@ -138,14 +138,15 @@ model VolunteerRole {
 model Volunteer {
   id               String                        @id @default(uuid())
   name             String
-  email            String
   called           String
+  email            String
+  phone            String
   birthdate        DateTime
-  contact          String
-  maritalStatus    String
-  parent           String
-  contactParent    String
-  relationship     String
+  cell             String?
+  relative         String
+  relativePhone    String
+  health           String?
+  community        String
   checkIn          ParticipantOrVolunteerStatus?
   createdAt        DateTime                      @default(now())
   updatedAt        DateTime                      @updatedAt

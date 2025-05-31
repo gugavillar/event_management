@@ -22,11 +22,12 @@ export type VolunteersAPI = {
 	email: string
 	called: string
 	birthdate: string
-	contact: string
-	maritalStatus: string
-	parent: string
-	contactParent: string
-	relationship: string
+	phone: string
+	relative: string
+	relativePhone: string
+	cell?: string
+	health?: string
+	community: string
 	checkIn: CHECK_IN_STATUS | null
 	createdAt: string
 	updatedAt: string
@@ -61,19 +62,22 @@ export type VolunteersFunctionsForm = {
 
 export type FormVolunteer = {
 	name: string
-	email: string
 	called: string
+	email: string
+	phone: string
 	birthdate: string
-	contact: string
-	maritalStatus: string
-	parent: string
-	contactParent: string
-	relationship: string
-	city: string
-	neighborhood: string
-	number: string
-	state: string
-	street: string
+	relative: string
+	relativePhone: string
+	cell?: string | null
+	health?: string | null
+	community: string
+	address: {
+		street: string
+		neighborhood: string
+		number: string
+		city: string
+		state: string
+	}
 }
 
 export type VolunteersPaymentsAPI = {

@@ -12,7 +12,7 @@ export const updateVolunteerById = async (data: FormVolunteer, id: string) => {
 			})
 			.parse({ ...data, id })
 
-		const { street, city, neighborhood, number, state, ...volunteerData } = data
+		const { address, ...volunteerData } = data
 
 		return await prisma.$transaction(async (tx) => {
 			await tx.volunteer.update({
@@ -28,11 +28,7 @@ export const updateVolunteerById = async (data: FormVolunteer, id: string) => {
 					volunteerId: id,
 				},
 				data: {
-					street,
-					city,
-					neighborhood,
-					number,
-					state,
+					...address,
 				},
 			})
 		})

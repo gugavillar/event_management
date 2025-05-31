@@ -57,7 +57,7 @@ export const formatTableData = (
 			id: volunteer.id,
 			name: volunteer.name,
 			role: <FunctionTag status={volunteer?.volunteerRole?.role} />,
-			contact: formatPhone(volunteer.contact),
+			phone: formatPhone(volunteer.phone),
 			birthdate: `${format(volunteer.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), volunteer.birthdate)} anos`,
 			city: volunteer.Address.city,
 			event: volunteer.event.name,

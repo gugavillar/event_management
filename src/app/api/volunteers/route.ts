@@ -1,8 +1,10 @@
 import { NextRequest } from 'next/server'
 
 import { CHECK_IN_STATUS } from '@/constants'
-import { getAllVolunteers } from '@/server'
+import { createVolunteer, getAllVolunteers } from '@/server'
 import { requestProcess } from '@/utils/prisma'
+
+import { VolunteerSchemaRouteType } from './volunteer.schema'
 
 const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('searchVolunteer')
@@ -22,4 +24,14 @@ const handlerGet = async (request: NextRequest) => {
 	})
 }
 
-export { handlerGet as GET }
+const handlePost = async (request: NextRequest) => {
+	const body: VolunteerSchemaRouteType & { eventId: string } =
+		await request.json()
+
+	return await requestProcess({
+		functions: async () => await createVolunteer(body),
+		isNecessarySession: false,
+	})
+}
+
+export { handlerGet as GET, handlePost as POST }

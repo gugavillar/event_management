@@ -1,6 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -10,14 +11,7 @@ import {
 	CreateParticipantButton,
 	ListManager,
 } from '@/components/Molecules'
-import {
-	ListPage,
-	PageContent,
-	ParticipantDeleteModal,
-	ParticipantCheckInModal,
-	ParticipantDrawer,
-	ParticipantModalData,
-} from '@/components/Organisms'
+import { ListPage, PageContent } from '@/components/Organisms'
 import {
 	ParticipantSchema,
 	ParticipantType,
@@ -31,6 +25,22 @@ import { ParticipantsAPI } from '@/services/queries/participants/participants.ty
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
 
+const ParticipantCheckInModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ParticipantCheckInModal),
+)
+
+const ParticipantModalData = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ParticipantModalData),
+)
+
+const ParticipantDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal),
+)
+
+const ParticipantDrawer = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ParticipantDrawer),
+)
+
 export const Participants = () => {
 	const [selectedParticipant, setSelectedParticipant] = useState<
 		null | ParticipantsAPI['id']
@@ -38,6 +48,7 @@ export const Participants = () => {
 
 	const methods = useForm<ParticipantType>({
 		defaultValues: {
+			eventId: '',
 			name: '',
 			email: '',
 			called: '',

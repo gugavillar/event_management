@@ -1,11 +1,11 @@
 'use client'
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import {
 	CreateEventButton,
-	EventDeleteModal,
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
@@ -14,6 +14,10 @@ import { useGetEvents } from '@/services/queries/events'
 import { EventsAPI } from '@/services/queries/events/event.type'
 
 import { formatTableData, HEADER_LABELS } from './Events.utils'
+
+const EventDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.EventDeleteModal),
+)
 
 export const Events = () => {
 	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(

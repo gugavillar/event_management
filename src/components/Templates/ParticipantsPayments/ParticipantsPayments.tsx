@@ -1,11 +1,12 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
-import { ListPage, PageContent, PaymentModal } from '@/components/Organisms'
+import { ListPage, PageContent } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
 	MODALS_IDS,
@@ -23,6 +24,10 @@ import {
 import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
+
+const PaymentModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.PaymentModal),
+)
 
 export const ParticipantsPayments = () => {
 	const [selectedParticipant, setSelectedParticipant] =
