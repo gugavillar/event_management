@@ -7,13 +7,12 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Pagination, Select } from '@/components/Atoms'
 import {
 	ComboBox,
-	ImportParticipantsButton,
+	CreateParticipantButton,
 	ListManager,
 } from '@/components/Molecules'
 import {
 	ListPage,
 	PageContent,
-	DownloadTemplateParticipantsButton,
 	ParticipantDeleteModal,
 	ParticipantCheckInModal,
 	ParticipantDrawer,
@@ -48,9 +47,9 @@ export const Participants = () => {
 			responsiblePhone: '',
 			host: '',
 			hostPhone: '',
-			hasReligion: undefined,
+			hasReligion: '',
 			religion: '',
-			hasHealth: undefined,
+			hasHealth: '',
 			health: '',
 			address: {
 				city: '',
@@ -110,9 +109,13 @@ export const Participants = () => {
 		[],
 	)
 
-	const handleOpenDrawerToEditParticipant = useCallback(
-		(id: ParticipantsAPI['id']) => {
-			setSelectedParticipant(id)
+	const handleOpenDrawerToCreateOrEditParticipant = useCallback(
+		(id?: ParticipantsAPI['id']) => {
+			if (id) {
+				setSelectedParticipant(id)
+			} else {
+				setSelectedParticipant(null)
+			}
 			overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
 		},
 		[],
@@ -130,7 +133,7 @@ export const Participants = () => {
 		participants?.data,
 		handleOpenModalToDeleteParticipant,
 		handleOpenModalToCheckInParticipant,
-		handleOpenDrawerToEditParticipant,
+		handleOpenDrawerToCreateOrEditParticipant,
 		handleOpenModalToShowParticipantData,
 	)
 
@@ -143,10 +146,10 @@ export const Participants = () => {
 			pageTitle="Participantes"
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<DownloadTemplateParticipantsButton />
-				<ImportParticipantsButton
-					label="Importar participantes"
-					modalId={MODALS_IDS.PARTICIPANT_IMPORT_MODAL}
+				<CreateParticipantButton
+					handleCreateParticipant={() =>
+						handleOpenDrawerToCreateOrEditParticipant()
+					}
 				/>
 			</div>
 			<ListPage

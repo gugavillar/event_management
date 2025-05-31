@@ -1,5 +1,7 @@
 import { format } from 'date-fns'
+import Link from 'next/link'
 import { FaRegEdit } from 'react-icons/fa'
+import { FaClipboardUser } from 'react-icons/fa6'
 import { MdDelete } from 'react-icons/md'
 
 import { Tooltip } from '@/components/Atoms'
@@ -38,6 +40,10 @@ export const HEADER_LABELS = [
 	},
 ]
 
+const generateLink = (link: string, type: 'voluntario' | 'participante') => {
+	return `${window.location.origin}/inscricao/${link}/${type}`
+}
+
 export const formatTableData = (
 	data: Array<EventsAPI> | undefined,
 	handleOpenDrawer: (id: EventsAPI['id']) => void,
@@ -54,6 +60,12 @@ export const formatTableData = (
 		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
 		actions: (
 			<div className="flex space-x-4">
+				<div className="hs-tooltip">
+					<Link href={generateLink(event.id, 'participante')} target="_blank">
+						<FaClipboardUser className="cursor-pointer" size={18} />
+					</Link>
+					<Tooltip>Link de inscrição participantes</Tooltip>
+				</div>
 				<div className="hs-tooltip">
 					<FaRegEdit
 						className="cursor-pointer"

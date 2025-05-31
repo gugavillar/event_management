@@ -52,15 +52,29 @@ export const ExternalParticipantFormSchemaStepOne = z
 				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
 				{ message: 'Telefone inválido' },
 			),
-		hasReligion: z.enum(['Yes', 'No'], {
-			required_error: 'Campo obrigatório',
-			message: 'Campo obrigatório',
-		}),
+		hasReligion: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					required_error: 'Campo obrigatório',
+					message: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				message: 'Campo obrigatório',
+			}),
 		religion: z.string().optional(),
-		hasHealth: z.enum(['Yes', 'No'], {
-			required_error: 'Campo obrigatório',
-			message: 'Campo obrigatório',
-		}),
+		hasHealth: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					required_error: 'Campo obrigatório',
+					message: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				message: 'Campo obrigatório',
+			}),
 		health: z.string().optional(),
 		host: z.string().trim().min(1, 'Campo obrigatório'),
 		hostPhone: z

@@ -6,6 +6,7 @@ import { validateBirthdate } from '@/formatters'
 
 export const ParticipantSchema = z
 	.object({
+		eventId: z.string().trim().min(1, 'Campo obrigatório'),
 		name: z.string().trim().min(1, 'Campo obrigatório'),
 		email: z
 			.string({ required_error: 'Campo obrigatório' })
@@ -41,15 +42,29 @@ export const ParticipantSchema = z
 				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
 				{ message: 'Telefone inválido' },
 			),
-		hasReligion: z.enum(['Yes', 'No'], {
-			required_error: 'Campo obrigatório',
-			message: 'Campo obrigatório',
-		}),
+		hasReligion: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					required_error: 'Campo obrigatório',
+					message: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				message: 'Campo obrigatório',
+			}),
 		religion: z.string().nullable().optional(),
-		hasHealth: z.enum(['Yes', 'No'], {
-			required_error: 'Campo obrigatório',
-			message: 'Campo obrigatório',
-		}),
+		hasHealth: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					required_error: 'Campo obrigatório',
+					message: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				message: 'Campo obrigatório',
+			}),
 		health: z.string().nullable().optional(),
 		host: z.string().trim().min(1, 'Campo obrigatório'),
 		hostPhone: z

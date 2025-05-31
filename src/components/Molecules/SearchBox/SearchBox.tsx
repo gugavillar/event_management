@@ -65,6 +65,7 @@ export const SearchBox = <T,>({
 	setSelectedValue,
 	search,
 	setSearch,
+	disabled,
 }: SearchBoxProps<T>) => {
 	const [isOpen, setIsOpen] = useState(false)
 
@@ -99,8 +100,10 @@ export const SearchBox = <T,>({
 						className={twMerge(
 							'inline-flex w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-sm shadow-sm focus:ring-2',
 							error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+							disabled && 'pointer-events-none opacity-50',
 						)}
 						onClick={() => setIsOpen((prev) => !prev)}
+						disabled={disabled}
 					>
 						{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
 						<FaChevronDown size={12} />

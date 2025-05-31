@@ -11,6 +11,8 @@ type PersonalInfoCardProps = ComponentProps<'div'> & {
 		called: string
 		birthdate: string
 		phone: string
+		religion?: string
+		health?: string
 	}
 }
 
@@ -30,6 +32,11 @@ export const PersonalInfoCard = ({
 			<InfoBox label="Como quer ser chamado" value={userInfo.called} />
 			<InfoBox label="Data de nascimento" value={userInfo.birthdate} />
 			<InfoBox label="Telefone" value={userInfo.phone} />
+			<InfoBox label="Religião" value={userInfo?.religion ?? 'Não informado'} />
+			<InfoBox
+				label="Restrição Saúde/Alimentar"
+				value={userInfo?.health ?? 'Não informado'}
+			/>
 		</InformationCard>
 	)
 }
