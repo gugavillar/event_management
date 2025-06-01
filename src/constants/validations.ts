@@ -2,7 +2,7 @@ import { type RefinementCtx } from 'zod'
 
 export const MIN_CURRENCY_VALUE = 0.01
 export const MAX_CURRENCY_VALUE = 999999.99
-export const MAX_FIELD_LENGTH = 255
+export const MAX_FIELD_LENGTH = 191
 export const MIN_ROOM_NUMBER = 1
 export const MAX_ROOM_NUMBER = 32
 

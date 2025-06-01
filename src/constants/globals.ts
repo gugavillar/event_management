@@ -164,7 +164,7 @@ export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [
 ]
 
 export const PIX = {
-	key: '+5581999999999',
+	key: process.env.PIX_KEY ?? '',
 	name: 'Igreja Anglicana Vida',
 	city: 'Gravatá',
 }

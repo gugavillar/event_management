@@ -126,9 +126,16 @@ export const ExternalParticipantFormSchemaStepTwo = z.object({
 })
 
 export const ExternalParticipantFormSchemaStepThree = z.object({
-	paymentMethod: z.enum(['PIX', 'Cash/Card'], {
-		required_error: 'Campo obrigatório',
-	}),
+	paymentMethod: z
+		.union([
+			z.enum(['PIX', 'Cash/Card'], {
+				required_error: 'Campo obrigatório',
+			}),
+			z.string(),
+		])
+		.refine((value) => ['PIX', 'Cash/Card'].includes(value), {
+			message: 'Campo obrigatório',
+		}),
 })
 
 export type ExternalParticipantFormType = z.infer<
