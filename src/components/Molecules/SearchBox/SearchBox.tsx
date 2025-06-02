@@ -106,7 +106,7 @@ export const SearchBox = <T,>({
 						disabled={disabled}
 					>
 						{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
-						<ChevronDown size={12} />
+						<ChevronDown size={14} />
 					</button>
 				)}
 				{isOpen && (

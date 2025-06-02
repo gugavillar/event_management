@@ -87,7 +87,7 @@ export const ComboBox = <T,>({
 					onClick={() => setIsOpen((prev) => !prev)}
 				>
 					{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
-					<ChevronDown size={12} />
+					<ChevronDown size={14} className={isOpen ? 'rotate-180' : ''} />
 				</button>
 				{isOpen && (
 					<ComboBoxOptions

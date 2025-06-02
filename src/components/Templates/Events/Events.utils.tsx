@@ -1,9 +1,10 @@
 'use client'
+import { isServer } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
 import Link from 'next/link'
 
-import { Tooltip } from '@/components/Atoms'
+import { Dropdown, Tooltip } from '@/components/Atoms'
 import { GenderType } from '@/constants'
 import { currencyValue } from '@/formatters'
 import { EventsAPI } from '@/services/queries/events/event.type'
@@ -40,7 +41,7 @@ export const HEADER_LABELS = [
 ]
 
 const generateLink = (link: string, type: 'voluntario' | 'participante') => {
-	if (!link) return ''
+	if (!link || isServer) return ''
 	return `${window.location.origin}/inscricao/${link}/${type}`
 }
 
@@ -61,10 +62,25 @@ export const formatTableData = (
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
-					<Link href={generateLink(event.id, 'participante')} target="_blank">
-						<Link2 className="cursor-pointer" size={18} />
-					</Link>
-					<Tooltip>Link de inscrição participantes</Tooltip>
+					<Dropdown label={<Link2 className="cursor-pointer" size={18} />}>
+						<>
+							<Link
+								className="block rounded-lg px-3 py-2 hover:bg-gray-100"
+								href={generateLink(event.id, 'participante')}
+								target="_blank"
+							>
+								Participante
+							</Link>
+							<Link
+								className="block rounded-lg px-3 py-2 hover:bg-gray-100"
+								href={generateLink(event.id, 'voluntario')}
+								target="_blank"
+							>
+								Voluntário
+							</Link>
+						</>
+					</Dropdown>
+					<Tooltip>Links de inscrição</Tooltip>
 				</div>
 				<div className="hs-tooltip">
 					<SquarePen

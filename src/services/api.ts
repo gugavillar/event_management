@@ -1,8 +1,7 @@
+import { isServer } from '@tanstack/react-query'
 import axios from 'axios'
 
 import { BASE_URL } from './endpoints'
-
-const isServer = typeof window === 'undefined'
 
 export const api = axios.create({
 	baseURL: BASE_URL,

@@ -26,18 +26,14 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 	}
 
 	return (
-		<footer className="mt-auto border-t border-gray-200 p-2">
+		<footer className="mt-auto border-t border-gray-200 pt-4">
 			<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
 				<button
-					id="footer-dropdown"
 					type="button"
 					className={twMerge(
 						'focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 hover:bg-slate-900/80',
 						collapsed && 'justify-center px-0',
 					)}
-					aria-haspopup="menu"
-					aria-expanded="false"
-					aria-label="Dropdown"
 				>
 					{!collapsed ? (
 						<Fragment>
@@ -46,7 +42,7 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 							<ChevronUp className="ml-auto" size={20} />
 						</Fragment>
 					) : (
-						<UserRoundCog size={32} />
+						<UserRoundCog size={24} />
 					)}
 				</button>
 
