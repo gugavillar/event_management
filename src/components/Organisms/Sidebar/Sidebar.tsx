@@ -1,5 +1,7 @@
 'use client'
+import { useWindowSize } from '@uidotdev/usehooks'
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import {
@@ -11,7 +13,14 @@ import { useSidebarContext } from '@/contexts'
 
 export const Sidebar = () => {
 	const { collapsed, setCollapsed } = useSidebarContext()
+	const { width } = useWindowSize()
 	const { data } = useSession()
+
+	useEffect(() => {
+		if (width && width <= 1024) {
+			setCollapsed(true)
+		}
+	}, [setCollapsed, width])
 
 	return (
 		<aside

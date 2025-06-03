@@ -3,7 +3,7 @@ import { ChevronUp, UserRoundCog } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { User } from 'next-auth'
 import { signOut } from 'next-auth/react'
-import { Fragment } from 'react'
+import { Fragment, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar } from '@/components/Atoms'
@@ -14,7 +14,7 @@ type UserAvatarProps = {
 	user?: User
 }
 
-export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
+export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 	const avatar = user?.name ?? 'Usuário'
 	const { push } = useRouter()
 
@@ -71,4 +71,6 @@ export const UserAvatar = ({ collapsed, user }: UserAvatarProps) => {
 			</div>
 		</footer>
 	)
-}
+})
+
+UserAvatar.displayName = 'UserAvatar'

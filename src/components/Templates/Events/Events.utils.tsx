@@ -1,8 +1,6 @@
 'use client'
-import { isServer } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
-import Link from 'next/link'
 
 import { Dropdown, Tooltip } from '@/components/Atoms'
 import { GenderType } from '@/constants'
@@ -40,15 +38,14 @@ export const HEADER_LABELS = [
 	},
 ]
 
-const generateLink = (link: string, type: 'voluntario' | 'participante') => {
-	if (!link || isServer) return ''
-	return `${window.location.origin}/inscricao/${link}/${type}`
-}
-
 export const formatTableData = (
 	data: Array<EventsAPI> | undefined,
 	handleOpenDrawer: (id: EventsAPI['id']) => void,
 	handleDeleteEvent: (id: EventsAPI['id']) => void,
+	handleOpenLink: (
+		id: EventsAPI['id'],
+		type: 'participante' | 'voluntario',
+	) => void,
 ) => {
 	if (!data) return []
 
@@ -64,20 +61,18 @@ export const formatTableData = (
 				<div className="hs-tooltip">
 					<Dropdown label={<Link2 className="cursor-pointer" size={18} />}>
 						<>
-							<Link
-								className="block rounded-lg px-3 py-2 hover:bg-gray-100"
-								href={generateLink(event.id, 'participante')}
-								target="_blank"
+							<p
+								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								onClick={() => handleOpenLink(event.id, 'participante')}
 							>
 								Participante
-							</Link>
-							<Link
-								className="block rounded-lg px-3 py-2 hover:bg-gray-100"
-								href={generateLink(event.id, 'voluntario')}
-								target="_blank"
+							</p>
+							<p
+								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								onClick={() => handleOpenLink(event.id, 'voluntario')}
 							>
 								Voluntário
-							</Link>
+							</p>
 						</>
 					</Dropdown>
 					<Tooltip>Links de inscrição</Tooltip>

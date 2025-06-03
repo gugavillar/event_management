@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge'
 import { Field } from '@/components/Atoms'
 
 type ListPageProps = ComponentProps<'div'> & {
-	placeholderField: string
+	placeholderField?: string
 	search?: string
 	setSearch?: Dispatch<SetStateAction<string>>
 	moreFilter?: ReactNode
@@ -31,13 +31,15 @@ export const ListPage = ({
 				)}
 				{...props}
 			>
-				<Field
-					placeholder={placeholderField}
-					rightIcon={<Search size={24} />}
-					className="ps-11"
-					value={search}
-					onChange={(event) => setSearch?.(event.target.value)}
-				/>
+				{placeholderField && (
+					<Field
+						placeholder={placeholderField}
+						rightIcon={<Search size={24} />}
+						className="ps-11"
+						value={search}
+						onChange={(event) => setSearch?.(event.target.value)}
+					/>
+				)}
 				{moreFilter || null}
 				{actionButton || null}
 			</div>

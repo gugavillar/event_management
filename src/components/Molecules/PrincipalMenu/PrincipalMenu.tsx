@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { memo } from 'react'
 
 import { MenuItem } from './MenuItem'
 import { MENU_LINKS } from './PrincipalMenu.utils'
@@ -9,7 +10,7 @@ type PrincipalMenuProps = {
 	collapsed: boolean
 }
 
-export const PrincipalMenu = ({ collapsed }: PrincipalMenuProps) => {
+export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 	const path = usePathname()
 	return (
 		<nav className="mt-8 flex flex-col space-y-4" data-testid="principal-menu">
@@ -32,4 +33,6 @@ export const PrincipalMenu = ({ collapsed }: PrincipalMenuProps) => {
 			)}
 		</nav>
 	)
-}
+})
+
+PrincipalMenu.displayName = 'PrincipalMenu'

@@ -23,7 +23,6 @@ export const Events = () => {
 	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(
 		null,
 	)
-
 	const {
 		data: events,
 		isLoading,
@@ -43,10 +42,18 @@ export const Events = () => {
 		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
 	}, [])
 
+	const handleOpenSelectedLink = useCallback(
+		(id: EventsAPI['id'], type: 'participante' | 'voluntario') => {
+			window.open(`${window.location.origin}/inscricao/${id}/${type}`)
+		},
+		[],
+	)
+
 	const formatData = formatTableData(
 		events?.data,
 		handleEditEvent,
 		handleOpenModalToDeleteEvent,
+		handleOpenSelectedLink,
 	)
 
 	const hasMoreThanOnePage = !!events?.totalPages && events.totalPages > 1
