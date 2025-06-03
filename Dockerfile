@@ -10,8 +10,11 @@ WORKDIR /app
 
 ARG DATABASE_URL
 ARG API_BASE_URL
+ARG API_IBGE_UF
+
 ENV DATABASE_URL=${DATABASE_URL}
 ENV API_BASE_URL=${API_BASE_URL}
+ENV API_IBGE_UF=${API_IBGE_UF}
 
 COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
@@ -26,8 +29,11 @@ ENV NODE_ENV=production
 
 ARG DATABASE_URL
 ARG API_BASE_URL
+ARG API_IBGE_UF
+
 ENV DATABASE_URL=${DATABASE_URL}
 ENV API_BASE_URL=${API_BASE_URL}
+ENV API_IBGE_UF=${API_IBGE_UF}
 
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
