@@ -82,8 +82,8 @@ export const ParticipantDrawer = memo(
 
 			const formattedData = {
 				...data,
-				...(hasReligion === 'Yes' && { religion }),
-				...(hasHealth === 'Yes' && { health }),
+				...(hasReligion === 'Yes' ? { religion } : { religion: null }),
+				...(hasHealth === 'Yes' ? { health } : { health: null }),
 				birthdate: formatDateToSendToApi(data.birthdate),
 				phone: data.phone.replace(/\D/g, ''),
 				hostPhone: data.hostPhone.replace(/\D/g, ''),

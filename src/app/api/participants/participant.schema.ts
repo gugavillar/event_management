@@ -14,8 +14,8 @@ export const participantSchemaRoute = z.object({
 	birthdate: z.string().datetime({ precision: 3 }),
 	responsible: z.string().min(3).max(MAX_FIELD_LENGTH),
 	responsiblePhone: z.string().refine((value) => validatePhone(value)),
-	religion: z.string().optional(),
-	health: z.string().optional(),
+	religion: z.string().nullable().optional(),
+	health: z.string().nullable().optional(),
 	host: z.string().min(3).max(MAX_FIELD_LENGTH),
 	hostPhone: z.string().refine((value) => validatePhone(value)),
 	address: z.object({

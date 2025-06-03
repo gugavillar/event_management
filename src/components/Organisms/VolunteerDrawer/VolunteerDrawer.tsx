@@ -82,8 +82,8 @@ export const VolunteerDrawer = memo(
 
 			const formattedData = {
 				...data,
-				...(hasCell === 'Yes' && { cell }),
-				...(hasHealth === 'Yes' && { health }),
+				...(hasCell === 'Yes' ? { cell } : { cell: null }),
+				...(hasHealth === 'Yes' ? { health } : { health: null }),
 				birthdate: formatDateToSendToApi(values.birthdate),
 				phone: values.phone.replace(/\D/g, ''),
 				relativePhone: values.relativePhone.replace(/\D/g, ''),

@@ -14,8 +14,8 @@ export const volunteerSchemaRoute = z.object({
 	birthdate: z.string().datetime({ precision: 3 }),
 	relative: z.string().min(3).max(MAX_FIELD_LENGTH),
 	relativePhone: z.string().refine((value) => validatePhone(value)),
-	cell: z.string().optional(),
-	health: z.string().optional(),
+	cell: z.string().nullable().optional(),
+	health: z.string().nullable().optional(),
 	community: z.string().min(3).max(MAX_FIELD_LENGTH),
 	address: z.object({
 		street: z.string().min(3).max(MAX_FIELD_LENGTH),
