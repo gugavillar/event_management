@@ -38,19 +38,18 @@ export const validateFieldsForNotEquals = <T>(
 }
 
 export const validatePhonesNotEquals = (
+	personPhone: string,
 	value: Array<{ phone: string; field: string }>,
 	ctx: RefinementCtx,
 ) => {
-	value.forEach((value, index, sameArray) => {
-		sameArray.forEach((val, i) => {
-			if (value.phone === val.phone && index !== i) {
-				return ctx.addIssue({
-					code: 'custom',
-					path: [val.field],
-					message: 'Telefone duplicado',
-				})
-			}
-			return false
-		})
+	value.forEach((value) => {
+		if (value.phone === personPhone) {
+			return ctx.addIssue({
+				code: 'custom',
+				path: [value.field],
+				message: 'Telefone duplicado',
+			})
+		}
 	})
+	return false
 }

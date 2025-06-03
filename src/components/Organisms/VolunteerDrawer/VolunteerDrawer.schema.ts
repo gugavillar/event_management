@@ -96,10 +96,8 @@ export const VolunteerSchema = z
 			})
 		}
 		validatePhonesNotEquals(
-			[
-				{ field: 'phone', phone: value.phone },
-				{ field: 'responsiblePhone', phone: value.relativePhone },
-			],
+			value.phone,
+			[{ field: 'relativePhone', phone: value.relativePhone }],
 			ctx,
 		)
 	})

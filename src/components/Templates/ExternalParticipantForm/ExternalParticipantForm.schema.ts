@@ -97,8 +97,8 @@ export const ExternalParticipantFormSchemaStepOne = z
 			})
 		}
 		validatePhonesNotEquals(
+			value.phone,
 			[
-				{ field: 'phone', phone: value.phone },
 				{ field: 'responsiblePhone', phone: value.responsiblePhone },
 				{ field: 'hostPhone', phone: value.hostPhone },
 			],
