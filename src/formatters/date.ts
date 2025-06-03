@@ -1,4 +1,5 @@
 import {
+	differenceInYears,
 	endOfDay,
 	format,
 	formatISO,
@@ -74,4 +75,17 @@ export const validateBirthdate = (date: string) => {
 	const numberedDate = getNumberDate(date, 'dd/MM/yyyy')
 
 	return isValid(numberedDate) && isPast(numberedDate)
+}
+
+export const validateDateRange = (
+	date: string,
+	initialRange: number,
+	finalRange: number,
+) => {
+	if (!date) return false
+
+	const numberedDate = getNumberDate(date, 'dd/MM/yyyy')
+	const age = differenceInYears(new Date(), new Date(numberedDate))
+
+	return age >= initialRange && age <= finalRange
 }

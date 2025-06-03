@@ -1,9 +1,8 @@
-import { differenceInYears } from 'date-fns'
 import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
-import { validateBirthdate } from '@/formatters'
+import { validateBirthdate, validateDateRange } from '@/formatters'
 
 export const ExternalParticipantFormSchemaStepOne = z
 	.object({
@@ -28,13 +27,10 @@ export const ExternalParticipantFormSchemaStepOne = z
 				{ message: 'Data inválida' },
 			)
 			.refine(
-				(value) => {
-					if (/^\d{2}\/\d{2}\/\d{4}/g.test(value)) {
-						const age = differenceInYears(new Date(), new Date(value))
-						return age >= 14 && age <= 19
-					}
-					return false
-				},
+				(value) =>
+					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
+						? validateDateRange(value, 14, 19)
+						: false,
 				{ message: 'Idade tem que ser entre 14 e 19 anos' },
 			),
 		phone: z
