@@ -43,6 +43,10 @@ const VolunteerDrawer = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.VolunteerDrawer),
 )
 
+const VolunteerModalData = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.VolunteerModalData),
+)
+
 export const Volunteers = () => {
 	const [selectedVolunteer, setSelectedVolunteer] = useState<
 		VolunteersAPI['id'] | null
@@ -122,6 +126,14 @@ export const Volunteers = () => {
 		[],
 	)
 
+	const handleOpenModalToShowVolunteerData = useCallback(
+		(id: VolunteersAPI['id']) => {
+			setSelectedVolunteer(id)
+			overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
+		},
+		[],
+	)
+
 	const handleOpenDrawerToCreateOrEditVolunteer = useCallback(
 		(id?: VolunteersAPI['id']) => {
 			if (id) {
@@ -148,6 +160,7 @@ export const Volunteers = () => {
 		handleOpenModalToDeleteVolunteer,
 		handleOpenDrawerToCreateOrEditVolunteer,
 		handleOpenAssignFunctionVolunteerModal,
+		handleOpenModalToShowVolunteerData,
 	)
 
 	const hasMoreThanOnePage =
@@ -218,6 +231,11 @@ export const Volunteers = () => {
 			</FormProvider>
 			<AssignFunctionVolunteerModal
 				modalId={MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL}
+				selectedVolunteer={selectedVolunteer}
+				setSelectedVolunteer={setSelectedVolunteer}
+			/>
+			<VolunteerModalData
+				modalId={MODALS_IDS.VOLUNTEER_MODAL_DATA}
 				selectedVolunteer={selectedVolunteer}
 				setSelectedVolunteer={setSelectedVolunteer}
 			/>

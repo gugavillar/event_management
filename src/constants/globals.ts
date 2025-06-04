@@ -29,6 +29,7 @@ export const MODALS_IDS = {
 	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
 	VOLUNTEER_ASSIGN_FUNCTION_MODAL: 'volunteer_assign_function_modal',
 	VOLUNTEER_PAYMENT_MODAL: 'volunteer_payment_modal',
+	VOLUNTEER_MODAL_DATA: 'volunteer_modal_data',
 
 	// USERS
 	USER_CREATE_MODAL: 'user_create_modal',

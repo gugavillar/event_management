@@ -1,6 +1,7 @@
 import { differenceInYears, format } from 'date-fns'
 import {
 	BriefcaseBusiness,
+	FileUser,
 	SquarePen,
 	TicketCheck,
 	UserRoundX,
@@ -52,6 +53,7 @@ export const formatTableData = (
 	handleDeleteVolunteer: (id: VolunteersAPI['id']) => void,
 	handleEditVolunteer: (id: VolunteersAPI['id']) => void,
 	handleAssignFunctionVolunteer: (id: VolunteersAPI['id']) => void,
+	handleShowVolunteer: (id: VolunteersAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -75,6 +77,14 @@ export const formatTableData = (
 			),
 			actions: (
 				<div className="flex space-x-4">
+					<div className="hs-tooltip">
+						<FileUser
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleShowVolunteer(volunteer.id)}
+						/>
+						<Tooltip>Informações</Tooltip>
+					</div>
 					<div className="hs-tooltip">
 						<SquarePen
 							className="cursor-pointer"

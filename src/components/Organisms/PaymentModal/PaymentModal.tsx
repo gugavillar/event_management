@@ -77,7 +77,7 @@ export const PaymentModal = memo(
 							Tipo de pagamento
 						</SelectField>
 						{isPartialPayment && (
-							<CurrencyInputField fieldName="paymentValue">
+							<CurrencyInputField type="tel" fieldName="paymentValue">
 								Informe o valor pago
 							</CurrencyInputField>
 						)}

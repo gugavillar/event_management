@@ -4,18 +4,32 @@ import { twMerge } from 'tailwind-merge'
 import { InformationCard } from '@/components/Atoms'
 import { InfoBox } from '@/components/Molecules'
 
-type FamilyContactInfoProps = ComponentProps<'div'> & {
+type BaseProps = ComponentProps<'div'>
+
+type VolunteerProps = BaseProps & {
+	type: 'volunteer'
 	responsibleInfo: {
-		responsible: string
-		responsiblePhone: string
-		host: string
-		hostPhone: string
+		relative: string
+		relativePhone: string
 	}
 }
+
+type ParticipantProps = BaseProps & {
+	type: 'participant'
+	responsibleInfo: {
+		host: string
+		hostPhone: string
+		responsible: string
+		responsiblePhone: string
+	}
+}
+
+type FamilyContactInfoProps = VolunteerProps | ParticipantProps
 
 export const FamilyContactInfo = ({
 	className,
 	responsibleInfo,
+	type,
 	...props
 }: FamilyContactInfoProps) => {
 	return (
@@ -24,16 +38,28 @@ export const FamilyContactInfo = ({
 			className={twMerge('space-y-3 pb-6', className)}
 			{...props}
 		>
-			<InfoBox label="Responsável" value={responsibleInfo.responsible} />
-			<InfoBox
-				label="Telefone do responsável"
-				value={responsibleInfo.responsiblePhone}
-			/>
-			<InfoBox label="Quem convidou" value={responsibleInfo.host} />
-			<InfoBox
-				label="Contato de quem convidou"
-				value={responsibleInfo.hostPhone}
-			/>
+			{type === 'participant' ? (
+				<>
+					<InfoBox label="Responsável" value={responsibleInfo.responsible} />
+					<InfoBox
+						label="Telefone do responsável"
+						value={responsibleInfo.responsiblePhone}
+					/>
+					<InfoBox label="Quem convidou" value={responsibleInfo.host} />
+					<InfoBox
+						label="Contato de quem convidou"
+						value={responsibleInfo.hostPhone}
+					/>
+				</>
+			) : (
+				<>
+					<InfoBox label="Parente próximo" value={responsibleInfo.relative} />
+					<InfoBox
+						label="Telefone do parente"
+						value={responsibleInfo.relativePhone}
+					/>
+				</>
+			)}
 		</InformationCard>
 	)
 }
