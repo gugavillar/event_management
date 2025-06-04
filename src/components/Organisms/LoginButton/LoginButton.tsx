@@ -55,7 +55,9 @@ export const LoginButton = () => {
 					className="flex w-full flex-col gap-6"
 					onSubmit={methods.handleSubmit(handleSubmitLogin)}
 				>
-					<InputField fieldName="email">Email</InputField>
+					<InputField type="email" fieldName="email">
+						Email
+					</InputField>
 					<InputField fieldName="password" type="password">
 						Senha
 					</InputField>

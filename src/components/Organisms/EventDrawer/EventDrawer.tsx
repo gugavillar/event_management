@@ -96,12 +96,14 @@ export const EventDrawer = ({
 					Gênero do evento
 				</SelectField>
 				<CurrencyInputField
+					type="tel"
 					fieldName="participantPrice"
 					value={data?.participantPrice}
 				>
 					Valor ficha participante
 				</CurrencyInputField>
 				<CurrencyInputField
+					type="tel"
 					fieldName="volunteerPrice"
 					value={data?.volunteerPrice}
 				>
