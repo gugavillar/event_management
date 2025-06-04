@@ -27,7 +27,7 @@ export const ParticipantModalData = memo(
 				handleClose={() => setSelectedParticipant(null)}
 				isLarge
 			>
-				<div className="flex flex-col space-y-4">
+				<div className="flex flex-col space-y-4 max-md:overflow-y-auto">
 					<Header as="h3" className="text-center">
 						Dados do participante
 					</Header>

@@ -1,4 +1,5 @@
 'use client'
+import copy from 'copy-to-clipboard'
 import PixBR from 'pixbrasil'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
@@ -20,10 +21,15 @@ export const PaymentChoice = ({
 	setPixValue,
 	pixValue,
 }: PaymentChoiceProps) => {
-	const handleCopyPixValue = () => {
+	const handleCopyPixValue = async () => {
 		if (!pixValue) return
-		navigator.clipboard.writeText(pixValue)
-		toast.success('Pix copiado com sucesso!')
+
+		const success = copy(pixValue)
+		if (success) {
+			return toast.success('PIX copiado com sucesso!')
+		}
+
+		toast.error('Erro ao copiar o PIX')
 	}
 
 	useEffect(() => {
