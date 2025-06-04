@@ -11,7 +11,11 @@ import {
 	CreateParticipantButton,
 	ListManager,
 } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	ExportParticipantsButton,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
 import {
 	ParticipantSchema,
 	ParticipantType,
@@ -162,6 +166,7 @@ export const Participants = () => {
 						handleOpenDrawerToCreateOrEditParticipant()
 					}
 				/>
+				<ExportParticipantsButton />
 			</div>
 			<ListPage
 				placeholderField="Encontrar um participante"

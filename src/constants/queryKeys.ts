@@ -21,7 +21,7 @@ export const QUERY_KEYS = {
 	EVENT: 'event',
 
 	// Participants
-	PARTICIPANTS_TEMPLATE_FILE: 'participants-template-file',
+	PARTICIPANTS_EXPORT_DATA: 'participants-template-file',
 	PARTICIPANTS: 'participants',
 	PARTICIPANT: 'participant',
 	PAYMENT_PARTICIPANTS: 'payment-participants',

@@ -9,7 +9,7 @@ export const MODALS_IDS = {
 	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
 	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
-	PARTICIPANT_IMPORT_MODAL: 'participant_import_modal',
+	PARTICIPANT_EXPORT_MODAL: 'participant_export_modal',
 
 	GROUP_DRAWER: 'group_manager',
 	ROOMS_DRAWER: 'rooms_manager',
