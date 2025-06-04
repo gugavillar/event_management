@@ -22,7 +22,9 @@ export default async function AdminLayout({
 		<SessionProvider session={session}>
 			<main className="grid h-full grid-cols-1 md:grid-cols-admin">
 				<Sidebar />
-				<div className="bg-slate-100/50 md:overflow-y-auto">{children}</div>
+				<div className="bg-slate-100/50 max-md:h-[calc(100dvh-5.5rem)] md:overflow-y-auto">
+					{children}
+				</div>
 			</main>
 		</SessionProvider>
 	)

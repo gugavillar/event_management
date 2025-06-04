@@ -22,12 +22,12 @@ export const SubMenuItem = ({
 		.toLowerCase()
 
 	return (
-		<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
+		<div className="hs-dropdown relative inline-flex [--strategy:absolute]">
 			<button
 				type="button"
 				className={twMerge(
 					'hs-tooltip focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 hover:bg-slate-900/80',
-					collapsed && 'justify-center px-0',
+					collapsed && 'justify-center',
 					path.includes(validateLabelPath) && 'bg-slate-900/80',
 				)}
 			>

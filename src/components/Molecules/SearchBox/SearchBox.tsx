@@ -36,7 +36,7 @@ const ComboBoxOptions = <T,>({
 						<li
 							key={valueOption}
 							className={twMerge(
-								'cursor-pointer px-4 py-2 text-sm hover:bg-gray-100',
+								'cursor-pointer px-4 py-2 text-base hover:bg-gray-100',
 								selectedValue === valueOption && 'bg-gray-100 font-medium',
 								opt.disabled && 'cursor-not-allowed text-gray-400',
 							)}
@@ -98,7 +98,7 @@ export const SearchBox = <T,>({
 					<button
 						type="button"
 						className={twMerge(
-							'inline-flex w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-sm shadow-sm focus:ring-2',
+							'inline-flex w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-base shadow-sm focus:ring-2',
 							error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
 							disabled && 'pointer-events-none opacity-50',
 						)}

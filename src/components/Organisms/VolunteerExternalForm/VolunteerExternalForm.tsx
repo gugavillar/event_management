@@ -21,7 +21,9 @@ export const VolunteerExternalForm = () => {
 				<InputField fieldName="called">
 					Como você gostaria de ser chamado(a)?
 				</InputField>
-				<InputField fieldName="email">E-mail</InputField>
+				<InputField type="email" fieldName="email">
+					E-mail
+				</InputField>
 				<MaskedInputField format="(##) #####-####" fieldName="phone">
 					Telefone
 				</MaskedInputField>

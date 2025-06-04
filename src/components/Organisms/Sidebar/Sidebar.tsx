@@ -25,8 +25,9 @@ export const Sidebar = () => {
 	return (
 		<aside
 			className={twMerge(
-				'flex flex-col bg-slate-800 px-4 py-6 transition-[width] duration-500',
+				'flex flex-row bg-slate-800 px-4 py-6 transition-[width] duration-500 md:flex-col',
 				collapsed ? 'w-20' : 'w-72',
+				'max-md:w-full',
 			)}
 		>
 			<ApplicationAvatar collapsed={collapsed} handleCollapse={setCollapsed} />

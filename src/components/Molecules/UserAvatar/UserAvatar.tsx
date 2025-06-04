@@ -26,13 +26,13 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 	}
 
 	return (
-		<footer className="mt-auto border-t border-gray-200 pt-4">
+		<footer className="border-gray-200 max-md:border-l max-md:pl-4 md:mt-auto md:border-t md:pt-4">
 			<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
 				<button
 					type="button"
 					className={twMerge(
 						'focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 hover:bg-slate-900/80',
-						collapsed && 'justify-center px-0',
+						collapsed && 'justify-center',
 					)}
 				>
 					{!collapsed ? (

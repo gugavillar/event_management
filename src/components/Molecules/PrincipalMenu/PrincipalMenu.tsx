@@ -13,7 +13,10 @@ type PrincipalMenuProps = {
 export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 	const path = usePathname()
 	return (
-		<nav className="mt-8 flex flex-col space-y-4" data-testid="principal-menu">
+		<nav
+			className="flex w-full flex-row justify-evenly md:mt-8 md:flex-col md:space-y-4"
+			data-testid="principal-menu"
+		>
 			{MENU_LINKS.map((item) =>
 				item.hasSubMenu ? (
 					<SubMenuItem

@@ -24,7 +24,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 			<div className="relative w-full">
 				<input
 					className={twMerge(
-						'block w-full rounded-lg py-3 pl-4 pr-8 text-sm',
+						'block w-full rounded-lg py-3 pl-4 pr-8 text-base',
 						className,
 						isInvalid &&
 							'border-red-500 focus:border-red-500 focus:ring-red-500',

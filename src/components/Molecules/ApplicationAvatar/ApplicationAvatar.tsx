@@ -38,7 +38,7 @@ export const ApplicationAvatar = memo(
 					type="button"
 					onClick={() => handleCollapse(!collapsed)}
 					className={twMerge(
-						'absolute -top-3 inline-flex items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500',
+						'absolute -top-3 hidden items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500 md:inline-flex',
 						collapsed ? 'left-12' : 'left-64',
 					)}
 				>

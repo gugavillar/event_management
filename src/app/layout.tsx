@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import { Providers } from '@/providers/Providers'
 import { roboto } from '@/theme'
@@ -8,6 +8,13 @@ import './globals.css'
 export const metadata: Metadata = {
 	title: 'Gerenciador de eventos - Anglicana Vida',
 	description: 'Gerenciador de eventos da igreja anglicana vida',
+}
+
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	maximumScale: 1,
+	userScalable: false,
 }
 
 export default function RootLayout({

@@ -19,7 +19,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 			<div className="relative w-full">
 				<select
 					className={twMerge(
-						'block w-full rounded-lg px-4 py-3 pe-16 text-sm disabled:pointer-events-none disabled:opacity-50',
+						'block w-full rounded-lg px-4 py-3 pe-16 text-base disabled:pointer-events-none disabled:opacity-50',
 						className,
 						isInvalid &&
 							'border-red-500 focus:border-red-500 focus:ring-red-500',
