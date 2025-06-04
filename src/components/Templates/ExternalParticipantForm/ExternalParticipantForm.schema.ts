@@ -6,7 +6,7 @@ import { validateBirthdate, validateDateRange } from '@/formatters'
 
 export const ExternalParticipantFormSchemaStepOne = z
 	.object({
-		name: z.string().trim().min(1, 'Campo obrigatório'),
+		name: z.string().trim().min(3, 'Campo obrigatório'),
 		email: z
 			.string({ required_error: 'Campo obrigatório' })
 			.trim()
@@ -40,7 +40,7 @@ export const ExternalParticipantFormSchemaStepOne = z
 				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
 				{ message: 'Telefone inválido' },
 			),
-		responsible: z.string().trim().min(1, 'Campo obrigatório'),
+		responsible: z.string().trim().min(3, 'Campo obrigatório'),
 		responsiblePhone: z
 			.string({ required_error: 'Campo obrigatório' })
 			.trim()
@@ -72,7 +72,7 @@ export const ExternalParticipantFormSchemaStepOne = z
 				message: 'Campo obrigatório',
 			}),
 		health: z.string().optional(),
-		host: z.string().trim().min(1, 'Campo obrigatório'),
+		host: z.string().trim().min(3, 'Campo obrigatório'),
 		hostPhone: z
 			.string({ required_error: 'Campo obrigatório' })
 			.trim()
@@ -108,10 +108,10 @@ export const ExternalParticipantFormSchemaStepOne = z
 
 export const ExternalParticipantFormSchemaStepTwo = z.object({
 	address: z.object({
-		street: z.string().trim().min(1, 'Campo obrigatório'),
-		neighborhood: z.string().trim().min(1, 'Campo obrigatório'),
-		number: z.string().trim().min(1, 'Campo obrigatório'),
-		city: z.string().trim().min(1, 'Campo obrigatório'),
+		street: z.string().trim().min(3, 'Campo obrigatório'),
+		neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
+		number: z.string().trim().min(3, 'Campo obrigatório'),
+		city: z.string().trim().min(3, 'Campo obrigatório'),
 		state: z
 			.string({ required_error: 'Campo obrigatório' })
 			.max(2)
