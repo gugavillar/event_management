@@ -10,7 +10,7 @@ import {
 	PageContent,
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
-import { useGetVolunteersFunctions } from '@/services/queries/volunteers'
+import { useGetFunctions } from '@/services/queries/volunteers'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './VolunteersFunctions.utils'
@@ -22,7 +22,7 @@ const FunctionDeleteModal = dynamic(() =>
 export const VolunteersFunctions = () => {
 	const [selectedFunction, setSelectedFunction] =
 		useState<null | VolunteersFunctionsFromAPI>(null)
-	const { data, isLoading, search, setSearch } = useGetVolunteersFunctions()
+	const { data, isLoading, search, setSearch } = useGetFunctions()
 
 	const handleOpenModalToDeleteFunction = useCallback(
 		(selected: VolunteersFunctionsFromAPI) => {

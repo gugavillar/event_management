@@ -1,7 +1,7 @@
 import { VolunteersFunctions } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
-import { getVolunteersFunctions } from '@/services/queries/volunteers'
+import { getFunctions } from '@/services/queries/volunteers'
 
 export default async function VolunteersFunctionsPage({
 	searchParams,
@@ -11,7 +11,7 @@ export default async function VolunteersFunctionsPage({
 	const debounceValue = searchParams.searchFunction ?? ''
 
 	const getAllFunctions = async () =>
-		getVolunteersFunctions({ searchFunction: debounceValue })
+		getFunctions({ searchFunction: debounceValue })
 
 	return (
 		<HydrationProvider

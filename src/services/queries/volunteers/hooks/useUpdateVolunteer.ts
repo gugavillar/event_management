@@ -11,6 +11,9 @@ export const useUpdateVolunteer = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.VOLUNTEERS] })
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.VOLUNTEER] })
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.VOLUNTEERS_EXPORT_DATA],
+			})
 		},
 	})
 

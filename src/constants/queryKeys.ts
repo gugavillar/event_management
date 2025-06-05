@@ -21,13 +21,13 @@ export const QUERY_KEYS = {
 	EVENT: 'event',
 
 	// Participants
-	PARTICIPANTS_EXPORT_DATA: 'participants-template-file',
+	PARTICIPANTS_EXPORT_DATA: 'participants-export-data',
 	PARTICIPANTS: 'participants',
 	PARTICIPANT: 'participant',
 	PAYMENT_PARTICIPANTS: 'payment-participants',
 
 	// Volunteers
-	VOLUNTEERS_TEMPLATE_FILE: 'volunteers-template-file',
+	VOLUNTEERS_EXPORT_DATA: 'volunteers-export-data',
 	VOLUNTEERS: 'volunteers',
 	VOLUNTEER: 'volunteer',
 	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',

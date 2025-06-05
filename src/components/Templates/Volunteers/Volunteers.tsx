@@ -11,7 +11,11 @@ import {
 	CreateVolunteerButton,
 	ListManager,
 } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	ExportVolunteersButton,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
 import {
 	VolunteerSchema,
 	VolunteerType,
@@ -174,6 +178,7 @@ export const Volunteers = () => {
 						handleOpenDrawerToCreateOrEditVolunteer()
 					}
 				/>
+				<ExportVolunteersButton />
 			</div>
 			<ListPage
 				placeholderField="Encontrar um voluntário"

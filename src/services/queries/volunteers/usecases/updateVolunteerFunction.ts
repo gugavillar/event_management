@@ -13,7 +13,7 @@ export const updateVolunteerFunction = async ({
 	roleId,
 }: UpdateVolunteerFunctionArgs) => {
 	const response = await api.patch(
-		ENDPOINTS.UPDATE_VOLUNTEER_ROLE(volunteerId),
+		ENDPOINTS.UPDATE_VOLUNTEER_FUNCTION(volunteerId),
 		{ roleId },
 	)
 

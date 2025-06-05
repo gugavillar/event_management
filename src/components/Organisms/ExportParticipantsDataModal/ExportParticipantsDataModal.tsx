@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { FILES_TYPES } from '@/constants'
+import { FILES_TYPES, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -64,6 +64,7 @@ export const ExportParticipantsDataModal = ({
 		if (isError) {
 			toast.error('Erro ao baixar arquivo')
 			setEventId('')
+			methods.reset()
 			return
 		}
 
@@ -73,11 +74,14 @@ export const ExportParticipantsDataModal = ({
 		const eventName =
 			formattedEvents.find((event) => event.customProps.value === eventId)
 				?.customProps?.label ?? ''
-		saveAs(blob, `participantes-${eventName}.xlsx`)
+		saveAs(blob, `Participantes-${eventName}.xlsx`)
+
 		setEventId('')
 		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
-	}, [data, isError, eventId, formattedEvents])
+		methods.reset()
+		overlayClose(modalId)
+	}, [data, isError, eventId, formattedEvents, methods, modalId])
 
 	const handleSubmit = async (values: ExportParticipantsFileModalType) => {
 		if (!values.eventId) return

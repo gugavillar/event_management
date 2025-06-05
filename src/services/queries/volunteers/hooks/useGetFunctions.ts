@@ -8,10 +8,10 @@ import { QUERY_KEYS } from '@/constants'
 import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
-import { getVolunteersFunctions } from '../usecases'
+import { getFunctions } from '../usecases'
 import { VolunteersFunctionsFromAPI } from '../volunteers.type'
 
-export const useGetVolunteersFunctions = () => {
+export const useGetFunctions = () => {
 	const searchParams = useSearchParams()
 	const [search, setSearch] = useState(searchParams.get('searchFunction') || '')
 
@@ -24,7 +24,7 @@ export const useGetVolunteersFunctions = () => {
 	const query: UseQueryResult<Array<VolunteersFunctionsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch],
 		queryFn: () =>
-			getVolunteersFunctions({
+			getFunctions({
 				searchFunction: debounceSearch,
 			}),
 		retry: 0,

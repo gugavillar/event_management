@@ -23,7 +23,7 @@ export const MODALS_IDS = {
 	FUNCTION_REMOVE_MODAL: 'function_remove_modal',
 
 	// VOLUNTEER
-	VOLUNTEER_IMPORT_MODAL: 'volunteer_import_modal',
+	VOLUNTEER_EXPORT_MODAL: 'volunteer_export_modal',
 	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
 	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
 	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',

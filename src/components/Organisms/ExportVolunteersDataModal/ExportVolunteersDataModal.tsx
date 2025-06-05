@@ -1,41 +1,38 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-	Controller,
-	FormProvider,
-	type SubmitHandler,
-	useForm,
-} from 'react-hook-form'
+import saveAs from 'file-saver'
+import { useEffect, useState } from 'react'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { UUID } from 'crypto'
-
-import { Alert, Button, Header, Modal, Text } from '@/components/Atoms'
-import { ComboBox, FileField } from '@/components/Molecules'
+import { Button, Header, Modal, Text } from '@/components/Atoms'
+import { ComboBox } from '@/components/Molecules'
 import { FILES_TYPES, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import { useImportVolunteersData } from '@/services/queries/volunteers'
+import { useGetExportVolunteerData } from '@/services/queries/volunteers'
 
 import {
-	ImportVolunteersFileModalType,
-	ImportVolunteersFileModalSchema,
-} from './ImportVolunteersFileModal.schema'
+	ExportVolunteersDataModalSchema,
+	ExportVolunteersDataModalType,
+} from './ExportVolunteersDataModal.schema'
 
-type ImportVolunteersFileModalProps = {
+type ExportVolunteersDataModalProps = {
 	modalId: string
 }
 
-export const ImportVolunteersFileModal = ({
+const TOAST_ID = 'download-template-volunteers'
+
+export const ExportVolunteersDataModal = ({
 	modalId,
-}: ImportVolunteersFileModalProps) => {
-	const methods = useForm<ImportVolunteersFileModalType>({
+}: ExportVolunteersDataModalProps) => {
+	const [eventId, setEventId] = useState('')
+	const methods = useForm<ExportVolunteersDataModalType>({
 		defaultValues: {
 			eventId: '',
-			file: undefined,
 		},
-		resolver: zodResolver(ImportVolunteersFileModalSchema),
+		resolver: zodResolver(ExportVolunteersDataModalSchema),
 	})
 	const {
 		data: events,
@@ -43,13 +40,12 @@ export const ImportVolunteersFileModal = ({
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { importData, isPending } = useImportVolunteersData()
+	const { data, isError, isFetching } = useGetExportVolunteerData(eventId)
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
 		'id',
-		true,
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
@@ -62,21 +58,37 @@ export const ImportVolunteersFileModal = ({
 		methods.reset()
 	}
 
-	const handleSubmit: SubmitHandler<ImportVolunteersFileModalType> = async (
-		values,
-	) => {
-		await importData(
-			{ eventId: values.eventId as UUID, file: values.file[0] },
-			{
-				onSuccess: () => {
-					toast.success('Voluntários importados com sucesso!')
-					overlayClose(modalId)
-				},
-				onError: () =>
-					toast.error('Alguns dados estão incorretos. Revise o arquivo.'),
-			},
-		)
+	useEffect(() => {
+		if (!data || !eventId) return
+
+		if (isError) {
+			toast.error('Erro ao baixar arquivo')
+			setEventId('')
+			methods.reset()
+			return
+		}
+
+		const blob = new Blob([data], {
+			type: FILES_TYPES.xlsx,
+		})
+		const eventName =
+			formattedEvents.find((event) => event.customProps.value === eventId)
+				?.customProps?.label ?? ''
+		saveAs(blob, `Voluntários-${eventName}.xlsx`)
+
+		setEventId('')
+		toast.dismiss(TOAST_ID)
+		toast.success('Arquivo baixado com sucesso!')
+		methods.reset()
+		overlayClose(modalId)
+	}, [data, isError, eventId, formattedEvents, methods, modalId])
+
+	const handleSubmit = async (values: ExportVolunteersDataModalType) => {
+		if (!values.eventId) return
+
+		setEventId(values.eventId)
 	}
+
 	return (
 		<Modal modalId={modalId} handleClose={handleClose}>
 			<FormProvider {...methods}>
@@ -84,11 +96,10 @@ export const ImportVolunteersFileModal = ({
 					<div className="flex flex-col items-center justify-between gap-6">
 						<div className="flex flex-col items-center gap-2">
 							<Header as="h3" className="text-2xl">
-								Importar voluntários
+								Exportar voluntários
 							</Header>
-							<Text>Selecione o evento e o arquivo que deseja importar</Text>
+							<Text>Selecione o evento que deseja exportar os dados</Text>
 						</div>
-						<Alert description="Importe um arquivo .xlsx com todos os campos formatados como texto, incluindo números e datas" />
 						<Controller
 							name="eventId"
 							control={methods.control}
@@ -104,16 +115,14 @@ export const ImportVolunteersFileModal = ({
 								/>
 							)}
 						/>
-						<FileField fieldName="file" accept={FILES_TYPES.xlsx}>
-							Arquivo
-						</FileField>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 							type="submit"
 							onClick={methods.handleSubmit(handleSubmit)}
-							isLoading={isPending}
+							disabled={!methods.formState.isValid}
+							isLoading={isFetching}
 						>
-							Importar
+							Exportar
 						</Button>
 					</div>
 				</div>

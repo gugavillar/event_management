@@ -11,6 +11,9 @@ export const useUpdateParticipant = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PARTICIPANTS] })
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PARTICIPANT] })
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.PARTICIPANTS_EXPORT_DATA],
+			})
 		},
 	})
 

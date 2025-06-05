@@ -1,9 +1,9 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-export const getVolunteersTemplateFile = async () => {
+export const getExportVolunteerData = async (event_id: string) => {
 	const response: BlobPart = await api.get(
-		ENDPOINTS.GET_TEMPLATE_VOLUNTEERS_FILE,
+		ENDPOINTS.EXPORT_VOLUNTEERS_DATA(event_id),
 		{
 			responseType: 'arraybuffer',
 		},

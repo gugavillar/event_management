@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
 
-import { getExportParticipantsData } from '@/server'
+import { getExportVolunteersData } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 const handlerGet = async (
@@ -8,7 +8,7 @@ const handlerGet = async (
 	{ params }: { params: { event_id: string } },
 ) => {
 	return await requestProcess({
-		functions: async () => await getExportParticipantsData(params.event_id),
+		functions: async () => await getExportVolunteersData(params.event_id),
 	})
 }
 

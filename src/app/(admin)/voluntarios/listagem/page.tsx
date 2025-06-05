@@ -3,10 +3,7 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import {
-	getVolunteers,
-	getVolunteersFunctions,
-} from '@/services/queries/volunteers'
+import { getVolunteers, getFunctions } from '@/services/queries/volunteers'
 
 export default async function VolunteersPage({
 	searchParams,
@@ -32,7 +29,7 @@ export default async function VolunteersPage({
 				statusVolunteer: debounceStatusValue,
 				page,
 			}),
-		async () => getVolunteersFunctions({ searchFunction: '' }),
+		async () => getFunctions({ searchFunction: '' }),
 	])
 
 	return (

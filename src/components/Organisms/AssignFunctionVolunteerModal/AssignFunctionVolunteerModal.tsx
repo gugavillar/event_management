@@ -9,7 +9,7 @@ import { SelectField } from '@/components/Molecules'
 import { overlayClose } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import {
-	useGetVolunteersFunctions,
+	useGetFunctions,
 	useUpdateVolunteerFunction,
 } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -31,7 +31,7 @@ export const AssignFunctionVolunteerModal = memo(
 		selectedVolunteer,
 		setSelectedVolunteer,
 	}: CreateVolunteerFunctionModalProps) => {
-		const { data } = useGetVolunteersFunctions()
+		const { data } = useGetFunctions()
 		const { isPending, update } = useUpdateVolunteerFunction()
 		const methods = useForm<AssignFunctionType>({
 			defaultValues: {

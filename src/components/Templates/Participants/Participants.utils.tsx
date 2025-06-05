@@ -51,7 +51,7 @@ export const formatTableData = (
 			id: participant.id,
 			name: participant.name,
 			contact: formatPhone(participant.phone),
-			birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(), participant.birthdate)} anos`,
+			birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(participant.event.finalDate), participant.birthdate)} anos`,
 			city: participant.Address.city,
 			event: participant.event.name,
 			status: (
