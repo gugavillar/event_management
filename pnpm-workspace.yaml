@@ -3,3 +3,5 @@ ignoredBuiltDependencies:
   - '@prisma/engines'
   - esbuild
   - prisma
+onlyBuiltDependencies:
+  - sharp

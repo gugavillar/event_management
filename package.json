@@ -29,6 +29,7 @@
 		"bcryptjs": "^3.0.2",
 		"copy-to-clipboard": "^3.3.3",
 		"date-fns": "^3.6.0",
+		"exceljs": "^4.4.0",
 		"file-saver": "^2.0.5",
 		"jsonwebtoken": "^9.0.2",
 		"lucide-react": "^0.511.0",
@@ -46,7 +47,6 @@
 		"sharp": "^0.34.2",
 		"uuid": "^11.1.0",
 		"validations-br": "^1.4.0",
-		"xlsx": "^0.18.5",
 		"zod": "^3.25.30"
 	},
 	"devDependencies": {
