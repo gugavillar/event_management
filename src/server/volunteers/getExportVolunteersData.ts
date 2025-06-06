@@ -1,6 +1,6 @@
 import { differenceInYears, format } from 'date-fns'
-import ExcelJS from 'exceljs'
 import { NextResponse } from 'next/server'
+import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { prisma } from '@/constants'
@@ -49,22 +49,17 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Alimentação_Saúde: volunteer.health || 'Não possui',
 		}))
 
-		const workbook = new ExcelJS.Workbook()
-		const worksheet = workbook.addWorksheet(
+		const tableHeader = Object.keys(data[0])
+		const worksheet = utils.json_to_sheet(data, {
+			header: tableHeader,
+		})
+		const workbook = utils.book_new()
+		utils.book_append_sheet(
+			workbook,
+			worksheet,
 			`Voluntários - ${volunteers[0].event.name}`,
 		)
-		const headers = Object.keys(data[0])
-		const headerRow = worksheet.addRow(headers)
-
-		headerRow.eachCell((cell) => {
-			cell.font = { bold: true }
-		})
-
-		data.forEach((row) => {
-			worksheet.addRow(Object.values(row))
-		})
-
-		const buffer = await workbook.xlsx.writeBuffer()
+		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
 
 		return new NextResponse(buffer, {
 			status: 200,
