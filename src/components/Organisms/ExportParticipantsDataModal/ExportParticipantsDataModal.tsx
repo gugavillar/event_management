@@ -112,6 +112,7 @@ export const ExportParticipantsDataModal = ({
 									setSelectedValue={field.onChange}
 									lastItemRef={lastItemRef}
 									label="Evento"
+									error={methods.formState.errors.eventId?.message}
 								/>
 							)}
 						/>

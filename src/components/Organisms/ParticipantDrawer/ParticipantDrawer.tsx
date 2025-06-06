@@ -42,7 +42,7 @@ export const ParticipantDrawer = memo(
 			reset,
 			watch,
 			control,
-			formState: { isValid, isDirty },
+			formState: { isValid, isDirty, errors },
 		} = useFormContext<ParticipantType>()
 		const {
 			data: events,
@@ -152,6 +152,7 @@ export const ParticipantDrawer = memo(
 								setSelectedValue={field.onChange}
 								lastItemRef={lastItemRef}
 								label="Evento"
+								error={errors.eventId?.message}
 							/>
 						)}
 					/>

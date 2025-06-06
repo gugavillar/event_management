@@ -52,7 +52,7 @@ export const VolunteerDrawer = memo(
 			reset,
 			watch,
 			control,
-			formState: { isValid, isDirty },
+			formState: { isValid, isDirty, errors },
 		} = useFormContext<VolunteerType>()
 
 		const selectedUF = watch('address.state')
@@ -151,6 +151,7 @@ export const VolunteerDrawer = memo(
 								setSelectedValue={field.onChange}
 								lastItemRef={lastItemRef}
 								label="Evento"
+								error={errors.eventId?.message}
 							/>
 						)}
 					/>

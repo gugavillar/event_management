@@ -1,12 +1,23 @@
 'use client'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, TriangleAlert } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { Field, Label } from '@/components/Atoms'
+import { Field, HelperErrorText, Label } from '@/components/Atoms'
 import { useClickOutside } from '@/hooks'
 
 import { SearchBoxOptionsProps, SearchBoxProps } from './SearchBox.types'
+
+const Warning = () => {
+	return (
+		<div
+			className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3"
+			data-testid="warning-icon"
+		>
+			<TriangleAlert className="size-4 shrink-0 text-red-500" />
+		</div>
+	)
+}
 
 const ComboBoxOptions = <T,>({
 	options,
@@ -106,7 +117,7 @@ export const SearchBox = <T,>({
 						disabled={disabled}
 					>
 						{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
-						<ChevronDown size={14} />
+						{error ? <Warning /> : <ChevronDown size={14} />}
 					</button>
 				)}
 				{isOpen && (
@@ -121,6 +132,9 @@ export const SearchBox = <T,>({
 					/>
 				)}
 			</div>
+			{error ? (
+				<HelperErrorText className="text-red-500">{error}</HelperErrorText>
+			) : null}
 		</div>
 	)
 }
