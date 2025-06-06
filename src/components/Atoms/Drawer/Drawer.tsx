@@ -1,9 +1,10 @@
 import { CircleX } from 'lucide-react'
-import { ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { Header } from '../Header'
 
-type DrawerProps = {
+type DrawerProps = ComponentProps<'div'> & {
 	children: ReactNode
 	headingTitle: string
 	drawerId: string
@@ -15,11 +16,15 @@ export const Drawer = ({
 	drawerId,
 	headingTitle,
 	handleClose,
+	className,
 }: DrawerProps) => {
 	return (
 		<div
 			id={drawerId}
-			className="hs-overlay fixed end-0 top-0 z-[80] hidden size-full max-w-lg translate-x-full border-s bg-white transition-all duration-300 hs-overlay-open:translate-x-0"
+			className={twMerge(
+				'hs-overlay fixed end-0 top-0 z-[80] hidden size-full max-w-lg translate-x-full border-s bg-white transition-all duration-300 hs-overlay-open:translate-x-0',
+				className,
+			)}
 			style={{ marginTop: 0 }}
 			data-testid="drawer"
 		>

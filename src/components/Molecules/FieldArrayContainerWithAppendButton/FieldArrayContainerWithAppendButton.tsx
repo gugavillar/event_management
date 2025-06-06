@@ -15,7 +15,7 @@ export const FieldArrayContainerWithAppendButton = ({
 	leftIcon,
 }: FieldArrayContainerWithAppendButtonProps) => {
 	return (
-		<div className="flex flex-col space-y-3">
+		<div className="flex flex-col space-y-6">
 			<Button
 				className="ml-auto self-end rounded-full border-none p-2 transition-colors duration-500 hover:bg-green-100 hover:text-gray-800"
 				leftIcon={leftIcon}

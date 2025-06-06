@@ -19,19 +19,22 @@ export const QUERY_KEYS = {
 	// Events
 	EVENTS: 'events',
 	EVENT: 'event',
+	EVENTS_INFINITY: 'events-infinity',
 
 	// Participants
 	PARTICIPANTS_EXPORT_DATA: 'participants-export-data',
 	PARTICIPANTS: 'participants',
 	PARTICIPANT: 'participant',
-	PAYMENT_PARTICIPANTS: 'payment-participants',
+	PARTICIPANTS_PAYMENT: 'payment-participants',
+	PARTICIPANTS_INFINITY: 'participants-infinity',
 
 	// Volunteers
 	VOLUNTEERS_EXPORT_DATA: 'volunteers-export-data',
 	VOLUNTEERS: 'volunteers',
 	VOLUNTEER: 'volunteer',
 	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
-	PAYMENT_VOLUNTEERS: 'payment-volunteers',
+	VOLUNTEERS_PAYMENTS: 'payment-volunteers',
+	VOLUNTEERS_INFINITY: 'volunteers-infinity',
 
 	// Dashboard
 	DASHBOARD: 'dashboard',

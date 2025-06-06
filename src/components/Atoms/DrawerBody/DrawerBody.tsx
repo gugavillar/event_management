@@ -18,7 +18,7 @@ export const DrawerBody = ({
 	return (
 		<section
 			className={twMerge(
-				'max-h-[calc(88dvh-4rem)] space-y-6 overflow-y-auto p-6',
+				'h-full max-h-[calc(88dvh-4rem)] space-y-6 overflow-y-auto p-6',
 				isLoading && loadingClasses,
 				className,
 			)}

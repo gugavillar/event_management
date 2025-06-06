@@ -1,4 +1,5 @@
 'use client'
+import { get } from 'lodash'
 import { useFormContext } from 'react-hook-form'
 
 import { HelperErrorText, Label, Radio, RadioProps } from '@/components/Atoms'
@@ -18,18 +19,20 @@ export const RadioField = ({
 }: RadioFieldProps) => {
 	const { register, formState } = useFormContext()
 
+	const error = get(formState.errors, fieldName)
 	return (
 		<div>
-			<Label htmlFor={fieldName}>{children}</Label>
+			<Label>{children}</Label>
 			<Radio
 				options={options}
 				{...register(fieldName)}
-				isInvalid={!!formState?.errors?.[fieldName]?.message}
+				isInvalid={!!error?.message}
 				position={position}
+				fieldName={fieldName}
 			/>
-			{formState.errors[fieldName] ? (
+			{error?.message ? (
 				<HelperErrorText className="text-red-500">
-					{formState.errors[fieldName].message as string}
+					{error?.message as string}
 				</HelperErrorText>
 			) : null}
 		</div>

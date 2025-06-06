@@ -10,7 +10,7 @@ export const useUpdateParticipantPayment = () => {
 		mutationFn: updateParticipantPayment,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [QUERY_KEYS.PAYMENT_PARTICIPANTS],
+				queryKey: [QUERY_KEYS.PARTICIPANTS_PAYMENT],
 			})
 		},
 	})

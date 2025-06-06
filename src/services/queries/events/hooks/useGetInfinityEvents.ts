@@ -17,7 +17,7 @@ export const useGetInfinityEvents = () => {
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
 		initialPageParam: 1,
-		queryKey: [QUERY_KEYS.EVENTS, debouceValue],
+		queryKey: [QUERY_KEYS.EVENTS_INFINITY, debouceValue],
 		queryFn: async ({ pageParam }) =>
 			await getEvents({ searchEvent: debouceValue, page: pageParam }),
 		getNextPageParam: (lastPage: EventsFromAPI) => {

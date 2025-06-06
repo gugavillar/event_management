@@ -5,27 +5,27 @@ import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 
-import { ParticipantsFromAPI } from '../participants.type'
-import { getParticipants } from '../usecases'
+import { getVolunteers } from '../usecases'
+import { VolunteersFromAPI } from '../volunteers.type'
 
-export const useGetInfinityParticipants = (eventId = '') => {
-	const [searchParticipant, setSearchParticipant] = useState('')
-	const debounceParticipant = useDebounce(searchParticipant, 500)
+export const useGetInfinityVolunteers = (eventId = '') => {
+	const [searchVolunteer, setSearchVolunteer] = useState('')
+	const debounceVolunteer = useDebounce(searchVolunteer, 500)
 
 	const query: UseInfiniteQueryResult<{
-		pages: Array<ParticipantsFromAPI>
+		pages: Array<VolunteersFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
 		initialPageParam: 1,
-		queryKey: [QUERY_KEYS.PARTICIPANTS_INFINITY, eventId, debounceParticipant],
+		queryKey: [QUERY_KEYS.VOLUNTEERS_INFINITY, eventId, debounceVolunteer],
 		queryFn: async ({ pageParam }) =>
-			await getParticipants({
-				searchParticipant: debounceParticipant,
+			await getVolunteers({
+				searchVolunteer: debounceVolunteer,
 				eventId,
-				statusParticipant: '',
+				statusVolunteer: '',
 				page: pageParam,
 			}),
-		getNextPageParam: (lastPage: ParticipantsFromAPI) => {
+		getNextPageParam: (lastPage: VolunteersFromAPI) => {
 			const { currentPage, totalPages } = lastPage
 			return currentPage < totalPages ? currentPage + 1 : undefined
 		},
@@ -37,7 +37,7 @@ export const useGetInfinityParticipants = (eventId = '') => {
 		hasNextPage: query.hasNextPage,
 		isFetchingNextPage: query.isFetchingNextPage,
 		fetchNextPage: query.fetchNextPage,
-		searchParticipant,
-		setSearchParticipant,
+		searchVolunteer,
+		setSearchVolunteer,
 	}
 }

@@ -37,7 +37,7 @@ export const useGetPayments = () => {
 
 	const query: UseQueryResult<VolunteersPaymentsFromAPI> = useQuery({
 		queryKey: [
-			QUERY_KEYS.PAYMENT_VOLUNTEERS,
+			QUERY_KEYS.VOLUNTEERS_PAYMENTS,
 			debounceEventId,
 			debounceSearch,
 			debouncePaymentType,

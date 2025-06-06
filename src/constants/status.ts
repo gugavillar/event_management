@@ -121,3 +121,25 @@ export enum USER_STATUS {
 	ACTIVE = 'Ativo',
 	INACTIVE = 'Inativo',
 }
+
+export enum MEMBERS {
+	PARTICIPANT = 'PARTICIPANT',
+	VOLUNTEER = 'VOLUNTEER',
+}
+
+export const MembersTypes = {
+	[MEMBERS.PARTICIPANT]: { label: 'Participante', value: MEMBERS.PARTICIPANT },
+	[MEMBERS.VOLUNTEER]: { label: 'Voluntário', value: MEMBERS.VOLUNTEER },
+}
+
+export const MembersTypesOptions = Object.values(MEMBERS).map((value) => ({
+	...MembersTypes[value],
+}))
+
+export const MembersTypesOptionsRadio = Object.values(MEMBERS).map((value) => ({
+	...MembersTypes[value],
+	description:
+		value === MEMBERS.PARTICIPANT
+			? 'Participando do evento'
+			: 'Servindo no evento',
+}))

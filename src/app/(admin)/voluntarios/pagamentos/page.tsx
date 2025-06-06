@@ -35,7 +35,7 @@ export default async function VolunteersPaymentsPage({
 		<HydrationProvider
 			queryFn={getAllPayments}
 			queryKey={[
-				QUERY_KEYS.PAYMENT_VOLUNTEERS,
+				QUERY_KEYS.VOLUNTEERS_PAYMENTS,
 				debounceEventIdValue,
 				debounceSearchValue,
 				debouncePaymentType,
@@ -44,7 +44,7 @@ export default async function VolunteersPaymentsPage({
 		>
 			<HydrationInfinityProvider
 				queryFn={getAllEvents}
-				queryKey={[QUERY_KEYS.EVENTS, '']}
+				queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
 				initialPageParam={1}
 			>
 				<VolunteersPayments />
