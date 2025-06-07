@@ -217,8 +217,8 @@ model GroupMember {
   volunteer     Volunteer?   @relation("GroupMemberToVolunteer", fields: [volunteerId], references: [id], onDelete: Cascade)
   group         Group        @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-  @@unique([groupId, participantId])
-  @@unique([groupId, volunteerId])
+  @@unique([participantId], name: "UniqueParticipantGroup")
+  @@unique([volunteerId], name: "UniqueVolunteerGroup")
 }
 
 model Room {
@@ -243,6 +243,6 @@ model RoomMember {
   volunteer     Volunteer?   @relation("RoomMemberToVolunteer", fields: [volunteerId], references: [id], onDelete: Cascade)
   room          Room         @relation(fields: [groupId], references: [id], onDelete: Cascade)
 
-  @@unique([groupId, participantId])
-  @@unique([groupId, volunteerId])
+  @@unique([participantId], name: "UniqueParticipantRoom")
+  @@unique([volunteerId], name: "UniqueVolunteerRoom")
 }
