@@ -67,6 +67,10 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 	const onSubmit: SubmitHandler<GroupSchemaType> = (values) => {
 		if (!values) return
 
+		if (values.members.length < 3) {
+			return toast.error('O grupo precisa ter pelo menos 3 membros')
+		}
+
 		create(values as FormGroup, {
 			onSuccess: () => {
 				toast.success('Grupo criado com sucesso!')
@@ -216,7 +220,7 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					onClick={handleSubmit(onSubmit)}
-					disabled={!formState.isValid || !formState.isDirty}
+					disabled={!formState.isValid}
 					isLoading={isPending}
 				>
 					Criar grupo

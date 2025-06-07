@@ -77,5 +77,6 @@ export const ENDPOINTS = {
 	// Groups
 	CREATE_GROUP: BASE_PATH.GROUPS,
 	GET_GROUP_BY_EVENT_ID: (event_id: string) =>
-		`${BASE_PATH.GROUPS}/${event_id}`,
+		`${BASE_PATH.GROUPS}/events/${event_id}`,
+	DELETE_GROUP: (group_id: string) => `${BASE_PATH.GROUPS}/${group_id}`,
 }

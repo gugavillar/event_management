@@ -1,4 +1,6 @@
-import { Header, Spinner } from '@/components/Atoms'
+import { Trash2 } from 'lucide-react'
+
+import { Header, Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { MEMBERS, MembersTypes } from '@/constants'
 import { GroupAPI } from '@/services/queries/groups/groups.types'
@@ -44,6 +46,7 @@ export const Content = (
 	selectedEvent: string,
 	isFetching: boolean,
 	groups: ReturnType<typeof formatTableData>,
+	handleRemoveGroup: (id: GroupAPI['id']) => void,
 ) => {
 	if (!selectedEvent) {
 		return (
@@ -80,7 +83,19 @@ export const Content = (
 
 	return groups?.map((data) => (
 		<div key={data.id} className="space-y-2">
-			<Header>{data.name}</Header>
+			<div className="flex items-center justify-between">
+				<Header>{data.name}</Header>
+				<div className="flex space-x-4">
+					<div className="hs-tooltip">
+						<Trash2
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleRemoveGroup(data.id)}
+						/>
+						<Tooltip>Excluir</Tooltip>
+					</div>
+				</div>
+			</div>
 			<ListManager
 				headerLabels={HEADER_LABELS}
 				bodyData={data.members}

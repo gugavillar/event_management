@@ -11,7 +11,11 @@ export const MODALS_IDS = {
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
 	PARTICIPANT_EXPORT_MODAL: 'participant_export_modal',
 
+	// GROUP
 	GROUP_DRAWER: 'group_manager',
+	GROUP_REMOVE_MODAL: 'group_remove_modal',
+
+	// ROOM
 	ROOMS_DRAWER: 'rooms_manager',
 
 	// EVENT

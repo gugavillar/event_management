@@ -1,26 +1,39 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, UsersRound } from 'lucide-react'
-import { useState } from 'react'
+import dynamic from 'next/dynamic'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { GroupDrawer, ListPage, PageContent } from '@/components/Organisms'
+import { ListPage, PageContent } from '@/components/Organisms'
 import {
 	GroupSchema,
 	GroupSchemaType,
 } from '@/components/Organisms/GroupDrawer/GroupDrawer.schema'
-import { MODALS_IDS } from '@/constants'
+import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetGroupByEventId } from '@/services/queries/groups'
+import { GroupAPI } from '@/services/queries/groups/groups.types'
 
 import { Content, formatTableData } from './Groups.utils'
 
+const GroupDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.GroupDeleteModal),
+)
+
+const GroupDrawer = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.GroupDrawer),
+)
+
 export const Groups = ({ eventId }: { eventId?: string }) => {
 	const [search, setSearch] = useState('')
+	const [selectedGroup, setSelectedGroup] = useState<GroupAPI['id'] | null>(
+		null,
+	)
 
 	const {
 		data: groups,
@@ -55,6 +68,11 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 		isFetchingNextPage,
 		fetchNextPage,
 	})
+
+	const handleOpenModalToDeleteGroup = useCallback((id: GroupAPI['id']) => {
+		setSelectedGroup(id)
+		overlayOpen(MODALS_IDS.GROUP_REMOVE_MODAL)
+	}, [])
 
 	const formattedGroups = formatTableData(groups)
 
@@ -92,11 +110,21 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 					</>
 				}
 			>
-				{Content(groupEventId, isLoading, formattedGroups)}
+				{Content(
+					groupEventId,
+					isLoading,
+					formattedGroups,
+					handleOpenModalToDeleteGroup,
+				)}
 			</ListPage>
 			<FormProvider {...methods}>
 				<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} />
 			</FormProvider>
+			<GroupDeleteModal
+				modalId={MODALS_IDS.GROUP_REMOVE_MODAL}
+				selectedGroup={selectedGroup}
+				setSelectedGroup={setSelectedGroup}
+			/>
 		</PageContent>
 	)
 }

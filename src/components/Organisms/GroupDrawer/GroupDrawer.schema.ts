@@ -35,17 +35,6 @@ export const GroupSchema = z.object({
 					.uuid({ message: 'Campo obrigatório' }),
 			}),
 		)
-		.superRefine((value, ctx) => {
-			if (value.length < 3) {
-				value.forEach((_, index) => {
-					ctx.addIssue({
-						code: 'custom',
-						path: [`${index}.member`],
-						message: 'O grupo deve ter pelo menos 3 participantes',
-					})
-				})
-			}
-		})
 		.superRefine((value, ctx) =>
 			validateFieldsForNotEquals(
 				value,
