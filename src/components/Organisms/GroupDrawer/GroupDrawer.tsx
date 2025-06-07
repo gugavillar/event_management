@@ -1,5 +1,6 @@
 'use client'
 import { UserRoundPlus, UserRoundX } from 'lucide-react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import {
 	Controller,
 	type SubmitHandler,
@@ -20,8 +21,12 @@ import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import { FormGroup } from '@/services/queries/groups/groups.types'
-import { useCreateGroup } from '@/services/queries/groups/hooks'
+import { FormGroup, GroupAPI } from '@/services/queries/groups/groups.types'
+import {
+	useCreateGroup,
+	useGetGroup,
+	useUpdateGroup,
+} from '@/services/queries/groups/hooks'
 import { useGetInfinityParticipants } from '@/services/queries/participants'
 import { useGetInfinityVolunteers } from '@/services/queries/volunteers'
 
@@ -29,15 +34,23 @@ import { GroupSchemaType } from './GroupDrawer.schema'
 
 type GroupDrawerProps = {
 	drawerId: string
+	selectedGroup: GroupAPI['id'] | null
+	setSelectedGroup: Dispatch<SetStateAction<GroupAPI['id'] | null>>
 }
 
-export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
-	const { handleSubmit, formState, control, watch } =
+export const GroupDrawer = ({
+	drawerId,
+	selectedGroup,
+	setSelectedGroup,
+}: GroupDrawerProps) => {
+	const { handleSubmit, formState, control, watch, reset } =
 		useFormContext<GroupSchemaType>()
 	const { fields, append, remove } = useFieldArray({
 		name: 'members',
 	})
-	const { create, isPending } = useCreateGroup()
+	const { create, isPending: isPendingCreate } = useCreateGroup()
+	const { update, isPending: isPendingUpdate } = useUpdateGroup()
+	const { data, isLoading } = useGetGroup(selectedGroup)
 
 	const eventId = watch('eventId')
 
@@ -64,15 +77,37 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 		fetchNextPage,
 	} = useGetInfinityEvents()
 
-	const onSubmit: SubmitHandler<GroupSchemaType> = (values) => {
+	const onSubmit: SubmitHandler<GroupSchemaType> = async (values) => {
 		if (!values) return
 
 		if (values.members.length < 3) {
 			return toast.error('O grupo precisa ter pelo menos 3 membros')
 		}
 
-		create(values as FormGroup, {
+		if (selectedGroup) {
+			return await update(
+				{
+					groupId: selectedGroup,
+					data: {
+						...(values as FormGroup),
+					},
+				},
+				{
+					onSuccess: () => {
+						reset()
+						setSelectedGroup(null)
+						toast.success('Grupo atualizado com sucesso!')
+						overlayClose(drawerId)
+					},
+					onError: () => toast.error('Erro ao atualizar grupo'),
+				},
+			)
+		}
+
+		await create(values as FormGroup, {
 			onSuccess: () => {
+				reset()
+				setSelectedGroup(null)
 				toast.success('Grupo criado com sucesso!')
 				overlayClose(drawerId)
 			},
@@ -115,9 +150,15 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 		fetchNextPage: fetchNextPageVolunteers,
 	})
 
+	useEffect(() => {
+		if (!data) return reset({}, { keepDefaultValues: true })
+
+		reset({ ...data }, { keepDefaultValues: true })
+	}, [data, reset])
+
 	return (
 		<Drawer drawerId={drawerId} headingTitle="Novo grupo" className="max-w-3xl">
-			<DrawerBody>
+			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<Controller
 						name="eventId"
@@ -164,7 +205,7 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 									>
 										Qual tipo do membro
 									</RadioField>
-									{watch(fieldTypeName) === MEMBERS.PARTICIPANT && (
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT ? (
 										<Controller
 											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 											name={fieldMemberName}
@@ -186,8 +227,7 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 												/>
 											)}
 										/>
-									)}
-									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && (
+									) : (
 										<Controller
 											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 											name={fieldMemberName}
@@ -221,7 +261,7 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					onClick={handleSubmit(onSubmit)}
 					disabled={!formState.isValid}
-					isLoading={isPending}
+					isLoading={isPendingCreate || isPendingUpdate}
 				>
 					Criar grupo
 				</Button>

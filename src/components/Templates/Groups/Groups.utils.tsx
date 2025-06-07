@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react'
+import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Header, Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
@@ -47,6 +47,7 @@ export const Content = (
 	isFetching: boolean,
 	groups: ReturnType<typeof formatTableData>,
 	handleRemoveGroup: (id: GroupAPI['id']) => void,
+	handleEditGroup: (id: GroupAPI['id']) => void,
 ) => {
 	if (!selectedEvent) {
 		return (
@@ -86,6 +87,14 @@ export const Content = (
 			<div className="flex items-center justify-between">
 				<Header>{data.name}</Header>
 				<div className="flex space-x-4">
+					<div className="hs-tooltip">
+						<SquarePen
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleEditGroup(data.id)}
+						/>
+						<Tooltip>Editar</Tooltip>
+					</div>
 					<div className="hs-tooltip">
 						<Trash2
 							className="cursor-pointer"

@@ -47,6 +47,7 @@ export const QUERY_KEYS = {
 
 	// Groups
 	GROUPS: 'groups',
+	GROUP: 'group',
 } as const
 
 export const getQueryClient = () => {

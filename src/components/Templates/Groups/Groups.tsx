@@ -74,6 +74,18 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 		overlayOpen(MODALS_IDS.GROUP_REMOVE_MODAL)
 	}, [])
 
+	const handleOpenDrawerToCreateOrEditGroup = useCallback(
+		(id?: GroupAPI['id']) => {
+			if (id) {
+				setSelectedGroup(id)
+			} else {
+				setSelectedGroup(null)
+			}
+			overlayOpen(MODALS_IDS.GROUP_DRAWER)
+		},
+		[],
+	)
+
 	const formattedGroups = formatTableData(groups)
 
 	return (
@@ -81,7 +93,7 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<Button
 					type="button"
-					data-hs-overlay={`#${MODALS_IDS.GROUP_DRAWER}`}
+					onClick={() => handleOpenDrawerToCreateOrEditGroup()}
 					leftIcon={<UsersRound />}
 					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 				>
@@ -115,10 +127,15 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 					isLoading,
 					formattedGroups,
 					handleOpenModalToDeleteGroup,
+					handleOpenDrawerToCreateOrEditGroup,
 				)}
 			</ListPage>
 			<FormProvider {...methods}>
-				<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} />
+				<GroupDrawer
+					drawerId={MODALS_IDS.GROUP_DRAWER}
+					selectedGroup={selectedGroup}
+					setSelectedGroup={setSelectedGroup}
+				/>
 			</FormProvider>
 			<GroupDeleteModal
 				modalId={MODALS_IDS.GROUP_REMOVE_MODAL}

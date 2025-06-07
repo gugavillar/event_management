@@ -1,3 +1,5 @@
 export * from './useCreateGroup'
 export * from './useDeleteGroup'
+export * from './useGetGroup'
 export * from './useGetGroupByEventId'
+export * from './useUpdateGroup'
