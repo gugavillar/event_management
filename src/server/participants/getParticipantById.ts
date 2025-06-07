@@ -13,7 +13,7 @@ export const getParticipantById = async (id: string) => {
 				id,
 			},
 			include: {
-				Address: true,
+				address: true,
 			},
 		})
 	} catch (error) {

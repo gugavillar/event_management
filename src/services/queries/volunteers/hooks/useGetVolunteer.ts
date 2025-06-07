@@ -11,8 +11,8 @@ import { useQuery } from '@/providers/QueryProvider'
 import { getVolunteer } from '../usecases'
 import { VolunteersAPI } from '../volunteers.type'
 
-type FormattedVolunteersAPI = Omit<VolunteersAPI, 'Address'> & {
-	address: Extract<VolunteersAPI['Address'], { id: UUID }>
+type FormattedVolunteersAPI = Omit<VolunteersAPI, 'address'> & {
+	address: Extract<VolunteersAPI['address'], { id: UUID }>
 	hasCell: 'Yes' | 'No'
 	hasHealth: 'Yes' | 'No'
 }
@@ -23,7 +23,7 @@ export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
 		queryFn: () => getVolunteer(volunteerId as VolunteersAPI['id']),
 		retry: 0,
 		enabled: !!volunteerId,
-		select: ({ Address, ...data }: VolunteersAPI) => ({
+		select: ({ address, ...data }: VolunteersAPI) => ({
 			...data,
 			birthdate: format(data.birthdate, 'dd/MM/yyyy'),
 			phone: formatPhone(data.phone),
@@ -31,7 +31,7 @@ export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
 			hasCell: data.cell ? 'Yes' : ('No' as 'Yes' | 'No'),
 			hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
 			address: {
-				...Address,
+				...address,
 			},
 		}),
 	})

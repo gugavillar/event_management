@@ -44,6 +44,9 @@ export const QUERY_KEYS = {
 
 	// Cities
 	CITIES: 'cities',
+
+	// Groups
+	GROUPS: 'groups',
 } as const
 
 export const getQueryClient = () => {

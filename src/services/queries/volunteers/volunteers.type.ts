@@ -33,7 +33,7 @@ export type VolunteersAPI = {
 	updatedAt: string
 	eventId: UUID
 	event: EventsAPI
-	Address: {
+	address: {
 		id: UUID
 		street: string
 		neighborhood: string

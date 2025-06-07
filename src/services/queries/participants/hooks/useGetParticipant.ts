@@ -11,8 +11,8 @@ import { useQuery } from '@/providers/QueryProvider'
 import { ParticipantsAPI } from '../participants.type'
 import { getParticipant } from '../usecases'
 
-type FormattedParticipantsAPI = Omit<ParticipantsAPI, 'Address'> & {
-	address: Extract<ParticipantsAPI['Address'], { id: UUID }>
+type FormattedParticipantsAPI = Omit<ParticipantsAPI, 'address'> & {
+	address: Extract<ParticipantsAPI['address'], { id: UUID }>
 	hasReligion: 'Yes' | 'No'
 	hasHealth: 'Yes' | 'No'
 }
@@ -25,7 +25,7 @@ export const useGetParticipant = (
 		queryFn: () => getParticipant(participantId as ParticipantsAPI['id']),
 		retry: 0,
 		enabled: !!participantId,
-		select: ({ Address, ...data }: ParticipantsAPI) => ({
+		select: ({ address, ...data }: ParticipantsAPI) => ({
 			...data,
 			birthdate: format(data.birthdate, 'dd/MM/yyyy'),
 			phone: formatPhone(data.phone),
@@ -34,7 +34,7 @@ export const useGetParticipant = (
 			hasReligion: data.religion ? 'Yes' : ('No' as 'Yes' | 'No'),
 			hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
 			address: {
-				...Address,
+				...address,
 			},
 		}),
 	})

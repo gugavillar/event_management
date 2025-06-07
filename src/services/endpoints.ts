@@ -6,6 +6,7 @@ const BASE_PATH = {
 	VOLUNTEERS: '/volunteers',
 	DASHBOARD: '/dashboard',
 	USERS: '/users',
+	GROUPS: '/groups',
 }
 
 export const ENDPOINTS = {
@@ -72,4 +73,7 @@ export const ENDPOINTS = {
 	UPDATE_USER_PASSWORD: BASE_PATH.USERS,
 	BLOCK_OR_UNBLOCK_USER: (user_id: string) =>
 		`${BASE_PATH.USERS}/${user_id}/block`,
+
+	// Groups
+	CREATE_GROUP: BASE_PATH.GROUPS,
 }

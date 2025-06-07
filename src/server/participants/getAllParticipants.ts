@@ -19,7 +19,7 @@ export const getAllParticipants = async (
 					}),
 				},
 				include: {
-					Address: true,
+					address: true,
 					event: true,
 				},
 				orderBy: [{ name: 'asc' }, { createdAt: 'desc' }],

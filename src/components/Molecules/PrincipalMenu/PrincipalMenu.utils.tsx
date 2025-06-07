@@ -2,7 +2,9 @@ import {
 	BriefcaseBusiness,
 	Calendar,
 	CircleUserRound,
+	ConciergeBell,
 	Gauge,
+	UsersRound,
 } from 'lucide-react'
 
 type BaseMenuLink = {
@@ -45,8 +47,6 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		links: [
 			{ label: 'Listagem', href: '/participantes/listagem' },
 			{ label: 'Pagamentos', href: '/participantes/pagamentos' },
-			// { label: 'Grupos', href: '/participantes/grupos' },
-			// { label: 'Quartos', href: '/participantes/quartos' },
 		],
 	},
 	{
@@ -57,8 +57,18 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 			{ label: 'Listagem', href: '/voluntarios/listagem' },
 			{ label: 'Funções', href: '/voluntarios/funcoes' },
 			{ label: 'Pagamentos', href: '/voluntarios/pagamentos' },
-			// { label: 'Grupos', href: '/voluntarios/grupos' },
-			// { label: 'Quartos', href: '/voluntarios/quartos' },
 		],
+	},
+	{
+		buttonLabel: 'Grupos',
+		href: '/grupos',
+		buttonIcon: <UsersRound size={24} />,
+		hasSubMenu: false,
+	},
+	{
+		buttonLabel: 'Quartos',
+		href: '/quartos',
+		buttonIcon: <ConciergeBell size={24} />,
+		hasSubMenu: false,
 	},
 ]

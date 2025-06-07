@@ -19,7 +19,7 @@ export const getAllVolunteers = async (
 					}),
 				},
 				include: {
-					Address: true,
+					address: true,
 					event: true,
 					volunteerRole: true,
 				},

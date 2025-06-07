@@ -166,8 +166,8 @@ CREATE TABLE `GroupMember` (
     `volunteerId` VARCHAR(191) NULL,
     `groupId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `GroupMember_groupId_participantId_key`(`groupId`, `participantId`),
-    UNIQUE INDEX `GroupMember_groupId_volunteerId_key`(`groupId`, `volunteerId`),
+    UNIQUE INDEX `GroupMember_participantId_key`(`participantId`),
+    UNIQUE INDEX `GroupMember_volunteerId_key`(`volunteerId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -191,8 +191,8 @@ CREATE TABLE `RoomMember` (
     `volunteerId` VARCHAR(191) NULL,
     `groupId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `RoomMember_groupId_participantId_key`(`groupId`, `participantId`),
-    UNIQUE INDEX `RoomMember_groupId_volunteerId_key`(`groupId`, `volunteerId`),
+    UNIQUE INDEX `RoomMember_participantId_key`(`participantId`),
+    UNIQUE INDEX `RoomMember_volunteerId_key`(`volunteerId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -1,27 +1,35 @@
 'use client'
-import { UserRoundPlus } from 'lucide-react'
-import { useEffect } from 'react'
+import { UserRoundPlus, UserRoundX } from 'lucide-react'
 import {
+	Controller,
 	type SubmitHandler,
 	useFieldArray,
 	useFormContext,
 } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import {
 	Button,
 	Drawer,
 	DrawerBody,
 	DrawerFooter,
-	HelperErrorText,
-	Label,
-	Select,
 	SelectProps,
 } from '@/components/Atoms'
 import {
 	InputField,
-	SelectField,
 	FieldArrayContainerWithAppendButton,
+	ComboBox,
+	RadioField,
+	SearchBox,
 } from '@/components/Molecules'
+import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
+import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
+import { FormGroup } from '@/services/queries/groups/groups.types'
+import { useCreateGroup } from '@/services/queries/groups/hooks'
+import { useGetInfinityParticipants } from '@/services/queries/participants'
+import { useGetInfinityVolunteers } from '@/services/queries/volunteers'
 
 import { GroupSchemaType } from './GroupDrawer.schema'
 
@@ -30,79 +38,194 @@ type GroupDrawerProps = {
 	leaders: SelectProps['options']
 }
 
-export const GroupDrawer = ({ drawerId, leaders }: GroupDrawerProps) => {
-	const { handleSubmit, register, formState, trigger } =
+export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
+	const { handleSubmit, formState, control, watch } =
 		useFormContext<GroupSchemaType>()
 	const { fields, append, remove } = useFieldArray({
-		name: 'participants',
+		name: 'members',
 	})
+	const { create, isPending } = useCreateGroup()
+
+	const eventId = watch('eventId')
+
+	const {
+		data: participants,
+		fetchNextPage: fetchNextPageParticipants,
+		hasNextPage: hasNextPageParticipants,
+		isFetchingNextPage: isFetchingNextPageParticipants,
+		searchParticipant,
+		setSearchParticipant,
+	} = useGetInfinityParticipants(eventId)
+	const {
+		data: volunteers,
+		fetchNextPage: fetchNextPageVolunteers,
+		hasNextPage: hasNextPageVolunteers,
+		isFetchingNextPage: isFetchingNextPageVolunteers,
+		searchVolunteer,
+		setSearchVolunteer,
+	} = useGetInfinityVolunteers(eventId)
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 
 	const onSubmit: SubmitHandler<GroupSchemaType> = (values) => {
-		console.log(values)
+		if (!values) return
+
+		create(values as FormGroup, {
+			onSuccess: () => {
+				toast.success('Grupo criado com sucesso!')
+				overlayClose(drawerId)
+			},
+			onError: () => toast.error('Erro ao criar grupo'),
+		})
 	}
 
-	useEffect(() => {
-		if (fields.length === 3) {
-			trigger('participants')
-		}
-	}, [trigger, fields.length])
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
+
+	const formattedParticipants = formatterComboBoxValues(
+		participants?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+
+	const lastItemRefParticipants = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPageParticipants),
+		isFetchingNextPage: isFetchingNextPageParticipants,
+		fetchNextPage: fetchNextPageParticipants,
+	})
+
+	const formattedVolunteers = formatterComboBoxValues(
+		volunteers?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+
+	const lastItemRefVolunteers = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPageVolunteers),
+		isFetchingNextPage: isFetchingNextPageVolunteers,
+		fetchNextPage: fetchNextPageVolunteers,
+	})
+
+	console.log(formattedVolunteers, formattedParticipants)
 
 	return (
-		<Drawer drawerId={drawerId} headingTitle="Novo grupo">
+		<Drawer drawerId={drawerId} headingTitle="Novo grupo" className="max-w-3xl">
 			<DrawerBody>
-				<SelectField
-					fieldName="event"
-					options={leaders}
-					placeholder="Selecione o evento"
-				>
-					Evento
-				</SelectField>
-				<InputField fieldName="name">Nome do grupo</InputField>
-				<SelectField
-					fieldName="leader"
-					options={leaders}
-					placeholder="Selecione o líder do grupo"
-				>
-					Líder do grupo
-				</SelectField>
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<Controller
+						name="eventId"
+						control={control}
+						render={({ field }) => (
+							<ComboBox
+								label="Evento"
+								keyOptionLabel="label"
+								keyOptionValue="value"
+								options={formattedEvents}
+								selectedValue={field.value}
+								setSelectedValue={field.onChange}
+								lastItemRef={lastItemRef}
+								error={formState.errors.eventId?.message}
+							/>
+						)}
+					/>
+					<InputField fieldName="name">Nome do grupo</InputField>
+				</div>
 				<FieldArrayContainerWithAppendButton
-					handleAppendField={() => append({ selected: '' })}
-					leftIcon={<UserRoundPlus size={18} />}
+					handleAppendField={() => append({ member: '', type: '' })}
+					leftIcon={<UserRoundPlus />}
 				>
-					{fields.map((field, index) => (
-						<div key={field.id} {...(!index && { style: { marginTop: 0 } })}>
-							<Label htmlFor={`participants.${index}.selected`}>
-								<div className="flex items-center justify-between">
-									Participante
+					{fields.map((field, index) => {
+						const fieldMemberName = `members.${index}.member` as const
+						const fieldTypeName = `members.${index}.type` as const
+						console.log(watch(fieldTypeName))
+						return (
+							<div key={field.id} {...(!index && { style: { marginTop: 0 } })}>
+								<div className="flex items-center justify-end">
 									{index ? (
 										<Button
-											className="border-none px-2 py-0 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
+											className="mb-1 rounded-full border-none p-1 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
 											onClick={() => remove(index)}
-										>
-											Remover
-										</Button>
+											leftIcon={<UserRoundX />}
+										/>
 									) : null}
 								</div>
-							</Label>
-							<Select
-								isInvalid={!!formState.errors.participants?.[index]?.selected}
-								id={`participants.${index}.selected`}
-								options={leaders}
-								{...register(`participants.${index}.selected` as const)}
-							/>
-							{formState.errors.participants?.[index]?.selected && (
-								<HelperErrorText>
-									{formState.errors.participants?.[index]?.selected?.message}
-								</HelperErrorText>
-							)}
-						</div>
-					))}
+								<div className="mt-1 grid grid-cols-1 md:grid-cols-2">
+									<RadioField
+										fieldName={fieldTypeName}
+										options={MembersTypesOptionsRadio}
+										position="row"
+									>
+										Qual tipo do membro
+									</RadioField>
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT ? (
+										<Controller
+											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
+											name={fieldMemberName}
+											control={control}
+											render={({ field }) => (
+												<SearchBox
+													search={searchParticipant}
+													setSearch={setSearchParticipant}
+													label="Membro"
+													keyOptionLabel="label"
+													keyOptionValue="value"
+													options={formattedParticipants}
+													selectedValue={field.value}
+													setSelectedValue={field.onChange}
+													lastItemRef={lastItemRefParticipants}
+													error={
+														formState.errors.members?.[index]?.member?.message
+													}
+												/>
+											)}
+										/>
+									) : (
+										<Controller
+											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
+											name={fieldMemberName}
+											control={control}
+											render={({ field }) => (
+												<SearchBox
+													search={searchVolunteer}
+													setSearch={setSearchVolunteer}
+													label="Membro"
+													keyOptionLabel="label"
+													keyOptionValue="value"
+													options={formattedVolunteers}
+													selectedValue={field.value}
+													setSelectedValue={field.onChange}
+													lastItemRef={lastItemRefVolunteers}
+													error={
+														formState.errors.members?.[index]?.member?.message
+													}
+												/>
+											)}
+										/>
+									)}
+								</div>
+							</div>
+						)
+					})}
 				</FieldArrayContainerWithAppendButton>
 			</DrawerBody>
 			<DrawerFooter>
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					onClick={handleSubmit(onSubmit)}
+					disabled={!formState.isValid || !formState.isDirty}
+					isLoading={isPending}
 				>
 					Criar grupo
 				</Button>

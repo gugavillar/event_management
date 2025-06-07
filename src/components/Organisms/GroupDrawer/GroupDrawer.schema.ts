@@ -1,46 +1,56 @@
 import { z } from 'zod'
 
-import { validateFieldsForNotEquals } from '@/constants'
+import { MEMBERS } from '@/constants'
 
 export const GroupSchema = z.object({
 	name: z
 		.string({ required_error: 'Campo obrigatório' })
 		.trim()
 		.min(3, 'Campo obrigatório'),
-	event: z
+	eventId: z
 		.string({ required_error: 'Campo obrigatório' })
 		.uuid({ message: 'Campo obrigatório' }),
-	leader: z
-		.string({ required_error: 'Campo obrigatório' })
-		.trim()
-		.min(3, 'Campo obrigatório'),
-	participants: z
-		.array(
-			z.object({
-				selected: z
-					.string({ required_error: 'Campo obrigatório' })
-					.refine((value) => !!value?.length, { message: 'Campo obrigatório' }),
-			}),
-		)
-		.superRefine((value, ctx) => {
-			if (value.length < 3) {
-				value.forEach((_, index) => {
-					ctx.addIssue({
-						code: 'custom',
-						path: [`${index}.selected`],
-						message: 'O grupo deve ter pelo menos 3 participantes',
-					})
-				})
-			}
-		})
-		.superRefine((value, ctx) =>
-			validateFieldsForNotEquals(
-				value,
-				ctx,
-				'selected',
-				'Os participantes devem ser diferentes',
-			),
-		),
+	members: z.array(
+		z.object({
+			type: z
+				.union([
+					z.enum([MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER], {
+						required_error: 'Campo obrigatório',
+						message: 'Campo obrigatório',
+					}),
+					z.string(),
+				])
+				.refine(
+					(value) =>
+						[MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER].includes(value as MEMBERS),
+					{
+						message: 'Campo obrigatório',
+					},
+				),
+			member: z
+				.string({ required_error: 'Campo obrigatório' })
+				.uuid({ message: 'Campo obrigatório' }),
+		}),
+	),
+	// .superRefine((value, ctx) => {
+	// 	if (value.length < 3) {
+	// 		value.forEach((_, index) => {
+	// 			ctx.addIssue({
+	// 				code: 'custom',
+	// 				path: [`${index}.member`],
+	// 				message: 'O grupo deve ter pelo menos 3 participantes',
+	// 			})
+	// 		})
+	// 	}
+	// }),
+	// .superRefine((value, ctx) =>
+	// 	validateFieldsForNotEquals(
+	// 		value,
+	// 		ctx,
+	// 		'member',
+	// 		'Os participantes devem ser diferentes',
+	// 	),
+	// ),
 })
 
 export type GroupSchemaType = z.infer<typeof GroupSchema>

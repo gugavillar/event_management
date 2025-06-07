@@ -17,7 +17,7 @@ export const getExportParticipantsData = async (eventId: string) => {
 				eventId,
 			},
 			include: {
-				Address: true,
+				address: true,
 				event: true,
 			},
 			orderBy: {
@@ -40,9 +40,9 @@ export const getExportParticipantsData = async (eventId: string) => {
 			Telefone: formatPhone(participant.phone),
 			Responsável: participant.responsible,
 			Telefone_Responsável: formatPhone(participant.responsiblePhone),
-			Endereço: `${participant.Address?.street}, ${participant.Address?.number}`,
-			Cidade: `${participant.Address?.city} - ${participant.Address?.state}`,
-			Bairro: participant.Address?.neighborhood,
+			Endereço: `${participant.address?.street}, ${participant.address?.number}`,
+			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
+			Bairro: participant.address?.neighborhood,
 			Convidou: participant.host,
 			Telefone_Convidou: formatPhone(participant.hostPhone),
 			Religião: participant.religion || 'Não possui',
