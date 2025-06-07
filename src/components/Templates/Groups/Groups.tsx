@@ -1,11 +1,11 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, UsersRound } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Button, Field, Header } from '@/components/Atoms'
-import { ComboBox, ListManager } from '@/components/Molecules'
+import { Button, Field } from '@/components/Atoms'
+import { ComboBox } from '@/components/Molecules'
 import { GroupDrawer, ListPage, PageContent } from '@/components/Organisms'
 import {
 	GroupSchema,
@@ -15,48 +15,25 @@ import { MODALS_IDS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
+import { useGetGroupByEventId } from '@/services/queries/groups'
 
-import { FAKE_LEADERS, FAKE_PARTICIPANTES } from './Groups.mocks'
+import { Content, formatTableData } from './Groups.utils'
 
-const HEADER_LABELS = [
-	{
-		label: 'Nome',
-		accessor: 'name',
-	},
-	{
-		label: 'Grupo',
-		accessor: 'group',
-	},
-]
-
-export const Groups = () => {
-	const [tableData, setTableData] = useState<null | Array<
-		ReturnType<typeof FAKE_PARTICIPANTES>
-	>>(null)
-	const [leaders, setLeaders] = useState<ReturnType<typeof FAKE_LEADERS> | []>(
-		[],
-	)
-	const [eventId, setEventId] = useState('')
+export const Groups = ({ eventId }: { eventId?: string }) => {
 	const [search, setSearch] = useState('')
+
+	const {
+		data: groups,
+		groupEventId,
+		setGroupEventId,
+		isLoading,
+	} = useGetGroupByEventId(eventId)
 	const {
 		data: events,
 		hasNextPage,
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-
-	useEffect(() => {
-		if (tableData) return
-
-		const leadersFake = FAKE_LEADERS()
-		const groups = []
-		for (let i = 1; i <= 4; i++) {
-			groups.push(FAKE_PARTICIPANTES(i))
-		}
-
-		setLeaders(leadersFake)
-		setTableData(groups)
-	}, [leaders, tableData])
 
 	const methods = useForm<GroupSchemaType>({
 		mode: 'onChange',
@@ -79,6 +56,8 @@ export const Groups = () => {
 		fetchNextPage,
 	})
 
+	const formattedGroups = formatTableData(groups)
+
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
@@ -99,8 +78,8 @@ export const Groups = () => {
 							keyOptionLabel="label"
 							keyOptionValue="value"
 							options={formattedEvents}
-							selectedValue={eventId}
-							setSelectedValue={setEventId}
+							selectedValue={groupEventId}
+							setSelectedValue={setGroupEventId}
 							lastItemRef={lastItemRef}
 						/>
 						<Field
@@ -113,19 +92,10 @@ export const Groups = () => {
 					</>
 				}
 			>
-				{tableData?.map((data, index) => (
-					<div key={index} className="space-y-2">
-						<Header>Grupo {index + 1}</Header>
-						<ListManager
-							headerLabels={HEADER_LABELS}
-							bodyData={data}
-							isLoading={false}
-						/>
-					</div>
-				))}
+				{Content(groupEventId, isLoading, formattedGroups)}
 			</ListPage>
 			<FormProvider {...methods}>
-				<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} leaders={leaders} />
+				<GroupDrawer drawerId={MODALS_IDS.GROUP_DRAWER} />
 			</FormProvider>
 		</PageContent>
 	)

@@ -16,12 +16,14 @@ export const FieldArrayContainerWithAppendButton = ({
 }: FieldArrayContainerWithAppendButtonProps) => {
 	return (
 		<div className="flex flex-col space-y-6">
+			{children}
 			<Button
 				className="ml-auto self-end rounded-full border-none p-2 transition-colors duration-500 hover:bg-green-100 hover:text-gray-800"
 				leftIcon={leftIcon}
 				onClick={handleAppendField}
-			/>
-			{children}
+			>
+				Membro
+			</Button>
 		</div>
 	)
 }

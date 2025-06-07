@@ -8,13 +8,7 @@ import {
 } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import {
-	Button,
-	Drawer,
-	DrawerBody,
-	DrawerFooter,
-	SelectProps,
-} from '@/components/Atoms'
+import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
 	InputField,
 	FieldArrayContainerWithAppendButton,
@@ -35,7 +29,6 @@ import { GroupSchemaType } from './GroupDrawer.schema'
 
 type GroupDrawerProps = {
 	drawerId: string
-	leaders: SelectProps['options']
 }
 
 export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
@@ -118,8 +111,6 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 		fetchNextPage: fetchNextPageVolunteers,
 	})
 
-	console.log(formattedVolunteers, formattedParticipants)
-
 	return (
 		<Drawer drawerId={drawerId} headingTitle="Novo grupo" className="max-w-3xl">
 			<DrawerBody>
@@ -149,11 +140,11 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 					{fields.map((field, index) => {
 						const fieldMemberName = `members.${index}.member` as const
 						const fieldTypeName = `members.${index}.type` as const
-						console.log(watch(fieldTypeName))
+						const hasMoreThanOneMember = fields.length > 1
 						return (
 							<div key={field.id} {...(!index && { style: { marginTop: 0 } })}>
 								<div className="flex items-center justify-end">
-									{index ? (
+									{hasMoreThanOneMember ? (
 										<Button
 											className="mb-1 rounded-full border-none p-1 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
 											onClick={() => remove(index)}
@@ -169,7 +160,7 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 									>
 										Qual tipo do membro
 									</RadioField>
-									{watch(fieldTypeName) === MEMBERS.PARTICIPANT ? (
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT && (
 										<Controller
 											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 											name={fieldMemberName}
@@ -191,7 +182,8 @@ export const GroupDrawer = ({ drawerId }: GroupDrawerProps) => {
 												/>
 											)}
 										/>
-									) : (
+									)}
+									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && (
 										<Controller
 											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 											name={fieldMemberName}
