@@ -1,4 +1,5 @@
 'use client'
+import { get } from 'lodash'
 import { Controller, useFormContext } from 'react-hook-form'
 import { type NumberFormatBaseProps } from 'react-number-format'
 
@@ -18,6 +19,7 @@ export const CurrencyInputField = ({
 	...props
 }: CurrencyInputFieldProps) => {
 	const { control, formState } = useFormContext()
+	const error = get(formState.errors, fieldName)
 
 	return (
 		<div className="w-full">
@@ -28,15 +30,15 @@ export const CurrencyInputField = ({
 				render={({ field }) => (
 					<CurrencyInput
 						id={fieldName}
-						isInvalid={!!formState?.errors?.[fieldName]?.message}
+						isInvalid={!!error?.message}
 						{...props}
 						{...field}
 					/>
 				)}
 			/>
-			{formState.errors[fieldName] ? (
+			{error?.message ? (
 				<HelperErrorText className="text-red-500">
-					{formState.errors[fieldName].message as string}
+					{error?.message as string}
 				</HelperErrorText>
 			) : null}
 		</div>

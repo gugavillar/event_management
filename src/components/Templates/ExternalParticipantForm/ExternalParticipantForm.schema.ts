@@ -110,7 +110,7 @@ export const ExternalParticipantFormSchemaStepTwo = z.object({
 	address: z.object({
 		street: z.string().trim().min(3, 'Campo obrigatório'),
 		neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
-		number: z.string().trim().min(3, 'Campo obrigatório'),
+		number: z.string().trim().min(1, 'Campo obrigatório'),
 		city: z.string().trim().min(3, 'Campo obrigatório'),
 		state: z
 			.string({ required_error: 'Campo obrigatório' })

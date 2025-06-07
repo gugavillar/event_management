@@ -174,12 +174,12 @@ CREATE TABLE `GroupMember` (
 -- CreateTable
 CREATE TABLE `Room` (
     `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NOT NULL,
+    `roomNumber` VARCHAR(191) NOT NULL,
     `eventId` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Room_eventId_name_key`(`eventId`, `name`),
+    UNIQUE INDEX `Room_eventId_roomNumber_key`(`eventId`, `roomNumber`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -189,7 +189,7 @@ CREATE TABLE `RoomMember` (
     `type` ENUM('PARTICIPANT', 'VOLUNTEER') NOT NULL,
     `participantId` VARCHAR(191) NULL,
     `volunteerId` VARCHAR(191) NULL,
-    `groupId` VARCHAR(191) NOT NULL,
+    `roomId` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `RoomMember_participantId_key`(`participantId`),
     UNIQUE INDEX `RoomMember_volunteerId_key`(`volunteerId`),
@@ -248,4 +248,4 @@ ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_participantId_fkey` FOREIGN 
 ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Room`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_roomId_fkey` FOREIGN KEY (`roomId`) REFERENCES `Room`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

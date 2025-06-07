@@ -1,4 +1,5 @@
 'use client'
+import { get } from 'lodash'
 import { ComponentProps } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -15,6 +16,7 @@ export const InputField = ({
 	...props
 }: InputFieldProps) => {
 	const { register, formState } = useFormContext()
+	const error = get(formState.errors, fieldName)
 
 	return (
 		<div className="w-full">
@@ -22,12 +24,12 @@ export const InputField = ({
 			<Field
 				id={fieldName}
 				{...register(fieldName)}
-				isInvalid={!!formState?.errors?.[fieldName]?.message}
+				isInvalid={!!error?.message}
 				{...props}
 			/>
-			{formState.errors[fieldName] ? (
+			{error?.message ? (
 				<HelperErrorText className="text-red-500">
-					{formState.errors[fieldName].message as string}
+					{error?.message as string}
 				</HelperErrorText>
 			) : null}
 		</div>

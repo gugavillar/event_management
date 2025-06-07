@@ -18,10 +18,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # - name: Delete database
-      #   env:
-      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      #   run: pnpm prisma migrate reset --force
+      - name: Delete database
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: pnpm prisma migrate reset --force
 
       - name: Run migrations
         env:

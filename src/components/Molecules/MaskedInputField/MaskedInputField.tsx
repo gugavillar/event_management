@@ -1,4 +1,5 @@
 'use client'
+import { get } from 'lodash'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { HelperErrorText, Label, MaskedInput } from '@/components/Atoms'
@@ -18,6 +19,7 @@ export const MaskedInputField = ({
 	...props
 }: MaskedInputFieldProps) => {
 	const { control, formState } = useFormContext()
+	const error = get(formState.errors, fieldName)
 
 	return (
 		<div>
@@ -29,15 +31,15 @@ export const MaskedInputField = ({
 					<MaskedInput
 						format={format}
 						id={fieldName}
-						isInvalid={!!formState?.errors?.[fieldName]?.message}
+						isInvalid={!!error?.message}
 						{...props}
 						{...field}
 					/>
 				)}
 			/>
-			{formState.errors[fieldName] ? (
+			{error?.message ? (
 				<HelperErrorText className="text-red-500">
-					{formState.errors[fieldName].message as string}
+					{error?.message as string}
 				</HelperErrorText>
 			) : null}
 		</div>

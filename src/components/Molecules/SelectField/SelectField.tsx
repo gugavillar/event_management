@@ -1,4 +1,5 @@
 'use client'
+import { get } from 'lodash'
 import { ComponentProps } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -18,6 +19,7 @@ export const SelectField = ({
 	placeholder,
 }: SelectFieldProps) => {
 	const { formState, control } = useFormContext()
+	const error = get(formState.errors, fieldName)
 
 	return (
 		<div className="w-full">
@@ -29,15 +31,15 @@ export const SelectField = ({
 					<Select
 						options={options}
 						id={fieldName}
-						isInvalid={!!formState?.errors?.[fieldName]?.message}
+						isInvalid={!!error?.message}
 						placeholder={placeholder}
 						{...field}
 					/>
 				)}
 			/>
-			{formState.errors[fieldName] ? (
+			{error?.message ? (
 				<HelperErrorText className="text-red-500">
-					{formState.errors[fieldName].message as string}
+					{error?.message as string}
 				</HelperErrorText>
 			) : null}
 		</div>

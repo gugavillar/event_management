@@ -222,15 +222,15 @@ model GroupMember {
 }
 
 model Room {
-  id        String       @id @default(uuid())
-  name      String
-  eventId   String
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  event     Event        @relation(name: "RoomToEvent", fields: [eventId], references: [id], onDelete: Cascade)
-  members   RoomMember[]
+  id         String       @id @default(uuid())
+  roomNumber String
+  eventId    String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  event      Event        @relation(name: "RoomToEvent", fields: [eventId], references: [id], onDelete: Cascade)
+  members    RoomMember[]
 
-  @@unique([eventId, name])
+  @@unique([eventId, roomNumber])
 }
 
 model RoomMember {
@@ -238,10 +238,10 @@ model RoomMember {
   type          GroupType
   participantId String?
   volunteerId   String?
-  groupId       String
+  roomId        String
   participant   Participant? @relation("RoomMemberToParticipant", fields: [participantId], references: [id], onDelete: Cascade)
   volunteer     Volunteer?   @relation("RoomMemberToVolunteer", fields: [volunteerId], references: [id], onDelete: Cascade)
-  room          Room         @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  room          Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
 
   @@unique([participantId], name: "UniqueParticipantRoom")
   @@unique([volunteerId], name: "UniqueVolunteerRoom")
