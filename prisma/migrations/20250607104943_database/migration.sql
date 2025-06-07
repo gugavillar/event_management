@@ -98,14 +98,15 @@ CREATE TABLE `volunteers_roles` (
 CREATE TABLE `volunteers` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `email` VARCHAR(191) NOT NULL,
     `called` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `birthdate` DATETIME(3) NOT NULL,
-    `contact` VARCHAR(191) NOT NULL,
-    `maritalStatus` VARCHAR(191) NOT NULL,
-    `parent` VARCHAR(191) NOT NULL,
-    `contactParent` VARCHAR(191) NOT NULL,
-    `relationship` VARCHAR(191) NOT NULL,
+    `cell` VARCHAR(191) NULL,
+    `relative` VARCHAR(191) NOT NULL,
+    `relativePhone` VARCHAR(191) NOT NULL,
+    `health` VARCHAR(191) NULL,
+    `community` VARCHAR(191) NOT NULL,
     `checkIn` ENUM('CONFIRMED', 'WITHDREW') NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -145,6 +146,56 @@ CREATE TABLE `volunteers_payments` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Group` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Group_eventId_name_key`(`eventId`, `name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `GroupMember` (
+    `id` VARCHAR(191) NOT NULL,
+    `type` ENUM('PARTICIPANT', 'VOLUNTEER') NOT NULL,
+    `participantId` VARCHAR(191) NULL,
+    `volunteerId` VARCHAR(191) NULL,
+    `groupId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `GroupMember_groupId_participantId_key`(`groupId`, `participantId`),
+    UNIQUE INDEX `GroupMember_groupId_volunteerId_key`(`groupId`, `volunteerId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Room` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Room_eventId_name_key`(`eventId`, `name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `RoomMember` (
+    `id` VARCHAR(191) NOT NULL,
+    `type` ENUM('PARTICIPANT', 'VOLUNTEER') NOT NULL,
+    `participantId` VARCHAR(191) NULL,
+    `volunteerId` VARCHAR(191) NULL,
+    `groupId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `RoomMember_groupId_participantId_key`(`groupId`, `participantId`),
+    UNIQUE INDEX `RoomMember_groupId_volunteerId_key`(`groupId`, `volunteerId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `events` ADD CONSTRAINT `events_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -164,7 +215,7 @@ ALTER TABLE `participants_payments` ADD CONSTRAINT `participants_payments_partic
 ALTER TABLE `volunteers` ADD CONSTRAINT `volunteers_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `volunteers` ADD CONSTRAINT `volunteers_volunteerRoleId_fkey` FOREIGN KEY (`volunteerRoleId`) REFERENCES `volunteers_roles`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `volunteers` ADD CONSTRAINT `volunteers_volunteerRoleId_fkey` FOREIGN KEY (`volunteerRoleId`) REFERENCES `volunteers_roles`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `volunteers_addresses` ADD CONSTRAINT `volunteers_addresses_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -174,3 +225,27 @@ ALTER TABLE `volunteers_payments` ADD CONSTRAINT `volunteers_payments_eventId_fk
 
 -- AddForeignKey
 ALTER TABLE `volunteers_payments` ADD CONSTRAINT `volunteers_payments_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Group` ADD CONSTRAINT `Group_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GroupMember` ADD CONSTRAINT `GroupMember_participantId_fkey` FOREIGN KEY (`participantId`) REFERENCES `participants`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GroupMember` ADD CONSTRAINT `GroupMember_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GroupMember` ADD CONSTRAINT `GroupMember_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Room` ADD CONSTRAINT `Room_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_participantId_fkey` FOREIGN KEY (`participantId`) REFERENCES `participants`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Room`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
