@@ -117,6 +117,7 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 							rightIcon={<Search size={24} />}
 							className="ps-11"
 							value={search}
+							disabled={!groupEventId}
 							onChange={(event) => setSearch?.(event.target.value)}
 						/>
 					</>

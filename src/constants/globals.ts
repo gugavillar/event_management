@@ -16,7 +16,8 @@ export const MODALS_IDS = {
 	GROUP_REMOVE_MODAL: 'group_remove_modal',
 
 	// ROOM
-	ROOMS_DRAWER: 'rooms_manager',
+	ROOM_DRAWER: 'rooms_manager',
+	ROOM_REMOVE_MODAL: 'room_remove_modal',
 
 	// EVENT
 	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',

@@ -1,105 +1,146 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ConciergeBell } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { BedSingle, Search } from 'lucide-react'
+import dynamic from 'next/dynamic'
+import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Button, Header, Spinner } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { Button, Field } from '@/components/Atoms'
+import { ComboBox } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
-import { RoomDrawer } from '@/components/Organisms/RoomDrawer/RoomDrawer'
 import {
 	RoomSchema,
 	RoomSchemaType,
 } from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
-import { MODALS_IDS } from '@/constants'
+import { MODALS_IDS, overlayOpen } from '@/constants'
+import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
+import { useGetRoomByEventId } from '@/services/queries/rooms'
+import { RoomAPI } from '@/services/queries/rooms/rooms.types'
 
-import { FAKE_COLLABORATORS, FAKE_LEADERS } from './Rooms.mocks'
+import { Content, formatTableData } from './Rooms.utils'
 
-const HEADER_LABELS = [
-	{
-		label: 'Nome',
-		accessor: 'name',
-	},
-	{
-		label: 'Quarto',
-		accessor: 'room',
-	},
-]
+const RoomDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.RoomDeleteModal),
+)
 
-export const Rooms = () => {
-	const [tableData, setTableData] = useState<null | Array<
-		ReturnType<typeof FAKE_COLLABORATORS>
-	>>(null)
-	const [leaders, setLeaders] = useState<ReturnType<typeof FAKE_LEADERS> | []>(
-		[],
-	)
+const RoomDrawer = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.RoomDrawer),
+)
 
-	useEffect(() => {
-		if (tableData) return
+export const Rooms = ({ eventId }: { eventId?: string }) => {
+	const [search, setSearch] = useState('')
+	const [selectedRoom, setSelectedRoom] = useState<RoomAPI['id'] | null>(null)
 
-		const leadersFake = FAKE_LEADERS()
-		const groups = []
-		for (let i = 1; i <= 4; i++) {
-			groups.push(FAKE_COLLABORATORS())
-		}
-
-		setLeaders(leadersFake)
-		setTableData(groups)
-	}, [tableData])
+	const {
+		data: rooms,
+		roomEventId,
+		setRoomEventId,
+		isLoading,
+	} = useGetRoomByEventId(eventId)
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
 
 	const methods = useForm<RoomSchemaType>({
 		mode: 'onChange',
 		resolver: zodResolver(RoomSchema),
 		defaultValues: {
-			event: '',
-			roomNumber: undefined,
-			gender: undefined,
-			type: undefined,
-			need: undefined,
-			leader: '',
-			collaborators: [
-				{
-					selected: '',
-				},
-			],
+			eventId: '',
+			roomNumber: '',
+			members: [{ type: '', member: '' }],
 		},
 	})
 
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
+
+	const handleOpenModalToDeleteRoom = useCallback((id: RoomAPI['id']) => {
+		setSelectedRoom(id)
+		overlayOpen(MODALS_IDS.ROOM_REMOVE_MODAL)
+	}, [])
+
+	const handleOpenDrawerToCreateOrEditRoom = useCallback(
+		(id?: RoomAPI['id']) => {
+			if (id) {
+				setSelectedRoom(id)
+			} else {
+				setSelectedRoom(null)
+			}
+			overlayOpen(MODALS_IDS.ROOM_DRAWER)
+		},
+		[],
+	)
+
+	const formattedRooms = formatTableData(rooms)
+
 	return (
-		<PageContent subheadingPage="Listagem de quartos">
-			{!tableData ? (
-				<Spinner />
-			) : (
-				<ListPage
-					placeholderField="Encontrar um colaborador"
-					className="w-full lg:max-w-full"
-					actionButton={
-						<Button
-							type="button"
-							data-hs-overlay={`#${MODALS_IDS.ROOMS_DRAWER}`}
-							leftIcon={<ConciergeBell />}
-							className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-						>
-							Criar um novo quarto
-						</Button>
-					}
+		<PageContent subheadingPage="Listagem de grupos">
+			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<Button
+					type="button"
+					onClick={() => handleOpenDrawerToCreateOrEditRoom()}
+					leftIcon={<BedSingle />}
+					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 				>
-					{tableData?.map((data) => (
-						<div key={data.number} className="space-y-2">
-							<Header>Quarto {data.number}</Header>
-							<ListManager
-								headerLabels={HEADER_LABELS}
-								bodyData={data.data}
-								isLoading={false}
-							/>
-						</div>
-					))}
-				</ListPage>
-			)}
+					Criar um novo quarto
+				</Button>
+			</div>
+			<ListPage
+				className="w-full lg:max-w-full"
+				moreFilter={
+					<>
+						<ComboBox
+							keyOptionLabel="label"
+							keyOptionValue="value"
+							options={formattedEvents}
+							selectedValue={roomEventId}
+							setSelectedValue={setRoomEventId}
+							lastItemRef={lastItemRef}
+						/>
+						<Field
+							placeholder="Encontrar participante ou voluntário"
+							rightIcon={<Search size={24} />}
+							className="ps-11"
+							value={search}
+							disabled={!roomEventId}
+							onChange={(event) => setSearch?.(event.target.value)}
+						/>
+					</>
+				}
+			>
+				{Content(
+					roomEventId,
+					isLoading,
+					formattedRooms,
+					handleOpenModalToDeleteRoom,
+					handleOpenDrawerToCreateOrEditRoom,
+				)}
+			</ListPage>
 			<FormProvider {...methods}>
-				<RoomDrawer drawerId={MODALS_IDS.ROOMS_DRAWER} leaders={leaders} />
+				<RoomDrawer
+					drawerId={MODALS_IDS.ROOM_DRAWER}
+					selectedRoom={selectedRoom}
+					setSelectedRoom={setSelectedRoom}
+				/>
 			</FormProvider>
+			<RoomDeleteModal
+				modalId={MODALS_IDS.ROOM_REMOVE_MODAL}
+				selectedRoom={selectedRoom}
+				setSelectedRoom={setSelectedRoom}
+			/>
 		</PageContent>
 	)
 }

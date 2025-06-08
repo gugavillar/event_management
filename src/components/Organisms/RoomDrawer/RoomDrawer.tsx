@@ -1,160 +1,276 @@
 'use client'
-
-import { UserRoundPlus } from 'lucide-react'
-import { useEffect } from 'react'
+import { UserRoundPlus, UserRoundX } from 'lucide-react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import {
+	Controller,
 	type SubmitHandler,
 	useFieldArray,
 	useFormContext,
 } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
-import {
-	Button,
-	Drawer,
-	DrawerBody,
-	DrawerFooter,
-	HelperErrorText,
-	Label,
-	Select,
-	SelectProps,
-} from '@/components/Atoms'
+import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
 	FieldArrayContainerWithAppendButton,
-	MaskedInputField,
+	ComboBox,
 	RadioField,
-	SelectField,
+	SearchBox,
+	MaskedInputField,
 } from '@/components/Molecules'
+import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
+import { formatterComboBoxValues } from '@/formatters'
+import { useInfiniteScrollObserver } from '@/hooks'
+import { useGetInfinityEvents } from '@/services/queries/events'
+import { useGetInfinityParticipants } from '@/services/queries/participants'
 import {
-	CollaboratorTypeAPI,
-	CollaboratorTypeSelectOptions,
-	GenderSelectOptions,
-	TrueOrFalseAPI,
-	TrueOrFalseRadioOptions,
-} from '@/constants'
+	useCreateRoom,
+	useGetRoom,
+	useUpdateRoom,
+} from '@/services/queries/rooms'
+import { FormRoom, RoomAPI } from '@/services/queries/rooms/rooms.types'
+import { useGetInfinityVolunteers } from '@/services/queries/volunteers'
 
 import { RoomSchemaType } from './RoomDrawer.schema'
 
 type RoomDrawerProps = {
 	drawerId: string
-	leaders: SelectProps['options']
+	selectedRoom: RoomAPI['id'] | null
+	setSelectedRoom: Dispatch<SetStateAction<RoomAPI['id'] | null>>
 }
 
-export const RoomDrawer = ({ drawerId, leaders }: RoomDrawerProps) => {
-	const { watch, formState, register, handleSubmit, unregister, trigger } =
+export const RoomDrawer = ({
+	drawerId,
+	selectedRoom,
+	setSelectedRoom,
+}: RoomDrawerProps) => {
+	const { handleSubmit, formState, control, watch, reset } =
 		useFormContext<RoomSchemaType>()
 	const { fields, append, remove } = useFieldArray({
-		name: 'collaborators',
+		name: 'members',
 	})
+	const { create, isPending: isPendingCreate } = useCreateRoom()
+	const { update, isPending: isPendingUpdate } = useUpdateRoom()
+	const { data, isLoading } = useGetRoom(selectedRoom)
 
-	const onSubmit: SubmitHandler<RoomSchemaType> = (values) => {
-		console.log(values)
+	const eventId = watch('eventId')
+
+	const {
+		data: participants,
+		fetchNextPage: fetchNextPageParticipants,
+		hasNextPage: hasNextPageParticipants,
+		isFetchingNextPage: isFetchingNextPageParticipants,
+		searchParticipant,
+		setSearchParticipant,
+	} = useGetInfinityParticipants(eventId)
+	const {
+		data: volunteers,
+		fetchNextPage: fetchNextPageVolunteers,
+		hasNextPage: hasNextPageVolunteers,
+		isFetchingNextPage: isFetchingNextPageVolunteers,
+		searchVolunteer,
+		setSearchVolunteer,
+	} = useGetInfinityVolunteers(eventId)
+	const {
+		data: events,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	} = useGetInfinityEvents()
+
+	const onSubmit: SubmitHandler<RoomSchemaType> = async (values) => {
+		if (!values) return
+
+		const formattedValues = {
+			...values,
+			roomNumber: values.roomNumber.padStart(2, '0'),
+		}
+
+		if (selectedRoom) {
+			return await update(
+				{
+					roomId: selectedRoom,
+					data: {
+						...(formattedValues as FormRoom),
+					},
+				},
+				{
+					onSuccess: () => {
+						reset()
+						setSelectedRoom(null)
+						toast.success('Quarto atualizado com sucesso!')
+						overlayClose(drawerId)
+					},
+					onError: () => toast.error('Erro ao atualizar quarto'),
+				},
+			)
+		}
+
+		await create(formattedValues as FormRoom, {
+			onSuccess: () => {
+				reset()
+				setSelectedRoom(null)
+				toast.success('Quarto criado com sucesso!')
+				overlayClose(drawerId)
+			},
+			onError: () => toast.error('Erro ao criar quarto'),
+		})
 	}
 
-	const hasLeaderRoom = watch('need') === TrueOrFalseAPI.TRUE
-	const isNecessaryLeader = watch('type') === CollaboratorTypeAPI.PARTICIPANT
+	const formattedEvents = formatterComboBoxValues(
+		events?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+	const lastItemRef = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPage),
+		isFetchingNextPage,
+		fetchNextPage,
+	})
+
+	const formattedParticipants = formatterComboBoxValues(
+		participants?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+
+	const lastItemRefParticipants = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPageParticipants),
+		isFetchingNextPage: isFetchingNextPageParticipants,
+		fetchNextPage: fetchNextPageParticipants,
+	})
+
+	const formattedVolunteers = formatterComboBoxValues(
+		volunteers?.pages?.flatMap((page) => page.data),
+		'name',
+		'id',
+	)
+
+	const lastItemRefVolunteers = useInfiniteScrollObserver({
+		hasNextPage: Boolean(hasNextPageVolunteers),
+		isFetchingNextPage: isFetchingNextPageVolunteers,
+		fetchNextPage: fetchNextPageVolunteers,
+	})
 
 	useEffect(() => {
-		if (!hasLeaderRoom) {
-			unregister('leader')
-		}
-		if (!isNecessaryLeader) {
-			unregister('need')
-		}
-		if (fields.length >= 3) {
-			trigger('collaborators')
-		}
-	}, [hasLeaderRoom, unregister, isNecessaryLeader, fields.length, trigger])
+		if (!data) return reset({}, { keepDefaultValues: true })
+
+		reset({ ...data }, { keepDefaultValues: true })
+	}, [data, reset])
 
 	return (
-		<Drawer drawerId={drawerId} headingTitle="Novo quarto">
-			<DrawerBody>
-				<SelectField
-					fieldName="event"
-					options={[
-						{
-							label: 'Evento 1',
-							value: '8b31d150-8410-4c4d-8761-0f91dcd32a56',
-						},
-						{
-							label: 'Evento 2',
-							value: '7b7f3bf6-100c-4c45-b4c9-1eca3c10ac5e',
-						},
-					]}
-					placeholder="Selecione o evento"
-				>
-					Evento
-				</SelectField>
-				<SelectField
-					fieldName="gender"
-					options={GenderSelectOptions}
-					placeholder="Selecione o gênero do quarto"
-				>
-					Gênero
-				</SelectField>
-				<SelectField
-					fieldName="type"
-					options={CollaboratorTypeSelectOptions}
-					placeholder="Selecione o tipo do quarto"
-				>
-					Tipo (Voluntários ou Participantes)
-				</SelectField>
-				{isNecessaryLeader ? (
-					<RadioField options={TrueOrFalseRadioOptions} fieldName="need">
-						Necessário líder no quarto
-					</RadioField>
-				) : null}
-				<MaskedInputField format="##" fieldName="roomNumber">
-					Número do quarto
-				</MaskedInputField>
-				{hasLeaderRoom ? (
-					<SelectField
-						fieldName="leader"
-						options={leaders}
-						placeholder="Selecione o líder do quarto"
-					>
-						Líder
-					</SelectField>
-				) : null}
+		<Drawer
+			drawerId={drawerId}
+			headingTitle={selectedRoom ? 'Editar quarto' : 'Criar quarto'}
+			className="max-w-3xl"
+		>
+			<DrawerBody isLoading={isLoading}>
+				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+					<Controller
+						name="eventId"
+						control={control}
+						render={({ field }) => (
+							<ComboBox
+								label="Evento"
+								keyOptionLabel="label"
+								keyOptionValue="value"
+								options={formattedEvents}
+								selectedValue={field.value}
+								setSelectedValue={field.onChange}
+								lastItemRef={lastItemRef}
+								error={formState.errors.eventId?.message}
+							/>
+						)}
+					/>
+					<MaskedInputField format="##" fieldName="roomNumber">
+						Número do quarto
+					</MaskedInputField>
+				</div>
 				<FieldArrayContainerWithAppendButton
-					handleAppendField={() => append({ selected: '' })}
-					leftIcon={<UserRoundPlus size={18} />}
+					handleAppendField={() => append({ member: '', type: '' })}
+					leftIcon={<UserRoundPlus />}
 				>
-					{fields.map((field, index) => (
-						<div key={field.id} {...(!index && { style: { marginTop: 0 } })}>
-							<Label htmlFor={`collaborators.${index}.selected`}>
-								<div className="flex items-center justify-between">
-									Colaborador
-									{index ? (
+					{fields.map((field, index) => {
+						const fieldMemberName = `members.${index}.member` as const
+						const fieldTypeName = `members.${index}.type` as const
+						const hasMoreThanOneMember = fields.length > 1
+						return (
+							<div key={field.id} {...(!index && { style: { marginTop: 0 } })}>
+								<div className="flex items-center justify-end">
+									{hasMoreThanOneMember ? (
 										<Button
-											className="border-none px-2 py-0 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
+											className="mb-1 rounded-full border-none p-1 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
 											onClick={() => remove(index)}
-										>
-											Remover
-										</Button>
+											leftIcon={<UserRoundX />}
+										/>
 									) : null}
 								</div>
-							</Label>
-							<Select
-								isInvalid={!!formState.errors.collaborators?.[index]?.selected}
-								id={`collaborators.${index}.selected`}
-								options={leaders}
-								{...register(`collaborators.${index}.selected` as const)}
-							/>
-							{formState.errors.collaborators?.[index]?.selected && (
-								<HelperErrorText>
-									{formState.errors.collaborators?.[index]?.selected?.message}
-								</HelperErrorText>
-							)}
-						</div>
-					))}
+								<div className="mt-1 grid grid-cols-1 md:grid-cols-2">
+									<RadioField
+										fieldName={fieldTypeName}
+										options={MembersTypesOptionsRadio}
+										position="row"
+									>
+										Qual tipo do membro
+									</RadioField>
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT ? (
+										<Controller
+											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
+											name={fieldMemberName}
+											control={control}
+											render={({ field }) => (
+												<SearchBox
+													search={searchParticipant}
+													setSearch={setSearchParticipant}
+													label="Membro"
+													keyOptionLabel="label"
+													keyOptionValue="value"
+													options={formattedParticipants}
+													selectedValue={field.value}
+													setSelectedValue={field.onChange}
+													lastItemRef={lastItemRefParticipants}
+													error={
+														formState.errors.members?.[index]?.member?.message
+													}
+												/>
+											)}
+										/>
+									) : (
+										<Controller
+											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
+											name={fieldMemberName}
+											control={control}
+											render={({ field }) => (
+												<SearchBox
+													search={searchVolunteer}
+													setSearch={setSearchVolunteer}
+													label="Membro"
+													keyOptionLabel="label"
+													keyOptionValue="value"
+													options={formattedVolunteers}
+													selectedValue={field.value}
+													setSelectedValue={field.onChange}
+													lastItemRef={lastItemRefVolunteers}
+													error={
+														formState.errors.members?.[index]?.member?.message
+													}
+												/>
+											)}
+										/>
+									)}
+								</div>
+							</div>
+						)
+					})}
 				</FieldArrayContainerWithAppendButton>
 			</DrawerBody>
 			<DrawerFooter>
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					onClick={handleSubmit(onSubmit)}
+					disabled={!formState.isValid}
+					isLoading={isPendingCreate || isPendingUpdate}
 				>
-					Criar quarto
+					{selectedRoom ? 'Atualizar quarto' : 'Criar quarto'}
 				</Button>
 			</DrawerFooter>
 		</Drawer>

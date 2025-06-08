@@ -21,7 +21,12 @@ const Warning = () => {
 export const Field = forwardRef<HTMLInputElement, FieldProps>(
 	({ isInvalid, className, rightIcon, ...props }, ref) => {
 		return (
-			<div className="relative w-full">
+			<div
+				className={twMerge(
+					'relative w-full',
+					props.disabled && 'pointer-events-none opacity-50',
+				)}
+			>
 				<input
 					className={twMerge(
 						'block w-full rounded-lg py-3 pl-4 pr-8 text-base',

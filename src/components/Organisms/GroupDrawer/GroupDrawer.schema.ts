@@ -40,7 +40,7 @@ export const GroupSchema = z.object({
 				value,
 				ctx,
 				'member',
-				'Os participantes devem ser diferentes',
+				'Os membros devem ser diferentes',
 			),
 		),
 })

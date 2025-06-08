@@ -5,46 +5,46 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
-import { useDeleteGroup } from '@/services/queries/groups'
-import { GroupAPI } from '@/services/queries/groups/groups.types'
+import { useDeleteRoom } from '@/services/queries/rooms'
+import { RoomAPI } from '@/services/queries/rooms/rooms.types'
 
-type GroupDeleteModalProps = {
+type RoomDeleteModalProps = {
 	modalId: string
-	selectedGroup: GroupAPI['id'] | null
-	setSelectedGroup: Dispatch<SetStateAction<GroupAPI['id'] | null>>
+	selectedRoom: RoomAPI['id'] | null
+	setSelectedRoom: Dispatch<SetStateAction<RoomAPI['id'] | null>>
 }
 
-export const GroupDeleteModal = ({
+export const RoomDeleteModal = ({
 	modalId,
-	selectedGroup,
-	setSelectedGroup,
-}: GroupDeleteModalProps) => {
-	const { isPending, remove } = useDeleteGroup()
+	selectedRoom,
+	setSelectedRoom,
+}: RoomDeleteModalProps) => {
+	const { isPending, remove } = useDeleteRoom()
 
-	const handleDeleteGroup = async () => {
-		if (!selectedGroup) return
-		await remove(selectedGroup, {
+	const handleDeleteRoom = async () => {
+		if (!selectedRoom) return
+		await remove(selectedRoom, {
 			onSuccess: () => {
-				setSelectedGroup(null)
-				toast.success('Grupo excluído com sucesso!')
+				setSelectedRoom(null)
+				toast.success('Quarto excluído com sucesso!')
 				overlayClose(modalId)
 			},
-			onError: () => toast.error('Erro ao excluir grupo'),
+			onError: () => toast.error('Erro ao excluir quarto'),
 		})
 	}
 
 	return (
-		<Modal modalId={modalId} handleClose={() => setSelectedGroup(null)}>
+		<Modal modalId={modalId} handleClose={() => setSelectedRoom(null)}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert size={64} className="text-amber-300" />
 					<div className="space-y-4 text-center">
 						<Header as="h3" className="text-2xl">
-							Você deseja excluir o grupo?
+							Você deseja excluir o quarto?
 						</Header>
 						<Text>
-							Ao excluir o grupo todos os membros vinculados a ele ficaram sem
-							nenhum grupo.
+							Ao excluir o quarto todos os membros vinculados a ele ficaram sem
+							nenhum quarto.
 						</Text>
 					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
@@ -53,13 +53,13 @@ export const GroupDeleteModal = ({
 							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
 							data-hs-overlay={`#${modalId}`}
 							disabled={isPending}
-							onClick={() => setSelectedGroup(null)}
+							onClick={() => setSelectedRoom(null)}
 						>
 							Cancelar
 						</Button>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-							onClick={handleDeleteGroup}
+							onClick={handleDeleteRoom}
 							isLoading={isPending}
 							disabled={isPending}
 						>

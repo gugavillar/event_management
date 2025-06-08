@@ -157,7 +157,11 @@ export const GroupDrawer = ({
 	}, [data, reset])
 
 	return (
-		<Drawer drawerId={drawerId} headingTitle="Novo grupo" className="max-w-3xl">
+		<Drawer
+			drawerId={drawerId}
+			headingTitle={selectedGroup ? 'Editar grupo' : 'Criar grupo'}
+			className="max-w-3xl"
+		>
 			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<Controller
@@ -263,7 +267,7 @@ export const GroupDrawer = ({
 					disabled={!formState.isValid}
 					isLoading={isPendingCreate || isPendingUpdate}
 				>
-					Criar grupo
+					{selectedGroup ? 'Atualizar grupo' : 'Criar grupo'}
 				</Button>
 			</DrawerFooter>
 		</Drawer>
