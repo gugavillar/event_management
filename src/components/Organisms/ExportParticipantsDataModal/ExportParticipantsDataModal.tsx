@@ -59,14 +59,16 @@ export const ExportParticipantsDataModal = ({
 	}
 
 	useEffect(() => {
-		if (!data || !eventId) return
+		if (!eventId) return
 
 		if (isError) {
-			toast.error('Erro ao baixar arquivo')
+			toast.error('Erro ao baixar arquivo ou evento sem participantes')
 			setEventId('')
 			methods.reset()
 			return
 		}
+
+		if (!data) return
 
 		const blob = new Blob([data], {
 			type: FILES_TYPES.xlsx,

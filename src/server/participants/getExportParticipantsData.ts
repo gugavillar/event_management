@@ -19,6 +19,16 @@ export const getExportParticipantsData = async (eventId: string) => {
 			include: {
 				address: true,
 				event: true,
+				roomMember: {
+					include: {
+						room: true,
+					},
+				},
+				groupMemberships: {
+					include: {
+						group: true,
+					},
+				},
 			},
 			orderBy: {
 				name: 'asc',
@@ -47,6 +57,18 @@ export const getExportParticipantsData = async (eventId: string) => {
 			Telefone_Convidou: formatPhone(participant.hostPhone),
 			Religião: participant.religion || 'Não possui',
 			Alimentação_Saúde: participant.health || 'Não possui',
+			Quarto:
+				participant.roomMember?.find(
+					(room) =>
+						room.participantId === participant.id &&
+						room.room.eventId === eventId,
+				)?.room.roomNumber || 'Sem quarto',
+			Grupo:
+				participant.groupMemberships?.find(
+					(group) =>
+						group.participantId === participant.id &&
+						group.group.eventId === eventId,
+				)?.group.name || 'Sem grupo',
 		}))
 
 		const tableHeader = Object.keys(data[0])

@@ -20,6 +20,16 @@ export const getExportVolunteersData = async (eventId: string) => {
 				address: true,
 				event: true,
 				volunteerRole: true,
+				groupMemberships: {
+					include: {
+						group: true,
+					},
+				},
+				roomMember: {
+					include: {
+						room: true,
+					},
+				},
 			},
 			orderBy: {
 				name: 'asc',
@@ -47,6 +57,18 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Função: volunteer.volunteerRole?.role || 'Sem função',
 			Célula: volunteer.cell || 'Nenhuma',
 			Alimentação_Saúde: volunteer.health || 'Não possui',
+			Quarto:
+				volunteer.roomMember?.find(
+					(room) =>
+						room.participantId === volunteer.id &&
+						room.room.eventId === eventId,
+				)?.room.roomNumber || 'Sem quarto',
+			Grupo:
+				volunteer.groupMemberships?.find(
+					(group) =>
+						group.participantId === volunteer.id &&
+						group.group.eventId === eventId,
+				)?.group.name || 'Sem grupo',
 		}))
 
 		const tableHeader = Object.keys(data[0])
