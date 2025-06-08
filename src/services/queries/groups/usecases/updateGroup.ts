@@ -3,12 +3,12 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 import { FormGroup, GroupAPI } from '../groups.types'
 
-type UpdateEventArgs = {
+type UpdateGroupArgs = {
 	groupId: GroupAPI['id']
 	data: FormGroup
 }
 
-export const updateGroup = async ({ groupId, data }: UpdateEventArgs) => {
+export const updateGroup = async ({ groupId, data }: UpdateGroupArgs) => {
 	const response = await api.put(ENDPOINTS.UPDATE_GROUP(groupId), { ...data })
 
 	return response.data

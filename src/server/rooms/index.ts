@@ -1,0 +1,5 @@
+export * from './createRoom'
+export * from './getRoomByEventId'
+export * from './getRoomById'
+export * from './removeRoomById'
+export * from './updateRoomById'

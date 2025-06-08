@@ -1,0 +1,36 @@
+import { UUID } from 'crypto'
+
+import { MEMBERS } from '@/constants'
+
+import { EventsAPI } from '../events/event.type'
+import { ParticipantsAPI } from '../participants/participants.type'
+import { VolunteersAPI } from '../volunteers/volunteers.type'
+
+export type FormRoom = {
+	roomNumber: string
+	eventId: string
+	members: Array<{
+		type: MEMBERS
+		member: string
+	}>
+}
+
+export type RoomMemberAPI = {
+	id: UUID
+	roomId: UUID
+	type: MEMBERS
+	participantId: string | null
+	volunteerId: string | null
+	participant: ParticipantsAPI | null
+	volunteer: VolunteersAPI | null
+}
+
+export type RoomAPI = {
+	id: UUID
+	roomNumber: string
+	createdAt: string
+	updatedAt: string
+	eventId: UUID
+	event: EventsAPI
+	members: Array<RoomMemberAPI>
+}

@@ -48,6 +48,10 @@ export const QUERY_KEYS = {
 	// Groups
 	GROUPS: 'groups',
 	GROUP: 'group',
+
+	// Rooms
+	ROOMS: 'rooms',
+	ROOM: 'room',
 } as const
 
 export const getQueryClient = () => {
