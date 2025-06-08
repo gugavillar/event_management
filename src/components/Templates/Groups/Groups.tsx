@@ -30,7 +30,6 @@ const GroupDrawer = dynamic(() =>
 )
 
 export const Groups = ({ eventId }: { eventId?: string }) => {
-	const [search, setSearch] = useState('')
 	const [selectedGroup, setSelectedGroup] = useState<GroupAPI['id'] | null>(
 		null,
 	)
@@ -40,6 +39,8 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 		groupEventId,
 		setGroupEventId,
 		isLoading,
+		searchMemberGroup,
+		setSearchMemberGroup,
 	} = useGetGroupByEventId(eventId)
 	const {
 		data: events,
@@ -113,12 +114,12 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 							lastItemRef={lastItemRef}
 						/>
 						<Field
-							placeholder="Encontrar participante ou voluntário"
+							placeholder="Encontrar membro"
 							rightIcon={<Search size={24} />}
 							className="ps-11"
-							value={search}
+							value={searchMemberGroup}
 							disabled={!groupEventId}
-							onChange={(event) => setSearch?.(event.target.value)}
+							onChange={(event) => setSearchMemberGroup(event.target.value)}
 						/>
 					</>
 				}

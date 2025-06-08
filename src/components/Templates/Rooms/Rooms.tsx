@@ -30,7 +30,6 @@ const RoomDrawer = dynamic(() =>
 )
 
 export const Rooms = ({ eventId }: { eventId?: string }) => {
-	const [search, setSearch] = useState('')
 	const [selectedRoom, setSelectedRoom] = useState<RoomAPI['id'] | null>(null)
 
 	const {
@@ -38,6 +37,8 @@ export const Rooms = ({ eventId }: { eventId?: string }) => {
 		roomEventId,
 		setRoomEventId,
 		isLoading,
+		searchMemberRoom,
+		setSearchMemberRoom,
 	} = useGetRoomByEventId(eventId)
 	const {
 		data: events,
@@ -111,12 +112,12 @@ export const Rooms = ({ eventId }: { eventId?: string }) => {
 							lastItemRef={lastItemRef}
 						/>
 						<Field
-							placeholder="Encontrar participante ou voluntário"
+							placeholder="Encontrar membro"
 							rightIcon={<Search size={24} />}
 							className="ps-11"
-							value={search}
+							value={searchMemberRoom}
 							disabled={!roomEventId}
-							onChange={(event) => setSearch?.(event.target.value)}
+							onChange={(event) => setSearchMemberRoom(event.target.value)}
 						/>
 					</>
 				}

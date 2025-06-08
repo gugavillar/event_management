@@ -6,6 +6,7 @@ export type TableHeaderProps = ComponentProps<'thead'> & {
 	headerLabels: Array<{
 		label: string
 		accessor: string
+		className?: string
 	}>
 }
 
@@ -14,11 +15,14 @@ export const TableHeader = memo(
 		return (
 			<thead className={twMerge('bg-slate-800', className)} {...props}>
 				<tr>
-					{headerLabels?.map(({ label }) => (
+					{headerLabels?.map(({ label, className }) => (
 						<th
 							key={uuid()}
 							scope="col"
-							className="px-6 py-3 text-start text-xs font-medium uppercase text-gray-100"
+							className={twMerge(
+								'px-6 py-3 text-start text-xs font-medium uppercase text-gray-100',
+								className,
+							)}
 						>
 							{label}
 						</th>

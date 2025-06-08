@@ -10,12 +10,13 @@ import { getRoomByEventId } from '@/services/queries/rooms'
 export default async function RoomsPage({
 	searchParams,
 }: {
-	searchParams: { roomEventId: string }
+	searchParams: { roomEventId: string; searchMemberRoom: string }
 }) {
 	const eventId = searchParams.roomEventId ?? ''
+	const searchMemberRoom = searchParams.searchMemberRoom ?? ''
 	const [getAllEvents, getRooms] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
-		async () => getRoomByEventId(eventId as UUID),
+		async () => getRoomByEventId(eventId as UUID, searchMemberRoom),
 	])
 
 	return (

@@ -9,6 +9,7 @@ export const HEADER_LABELS = [
 	{
 		label: 'Nome',
 		accessor: 'member',
+		className: 'w-9/12',
 	},
 	{
 		label: 'Tipo',

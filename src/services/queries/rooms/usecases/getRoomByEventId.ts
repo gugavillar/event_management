@@ -3,8 +3,15 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 import { RoomAPI } from '../rooms.types'
 
-export const getRoomByEventId = async (eventId: RoomAPI['eventId']) => {
-	const response = await api.get(ENDPOINTS.GET_ROOM_BY_EVENT_ID(eventId))
+export const getRoomByEventId = async (
+	eventId: RoomAPI['eventId'],
+	searchMember: string | null,
+) => {
+	const response = await api.get(ENDPOINTS.GET_ROOM_BY_EVENT_ID(eventId), {
+		params: {
+			...(searchMember && { searchMember }),
+		},
+	})
 
 	return response.data
 }

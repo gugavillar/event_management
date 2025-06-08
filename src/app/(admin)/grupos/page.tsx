@@ -10,12 +10,13 @@ import { getGroupByEventId } from '@/services/queries/groups'
 export default async function GroupsPage({
 	searchParams,
 }: {
-	searchParams: { groupEventId: string }
+	searchParams: { groupEventId: string; searchMemberGroup: string }
 }) {
 	const eventId = searchParams.groupEventId ?? ''
+	const searchMemberGroup = searchParams.searchMemberGroup ?? ''
 	const [getAllEvents, getGroups] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
-		async () => getGroupByEventId(eventId as UUID),
+		async () => getGroupByEventId(eventId as UUID, searchMemberGroup),
 	])
 
 	return (
