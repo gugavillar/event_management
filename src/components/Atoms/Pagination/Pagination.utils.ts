@@ -15,17 +15,19 @@ export const usePagination = ({
 	currentPage: number
 	siblingCount: number
 }) => {
-	const paginationRage = useMemo(() => {
-		const totalPageNumbers = 4
+	const paginationRange = useMemo(() => {
+		const totalPageNumbers = siblingCount * 2 + 5
 
-		if (totalPageNumbers > totalPages) {
+		if (totalPageNumbers >= totalPages) {
 			return range(1, totalPages)
 		}
 
 		const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
 		const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages)
+
 		const shouldShowLeftDots = leftSiblingIndex > 2
 		const shouldShowRightDots = rightSiblingIndex < totalPages - 2
+
 		const firstPageIndex = 1
 		const lastPageIndex = totalPages
 
@@ -47,5 +49,5 @@ export const usePagination = ({
 		}
 	}, [currentPage, siblingCount, totalPages])
 
-	return paginationRage
+	return paginationRange
 }
