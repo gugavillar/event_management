@@ -4,6 +4,8 @@ export const getAllVolunteers = async (
 	eventId: string | null,
 	search: string | null,
 	status: CHECK_IN_STATUS | null,
+	hasNoGroup: boolean | null,
+	hasNoRoom: boolean | null,
 	page = 1,
 ) => {
 	try {
@@ -17,6 +19,8 @@ export const getAllVolunteers = async (
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
+					...(hasNoGroup && { groupMemberships: { none: {} } }),
+					...(hasNoRoom && { roomMember: { none: {} } }),
 				},
 				include: {
 					address: true,
@@ -34,6 +38,8 @@ export const getAllVolunteers = async (
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
+					...(hasNoGroup && { groupMemberships: { none: {} } }),
+					...(hasNoRoom && { roomMember: { none: {} } }),
 				},
 			}),
 		])

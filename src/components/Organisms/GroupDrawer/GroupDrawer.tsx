@@ -61,7 +61,10 @@ export const GroupDrawer = ({
 		isFetchingNextPage: isFetchingNextPageParticipants,
 		searchParticipant,
 		setSearchParticipant,
-	} = useGetInfinityParticipants(eventId)
+	} = useGetInfinityParticipants({
+		eventId,
+		hasNoGroup: selectedGroup === null,
+	})
 	const {
 		data: volunteers,
 		fetchNextPage: fetchNextPageVolunteers,
@@ -69,7 +72,7 @@ export const GroupDrawer = ({
 		isFetchingNextPage: isFetchingNextPageVolunteers,
 		searchVolunteer,
 		setSearchVolunteer,
-	} = useGetInfinityVolunteers(eventId)
+	} = useGetInfinityVolunteers({ eventId, hasNoGroup: selectedGroup === null })
 	const {
 		data: events,
 		hasNextPage,
@@ -156,6 +159,8 @@ export const GroupDrawer = ({
 		reset({ ...data }, { keepDefaultValues: true })
 	}, [data, reset])
 
+	const hasEventId = Boolean(watch('eventId'))
+
 	return (
 		<Drawer
 			drawerId={drawerId}
@@ -209,29 +214,31 @@ export const GroupDrawer = ({
 									>
 										Qual tipo do membro
 									</RadioField>
-									{watch(fieldTypeName) === MEMBERS.PARTICIPANT ? (
-										<Controller
-											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
-											name={fieldMemberName}
-											control={control}
-											render={({ field }) => (
-												<SearchBox
-													search={searchParticipant}
-													setSearch={setSearchParticipant}
-													label="Membro"
-													keyOptionLabel="label"
-													keyOptionValue="value"
-													options={formattedParticipants}
-													selectedValue={field.value}
-													setSelectedValue={field.onChange}
-													lastItemRef={lastItemRefParticipants}
-													error={
-														formState.errors.members?.[index]?.member?.message
-													}
-												/>
-											)}
-										/>
-									) : (
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT &&
+										hasEventId && (
+											<Controller
+												key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
+												name={fieldMemberName}
+												control={control}
+												render={({ field }) => (
+													<SearchBox
+														search={searchParticipant}
+														setSearch={setSearchParticipant}
+														label="Membro"
+														keyOptionLabel="label"
+														keyOptionValue="value"
+														options={formattedParticipants}
+														selectedValue={field.value}
+														setSelectedValue={field.onChange}
+														lastItemRef={lastItemRefParticipants}
+														error={
+															formState.errors.members?.[index]?.member?.message
+														}
+													/>
+												)}
+											/>
+										)}
+									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && hasEventId && (
 										<Controller
 											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 											name={fieldMemberName}
