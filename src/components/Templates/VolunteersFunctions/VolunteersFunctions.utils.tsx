@@ -7,6 +7,7 @@ export const HEADER_LABELS = [
 	{
 		label: 'Função',
 		accessor: 'role',
+		className: 'w-9/12',
 	},
 	{
 		label: '',

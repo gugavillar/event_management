@@ -7,11 +7,13 @@ export const getGroupByEventId = async (
 	eventId: GroupAPI['eventId'],
 	searchMember: string | null,
 ) => {
-	const response = await api.get(ENDPOINTS.GET_GROUP_BY_EVENT_ID(eventId), {
-		params: {
-			...(searchMember && { searchMember }),
-		},
-	})
+	const response = eventId
+		? await api.get(ENDPOINTS.GET_GROUP_BY_EVENT_ID(eventId), {
+				params: {
+					...(searchMember && { searchMember }),
+				},
+			})
+		: { data: [] }
 
 	return response.data
 }

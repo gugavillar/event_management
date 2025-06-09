@@ -85,12 +85,17 @@ export const authOptions: NextAuthOptions = {
 				throw new Error('No token to decode')
 			}
 
-			const decodedToken = jwt.verify(token, secret)
+			try {
+				const decodedToken = jwt.verify(token, secret)
 
-			if (typeof decodedToken === 'string') {
-				return JSON.parse(decodedToken)
-			} else {
-				return decodedToken
+				if (typeof decodedToken === 'string') {
+					return JSON.parse(decodedToken)
+				} else {
+					return decodedToken
+				}
+			} catch (err) {
+				console.error('Token inválido ou expirado', err)
+				return null
 			}
 		},
 	},
