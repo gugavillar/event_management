@@ -2,7 +2,7 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useAddSearchParams } from '@/hooks'
@@ -17,6 +17,11 @@ export const useGetUsers = () => {
 	const [page, setPage] = useState(Number(searchParams.get('pageUser')) || 1)
 
 	const debouceValue = useDebounce(search, 500)
+
+	useEffect(() => {
+		if (page !== 1) setPage(1)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouceValue])
 
 	useAddSearchParams({
 		searchUser: debouceValue,

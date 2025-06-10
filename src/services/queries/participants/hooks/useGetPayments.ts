@@ -2,7 +2,7 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useAddSearchParams } from '@/hooks'
@@ -27,6 +27,11 @@ export const useGetPayments = () => {
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
 	const debouncePaymentType = useDebounce(paymentType, 500)
+
+	useEffect(() => {
+		if (page !== 1) setPage(1)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debounceEventId, debounceSearch, debouncePaymentType])
 
 	useAddSearchParams({
 		eventId: debounceEventId,
