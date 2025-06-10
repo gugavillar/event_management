@@ -61,7 +61,21 @@ export const formatTableData = (
 		return {
 			id: volunteer.id,
 			name: volunteer.name,
-			role: <FunctionTag status={volunteer?.volunteerRole?.role} />,
+			role: (
+				<div className="flex gap-2">
+					{!volunteer.volunteerRole.length ? (
+						<FunctionTag />
+					) : (
+						volunteer.volunteerRole.map((role) => (
+							<FunctionTag
+								key={role.id}
+								status={role.role}
+								isLeader={role.leaderId === volunteer.id}
+							/>
+						))
+					)}
+				</div>
+			),
 			phone: formatPhone(volunteer.phone),
 			birthdate: `${format(volunteer.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(volunteer.event.finalDate), volunteer.birthdate)} anos`,
 			city: volunteer.address.city,

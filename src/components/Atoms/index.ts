@@ -1,6 +1,7 @@
 export * from './Avatar'
 export * from './BarChart'
 export * from './Button'
+export * from './Checkbox'
 export * from './CurrencyInput'
 export * from './Drawer'
 export * from './DrawerBody'

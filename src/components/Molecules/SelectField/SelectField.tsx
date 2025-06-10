@@ -1,12 +1,12 @@
 'use client'
 import { get } from 'lodash'
-import { ComponentProps } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { HelperErrorText, Label, Select, SelectProps } from '@/components/Atoms'
 
 type SelectFieldProps = ComponentProps<'div'> & {
-	children: string
+	children: ReactNode
 	fieldName: string
 	options: SelectProps['options']
 	placeholder?: SelectProps['placeholder']

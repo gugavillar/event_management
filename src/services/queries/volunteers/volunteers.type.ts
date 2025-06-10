@@ -9,14 +9,7 @@ export type ImportVolunteersDataValues = {
 	eventId: EventsAPI['id']
 }
 
-export type VolunteersFunctionsFromAPI = {
-	id: UUID
-	role: string
-	createdAt: string
-	updatedAt: string
-}
-
-export type VolunteersAPI = {
+type Volunteers = {
 	id: UUID
 	name: string
 	email: string
@@ -44,8 +37,20 @@ export type VolunteersAPI = {
 		updatedAt: string
 		volunteerId: UUID
 	}
-	volunteerRoleId: UUID
-	volunteerRole: VolunteersFunctionsFromAPI
+}
+
+export type VolunteersFunctionsFromAPI = {
+	id: UUID
+	role: string
+	leaderId: UUID
+	leader: Volunteers
+	volunteers: Array<Volunteers>
+	createdAt: string
+	updatedAt: string
+}
+
+export type VolunteersAPI = Volunteers & {
+	volunteerRole: Array<VolunteersFunctionsFromAPI>
 }
 
 export type VolunteersFromAPI = {

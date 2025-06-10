@@ -7,11 +7,12 @@ const handleUpdate = async (
 	request: NextRequest,
 	{ params }: { params: { volunteer_id: string } },
 ) => {
-	const body: { roleId: string } = await request.json()
+	const body: { roles: Array<{ roleId: string; isLeader: boolean }> } =
+		await request.json()
 
 	return await requestProcess({
 		functions: async () =>
-			await updateVolunteerFunction(body.roleId, params.volunteer_id),
+			await updateVolunteerFunction(body.roles, params.volunteer_id),
 	})
 }
 

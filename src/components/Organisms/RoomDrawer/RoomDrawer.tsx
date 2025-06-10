@@ -188,6 +188,7 @@ export const RoomDrawer = ({
 					</MaskedInputField>
 				</div>
 				<FieldArrayContainerWithAppendButton
+					label="Membro"
 					handleAppendField={() => append({ member: '', type: '' })}
 					leftIcon={<UserRoundPlus />}
 				>

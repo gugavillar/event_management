@@ -1,10 +1,9 @@
 import { z } from 'zod'
 
 import { prisma } from '@/constants'
-import { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
 
 export const updateFunctionById = async (
-	data: { data: { role: VolunteersFunctionsForm['role'] } },
+	data: { role: string },
 	id: string,
 ) => {
 	try {

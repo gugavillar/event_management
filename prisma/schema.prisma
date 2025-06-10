@@ -134,6 +134,8 @@ model VolunteerRole {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   volunteers Volunteer[]
+  leaderId   String?
+  leader     Volunteer?  @relation("RoleLeader", fields: [leaderId], references: [id])
 
   @@map("volunteers_roles")
 }
@@ -155,8 +157,8 @@ model Volunteer {
   updatedAt        DateTime                      @updatedAt
   eventId          String
   event            Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  volunteerRoleId  String?
-  volunteerRole    VolunteerRole?                @relation(fields: [volunteerRoleId], references: [id], onDelete: Cascade)
+  volunteerRole    VolunteerRole[]
+  leaderOf         VolunteerRole[]               @relation("RoleLeader")
   address          VolunteerAddress?
   payments         VolunteerPayment[]
   groupMemberships GroupMember[]                 @relation("GroupMemberToVolunteer")

@@ -188,6 +188,7 @@ export const GroupDrawer = ({
 					<InputField fieldName="name">Nome do grupo</InputField>
 				</div>
 				<FieldArrayContainerWithAppendButton
+					label="Membro"
 					handleAppendField={() => append({ member: '', type: '' })}
 					leftIcon={<UserRoundPlus />}
 				>

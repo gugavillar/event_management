@@ -4,6 +4,10 @@ export const getAllFunctions = async (search: string | null) => {
 	try {
 		return await prisma.volunteerRole.findMany({
 			...(search && { where: { role: { startsWith: search } } }),
+			include: {
+				leader: true,
+				volunteers: true,
+			},
 			orderBy: [{ role: 'asc' }, { createdAt: 'desc' }],
 		})
 	} catch (error) {

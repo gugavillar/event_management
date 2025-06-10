@@ -7,7 +7,14 @@ export const HEADER_LABELS = [
 	{
 		label: 'Função',
 		accessor: 'role',
-		className: 'w-9/12',
+	},
+	{
+		label: 'Líder',
+		accessor: 'leader',
+	},
+	{
+		label: 'Qtd. voluntários',
+		accessor: 'total',
 	},
 	{
 		label: '',
@@ -24,6 +31,8 @@ export const formatTableData = (
 
 	return data?.map((role) => ({
 		id: role.id,
+		leader: role?.leader?.name ?? 'Sem líder',
+		total: role.volunteers.length,
 		role: role.role,
 		actions: (
 			<div className="flex space-x-4">

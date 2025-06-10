@@ -54,7 +54,14 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Endereço: `${volunteer.address?.street}, ${volunteer.address?.number}`,
 			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
 			Bairro: volunteer.address?.neighborhood,
-			Função: volunteer.volunteerRole?.role || 'Sem função',
+			Função: !volunteer?.volunteerRole.length
+				? 'Sem função'
+				: volunteer.volunteerRole
+						?.map(
+							(role) =>
+								`${role.role}${role.leaderId === volunteer.id ? ' - Líder' : ''}`,
+						)
+						.join(', '),
 			Célula: volunteer.cell || 'Nenhuma',
 			Alimentação_Saúde: volunteer.health || 'Não possui',
 			Quarto:

@@ -5,16 +5,16 @@ import { VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerFunctionArgs = {
 	volunteerId: VolunteersAPI['id']
-	roleId: string
+	roles: Array<{ roleId: string }>
 }
 
 export const updateVolunteerFunction = async ({
 	volunteerId,
-	roleId,
+	roles,
 }: UpdateVolunteerFunctionArgs) => {
 	const response = await api.patch(
 		ENDPOINTS.UPDATE_VOLUNTEER_FUNCTION(volunteerId),
-		{ roleId },
+		{ roles },
 	)
 
 	return response.data

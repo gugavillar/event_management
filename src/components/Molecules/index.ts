@@ -1,6 +1,7 @@
 export * from './ApplicationAvatar'
 export * from './ChartContainer'
 export * from './ChartValidation'
+export * from './CheckboxField'
 export * from './ComboBox'
 export * from './CreateParticipantButton'
 export * from './CreateVolunteerButton'
