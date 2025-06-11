@@ -26,7 +26,8 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 		bar: {
 			horizontal: false,
 			columnWidth: '18px',
-			borderRadius: 0,
+			borderRadius: 4,
+			borderRadiusApplication: 'end',
 			dataLabels: {
 				position: 'top',
 			},
@@ -37,17 +38,15 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 	},
 	dataLabels: {
 		enabled: true,
-		textAnchor: 'start',
-		offsetY: -15,
+		textAnchor: 'middle',
+		offsetY: -20,
 		style: {
 			fontSize: '14px',
 			colors: ['#304758'],
 		},
 	},
 	stroke: {
-		show: true,
-		width: 8,
-		colors: ['transparent'],
+		show: false,
 	},
 	xaxis: {
 		type: 'category',
