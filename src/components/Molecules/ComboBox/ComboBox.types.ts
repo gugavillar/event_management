@@ -8,15 +8,16 @@ export type ComboBoxProps<T = string> = Omit<
 	ComponentProps<'select'>,
 	'value' | 'onChange'
 > & {
+	setSelectedValue: (value: T) => void
+	keyOptionValue: string
+	keyOptionLabel: string
 	label?: string
 	error?: string
 	isLoading?: boolean
 	selectedValue?: T
-	setSelectedValue: (value: T) => void
 	options?: Array<ComboBoxOption>
-	keyOptionValue: string
-	keyOptionLabel: string
 	lastItemRef?: (node: HTMLLIElement | null) => void
+	placeholder?: string
 }
 
 export type ComboBoxOptionsProps<T = string> = {

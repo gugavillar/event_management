@@ -111,6 +111,7 @@ export const Rooms = ({ eventId }: { eventId?: string }) => {
 							selectedValue={roomEventId}
 							setSelectedValue={setRoomEventId}
 							lastItemRef={lastItemRef}
+							placeholder="Selecione um evento"
 						/>
 						<Field
 							placeholder="Encontrar membro"

@@ -113,6 +113,7 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 							selectedValue={groupEventId}
 							setSelectedValue={setGroupEventId}
 							lastItemRef={lastItemRef}
+							placeholder="Selecione um evento"
 						/>
 						<Field
 							placeholder="Encontrar membro"

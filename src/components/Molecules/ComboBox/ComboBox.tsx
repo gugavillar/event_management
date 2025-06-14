@@ -74,6 +74,7 @@ export const ComboBox = <T,>({
 	keyOptionValue,
 	lastItemRef,
 	setSelectedValue,
+	placeholder,
 }: ComboBoxProps<T>) => {
 	const [isOpen, setIsOpen] = useState(false)
 
@@ -82,6 +83,8 @@ export const ComboBox = <T,>({
 	const selectLabel =
 		options?.find((opt) => opt.customProps[keyOptionValue] === selectedValue)
 			?.customProps[keyOptionLabel] ?? ''
+
+	const placeholderLabel = placeholder ?? 'Selecione uma opção'
 
 	useClickOutside({ isOpen, toggle: () => setIsOpen(false), containerRef })
 
@@ -97,7 +100,7 @@ export const ComboBox = <T,>({
 					)}
 					onClick={() => setIsOpen((prev) => !prev)}
 				>
-					{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
+					{isLoading ? 'Carregando...' : selectLabel || placeholderLabel}
 					{error ? (
 						<Warning />
 					) : (
