@@ -3,16 +3,20 @@ import { NextRequest } from 'next/server'
 import { updateVolunteerFunction } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { volunteer_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		volunteer_id?: string
+	}>
+}
+
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const body: { roles: Array<{ roleId: string; isLeader: boolean }> } =
 		await request.json()
+	const routeParams = await params.then((res) => res.volunteer_id ?? '')
 
 	return await requestProcess({
 		functions: async () =>
-			await updateVolunteerFunction(body.roles, params.volunteer_id),
+			await updateVolunteerFunction(body.roles, routeParams),
 	})
 }
 

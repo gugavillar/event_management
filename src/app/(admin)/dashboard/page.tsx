@@ -5,24 +5,24 @@ import { HydrationProvider } from '@/providers/HydrationProver'
 import { getDashboardData } from '@/services/queries/dashboard'
 import { getEvents } from '@/services/queries/events'
 
-export default async function DashboardPage({
-	searchParams,
-}: {
-	searchParams: {
-		eventId: string
-	}
-}) {
-	const debounceEventIdValue = searchParams.eventId ?? ''
+type SearchParams = {
+	searchParams: Promise<{
+		eventId?: string
+	}>
+}
+
+export default async function DashboardPage({ searchParams }: SearchParams) {
+	const debounceEventId = await searchParams.then((res) => res.eventId ?? '')
 
 	const [dashboardData, getAllEvents] = await Promise.all([
-		async () => await getDashboardData({ eventId: debounceEventIdValue }),
+		async () => await getDashboardData({ eventId: debounceEventId }),
 		async () => getEvents({ searchEvent: '', page: 1 }),
 	])
 
 	return (
 		<HydrationProvider
 			queryFn={dashboardData}
-			queryKey={[QUERY_KEYS.DASHBOARD, debounceEventIdValue]}
+			queryKey={[QUERY_KEYS.DASHBOARD, debounceEventId]}
 		>
 			<HydrationInfinityProvider
 				queryFn={getAllEvents}

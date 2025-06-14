@@ -5,22 +5,29 @@ import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 import { getVolunteers, getFunctions } from '@/services/queries/volunteers'
 
-export default async function VolunteersPage({
-	searchParams,
-}: {
-	searchParams: {
-		searchVolunteer: string
-		eventId: string
-		statusVolunteer: string
-		roleVolunteer: string
-		pageVolunteer: string
-	}
-}) {
-	const debounceSearchValue = searchParams.searchVolunteer ?? ''
-	const debounceEventIdValue = searchParams.eventId ?? ''
-	const debounceStatusValue = searchParams.statusVolunteer ?? ''
-	const debounceRoleValue = searchParams.roleVolunteer ?? ''
-	const page = generatePage(searchParams.pageVolunteer)
+type SearchParams = {
+	searchParams: Promise<{
+		searchVolunteer?: string
+		eventId?: string
+		statusVolunteer?: string
+		roleVolunteer?: string
+		pageVolunteer?: string
+	}>
+}
+
+export default async function VolunteersPage({ searchParams }: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		searchVolunteer: res.searchVolunteer ?? '',
+		eventId: res.eventId ?? '',
+		statusVolunteer: res.statusVolunteer ?? '',
+		roleVolunteer: res.roleVolunteer ?? '',
+		pageVolunteer: res.pageVolunteer ?? '',
+	}))
+	const debounceSearchValue = params.searchVolunteer
+	const debounceEventIdValue = params.eventId
+	const debounceStatusValue = params.statusVolunteer
+	const debounceRoleValue = params.roleVolunteer
+	const page = generatePage(params.pageVolunteer)
 
 	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),

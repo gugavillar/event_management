@@ -3,16 +3,20 @@ import { NextRequest } from 'next/server'
 import { updateParticipantPaymentById } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { payment_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		payment_id?: string
+	}>
+}
+
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const body = await request.json()
+	const routeParam = await params.then((res) => res.payment_id ?? '')
 
 	return await requestProcess({
 		functions: async () =>
 			await updateParticipantPaymentById({
-				paymentId: params.payment_id,
+				paymentId: routeParam,
 				values: body,
 			}),
 	})

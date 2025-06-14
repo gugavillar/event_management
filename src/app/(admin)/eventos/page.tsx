@@ -3,13 +3,20 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 
-export default async function EventsPage({
-	searchParams,
-}: {
-	searchParams: { searchEvent: string; pageEvent: string }
-}) {
-	const debounceValue = searchParams.searchEvent ?? ''
-	const page = generatePage(searchParams.pageEvent)
+type SearchParams = {
+	searchParams: Promise<{
+		searchEvent?: string
+		pageEvent?: string
+	}>
+}
+
+export default async function EventsPage({ searchParams }: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		searchEvent: res.searchEvent ?? '',
+		pageEvent: res.pageEvent ?? '',
+	}))
+	const debounceValue = params.searchEvent
+	const page = generatePage(params.pageEvent)
 
 	const getAllEvents = async () =>
 		getEvents({ searchEvent: debounceValue, page })

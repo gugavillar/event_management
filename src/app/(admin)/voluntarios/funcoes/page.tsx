@@ -3,12 +3,19 @@ import { QUERY_KEYS } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getFunctions } from '@/services/queries/volunteers'
 
+type SearchParams = {
+	searchParams: Promise<{
+		searchFunction?: string
+	}>
+}
+
 export default async function VolunteersFunctionsPage({
 	searchParams,
-}: {
-	searchParams: { searchFunction: string }
-}) {
-	const debounceValue = searchParams.searchFunction ?? ''
+}: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		searchFunction: res.searchFunction ?? '',
+	}))
+	const debounceValue = params.searchFunction
 
 	const getAllFunctions = async () =>
 		getFunctions({ searchFunction: debounceValue })

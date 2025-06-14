@@ -3,23 +3,25 @@ import { NextRequest } from 'next/server'
 import { removeFunctionById, updateFunctionById } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleDelete = async (
-	_: NextRequest,
-	{ params }: { params: { function_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		function_id?: string
+	}>
+}
+
+const handleDelete = async (_: NextRequest, { params }: Params) => {
+	const routeParams = await params.then((res) => res.function_id ?? '')
 	return await requestProcess({
-		functions: async () => removeFunctionById(params.function_id),
+		functions: async () => removeFunctionById(routeParams),
 	})
 }
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { function_id: string } },
-) => {
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const body = await request.json()
+	const routeParams = await params.then((res) => res.function_id ?? '')
 
 	return await requestProcess({
-		functions: async () => await updateFunctionById(body, params.function_id),
+		functions: async () => await updateFunctionById(body, routeParams),
 	})
 }
 

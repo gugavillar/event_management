@@ -5,15 +5,19 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import { resetUserPassword } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { user_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		user_id?: string
+	}>
+}
+
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const session = await getServerSession(authOptions)
+	const routeParam = await params.then((res) => res.user_id ?? '')
 
 	return await requestProcess({
 		functions: async () =>
-			await resetUserPassword(params.user_id, session?.user?.id as string),
+			await resetUserPassword(routeParam, session?.user?.id as string),
 		isProtectedRoute: true,
 	})
 }

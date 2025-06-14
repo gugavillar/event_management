@@ -10,7 +10,7 @@ export const api = axios.create({
 api.interceptors.request.use(async (config) => {
 	if (isServer) {
 		const { cookies } = await import('next/headers')
-		const headersCookies = cookies().toString()
+		const headersCookies = (await cookies()).toString()
 		config.headers.Cookie = headersCookies
 	}
 	return config
