@@ -100,6 +100,7 @@ export const Participants = () => {
 		'name',
 		'id',
 		true,
+		'Todos os eventos',
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({

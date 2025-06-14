@@ -64,6 +64,7 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 		'name',
 		'id',
 	)
+
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,

@@ -26,6 +26,7 @@ export const Dashboard = () => {
 		'name',
 		'id',
 		true,
+		'Todos os eventos',
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({

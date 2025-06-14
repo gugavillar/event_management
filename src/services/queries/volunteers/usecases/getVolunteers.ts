@@ -6,6 +6,7 @@ type GetVolunteersParams = {
 	eventId?: string
 	searchVolunteer?: string
 	statusVolunteer?: string
+	roleVolunteer?: string
 	hasNoRoom?: boolean
 	hasNoGroup?: boolean
 	page: number
@@ -14,6 +15,7 @@ export const getVolunteers = async ({
 	eventId,
 	searchVolunteer,
 	statusVolunteer,
+	roleVolunteer,
 	hasNoRoom,
 	hasNoGroup,
 	page = 1,
@@ -23,6 +25,7 @@ export const getVolunteers = async ({
 			...(eventId && { eventId }),
 			...(searchVolunteer && { searchVolunteer }),
 			...(statusVolunteer && { statusVolunteer }),
+			...(roleVolunteer && { roleVolunteer }),
 			...(hasNoGroup && { hasNoGroup }),
 			...(hasNoRoom && { hasNoRoom }),
 			pageVolunteer: page,

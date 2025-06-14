@@ -123,6 +123,7 @@ export const GroupDrawer = ({
 		'name',
 		'id',
 	)
+
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,

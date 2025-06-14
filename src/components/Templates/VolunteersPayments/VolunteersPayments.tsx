@@ -57,6 +57,7 @@ export const VolunteersPayments = () => {
 		'name',
 		'id',
 		true,
+		'Todos os eventos',
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({

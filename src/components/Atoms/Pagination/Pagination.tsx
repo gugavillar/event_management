@@ -48,7 +48,7 @@ export const Pagination = ({
 	})
 	return (
 		<nav
-			className="!mt-auto flex w-full items-center justify-center -space-x-px"
+			className="!mt-auto flex w-full items-center justify-center gap-3 -space-x-px"
 			aria-label="Pagination"
 		>
 			<button

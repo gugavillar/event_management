@@ -4,6 +4,7 @@ export const getAllVolunteers = async (
 	eventId: string | null,
 	search: string | null,
 	status: CHECK_IN_STATUS | null,
+	role: string | null,
 	hasNoGroup: boolean | null,
 	hasNoRoom: boolean | null,
 	page = 1,
@@ -18,6 +19,9 @@ export const getAllVolunteers = async (
 					...(search && { name: { startsWith: search } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
+					}),
+					...(role && {
+						volunteerRole: { some: { role: { startsWith: role } } },
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
@@ -37,6 +41,9 @@ export const getAllVolunteers = async (
 					...(search && { name: { startsWith: search } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
+					}),
+					...(role && {
+						volunteerRole: { some: { role: { startsWith: role } } },
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),

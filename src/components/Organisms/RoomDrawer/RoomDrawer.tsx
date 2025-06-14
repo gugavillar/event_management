@@ -121,6 +121,7 @@ export const RoomDrawer = ({
 		'name',
 		'id',
 	)
+
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,

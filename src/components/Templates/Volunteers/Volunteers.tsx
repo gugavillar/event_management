@@ -21,10 +21,16 @@ import {
 	VolunteerType,
 } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
-import { formatterComboBoxValues } from '@/formatters'
+import {
+	formatterComboBoxValues,
+	formatterFieldSelectValues,
+} from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import { useGetVolunteers } from '@/services/queries/volunteers'
+import {
+	useGetFunctions,
+	useGetVolunteers,
+} from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
@@ -62,6 +68,7 @@ export const Volunteers = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
+	const { data: roles } = useGetFunctions()
 	const {
 		data: volunteers,
 		isLoading,
@@ -71,6 +78,8 @@ export const Volunteers = () => {
 		eventId,
 		status,
 		setStatus,
+		role,
+		setRole,
 		page,
 		setPage,
 	} = useGetVolunteers()
@@ -106,7 +115,10 @@ export const Volunteers = () => {
 		'name',
 		'id',
 		true,
+		'Todos os eventos',
 	)
+
+	const formattedRoles = formatterFieldSelectValues(roles, 'role', 'role')
 
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
@@ -186,24 +198,30 @@ export const Volunteers = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
-					<>
-						<ComboBox
-							keyOptionLabel="label"
-							keyOptionValue="value"
-							options={formattedEvents}
-							selectedValue={eventId}
-							setSelectedValue={setEventId}
-							lastItemRef={lastItemRef}
-						/>
-						<Select
-							placeholder="Selecione o status"
-							options={StatusSelectOptions}
-							value={status}
-							onChange={(e) => setStatus(e.target.value)}
-						/>
-					</>
+					<ComboBox
+						keyOptionLabel="label"
+						keyOptionValue="value"
+						options={formattedEvents}
+						selectedValue={eventId}
+						setSelectedValue={setEventId}
+						lastItemRef={lastItemRef}
+					/>
 				}
 			>
+				<div className="flex items-center justify-between gap-8">
+					<Select
+						placeholder="Selecione o status"
+						options={StatusSelectOptions}
+						value={status}
+						onChange={(e) => setStatus(e.target.value)}
+					/>
+					<Select
+						placeholder="Selecione a função"
+						options={formattedRoles}
+						value={role}
+						onChange={(e) => setRole(e.target.value)}
+					/>
+				</div>
 				<ListManager
 					bodyData={formattedVolunteers}
 					headerLabels={HEADER_LABELS}

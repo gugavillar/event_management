@@ -12,12 +12,14 @@ export default async function VolunteersPage({
 		searchVolunteer: string
 		eventId: string
 		statusVolunteer: string
+		roleVolunteer: string
 		pageVolunteer: string
 	}
 }) {
 	const debounceSearchValue = searchParams.searchVolunteer ?? ''
 	const debounceEventIdValue = searchParams.eventId ?? ''
 	const debounceStatusValue = searchParams.statusVolunteer ?? ''
+	const debounceRoleValue = searchParams.roleVolunteer ?? ''
 	const page = generatePage(searchParams.pageVolunteer)
 
 	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
@@ -27,6 +29,7 @@ export default async function VolunteersPage({
 				searchVolunteer: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				statusVolunteer: debounceStatusValue,
+				roleVolunteer: debounceRoleValue,
 				page,
 			}),
 		async () => getFunctions({ searchFunction: '' }),
@@ -45,6 +48,7 @@ export default async function VolunteersPage({
 					debounceEventIdValue,
 					debounceSearchValue,
 					debounceStatusValue,
+					debounceRoleValue,
 					page,
 				]}
 			>
