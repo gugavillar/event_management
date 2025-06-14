@@ -102,3 +102,8 @@ export const PIX = {
 	name: 'Igreja Anglicana Vida',
 	city: 'Gravatá',
 }
+
+export const NO_FUNCTION = {
+	label: 'Sem função',
+	value: 'Sem funcao',
+}

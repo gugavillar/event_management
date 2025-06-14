@@ -20,7 +20,12 @@ import {
 	VolunteerSchema,
 	VolunteerType,
 } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
-import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
+import {
+	MODALS_IDS,
+	NO_FUNCTION,
+	overlayOpen,
+	StatusSelectOptions,
+} from '@/constants'
 import {
 	formatterComboBoxValues,
 	formatterFieldSelectValues,
@@ -119,6 +124,7 @@ export const Volunteers = () => {
 	)
 
 	const formattedRoles = formatterFieldSelectValues(roles, 'role', 'role')
+	formattedRoles.unshift(NO_FUNCTION)
 
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),

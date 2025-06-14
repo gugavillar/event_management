@@ -1,4 +1,9 @@
-import { CHECK_IN_STATUS, LIMIT_PER_PAGE, prisma } from '@/constants'
+import {
+	CHECK_IN_STATUS,
+	LIMIT_PER_PAGE,
+	NO_FUNCTION,
+	prisma,
+} from '@/constants'
 
 export const getAllVolunteers = async (
 	eventId: string | null,
@@ -21,7 +26,10 @@ export const getAllVolunteers = async (
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
 					...(role && {
-						volunteerRole: { some: { role: { startsWith: role } } },
+						volunteerRole:
+							role === NO_FUNCTION.value
+								? { none: {} }
+								: { some: { role: { startsWith: role } } },
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
