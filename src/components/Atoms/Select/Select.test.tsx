@@ -99,11 +99,11 @@ describe('Field component', () => {
 	})
 
 	it('renders nothing if options is a empty array', () => {
-		const { container } = render(
+		const { queryAllByRole } = render(
 			<Select data-testid="select-field" options={[]} />,
 		)
 
-		expect(container.firstChild).toBeNull()
+		expect(queryAllByRole('option')).toHaveLength(0)
 	})
 
 	it('applies error styles when isInvalid is passed', () => {

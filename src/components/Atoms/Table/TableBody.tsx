@@ -42,7 +42,11 @@ export const TableBody = ({
 						className="place-items-center py-36 text-center"
 						data-testid="no-data"
 					>
-						{isLoading ? <Spinner /> : 'Nenhum registro encontrado'}
+						{isLoading ? (
+							<Spinner data-testid="spinner" />
+						) : (
+							'Nenhum registro encontrado'
+						)}
 					</td>
 				</tr>
 			) : (
