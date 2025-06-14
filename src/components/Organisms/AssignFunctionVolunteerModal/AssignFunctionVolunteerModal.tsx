@@ -10,7 +10,7 @@ import {
 } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { Button, Header, Modal } from '@/components/Atoms'
+import { Button, Header, Modal, Text } from '@/components/Atoms'
 import {
 	CheckboxField,
 	FieldArrayContainerWithAppendButton,
@@ -72,6 +72,23 @@ export const AssignFunctionVolunteerModal = memo(
 			)
 		}
 
+		const handleRemoveFunctions = async () => {
+			if (!selectedVolunteer) return
+
+			await update(
+				{ volunteerId: selectedVolunteer, roles: [], onlyRemove: true },
+				{
+					onSuccess: () => {
+						methods.reset()
+						setSelectedVolunteer(null)
+						toast.success('Funções removidas com sucesso!')
+						overlayClose(modalId)
+					},
+					onError: () => toast.error('Erro ao remover funções'),
+				},
+			)
+		}
+
 		const formattedFunctions = formatterFieldSelectValues(data, 'role', 'id')
 
 		return (
@@ -79,9 +96,15 @@ export const AssignFunctionVolunteerModal = memo(
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
-							<Header as="h3" className="text-2xl">
-								Atribuir funções ao voluntário
-							</Header>
+							<div className="space-y-4 text-center">
+								<Header as="h3" className="text-2xl">
+									Atribuir ou remover funções
+								</Header>
+								<Text>
+									Selecione uma ou mais funções e clique em Atribuir. Para
+									remover todas as funções, clique em Remover.
+								</Text>
+							</div>
 							<FieldArrayContainerWithAppendButton
 								className="w-full"
 								label="Função"
@@ -122,15 +145,26 @@ export const AssignFunctionVolunteerModal = memo(
 									)
 								})}
 							</FieldArrayContainerWithAppendButton>
-							<Button
-								className="w-full max-w-40 items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-								type="submit"
-								onClick={methods.handleSubmit(handleSubmit)}
-								disabled={!methods.formState.isValid}
-								isLoading={isPending}
-							>
-								Atribuir
-							</Button>
+							<div className="flex w-full items-center justify-between gap-x-8">
+								<Button
+									type="button"
+									className="w-full items-center justify-center bg-red-500 text-gray-50 transition-colors duration-500 hover:bg-red-400 hover:text-slate-800"
+									disabled={isPending}
+									isLoading={isPending}
+									onClick={handleRemoveFunctions}
+								>
+									Remover
+								</Button>
+								<Button
+									className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+									type="submit"
+									onClick={methods.handleSubmit(handleSubmit)}
+									disabled={!methods.formState.isValid}
+									isLoading={isPending}
+								>
+									Atribuir
+								</Button>
+							</div>
 						</div>
 					</div>
 				</FormProvider>

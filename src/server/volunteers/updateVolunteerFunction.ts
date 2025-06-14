@@ -5,6 +5,7 @@ import { prisma } from '@/constants'
 export const updateVolunteerFunction = async (
 	roles: Array<{ roleId: string; isLeader: boolean }>,
 	id: string,
+	onlyRemove?: boolean,
 ) => {
 	try {
 		z.object({
@@ -15,6 +16,7 @@ export const updateVolunteerFunction = async (
 					isLeader: z.boolean(),
 				}),
 			),
+			onlyRemove: z.boolean().optional(),
 		}).parse({ id, roles })
 
 		return await prisma.$transaction(async (tx) => {
@@ -42,6 +44,10 @@ export const updateVolunteerFunction = async (
 						},
 					})
 				}
+			}
+
+			if (onlyRemove) {
+				return
 			}
 
 			for (const { roleId, isLeader } of roles) {
