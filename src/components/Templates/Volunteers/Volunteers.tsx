@@ -208,7 +208,7 @@ export const Volunteers = () => {
 					/>
 				}
 			>
-				<div className="flex items-center justify-between gap-8">
+				<div className="flex flex-col items-center justify-between gap-8 md:flex-row">
 					<Select
 						placeholder="Selecione o status"
 						options={StatusSelectOptions}

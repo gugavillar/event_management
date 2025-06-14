@@ -4,32 +4,32 @@ import { getRoomById, removeRoomById, updateRoomById } from '@/server'
 import { FormRoom } from '@/services/queries/rooms/rooms.types'
 import { requestProcess } from '@/utils/prisma'
 
-const handleDelete = async (
-	_: NextRequest,
-	{ params }: { params: { room_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		room_id?: string
+	}>
+}
+
+const handleDelete = async (_: NextRequest, { params }: Params) => {
+	const routeParam = await params.then((res) => res.room_id ?? '')
 	return await requestProcess({
-		functions: async () => removeRoomById(params.room_id),
+		functions: async () => removeRoomById(routeParam),
 	})
 }
 
-const handlerGet = async (
-	_: NextRequest,
-	{ params }: { params: { room_id: string } },
-) => {
+const handlerGet = async (_: NextRequest, { params }: Params) => {
+	const routeParam = await params.then((res) => res.room_id ?? '')
 	return await requestProcess({
-		functions: async () => await getRoomById(params.room_id),
+		functions: async () => await getRoomById(routeParam),
 	})
 }
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { room_id: string } },
-) => {
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const body: FormRoom = await request.json()
+	const routeParam = await params.then((res) => res.room_id ?? '')
 
 	return await requestProcess({
-		functions: async () => await updateRoomById(body, params.room_id),
+		functions: async () => await updateRoomById(body, routeParam),
 	})
 }
 

@@ -6,22 +6,27 @@ import { ExternalVolunteerForm } from '@/components/Templates'
 import { eventPermitCreateRegistration } from '@/constants'
 import { getEventById } from '@/server'
 
-export default async function RegistrationPage({
-	params,
-}: {
-	params: { event_id: string }
-}) {
+type Params = {
+	params: Promise<{
+		event_id?: string
+	}>
+}
+
+export default async function RegistrationPage({ params }: Params) {
+	const pageParams = await params.then((res) => ({
+		event_id: res.event_id ?? '',
+	}))
 	const isValidEventId = z
 		.object({
 			event_id: z.string().uuid(),
 		})
-		.safeParse({ event_id: params.event_id })
+		.safeParse({ event_id: pageParams.event_id })
 
 	if (!isValidEventId.success) {
 		notFound()
 	}
 
-	const event = await getEventById(params.event_id)
+	const event = await getEventById(pageParams.event_id)
 
 	const isRegistrationPermitted = eventPermitCreateRegistration(event)
 

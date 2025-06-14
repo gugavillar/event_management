@@ -3,12 +3,16 @@ import { NextRequest } from 'next/server'
 import { getExportParticipantsData } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handlerGet = async (
-	_: NextRequest,
-	{ params }: { params: { event_id: string } },
-) => {
+type Param = {
+	params: Promise<{
+		event_id?: string
+	}>
+}
+
+const handlerGet = async (_: NextRequest, { params }: Param) => {
+	const routeParams = await params.then((res) => res.event_id ?? '')
 	return await requestProcess({
-		functions: async () => await getExportParticipantsData(params.event_id),
+		functions: async () => await getExportParticipantsData(routeParams),
 	})
 }
 

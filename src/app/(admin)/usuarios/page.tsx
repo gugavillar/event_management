@@ -7,16 +7,23 @@ import { generatePage, QUERY_KEYS, ROLES } from '@/constants'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getUsers } from '@/services/queries/users'
 
-export default async function UsersPage({
-	searchParams,
-}: {
-	searchParams: { searchUser: string; pageUser: string }
-}) {
-	const debounceValue = searchParams.searchUser ?? ''
-	const page = generatePage(searchParams.pageUser)
+type SearchParams = {
+	searchParams: Promise<{
+		searchUser?: string
+		pageUser?: string
+	}>
+}
+
+export default async function UsersPage({ searchParams }: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		searchUser: res.searchUser ?? '',
+		pageUser: res.pageUser ?? '',
+	}))
+	const session = await getServerSession(authOptions)
+	const debounceValue = params.searchUser
+	const page = generatePage(params.pageUser)
 
 	const getAllUsers = async () => getUsers({ searchUser: debounceValue, page })
-	const session = await getServerSession(authOptions)
 
 	if (session?.user?.role !== ROLES.ADMIN) {
 		redirect('/dashboard')

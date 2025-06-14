@@ -4,32 +4,32 @@ import { getEventById, removeEventById, updateEventById } from '@/server'
 import { FormEvent } from '@/services/queries/events/event.type'
 import { requestProcess } from '@/utils/prisma'
 
-const handlerGet = async (
-	_: NextRequest,
-	{ params }: { params: { event_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		event_id?: string
+	}>
+}
+
+const handlerGet = async (_: NextRequest, { params }: Params) => {
+	const routeParams = await params.then((res) => res.event_id ?? '')
 	return await requestProcess({
-		functions: async () => await getEventById(params.event_id),
+		functions: async () => await getEventById(routeParams),
 	})
 }
 
-const handleDelete = async (
-	_: NextRequest,
-	{ params }: { params: { event_id: string } },
-) => {
+const handleDelete = async (_: NextRequest, { params }: Params) => {
+	const routeParams = await params.then((res) => res.event_id ?? '')
 	return await requestProcess({
-		functions: async () => removeEventById(params.event_id),
+		functions: async () => removeEventById(routeParams),
 	})
 }
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { event_id: string } },
-) => {
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const body: FormEvent = await request.json()
+	const routeParams = await params.then((res) => res.event_id ?? '')
 
 	return await requestProcess({
-		functions: async () => await updateEventById(body, params.event_id),
+		functions: async () => await updateEventById(body, routeParams),
 	})
 }
 

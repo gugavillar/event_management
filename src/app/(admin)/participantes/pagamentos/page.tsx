@@ -5,20 +5,28 @@ import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 import { getPayments } from '@/services/queries/participants'
 
+type SearchParams = {
+	searchParams: Promise<{
+		searchParticipant?: string
+		eventId?: string
+		paymentType?: string
+		pageParticipantPayment?: string
+	}>
+}
+
 export default async function ParticipantsPaymentsPage({
 	searchParams,
-}: {
-	searchParams: {
-		searchParticipant: string
-		eventId: string
-		paymentType: string
-		pageParticipantPayment: string
-	}
-}) {
-	const debounceSearchValue = searchParams.searchParticipant ?? ''
-	const debounceEventIdValue = searchParams.eventId ?? ''
-	const debouncePaymentType = searchParams.paymentType ?? ''
-	const page = generatePage(searchParams.pageParticipantPayment)
+}: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		searchParticipant: res.searchParticipant ?? '',
+		eventId: res.eventId ?? '',
+		paymentType: res.paymentType ?? '',
+		pageParticipantPayment: res.pageParticipantPayment ?? '',
+	}))
+	const debounceSearchValue = params.searchParticipant
+	const debounceEventIdValue = params.eventId
+	const debouncePaymentType = params.paymentType
+	const page = generatePage(params.pageParticipantPayment)
 
 	const [getAllEvents, getAllPayments] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),

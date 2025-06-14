@@ -6,20 +6,20 @@ import { ROLES } from '@/constants'
 import { updateUserRole } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { user_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		user_id?: string
+	}>
+}
+
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const session = await getServerSession(authOptions)
 	const body: { role: ROLES } = await request.json()
+	const routeParam = await params.then((res) => res.user_id ?? '')
 
 	return await requestProcess({
 		functions: async () =>
-			await updateUserRole(
-				params.user_id,
-				body.role,
-				session?.user?.id as string,
-			),
+			await updateUserRole(routeParam, body.role, session?.user?.id as string),
 		isProtectedRoute: true,
 	})
 }

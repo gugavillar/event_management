@@ -7,13 +7,21 @@ import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
 import { getGroupByEventId } from '@/services/queries/groups'
 
-export default async function GroupsPage({
-	searchParams,
-}: {
-	searchParams: { groupEventId: string; searchMemberGroup: string }
-}) {
-	const eventId = searchParams.groupEventId ?? ''
-	const searchMemberGroup = searchParams.searchMemberGroup ?? ''
+type SearchParams = {
+	searchParams: Promise<{
+		groupEventId?: string
+		searchMemberGroup?: string
+	}>
+}
+
+export default async function GroupsPage({ searchParams }: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		groupEventId: res.groupEventId ?? '',
+		searchMemberGroup: res.searchMemberGroup ?? '',
+	}))
+	const eventId = params.groupEventId
+	const searchMemberGroup = params.searchMemberGroup
+
 	const [getAllEvents, getGroups] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () => getGroupByEventId(eventId as UUID, searchMemberGroup),

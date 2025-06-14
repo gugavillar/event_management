@@ -7,33 +7,32 @@ import {
 } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleDelete = async (
-	_: NextRequest,
-	{ params }: { params: { participant_id: string } },
-) => {
+type Params = {
+	params: Promise<{
+		participant_id?: string
+	}>
+}
+
+const handleDelete = async (_: NextRequest, { params }: Params) => {
+	const routeParam = await params.then((res) => res.participant_id ?? '')
 	return await requestProcess({
-		functions: async () => removeParticipantById(params.participant_id),
+		functions: async () => removeParticipantById(routeParam),
 	})
 }
 
-const handleGet = async (
-	_: NextRequest,
-	{ params }: { params: { participant_id: string } },
-) => {
+const handleGet = async (_: NextRequest, { params }: Params) => {
+	const routeParam = await params.then((res) => res.participant_id ?? '')
 	return await requestProcess({
-		functions: async () => await getParticipantById(params.participant_id),
+		functions: async () => await getParticipantById(routeParam),
 	})
 }
 
-const handleUpdate = async (
-	request: NextRequest,
-	{ params }: { params: { participant_id: string } },
-) => {
+const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const body = await request.json()
+	const routeParam = await params.then((res) => res.participant_id ?? '')
 
 	return await requestProcess({
-		functions: async () =>
-			await updateParticipantById(body, params.participant_id),
+		functions: async () => await updateParticipantById(body, routeParam),
 	})
 }
 
