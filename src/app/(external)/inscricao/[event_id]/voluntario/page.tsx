@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
 import { ExternalVolunteerForm } from '@/components/Templates'
-import { eventPermitCreateRegistration } from '@/constants'
+import { eventPermitCreateRegistration, MEMBERS } from '@/constants'
 import { getEventById } from '@/server'
 
 type Params = {
@@ -28,7 +28,10 @@ export default async function RegistrationPage({ params }: Params) {
 
 	const event = await getEventById(pageParams.event_id)
 
-	const isRegistrationPermitted = eventPermitCreateRegistration(event)
+	const isRegistrationPermitted = eventPermitCreateRegistration(
+		event,
+		MEMBERS.VOLUNTEER,
+	)
 
 	if (!isRegistrationPermitted) {
 		notFound()

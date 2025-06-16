@@ -1,5 +1,7 @@
 import { isToday } from 'date-fns'
 
+import { MEMBERS } from './status'
+
 export const overlayClose = async (elementId: string) => {
 	const overlay = await import('preline/preline')
 	overlay.HSOverlay.close(document.getElementById(elementId) as HTMLElement)
@@ -17,8 +19,16 @@ export const generatePage = (page: string | undefined) => {
 	return Number(page)
 }
 
-export const eventPermitCreateRegistration = (event: any) => {
+export const eventPermitCreateRegistration = (event: any, type: MEMBERS) => {
 	if (!event) return false
+
+	if (type === MEMBERS.PARTICIPANT) {
+		return event.isParticipantRegistrationOpen
+	}
+
+	if (type === MEMBERS.VOLUNTEER) {
+		return event.isVolunteerRegistrationOpen
+	}
 
 	const isStartDateToday = isToday(new Date(event.initialDate))
 

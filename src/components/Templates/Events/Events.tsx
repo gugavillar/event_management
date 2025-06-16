@@ -1,6 +1,7 @@
 'use client'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
+import toast from 'react-hot-toast'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
@@ -9,8 +10,8 @@ import {
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
-import { useGetEvents } from '@/services/queries/events'
+import { MEMBERS, MembersTypes, MODALS_IDS, overlayOpen } from '@/constants'
+import { useGetEvents, useUpdateRegistration } from '@/services/queries/events'
 import { EventsAPI } from '@/services/queries/events/event.type'
 
 import { formatTableData, HEADER_LABELS } from './Events.utils'
@@ -23,6 +24,7 @@ export const Events = () => {
 	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(
 		null,
 	)
+	const { update } = useUpdateRegistration()
 	const {
 		data: events,
 		isLoading,
@@ -49,11 +51,36 @@ export const Events = () => {
 		[],
 	)
 
+	const handleBlockOrOpenRegistration = useCallback(
+		async (
+			id: EventsAPI['id'],
+			memberType: MEMBERS,
+			action: 'open' | 'close',
+		) => {
+			console.log(id, memberType, action)
+			await update(
+				{ eventId: id, memberType, action },
+				{
+					onSuccess: () => {
+						toast.success(
+							`Inscrição de ${MembersTypes[memberType].label.toLowerCase()} ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`,
+						)
+					},
+					onError: () => {
+						toast.error('Falha ao tentar bloquear ou abrir inscrição')
+					},
+				},
+			)
+		},
+		[update],
+	)
+
 	const formatData = formatTableData(
 		events?.data,
 		handleEditEvent,
 		handleOpenModalToDeleteEvent,
 		handleOpenSelectedLink,
+		handleBlockOrOpenRegistration,
 	)
 
 	const hasMoreThanOnePage = !!events?.totalPages && events.totalPages > 1

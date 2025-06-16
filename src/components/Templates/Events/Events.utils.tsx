@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
 
 import { Dropdown, Tooltip } from '@/components/Atoms'
-import { GenderType } from '@/constants'
+import { GenderType, MEMBERS } from '@/constants'
 import { currencyValue } from '@/formatters'
 import { EventsAPI } from '@/services/queries/events/event.type'
 
@@ -46,6 +46,11 @@ export const formatTableData = (
 		id: EventsAPI['id'],
 		type: 'participante' | 'voluntario',
 	) => void,
+	handleBlockOrOpenRegistration: (
+		id: EventsAPI['id'],
+		memberType: MEMBERS,
+		action: 'open' | 'close',
+	) => void,
 ) => {
 	if (!data) return []
 
@@ -65,17 +70,45 @@ export const formatTableData = (
 								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 								onClick={() => handleOpenLink(event.id, 'participante')}
 							>
-								Participante
+								Inscrição participantes
+							</p>
+							<p
+								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								onClick={() =>
+									handleBlockOrOpenRegistration(
+										event.id,
+										MEMBERS.PARTICIPANT,
+										event.isParticipantRegistrationOpen ? 'close' : 'open',
+									)
+								}
+							>
+								{event.isParticipantRegistrationOpen
+									? 'Fechar inscrição participantes'
+									: 'Abrir inscrição participantes'}
 							</p>
 							<p
 								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 								onClick={() => handleOpenLink(event.id, 'voluntario')}
 							>
-								Voluntário
+								Inscrição voluntários
+							</p>
+							<p
+								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								onClick={() =>
+									handleBlockOrOpenRegistration(
+										event.id,
+										MEMBERS.VOLUNTEER,
+										event.isVolunteerRegistrationOpen ? 'close' : 'open',
+									)
+								}
+							>
+								{event.isVolunteerRegistrationOpen
+									? 'Fechar inscrição voluntários'
+									: 'Abrir inscrição voluntários'}
 							</p>
 						</>
 					</Dropdown>
-					<Tooltip>Links de inscrição</Tooltip>
+					<Tooltip>Ações de links</Tooltip>
 				</div>
 				<div className="hs-tooltip">
 					<SquarePen

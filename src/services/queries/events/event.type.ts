@@ -19,6 +19,8 @@ export type EventsAPI = {
 	finalDate: string
 	participantPrice: string
 	volunteerPrice: string
+	isParticipantRegistrationOpen: boolean
+	isVolunteerRegistrationOpen: boolean
 	createdAt: string
 	updatedAt: string
 	userId: UUID

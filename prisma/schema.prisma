@@ -51,23 +51,25 @@ model User {
 }
 
 model Event {
-  id                  String               @id @default(uuid())
-  name                String               @unique
-  gender              Gender
-  initialDate         DateTime
-  finalDate           DateTime
-  participantPrice    Decimal
-  volunteerPrice      Decimal
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  userId              String
-  user                User                 @relation("UserToEvent", fields: [userId], references: [id])
-  participants        Participant[]
-  volunteers          Volunteer[]
-  participantPayments ParticipantPayment[]
-  volunteerPayments   VolunteerPayment[]
-  groups              Group[]              @relation("GroupToEvent")
-  room                Room[]               @relation("RoomToEvent")
+  id                            String               @id @default(uuid())
+  name                          String               @unique
+  gender                        Gender
+  initialDate                   DateTime
+  finalDate                     DateTime
+  participantPrice              Decimal
+  volunteerPrice                Decimal
+  isParticipantRegistrationOpen Boolean              @default(true)
+  isVolunteerRegistrationOpen   Boolean              @default(true)
+  createdAt                     DateTime             @default(now())
+  updatedAt                     DateTime             @updatedAt
+  userId                        String
+  user                          User                 @relation("UserToEvent", fields: [userId], references: [id])
+  participants                  Participant[]
+  volunteers                    Volunteer[]
+  participantPayments           ParticipantPayment[]
+  volunteerPayments             VolunteerPayment[]
+  groups                        Group[]              @relation("GroupToEvent")
+  room                          Room[]               @relation("RoomToEvent")
 
   @@map("events")
 }
