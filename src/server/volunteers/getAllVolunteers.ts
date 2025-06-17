@@ -21,7 +21,7 @@ export const getAllVolunteers = async (
 			prisma.volunteer.findMany({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { startsWith: search } }),
+					...(search && { name: { contains: search } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
@@ -29,7 +29,7 @@ export const getAllVolunteers = async (
 						volunteerRole:
 							role === NO_FUNCTION.value
 								? { none: {} }
-								: { some: { role: { startsWith: role } } },
+								: { some: { role: { contains: role } } },
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
@@ -46,12 +46,12 @@ export const getAllVolunteers = async (
 			prisma.volunteer.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { startsWith: search } }),
+					...(search && { name: { contains: search } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
 					...(role && {
-						volunteerRole: { some: { role: { startsWith: role } } },
+						volunteerRole: { some: { role: { contains: role } } },
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),

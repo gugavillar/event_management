@@ -13,7 +13,7 @@ export const getAllParticipantsPayments = async (
 			prisma.participantPayment.findMany({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { participant: { name: { startsWith: search } } }),
+					...(search && { participant: { name: { contains: search } } }),
 					...(paymentType && {
 						paymentType:
 							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
@@ -30,7 +30,7 @@ export const getAllParticipantsPayments = async (
 			prisma.participantPayment.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { participant: { name: { startsWith: search } } }),
+					...(search && { participant: { name: { contains: search } } }),
 					...(paymentType && {
 						paymentType:
 							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,

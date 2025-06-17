@@ -8,7 +8,7 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 			prisma.user.findMany({
 				...(search && {
 					where: {
-						name: { startsWith: search },
+						name: { contains: search },
 					},
 					select: {
 						id: true,
@@ -41,7 +41,7 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 			prisma.user.count({
 				...(search && {
 					where: {
-						name: { startsWith: search },
+						name: { contains: search },
 					},
 				}),
 			}),
