@@ -6,6 +6,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteFunction } from '@/services/queries/volunteers'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 type FunctionDeleteModalProps = {
 	modalId: string
@@ -31,7 +32,8 @@ export const FunctionDeleteModal = memo(
 					toast.success('Função excluída com sucesso!')
 					overlayClose(modalId)
 				},
-				onError: () => toast.error('Erro ao excluir a função'),
+				onError: (error) =>
+					generateToastError(error, 'Erro ao excluir a função'),
 			})
 		}
 

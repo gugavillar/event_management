@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteEvent } from '@/services/queries/events'
 import { EventsAPI } from '@/services/queries/events/event.type'
+import { generateToastError } from '@/utils/errors'
 
 type EventDeleteModalProps = {
 	modalId: string
@@ -29,7 +30,7 @@ export const EventDeleteModal = ({
 				toast.success('Evento excluído com sucesso!')
 				overlayClose(modalId)
 			},
-			onError: () => toast.error('Erro ao excluir evento'),
+			onError: (error) => generateToastError(error, 'Erro ao excluir evento'),
 		})
 	}
 

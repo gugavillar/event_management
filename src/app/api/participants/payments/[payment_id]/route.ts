@@ -19,6 +19,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 				paymentId: routeParam,
 				values: body,
 			}),
+		isProtectedRoute: true,
 	})
 }
 

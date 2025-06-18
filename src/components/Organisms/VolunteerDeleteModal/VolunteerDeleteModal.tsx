@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteVolunteer } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 type VolunteerDeleteModalProps = {
 	modalId: string
@@ -31,7 +32,8 @@ export const VolunteerDeleteModal = memo(
 					toast.success('Voluntário excluído com sucesso!')
 					overlayClose(modalId)
 				},
-				onError: () => toast.error('Erro ao excluir voluntário'),
+				onError: (error) =>
+					generateToastError(error, 'Erro ao excluir voluntário'),
 			})
 		}
 

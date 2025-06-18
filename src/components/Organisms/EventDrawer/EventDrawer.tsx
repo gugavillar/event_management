@@ -18,6 +18,7 @@ import {
 	useUpdateEvent,
 } from '@/services/queries/events'
 import { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
+import { generateToastError } from '@/utils/errors'
 
 import { EventSchemaType } from './EventDrawer.schema'
 
@@ -61,7 +62,8 @@ export const EventDrawer = ({
 						toast.success('Evento atualizado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: () => toast.error('Erro ao atualizar evento'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atualizar evento'),
 				},
 			)
 		}
@@ -71,7 +73,7 @@ export const EventDrawer = ({
 				toast.success('Evento criado com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: () => toast.error('Erro ao criar evento'),
+			onError: (error) => generateToastError(error, 'Erro ao criar evento'),
 		})
 	}
 

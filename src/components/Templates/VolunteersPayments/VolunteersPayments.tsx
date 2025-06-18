@@ -22,6 +22,7 @@ import {
 	useUpdateVolunteerPayment,
 } from '@/services/queries/volunteers'
 import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 import { formatTableData, HEADER_LABELS } from './VolunteersPayments.utils'
 
@@ -100,8 +101,11 @@ export const VolunteersPayments = () => {
 						setSelectedVolunteer(null)
 						toast.success('Pagamento do voluntário atualizado com sucesso!')
 					},
-					onError: () =>
-						toast.error('Erro ao atualizar pagamento do voluntário'),
+					onError: (error) =>
+						generateToastError(
+							error,
+							'Erro ao atualizar pagamento do voluntário',
+						),
 				},
 			)
 		},

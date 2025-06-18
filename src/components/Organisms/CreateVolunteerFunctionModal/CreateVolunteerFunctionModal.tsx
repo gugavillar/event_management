@@ -12,6 +12,7 @@ import {
 	useUpdateFunction,
 } from '@/services/queries/volunteers'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 import {
 	FunctionSchema,
@@ -52,7 +53,8 @@ export const CreateVolunteerFunctionModal = memo(
 							setSelectedFunction(null)
 							overlayClose(modalId)
 						},
-						onError: () => toast.error('Erro ao atualizar a função'),
+						onError: (error) =>
+							generateToastError(error, 'Erro ao atualizar a função'),
 					},
 				)
 			}
@@ -62,7 +64,8 @@ export const CreateVolunteerFunctionModal = memo(
 					methods.reset()
 					overlayClose(modalId)
 				},
-				onError: () => toast.error('Erro ao cadastrar a função'),
+				onError: (error) =>
+					generateToastError(error, 'Erro ao cadastrar a função'),
 			})
 		}
 

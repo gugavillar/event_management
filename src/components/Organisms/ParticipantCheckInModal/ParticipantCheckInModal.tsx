@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { CHECK_IN_STATUS, overlayClose } from '@/constants'
 import { useUpdateCheckInParticipant } from '@/services/queries/participants'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import { generateToastError } from '@/utils/errors'
 
 type ParticipantCheckInModalProps = {
 	modalId: string
@@ -33,7 +34,8 @@ export const ParticipantCheckInModal = memo(
 						toast.success('Participante marcado com o status selecionado!')
 						overlayClose(modalId)
 					},
-					onError: () => toast.error('Erro ao marcar status do participante'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao marcar status do participante'),
 				},
 			)
 		}

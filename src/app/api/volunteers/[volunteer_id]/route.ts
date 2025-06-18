@@ -17,6 +17,7 @@ const handleDelete = async (_: NextRequest, { params }: Params) => {
 	const routeParams = await params.then((res) => res.volunteer_id ?? '')
 	return await requestProcess({
 		functions: async () => removeVolunteerById(routeParams),
+		isProtectedRoute: true,
 	})
 }
 
@@ -33,6 +34,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 
 	return await requestProcess({
 		functions: async () => await updateVolunteerById(body, routeParams),
+		isProtectedRoute: true,
 	})
 }
 

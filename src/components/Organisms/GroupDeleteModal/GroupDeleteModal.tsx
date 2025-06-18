@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteGroup } from '@/services/queries/groups'
 import { GroupAPI } from '@/services/queries/groups/groups.types'
+import { generateToastError } from '@/utils/errors'
 
 type GroupDeleteModalProps = {
 	modalId: string
@@ -29,7 +30,7 @@ export const GroupDeleteModal = ({
 				toast.success('Grupo excluído com sucesso!')
 				overlayClose(modalId)
 			},
-			onError: () => toast.error('Erro ao excluir grupo'),
+			onError: (error) => generateToastError(error, 'Erro ao excluir grupo'),
 		})
 	}
 

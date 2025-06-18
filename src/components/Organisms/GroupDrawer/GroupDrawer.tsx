@@ -28,6 +28,7 @@ import {
 	useGetGroup,
 	useUpdateGroup,
 } from '@/services/queries/groups/hooks'
+import { generateToastError } from '@/utils/errors'
 
 import { GroupSchemaType } from './GroupDrawer.schema'
 
@@ -81,7 +82,8 @@ export const GroupDrawer = ({
 						toast.success('Grupo atualizado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: () => toast.error('Erro ao atualizar grupo'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atualizar grupo'),
 				},
 			)
 		}
@@ -93,7 +95,7 @@ export const GroupDrawer = ({
 				toast.success('Grupo criado com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: () => toast.error('Erro ao criar grupo'),
+			onError: (error) => generateToastError(error, 'Erro ao criar grupo'),
 		})
 	}
 

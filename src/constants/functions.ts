@@ -1,4 +1,4 @@
-import { isToday } from 'date-fns'
+import { isFuture } from 'date-fns'
 
 import { MEMBERS } from './status'
 
@@ -22,6 +22,10 @@ export const generatePage = (page: string | undefined) => {
 export const eventPermitCreateRegistration = (event: any, type: MEMBERS) => {
 	if (!event) return false
 
+	const isFutureDate = isFuture(new Date(event.initialDate))
+
+	if (!isFutureDate) return false
+
 	if (type === MEMBERS.PARTICIPANT) {
 		return event.isParticipantRegistrationOpen
 	}
@@ -29,10 +33,4 @@ export const eventPermitCreateRegistration = (event: any, type: MEMBERS) => {
 	if (type === MEMBERS.VOLUNTEER) {
 		return event.isVolunteerRegistrationOpen
 	}
-
-	const isStartDateToday = isToday(new Date(event.initialDate))
-
-	if (isStartDateToday) return false
-
-	return true
 }

@@ -13,6 +13,7 @@ const handleDelete = async (_: NextRequest, { params }: Params) => {
 	const routeParams = await params.then((res) => res.function_id ?? '')
 	return await requestProcess({
 		functions: async () => removeFunctionById(routeParams),
+		isProtectedRoute: true,
 	})
 }
 
@@ -22,6 +23,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 
 	return await requestProcess({
 		functions: async () => await updateFunctionById(body, routeParams),
+		isProtectedRoute: true,
 	})
 }
 

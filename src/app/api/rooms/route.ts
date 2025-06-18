@@ -9,6 +9,7 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createRoom(body),
+		isProtectedRoute: true,
 	})
 }
 

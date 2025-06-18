@@ -13,6 +13,7 @@ import {
 import { MEMBERS, MembersTypes, MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetEvents, useUpdateRegistration } from '@/services/queries/events'
 import { EventsAPI } from '@/services/queries/events/event.type'
+import { generateToastError } from '@/utils/errors'
 
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
@@ -57,7 +58,6 @@ export const Events = () => {
 			memberType: MEMBERS,
 			action: 'open' | 'close',
 		) => {
-			console.log(id, memberType, action)
 			await update(
 				{ eventId: id, memberType, action },
 				{
@@ -66,9 +66,11 @@ export const Events = () => {
 							`Inscrição de ${MembersTypes[memberType].label.toLowerCase()} ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`,
 						)
 					},
-					onError: () => {
-						toast.error('Falha ao tentar bloquear ou abrir inscrição')
-					},
+					onError: (error) =>
+						generateToastError(
+							error,
+							'Falha ao tentar bloquear ou abrir inscrição',
+						),
 				},
 			)
 		},

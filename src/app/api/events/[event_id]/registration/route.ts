@@ -20,6 +20,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	return await requestProcess({
 		functions: async () =>
 			await updateRegistrationById(routeParams, data.memberType, data.action),
+		isProtectedRoute: true,
 	})
 }
 

@@ -23,6 +23,7 @@ import {
 	useUpdateVolunteerFunction,
 } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 import {
 	AssignFunctionSchema,
@@ -67,7 +68,8 @@ export const AssignFunctionVolunteerModal = memo(
 						toast.success('Funções atribuídas com sucesso!')
 						overlayClose(modalId)
 					},
-					onError: () => toast.error('Erro ao atribuir funções'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atribuir funções'),
 				},
 			)
 		}

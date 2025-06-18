@@ -9,6 +9,7 @@ const handlePost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createFunction(body),
+		isProtectedRoute: true,
 	})
 }
 

@@ -42,6 +42,10 @@ export const HEADER_LABELS = [
 		accessor: 'status',
 	},
 	{
+		label: 'Data de inscrição',
+		accessor: 'createdAt',
+	},
+	{
 		label: '',
 		accessor: 'actions',
 	},
@@ -89,6 +93,7 @@ export const formatTableData = (
 					}
 				/>
 			),
+			createdAt: format(volunteer.createdAt, 'dd/MM/yyyy - HH:mm'),
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">

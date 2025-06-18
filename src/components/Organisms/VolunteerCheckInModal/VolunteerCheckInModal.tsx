@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { CHECK_IN_STATUS, overlayClose } from '@/constants'
 import { useUpdateCheckInVolunteer } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 type VolunteerCheckInModalProps = {
 	modalId: string
@@ -33,7 +34,8 @@ export const VolunteerCheckInModal = memo(
 						toast.success('Voluntário marcado com o status selecionado!')
 						overlayClose(modalId)
 					},
-					onError: () => toast.error('Erro ao marcar status do voluntário'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao marcar status do voluntário'),
 				},
 			)
 		}

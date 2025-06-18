@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteParticipant } from '@/services/queries/participants'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import { generateToastError } from '@/utils/errors'
 
 type ParticipantDeleteModalProps = {
 	modalId: string
@@ -31,7 +32,8 @@ export const ParticipantDeleteModal = memo(
 					toast.success('Participante excluído com sucesso!')
 					overlayClose(modalId)
 				},
-				onError: () => toast.error('Erro ao excluir participante'),
+				onError: (error) =>
+					generateToastError(error, 'Erro ao excluir participante'),
 			})
 		}
 

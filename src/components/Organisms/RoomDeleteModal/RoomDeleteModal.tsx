@@ -7,6 +7,7 @@ import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteRoom } from '@/services/queries/rooms'
 import { RoomAPI } from '@/services/queries/rooms/rooms.types'
+import { generateToastError } from '@/utils/errors'
 
 type RoomDeleteModalProps = {
 	modalId: string
@@ -29,7 +30,7 @@ export const RoomDeleteModal = ({
 				toast.success('Quarto excluído com sucesso!')
 				overlayClose(modalId)
 			},
-			onError: () => toast.error('Erro ao excluir quarto'),
+			onError: (error) => generateToastError(error, 'Erro ao excluir quarto'),
 		})
 	}
 

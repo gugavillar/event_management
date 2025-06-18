@@ -32,6 +32,10 @@ export const HEADER_LABELS = [
 		accessor: 'status',
 	},
 	{
+		label: 'Data de inscrição',
+		accessor: 'createdAt',
+	},
+	{
 		label: '',
 		accessor: 'actions',
 	},
@@ -54,6 +58,7 @@ export const formatTableData = (
 			birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(participant.event.finalDate), participant.birthdate)} anos`,
 			city: participant.address.city,
 			event: participant.event.name,
+			createdAt: format(participant.createdAt, 'dd/MM/yyyy - HH:mm'),
 			status: (
 				<StatusTag
 					status={

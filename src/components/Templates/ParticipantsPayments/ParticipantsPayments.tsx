@@ -22,6 +22,7 @@ import {
 	useUpdateParticipantPayment,
 } from '@/services/queries/participants'
 import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
+import { generateToastError } from '@/utils/errors'
 
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
 
@@ -101,8 +102,11 @@ export const ParticipantsPayments = () => {
 						setSelectedParticipant(null)
 						toast.success('Pagamento do participante atualizado com sucesso!')
 					},
-					onError: () =>
-						toast.error('Erro ao atualizar pagamento do participante'),
+					onError: (error) =>
+						generateToastError(
+							error,
+							'Erro ao atualizar pagamento do participante',
+						),
 				},
 			)
 		},

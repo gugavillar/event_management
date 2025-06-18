@@ -28,6 +28,7 @@ import {
 	useUpdateRoom,
 } from '@/services/queries/rooms'
 import { FormRoom, RoomAPI } from '@/services/queries/rooms/rooms.types'
+import { generateToastError } from '@/utils/errors'
 
 import { RoomSchemaType } from './RoomDrawer.schema'
 
@@ -83,7 +84,8 @@ export const RoomDrawer = ({
 						toast.success('Quarto atualizado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: () => toast.error('Erro ao atualizar quarto'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atualizar quarto'),
 				},
 			)
 		}
@@ -95,7 +97,7 @@ export const RoomDrawer = ({
 				toast.success('Quarto criado com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: () => toast.error('Erro ao criar quarto'),
+			onError: (error) => generateToastError(error, 'Erro ao criar quarto'),
 		})
 	}
 
