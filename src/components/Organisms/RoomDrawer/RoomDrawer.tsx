@@ -14,21 +14,20 @@ import {
 	FieldArrayContainerWithAppendButton,
 	ComboBox,
 	RadioField,
-	SearchBox,
 	MaskedInputField,
+	VolunteerField,
+	ParticipantField,
 } from '@/components/Molecules'
 import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import { useGetInfinityParticipants } from '@/services/queries/participants'
 import {
 	useCreateRoom,
 	useGetRoom,
 	useUpdateRoom,
 } from '@/services/queries/rooms'
 import { FormRoom, RoomAPI } from '@/services/queries/rooms/rooms.types'
-import { useGetInfinityVolunteers } from '@/services/queries/volunteers'
 
 import { RoomSchemaType } from './RoomDrawer.schema'
 
@@ -54,22 +53,6 @@ export const RoomDrawer = ({
 
 	const eventId = watch('eventId')
 
-	const {
-		data: participants,
-		fetchNextPage: fetchNextPageParticipants,
-		hasNextPage: hasNextPageParticipants,
-		isFetchingNextPage: isFetchingNextPageParticipants,
-		searchParticipant,
-		setSearchParticipant,
-	} = useGetInfinityParticipants({ eventId, hasNoRoom: selectedRoom === null })
-	const {
-		data: volunteers,
-		fetchNextPage: fetchNextPageVolunteers,
-		hasNextPage: hasNextPageVolunteers,
-		isFetchingNextPage: isFetchingNextPageVolunteers,
-		searchVolunteer,
-		setSearchVolunteer,
-	} = useGetInfinityVolunteers({ eventId, hasNoRoom: selectedRoom === null })
 	const {
 		data: events,
 		hasNextPage,
@@ -126,30 +109,6 @@ export const RoomDrawer = ({
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
 		fetchNextPage,
-	})
-
-	const formattedParticipants = formatterComboBoxValues(
-		participants?.pages?.flatMap((page) => page.data),
-		'name',
-		'id',
-	)
-
-	const lastItemRefParticipants = useInfiniteScrollObserver({
-		hasNextPage: Boolean(hasNextPageParticipants),
-		isFetchingNextPage: isFetchingNextPageParticipants,
-		fetchNextPage: fetchNextPageParticipants,
-	})
-
-	const formattedVolunteers = formatterComboBoxValues(
-		volunteers?.pages?.flatMap((page) => page.data),
-		'name',
-		'id',
-	)
-
-	const lastItemRefVolunteers = useInfiniteScrollObserver({
-		hasNextPage: Boolean(hasNextPageVolunteers),
-		isFetchingNextPage: isFetchingNextPageVolunteers,
-		fetchNextPage: fetchNextPageVolunteers,
 	})
 
 	useEffect(() => {
@@ -218,49 +177,25 @@ export const RoomDrawer = ({
 									</RadioField>
 									{watch(fieldTypeName) === MEMBERS.PARTICIPANT &&
 										hasEventId && (
-											<Controller
+											<ParticipantField
 												key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
-												name={fieldMemberName}
-												control={control}
-												render={({ field }) => (
-													<SearchBox
-														search={searchParticipant}
-														setSearch={setSearchParticipant}
-														label="Membro"
-														keyOptionLabel="label"
-														keyOptionValue="value"
-														options={formattedParticipants}
-														selectedValue={field.value}
-														setSelectedValue={field.onChange}
-														lastItemRef={lastItemRefParticipants}
-														error={
-															formState.errors.members?.[index]?.member?.message
-														}
-													/>
-												)}
+												eventId={eventId}
+												fieldMemberName={fieldMemberName}
+												hasNoRoom={selectedRoom === null}
+												fieldError={
+													formState.errors.members?.[index]?.member?.message
+												}
 											/>
 										)}
 									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && hasEventId && (
-										<Controller
+										<VolunteerField
 											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
-											name={fieldMemberName}
-											control={control}
-											render={({ field }) => (
-												<SearchBox
-													search={searchVolunteer}
-													setSearch={setSearchVolunteer}
-													label="Membro"
-													keyOptionLabel="label"
-													keyOptionValue="value"
-													options={formattedVolunteers}
-													selectedValue={field.value}
-													setSelectedValue={field.onChange}
-													lastItemRef={lastItemRefVolunteers}
-													error={
-														formState.errors.members?.[index]?.member?.message
-													}
-												/>
-											)}
+											eventId={eventId}
+											hasNoRoom={selectedRoom === null}
+											fieldMemberName={fieldMemberName}
+											fieldError={
+												formState.errors.members?.[index]?.member?.message
+											}
 										/>
 									)}
 								</div>

@@ -1,3 +1,4 @@
+'use client'
 import { RefObject, useCallback, useEffect } from 'react'
 
 type UseClickOutsideArgs = {

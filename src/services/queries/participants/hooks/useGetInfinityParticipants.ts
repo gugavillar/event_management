@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@/constants'
 import { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
-type UseGetInfinityParticipantsArgs = {
+export type UseGetInfinityParticipantsArgs = {
 	eventId: string
 	hasNoGroup?: boolean
 	hasNoRoom?: boolean
