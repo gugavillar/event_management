@@ -48,6 +48,7 @@ export const CreateVolunteerFunctionModal = memo(
 		setSelectedFunction,
 	}: CreateVolunteerFunctionModalProps) => {
 		const methods = useForm<FunctionSchemaType>({
+			mode: 'onChange',
 			defaultValues: {
 				role: '',
 				events: [{ id: '' }],

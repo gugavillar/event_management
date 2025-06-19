@@ -25,6 +25,7 @@ type PaymentModalProps = {
 export const PaymentModal = memo(
 	({ modalId, modalType, handleSubmit, isPending }: PaymentModalProps) => {
 		const methods = useForm<PaymentModalType>({
+			mode: 'onChange',
 			defaultValues: {
 				paid: undefined,
 				paymentType: '',

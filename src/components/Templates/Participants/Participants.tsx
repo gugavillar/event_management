@@ -51,6 +51,7 @@ export const Participants = () => {
 	>(null)
 
 	const methods = useForm<ParticipantType>({
+		mode: 'onChange',
 		defaultValues: {
 			eventId: '',
 			name: '',

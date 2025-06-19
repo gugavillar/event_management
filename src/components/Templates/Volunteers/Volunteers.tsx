@@ -87,6 +87,7 @@ export const Volunteers = () => {
 	const { data: roles } = useGetFunctions(eventId)
 
 	const methods = useForm<VolunteerType>({
+		mode: 'onChange',
 		defaultValues: {
 			eventId: '',
 			name: '',

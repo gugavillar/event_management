@@ -35,6 +35,10 @@ export const useGetVolunteers = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceRole])
 
+	useEffect(() => {
+		if (!eventId) setRole('')
+	}, [eventId])
+
 	useAddSearchParams({
 		eventId: debounceEventId,
 		searchParticipant: debounceSearch,
