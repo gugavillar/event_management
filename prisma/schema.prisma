@@ -71,6 +71,7 @@ model Event {
   groups                        Group[]              @relation("GroupToEvent")
   room                          Room[]               @relation("RoomToEvent")
   eventVolunteerRoles           EventVolunteerRole[]
+  Meetings                      Meetings[]
 
   @@map("events")
 }
@@ -124,8 +125,9 @@ model Volunteer {
   groupMemberships GroupMember[]                 @relation("GroupMemberToVolunteer")
   roomMember       RoomMember[]                  @relation("RoomMemberToVolunteer")
 
-  eventRoles   EventVolunteerRole[] @relation("VolunteersOnEventRoles")
-  leadingRoles EventVolunteerRole[] @relation("LeadersOnEventRoles")
+  eventRoles      EventVolunteerRole[] @relation("VolunteersOnEventRoles")
+  leadingRoles    EventVolunteerRole[] @relation("LeadersOnEventRoles")
+  MeetingPresence MeetingPresence[]    @relation("MeetingsPresence")
 
   @@unique([email, eventId])
   @@map("volunteers")
@@ -266,4 +268,28 @@ model RoomMember {
 
   @@unique([participantId], name: "UniqueParticipantRoom")
   @@unique([volunteerId], name: "UniqueVolunteerRoom")
+}
+
+model Meetings {
+  id      String   @id @default(uuid())
+  title   String
+  date    DateTime
+  eventId String
+
+  event     Event             @relation(fields: [eventId], references: [id])
+  presences MeetingPresence[]
+}
+
+model MeetingPresence {
+  id            String   @id @default(uuid())
+  volunteerId   String
+  meetingId     String
+  presence      Boolean
+  justification Boolean
+  checkedAt     DateTime @default(now())
+
+  volunteer Volunteer @relation("MeetingsPresence", fields: [volunteerId], references: [id])
+  meeting   Meetings  @relation(fields: [meetingId], references: [id])
+
+  @@unique([volunteerId, meetingId])
 }

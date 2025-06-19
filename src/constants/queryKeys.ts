@@ -52,6 +52,10 @@ export const QUERY_KEYS = {
 	// Rooms
 	ROOMS: 'rooms',
 	ROOM: 'room',
+
+	// Meetings
+	MEETINGS: 'meetings',
+	MEETING: 'meeting',
 } as const
 
 export const getQueryClient = () => {

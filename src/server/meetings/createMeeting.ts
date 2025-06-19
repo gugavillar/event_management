@@ -1,0 +1,18 @@
+import {
+	meetingSchemaRoute,
+	MeetingSchemaRouteType,
+} from '@/app/api/meetings/meeting.schema'
+import { prisma } from '@/constants'
+
+export const createMeeting = async (data: MeetingSchemaRouteType) => {
+	try {
+		meetingSchemaRoute.parse({ ...data })
+
+		return await prisma.meetings.create({
+			data,
+		})
+	} catch (error) {
+		console.error('@createMeeting error:', error)
+		throw Error
+	}
+}

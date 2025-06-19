@@ -22,7 +22,7 @@ export const MaskedInputField = ({
 	const error = get(formState.errors, fieldName)
 
 	return (
-		<div>
+		<div className="w-full">
 			<Label htmlFor={fieldName}>{children}</Label>
 			<Controller
 				name={fieldName}

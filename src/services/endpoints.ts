@@ -8,6 +8,7 @@ const BASE_PATH = {
 	USERS: '/users',
 	GROUPS: '/groups',
 	ROOMS: '/rooms',
+	MEETINGS: '/meetings',
 }
 
 export const ENDPOINTS = {
@@ -92,4 +93,10 @@ export const ENDPOINTS = {
 		`${BASE_PATH.ROOMS}/events/${event_id}`,
 	DELETE_ROOM: (room_id: string) => `${BASE_PATH.ROOMS}/room/${room_id}`,
 	UPDATE_ROOM: (room_id: string) => `${BASE_PATH.ROOMS}/room/${room_id}`,
+
+	// Meetings
+	CREATE_MEETING: BASE_PATH.MEETINGS,
+	GET_MEETINGS_BY_EVENT_ID: (event_id: string) =>
+		`${BASE_PATH.MEETINGS}/events/${event_id}`,
+	GET_MEETING: (meeting_id: string) => `${BASE_PATH.MEETINGS}/${meeting_id}`,
 }

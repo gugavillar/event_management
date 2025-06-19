@@ -2,24 +2,27 @@
 import { get } from 'lodash'
 import { ComponentProps } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
 
 import { Checkbox, HelperErrorText } from '@/components/Atoms'
 
 type CheckboxFieldProps = ComponentProps<'input'> & {
 	fieldName: string
 	label: string
+	fieldClassName?: string
 }
 
 export const CheckboxField = ({
 	fieldName,
 	label,
+	fieldClassName,
 	...props
 }: CheckboxFieldProps) => {
 	const { register, formState } = useFormContext()
 	const error = get(formState.errors, fieldName)
 
 	return (
-		<div className="w-full">
+		<div className={twMerge('w-full', fieldClassName)}>
 			<Checkbox
 				label={label}
 				id={fieldName}
