@@ -5,18 +5,21 @@ import { VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerFunctionArgs = {
 	volunteerId: VolunteersAPI['id']
-	roles: Array<{ roleId: string }>
+	data: {
+		roles: Array<{ roleId: string }>
+		eventId: string
+	}
 	onlyRemove?: boolean
 }
 
 export const updateVolunteerFunction = async ({
 	volunteerId,
-	roles,
+	data,
 	onlyRemove,
 }: UpdateVolunteerFunctionArgs) => {
 	const response = await api.patch(
 		ENDPOINTS.UPDATE_VOLUNTEER_FUNCTION(volunteerId),
-		{ roles },
+		{ ...data },
 		{
 			params: {
 				...(onlyRemove && { onlyRemove }),

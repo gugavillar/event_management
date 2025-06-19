@@ -14,6 +14,9 @@ export const useUpdateVolunteerFunction = () => {
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.VOLUNTEERS_EXPORT_DATA],
 			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS],
+			})
 		},
 	})
 

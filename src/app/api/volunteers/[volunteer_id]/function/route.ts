@@ -10,14 +10,16 @@ type Params = {
 }
 
 const handleUpdate = async (request: NextRequest, { params }: Params) => {
-	const body: { roles: Array<{ roleId: string; isLeader: boolean }> } =
-		await request.json()
+	const body: {
+		eventId: string
+		roles: Array<{ roleId: string; isLeader: boolean }>
+	} = await request.json()
 	const routeParams = await params.then((res) => res.volunteer_id ?? '')
 	const onlyRemove = Boolean(request.nextUrl.searchParams.get('onlyRemove'))
 
 	return await requestProcess({
 		functions: async () =>
-			await updateVolunteerFunction(body.roles, routeParams, onlyRemove),
+			await updateVolunteerFunction(body, routeParams, onlyRemove),
 		isProtectedRoute: true,
 	})
 }

@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { validateFieldsForNotEquals } from '@/constants'
 
 export const AssignFunctionSchema = z.object({
+	eventId: z.string().uuid(),
 	roles: z
 		.array(
 			z.object({

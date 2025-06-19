@@ -19,7 +19,12 @@ export const getExportVolunteersData = async (eventId: string) => {
 			include: {
 				address: true,
 				event: true,
-				volunteerRole: true,
+				eventRoles: {
+					include: {
+						leaders: true,
+						volunteerRole: true,
+					},
+				},
 				groupMemberships: {
 					include: {
 						group: true,
@@ -54,12 +59,14 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Endereço: `${volunteer.address?.street}, ${volunteer.address?.number}`,
 			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
 			Bairro: volunteer.address?.neighborhood,
-			Função: !volunteer?.volunteerRole.length
-				? 'Sem função'
-				: volunteer.volunteerRole
-						?.map(
-							(role) =>
-								`${role.role}${role.leaderId === volunteer.id ? ' - Líder' : ''}`,
+			Função: !volunteer.eventRoles?.length
+				? 'Sem Função'
+				: volunteer.eventRoles
+						.map((role) =>
+							role.eventId === eventId &&
+							role.leaders.some((leader) => leader.id === volunteer.id)
+								? `${role.volunteerRole.role} - Líder`
+								: role.volunteerRole.role,
 						)
 						.join(', '),
 			Célula: volunteer.cell || 'Nenhuma',

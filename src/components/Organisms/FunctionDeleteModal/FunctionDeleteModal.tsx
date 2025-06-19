@@ -26,7 +26,7 @@ export const FunctionDeleteModal = memo(
 
 		const handleDeleteFunction = async () => {
 			if (!selectedFunction) return
-			await remove(selectedFunction.id, {
+			await remove(selectedFunction.volunteerRoleId, {
 				onSuccess: () => {
 					setSelectedFunction(null)
 					toast.success('Função excluída com sucesso!')

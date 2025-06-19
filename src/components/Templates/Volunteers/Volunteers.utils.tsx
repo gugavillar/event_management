@@ -67,14 +67,14 @@ export const formatTableData = (
 			name: volunteer.name,
 			role: (
 				<div className="flex gap-2">
-					{!volunteer.volunteerRole.length ? (
+					{!volunteer.eventRoles?.length ? (
 						<FunctionTag />
 					) : (
-						volunteer.volunteerRole.map((role) => (
+						volunteer.eventRoles.map((role) => (
 							<FunctionTag
 								key={role.id}
-								status={role.role}
-								isLeader={role.leaderId === volunteer.id}
+								status={role.volunteerRole.role}
+								isLeader={role.leaders.some(({ id }) => id === volunteer.id)}
 							/>
 						))
 					)}

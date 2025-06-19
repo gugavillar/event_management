@@ -3,13 +3,17 @@ import { z } from 'zod'
 import { prisma } from '@/constants'
 
 export const updateVolunteerFunction = async (
-	roles: Array<{ roleId: string; isLeader: boolean }>,
-	id: string,
+	data: {
+		eventId: string
+		roles: Array<{ roleId: string; isLeader: boolean }>
+	},
+	volunteerId: string,
 	onlyRemove?: boolean,
 ) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
+			volunteerId: z.string().uuid(),
+			eventId: z.string().uuid(),
 			roles: z.array(
 				z.object({
 					roleId: z.string().uuid(),
@@ -17,65 +21,57 @@ export const updateVolunteerFunction = async (
 				}),
 			),
 			onlyRemove: z.boolean().optional(),
-		}).parse({ id, roles })
+		}).parse({ volunteerId, ...data, onlyRemove })
 
 		return await prisma.$transaction(async (tx) => {
-			await tx.volunteer.update({
-				where: { id },
-				data: {
-					volunteerRole: { set: [] },
-				},
-			})
-
-			const allRoles = await tx.volunteerRole.findMany({
+			const eventRoles = await tx.eventVolunteerRole.findMany({
 				where: {
-					leaderId: id,
+					eventId: data.eventId,
+				},
+				select: {
+					id: true,
 				},
 			})
 
-			if (allRoles.length) {
-				for (const role of allRoles) {
-					await tx.volunteerRole.update({
-						where: { id: role.id },
-						data: {
-							leader: {
-								disconnect: { id },
-							},
-						},
-					})
-				}
-			}
-
-			if (onlyRemove) {
-				return
-			}
-
-			for (const { roleId, isLeader } of roles) {
-				await tx.volunteer.update({
-					where: { id },
+			for (const { id: eventVolunteerRoleId } of eventRoles) {
+				await tx.eventVolunteerRole.update({
+					where: { id: eventVolunteerRoleId },
 					data: {
-						volunteerRole: {
-							connect: { id: roleId },
+						volunteers: {
+							disconnect: { id: volunteerId },
+						},
+						leaders: {
+							disconnect: { id: volunteerId },
 						},
 					},
 				})
+			}
 
-				const role = await tx.volunteerRole.findUnique({
+			if (onlyRemove) return
+
+			for (const { roleId, isLeader } of data.roles) {
+				const evr = await tx.eventVolunteerRole.findFirst({
 					where: {
-						id: roleId,
+						eventId: data.eventId,
+						volunteerRoleId: roleId,
 					},
 				})
 
-				if (isLeader && role?.leaderId !== id) {
-					await tx.volunteerRole.update({
-						where: { id: roleId },
-						data: {
-							leader: {
-								connect: { id },
-							},
+				if (!evr) continue
+
+				await tx.eventVolunteerRole.update({
+					where: { id: evr.id },
+					data: {
+						volunteers: {
+							connect: { id: volunteerId },
 						},
-					})
-				}
+						...(isLeader && {
+							leaders: {
+								connect: { id: volunteerId },
+							},
+						}),
+					},
+				})
 			}
 		})
 	} catch (error) {

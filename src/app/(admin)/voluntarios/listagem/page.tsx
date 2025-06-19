@@ -39,7 +39,8 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 				roleVolunteer: debounceRoleValue,
 				page,
 			}),
-		async () => getFunctions({ searchFunction: '' }),
+		async () =>
+			getFunctions({ searchFunction: '', eventId: debounceEventIdValue }),
 	])
 
 	return (
@@ -61,7 +62,7 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 			>
 				<HydrationProvider
 					queryFn={getAllFunctions}
-					queryKey={[QUERY_KEYS.VOLUNTEERS_FUNCTIONS, '']}
+					queryKey={[QUERY_KEYS.VOLUNTEERS_FUNCTIONS, '', debounceEventIdValue]}
 				>
 					<Volunteers />
 				</HydrationProvider>

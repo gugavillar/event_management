@@ -4,7 +4,7 @@ import { ENDPOINTS } from '@/services/endpoints'
 import { VolunteersFunctionsFromAPI } from '../volunteers.type'
 
 export const deleteFunction = async (
-	functionId: VolunteersFunctionsFromAPI['id'],
+	functionId: VolunteersFunctionsFromAPI['volunteerRoleId'],
 ) => {
 	const response = await api.delete(ENDPOINTS.DELETE_FUNCTION(functionId))
 

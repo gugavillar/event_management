@@ -2,33 +2,42 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
-import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { getFunctions } from '../usecases'
 import { VolunteersFunctionsFromAPI } from '../volunteers.type'
 
-export const useGetFunctions = () => {
+export const useGetFunctions = (externalEventId = '') => {
 	const searchParams = useSearchParams()
+	const selectedEvent = searchParams.get('eventId') || externalEventId
 	const [search, setSearch] = useState(searchParams.get('searchFunction') || '')
+	const [eventId, setEventId] = useState(selectedEvent || '')
 
 	const debounceSearch = useDebounce(search, 500)
 
-	useAddSearchParams({
-		searchFunction: debounceSearch,
-	})
+	useEffect(() => {
+		if (!selectedEvent) return setEventId('')
+		setEventId(selectedEvent)
+	}, [selectedEvent])
+
+	// useAddSearchParams({
+	// 	searchFunction: debounceSearch,
+	// 	functionEventId: eventId,
+	// })
 
 	const query: UseQueryResult<Array<VolunteersFunctionsFromAPI>> = useQuery({
-		queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch],
+		queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch, eventId],
 		queryFn: () =>
 			getFunctions({
+				eventId,
 				searchFunction: debounceSearch,
 			}),
 		retry: 0,
+		enabled: !!eventId,
 	})
 
-	return { ...query, setSearch, search }
+	return { ...query, setSearch, search, eventId, setEventId }
 }

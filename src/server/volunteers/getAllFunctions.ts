@@ -1,14 +1,21 @@
 import { prisma } from '@/constants'
 
-export const getAllFunctions = async (search: string | null) => {
+export const getAllFunctions = async (
+	search: string | null,
+	eventId: string,
+) => {
 	try {
-		return await prisma.volunteerRole.findMany({
-			...(search && { where: { role: { contains: search } } }),
-			include: {
-				leader: true,
-				volunteers: true,
+		return await prisma.eventVolunteerRole.findMany({
+			where: {
+				eventId,
+				...(search && { volunteerRole: { role: { contains: search } } }),
 			},
-			orderBy: [{ role: 'asc' }, { createdAt: 'desc' }],
+			include: {
+				volunteers: true,
+				leaders: true,
+				volunteerRole: true,
+			},
+			orderBy: [{ volunteerRole: { role: 'asc' } }, { createdAt: 'desc' }],
 		})
 	} catch (error) {
 		console.error('@getAllFunctions error:', error)

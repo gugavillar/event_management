@@ -1,13 +1,22 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { VolunteersFunctionsFromAPI } from '../volunteers.type'
+import {
+	VolunteersFunctionsForm,
+	VolunteersFunctionsFromAPI,
+} from '../volunteers.type'
 
-type UpdateFunctionArgs = Pick<VolunteersFunctionsFromAPI, 'id' | 'role'>
+type UpdateFunctionArgs = VolunteersFunctionsForm &
+	Pick<VolunteersFunctionsFromAPI, 'id'>
 
-export const updateFunction = async ({ id, role }: UpdateFunctionArgs) => {
+export const updateFunction = async ({
+	id,
+	role,
+	events,
+}: UpdateFunctionArgs) => {
 	const response = await api.put(ENDPOINTS.UPDATE_FUNCTION(id), {
 		role,
+		events,
 	})
 
 	return response.data

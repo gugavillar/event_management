@@ -26,10 +26,16 @@ export const getAllVolunteers = async (
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
 					...(role && {
-						volunteerRole:
+						eventRoles:
 							role === NO_FUNCTION.value
 								? { none: {} }
-								: { some: { role: { contains: role } } },
+								: {
+										some: {
+											volunteerRole: {
+												role: { contains: role },
+											},
+										},
+									},
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
@@ -37,7 +43,12 @@ export const getAllVolunteers = async (
 				include: {
 					address: true,
 					event: true,
-					volunteerRole: true,
+					eventRoles: {
+						include: {
+							leaders: true,
+							volunteerRole: true,
+						},
+					},
 				},
 				orderBy: [{ name: 'asc' }, { createdAt: 'desc' }],
 				skip,
@@ -51,7 +62,16 @@ export const getAllVolunteers = async (
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
 					...(role && {
-						volunteerRole: { some: { role: { contains: role } } },
+						eventRoles:
+							role === NO_FUNCTION.value
+								? { none: {} }
+								: {
+										some: {
+											volunteerRole: {
+												role: { contains: role },
+											},
+										},
+									},
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),

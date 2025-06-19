@@ -26,10 +26,7 @@ import {
 	overlayOpen,
 	StatusSelectOptions,
 } from '@/constants'
-import {
-	formatterComboBoxValues,
-	formatterFieldSelectValues,
-} from '@/formatters'
+import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import {
@@ -73,7 +70,6 @@ export const Volunteers = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { data: roles } = useGetFunctions()
 	const {
 		data: volunteers,
 		isLoading,
@@ -88,6 +84,7 @@ export const Volunteers = () => {
 		page,
 		setPage,
 	} = useGetVolunteers()
+	const { data: roles } = useGetFunctions(eventId)
 
 	const methods = useForm<VolunteerType>({
 		defaultValues: {
@@ -123,8 +120,11 @@ export const Volunteers = () => {
 		'Todos os eventos',
 	)
 
-	const formattedRoles = formatterFieldSelectValues(roles, 'role', 'role')
-	formattedRoles.unshift(NO_FUNCTION)
+	const formattedRoles = roles?.map((role) => ({
+		label: role.volunteerRole.role,
+		value: role.volunteerRole.role,
+	}))
+	formattedRoles?.unshift(NO_FUNCTION)
 
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
@@ -222,8 +222,9 @@ export const Volunteers = () => {
 						onChange={(e) => setStatus(e.target.value)}
 					/>
 					<Select
+						disabled={!eventId}
 						placeholder="Selecione a função"
-						options={formattedRoles}
+						options={formattedRoles ?? []}
 						value={role}
 						onChange={(e) => setRole(e.target.value)}
 					/>

@@ -3,20 +3,57 @@ import { z } from 'zod'
 import { prisma } from '@/constants'
 
 export const updateFunctionById = async (
-	data: { role: string },
-	id: string,
+	data: { role: string; events: Array<{ id: string }> },
+	roleId: string,
 ) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
-			role: z.string().min(1).max(255),
-		}).parse({ id, ...data })
+			roleId: z.string().uuid(),
+			role: z.string().min(1).max(191),
+			events: z.array(z.object({ id: z.string().uuid() })),
+		}).parse({ roleId, ...data })
 
-		return await prisma.volunteerRole.update({
-			data,
-			where: {
-				id,
-			},
+		const updateEvents = data.events.map((e) => e.id)
+
+		return await prisma.$transaction(async (tx) => {
+			await tx.volunteerRole.update({
+				where: { id: roleId },
+				data: {
+					role: data.role,
+				},
+			})
+
+			const currentLinks = await tx.eventVolunteerRole.findMany({
+				where: { volunteerRoleId: roleId },
+			})
+
+			const existentEvents = currentLinks.map((e) => e.eventId)
+
+			const toRemove = currentLinks.filter(
+				(evr) => !updateEvents.includes(evr.eventId),
+			)
+			const toAdd = updateEvents.filter(
+				(eventId) => !existentEvents.includes(eventId),
+			)
+
+			await Promise.all(
+				toRemove.map(({ id }) =>
+					tx.eventVolunteerRole.delete({
+						where: { id },
+					}),
+				),
+			)
+
+			await Promise.all(
+				toAdd.map((eventId) =>
+					tx.eventVolunteerRole.create({
+						data: {
+							eventId,
+							volunteerRoleId: roleId,
+						},
+					}),
+				),
+			)
 		})
 	} catch (error) {
 		console.error('@updateFunctionById error:', error)

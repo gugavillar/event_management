@@ -70,8 +70,94 @@ model Event {
   volunteerPayments             VolunteerPayment[]
   groups                        Group[]              @relation("GroupToEvent")
   room                          Room[]               @relation("RoomToEvent")
+  eventVolunteerRoles           EventVolunteerRole[]
 
   @@map("events")
+}
+
+model VolunteerRole {
+  id        String               @id @default(uuid())
+  role      String               @unique
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+  events    EventVolunteerRole[]
+
+  @@map("volunteers_roles")
+}
+
+model EventVolunteerRole {
+  id              String   @id @default(uuid())
+  eventId         String
+  volunteerRoleId String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  event         Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  volunteerRole VolunteerRole @relation(fields: [volunteerRoleId], references: [id], onDelete: Cascade)
+
+  volunteers Volunteer[] @relation("VolunteersOnEventRoles")
+  leaders    Volunteer[] @relation("LeadersOnEventRoles")
+
+  @@unique([eventId, volunteerRoleId])
+  @@map("event_volunteer_roles")
+}
+
+model Volunteer {
+  id               String                        @id @default(uuid())
+  name             String
+  called           String
+  email            String
+  phone            String
+  birthdate        DateTime
+  cell             String?
+  relative         String
+  relativePhone    String
+  health           String?
+  community        String
+  checkIn          ParticipantOrVolunteerStatus?
+  createdAt        DateTime                      @default(now())
+  updatedAt        DateTime                      @updatedAt
+  eventId          String
+  event            Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  address          VolunteerAddress?
+  payments         VolunteerPayment[]
+  groupMemberships GroupMember[]                 @relation("GroupMemberToVolunteer")
+  roomMember       RoomMember[]                  @relation("RoomMemberToVolunteer")
+
+  eventRoles   EventVolunteerRole[] @relation("VolunteersOnEventRoles")
+  leadingRoles EventVolunteerRole[] @relation("LeadersOnEventRoles")
+
+  @@unique([email, eventId])
+  @@map("volunteers")
+}
+
+model VolunteerAddress {
+  id           String    @id @default(uuid())
+  street       String
+  neighborhood String
+  number       String
+  city         String
+  state        String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  volunteerId  String    @unique
+  volunteer    Volunteer @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+
+  @@map("volunteers_addresses")
+}
+
+model VolunteerPayment {
+  id           String       @id @default(uuid())
+  paymentValue Decimal
+  paymentType  PaymentType?
+  eventId      String
+  event        Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  volunteerId  String
+  volunteer    Volunteer    @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("volunteers_payments")
 }
 
 model Participant {
@@ -128,75 +214,6 @@ model ParticipantPayment {
   updatedAt     DateTime     @updatedAt
 
   @@map("participants_payments")
-}
-
-model VolunteerRole {
-  id         String      @id @default(uuid())
-  role       String      @unique
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
-  volunteers Volunteer[]
-  leaderId   String?
-  leader     Volunteer?  @relation("RoleLeader", fields: [leaderId], references: [id])
-
-  @@map("volunteers_roles")
-}
-
-model Volunteer {
-  id               String                        @id @default(uuid())
-  name             String
-  called           String
-  email            String
-  phone            String
-  birthdate        DateTime
-  cell             String?
-  relative         String
-  relativePhone    String
-  health           String?
-  community        String
-  checkIn          ParticipantOrVolunteerStatus?
-  createdAt        DateTime                      @default(now())
-  updatedAt        DateTime                      @updatedAt
-  eventId          String
-  event            Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  volunteerRole    VolunteerRole[]
-  leaderOf         VolunteerRole[]               @relation("RoleLeader")
-  address          VolunteerAddress?
-  payments         VolunteerPayment[]
-  groupMemberships GroupMember[]                 @relation("GroupMemberToVolunteer")
-  roomMember       RoomMember[]                  @relation("RoomMemberToVolunteer")
-
-  @@unique([email, eventId])
-  @@map("volunteers")
-}
-
-model VolunteerAddress {
-  id           String    @id @default(uuid())
-  street       String
-  neighborhood String
-  number       String
-  city         String
-  state        String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  volunteerId  String    @unique
-  volunteer    Volunteer @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
-
-  @@map("volunteers_addresses")
-}
-
-model VolunteerPayment {
-  id           String       @id @default(uuid())
-  paymentValue Decimal
-  paymentType  PaymentType?
-  eventId      String
-  event        Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  volunteerId  String
-  volunteer    Volunteer    @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-
-  @@map("volunteers_payments")
 }
 
 model Group {

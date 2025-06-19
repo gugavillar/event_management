@@ -5,6 +5,11 @@ export const FunctionSchema = z.object({
 		.string({ message: 'Campo obrigatório' })
 		.trim()
 		.min(1, { message: 'Campo obrigatório' }),
+	events: z.array(
+		z.object({
+			id: z.string().uuid(),
+		}),
+	),
 })
 
 export type FunctionSchemaType = z.infer<typeof FunctionSchema>
