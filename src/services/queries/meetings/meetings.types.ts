@@ -20,3 +20,9 @@ export type MeetingAPI = {
 	meeting: MeetingsFromAPI
 	volunteers: Array<Pick<VolunteersAPI, 'id' | 'name'>>
 }
+
+export type FormMeetingPresence = {
+	meetingId: string
+	presence: Array<Record<string, boolean>>
+	justification: Array<Record<string, boolean>>
+}

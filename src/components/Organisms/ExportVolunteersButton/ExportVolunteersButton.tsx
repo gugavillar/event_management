@@ -1,12 +1,13 @@
 'use client'
 import { FileDown } from 'lucide-react'
+import { memo } from 'react'
 
 import { Button } from '@/components/Atoms'
 import { MODALS_IDS } from '@/constants'
 
 import { ExportVolunteersDataModal } from '../ExportVolunteersDataModal'
 
-export const ExportVolunteersButton = () => {
+export const ExportVolunteersButton = memo(() => {
 	return (
 		<>
 			<Button
@@ -19,4 +20,6 @@ export const ExportVolunteersButton = () => {
 			<ExportVolunteersDataModal modalId={MODALS_IDS.VOLUNTEER_EXPORT_MODAL} />
 		</>
 	)
-}
+})
+
+ExportVolunteersButton.displayName = 'ExportVolunteersButton'

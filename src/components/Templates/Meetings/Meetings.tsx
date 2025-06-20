@@ -1,5 +1,7 @@
 'use client'
-import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { Button, Select } from '@/components/Atoms'
 import {
@@ -7,7 +9,11 @@ import {
 	CreateMeetingButton,
 	ListManager,
 } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	ExportMeetingButton,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
 import {
 	formatterComboBoxValues,
 	formatterFieldSelectValues,
@@ -15,14 +21,22 @@ import {
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import {
+	useCreateMeetingPresence,
 	useGetMeeting,
 	useGetMeetingsByEventId,
 } from '@/services/queries/meetings'
 
+import { MeetingSchema, MeetingSchemaType } from './Meetings.schema'
 import { formatTableData, HEADER_LABELS } from './Meetings.utils'
 
 export const Meetings = () => {
-	const methods = useForm()
+	const methods = useForm<MeetingSchemaType>({
+		defaultValues: {
+			presence: [],
+			justification: [],
+		},
+		resolver: zodResolver(MeetingSchema),
+	})
 	const {
 		data: events,
 		hasNextPage,
@@ -31,10 +45,26 @@ export const Meetings = () => {
 	} = useGetInfinityEvents()
 	const { data: meetings, setEventId, eventId } = useGetMeetingsByEventId()
 	const { data: meeting, setMeetingId, meetingId, isLoading } = useGetMeeting()
+	const { create, isPending } = useCreateMeetingPresence()
 
-	// const onSubmit = (values) => {
-	// 	console.log(values)
-	// }
+	const onSubmit: SubmitHandler<MeetingSchemaType> = async (values) => {
+		if (!values) return
+
+		const formattedValues = {
+			...values,
+			meetingId,
+		}
+
+		await create(formattedValues, {
+			onSuccess: () => {
+				setMeetingId('')
+				setEventId(null)
+				methods.reset()
+				toast.success('Presença registrada com sucesso!')
+			},
+			onError: () => toast.error('Erro ao registrar presença'),
+		})
+	}
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -54,11 +84,12 @@ export const Meetings = () => {
 		'id',
 	)
 
-	const formattedPresenceList = formatTableData(meeting)
+	const formattedPresenceList = formatTableData(meeting, methods.watch)
 
 	return (
 		<PageContent pageTitle="Reuniões" subheadingPage="Lista de presença">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<ExportMeetingButton />
 				<CreateMeetingButton />
 			</div>
 			<ListPage
@@ -78,7 +109,10 @@ export const Meetings = () => {
 							options={formattedMeetings}
 							disabled={!eventId}
 							value={meetingId}
-							onChange={(e) => setMeetingId(e.target.value)}
+							onChange={(e) => {
+								methods.reset()
+								setMeetingId(e.target.value)
+							}}
 						/>
 					</>
 				}
@@ -103,7 +137,8 @@ export const Meetings = () => {
 						<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 							<Button
 								type="button"
-								// onClick={methods.handleSubmit(onSubmit)}
+								onClick={methods.handleSubmit(onSubmit)}
+								isLoading={isPending}
 								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 							>
 								Finalizar presença

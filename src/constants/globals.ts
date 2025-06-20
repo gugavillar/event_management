@@ -44,6 +44,7 @@ export const MODALS_IDS = {
 
 	// MEETING
 	MEETING_CREATE_MODAL: 'meeting_create_modal',
+	MEETING_EXPORT_MODAL: 'meeting_export_modal',
 }
 
 export const prisma = new PrismaClient({

@@ -56,6 +56,8 @@ export const QUERY_KEYS = {
 	// Meetings
 	MEETINGS: 'meetings',
 	MEETING: 'meeting',
+	MEETINGS_PRESENCE: 'meetings-presence',
+	MEETINGS_EXPORT_DATA: 'meetings-export-data',
 } as const
 
 export const getQueryClient = () => {

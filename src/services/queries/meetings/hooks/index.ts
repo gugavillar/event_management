@@ -1,3 +1,5 @@
 export * from './useCreateMeeting'
+export * from './useCreateMeetingPresence'
+export * from './useGetExportMeetingPresence'
 export * from './useGetMeeting'
 export * from './useGetMeetingsByEventId'

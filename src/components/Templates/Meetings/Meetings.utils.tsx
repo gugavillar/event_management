@@ -1,7 +1,10 @@
 import { format } from 'date-fns'
+import { type UseFormWatch } from 'react-hook-form'
 
 import { CheckboxField } from '@/components/Molecules'
 import { MeetingAPI } from '@/services/queries/meetings/meetings.types'
+
+import { MeetingSchemaType } from './Meetings.schema'
 
 export const HEADER_LABELS = [
 	{
@@ -24,7 +27,10 @@ export const HEADER_LABELS = [
 	},
 ]
 
-export const formatTableData = (data: MeetingAPI | undefined) => {
+export const formatTableData = (
+	data: MeetingAPI | undefined,
+	watch: UseFormWatch<MeetingSchemaType>,
+) => {
 	if (!data) return []
 
 	return data?.volunteers.map((volunteer, index) => ({
@@ -36,6 +42,7 @@ export const formatTableData = (data: MeetingAPI | undefined) => {
 				fieldClassName="justify-items-center"
 				fieldName={`presence.${index}.${volunteer.id}`}
 				label=""
+				disabled={watch(`justification.${index}.${volunteer.id}`)}
 			/>
 		),
 		justification: (
@@ -43,6 +50,7 @@ export const formatTableData = (data: MeetingAPI | undefined) => {
 				fieldClassName="justify-items-center"
 				fieldName={`justification.${index}.${volunteer.id}`}
 				label=""
+				disabled={watch(`presence.${index}.${volunteer.id}`)}
 			/>
 		),
 	}))
