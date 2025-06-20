@@ -10,7 +10,7 @@ export const useCreateMeetingPresence = () => {
 		mutationFn: createMeetingPresence,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [QUERY_KEYS.MEETINGS_PRESENCE],
+				queryKey: [QUERY_KEYS.MEETING],
 			})
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.MEETINGS_EXPORT_DATA],

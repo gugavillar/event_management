@@ -7,18 +7,21 @@ type CheckboxProps = ComponentPropsWithRef<'input'> & {
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-	({ isInvalid, label, ...props }, ref) => {
+	({ isInvalid, label, className, ...props }, ref) => {
 		return (
 			<div
 				className={twMerge(
 					'flex',
 					props.disabled && 'pointer-events-none opacity-50',
-					props.className,
+					className,
 				)}
 			>
 				<input
 					type="checkbox"
-					className="mt-0.5 shrink-0 rounded-sm border-gray-500 text-blue-600 checked:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50"
+					className={twMerge(
+						'mt-0.5 shrink-0 rounded-sm border-gray-500 text-blue-600 checked:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50',
+						className,
+					)}
 					ref={ref}
 					{...props}
 				/>

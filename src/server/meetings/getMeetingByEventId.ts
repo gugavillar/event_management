@@ -12,6 +12,9 @@ export const getMeetingByEventId = async (eventId: string) => {
 			where: {
 				eventId,
 			},
+			orderBy: {
+				title: 'asc',
+			},
 		})
 	} catch (error) {
 		console.error('@getMeetingByEventId error:', error)

@@ -104,4 +104,6 @@ export const ENDPOINTS = {
 	CREATE_MEETING_PRESENCE: `${BASE_PATH.MEETINGS}/presence`,
 	EXPORT_MEETING_PRESENCE: (event_id: string) => `
 		${BASE_PATH.MEETINGS}/files/${event_id}`,
+	GET_MEETING_PRESENCE: (meeting_id: string) =>
+		`${BASE_PATH.MEETINGS}/presence/${meeting_id}`,
 }

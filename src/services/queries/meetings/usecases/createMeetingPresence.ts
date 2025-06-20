@@ -3,10 +3,28 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 import { FormMeetingPresence } from '../meetings.types'
 
-export const createMeetingPresence = async (data: FormMeetingPresence) => {
-	const response = await api.post(ENDPOINTS.CREATE_MEETING_PRESENCE, {
-		...data,
-	})
+type CreateMeetingPresenceArgs = {
+	data: FormMeetingPresence
+	updatePresence?: boolean
+}
+
+export const createMeetingPresence = async ({
+	data,
+	updatePresence,
+}: CreateMeetingPresenceArgs) => {
+	const response = await api.post(
+		ENDPOINTS.CREATE_MEETING_PRESENCE,
+		{
+			...data,
+		},
+		{
+			params: {
+				...(updatePresence && {
+					updatePresence,
+				}),
+			},
+		},
+	)
 
 	return response.data
 }

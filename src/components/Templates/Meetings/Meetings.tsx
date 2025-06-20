@@ -1,7 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
+import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Select } from '@/components/Atoms'
 import {
@@ -12,8 +12,10 @@ import {
 import {
 	ExportMeetingButton,
 	ListPage,
+	MeetingAlertModal,
 	PageContent,
 } from '@/components/Organisms'
+import { MODALS_IDS, overlayClose, overlayOpen } from '@/constants'
 import {
 	formatterComboBoxValues,
 	formatterFieldSelectValues,
@@ -21,7 +23,6 @@ import {
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import {
-	useCreateMeetingPresence,
 	useGetMeeting,
 	useGetMeetingsByEventId,
 } from '@/services/queries/meetings'
@@ -30,6 +31,7 @@ import { MeetingSchema, MeetingSchemaType } from './Meetings.schema'
 import { formatTableData, HEADER_LABELS } from './Meetings.utils'
 
 export const Meetings = () => {
+	const [type, setType] = useState<'draft' | 'send'>('send')
 	const methods = useForm<MeetingSchemaType>({
 		defaultValues: {
 			presence: [],
@@ -45,25 +47,18 @@ export const Meetings = () => {
 	} = useGetInfinityEvents()
 	const { data: meetings, setEventId, eventId } = useGetMeetingsByEventId()
 	const { data: meeting, setMeetingId, meetingId, isLoading } = useGetMeeting()
-	const { create, isPending } = useCreateMeetingPresence()
 
-	const onSubmit: SubmitHandler<MeetingSchemaType> = async (values) => {
-		if (!values) return
+	const handleOpenAlert = (type: 'draft' | 'send') => {
+		setType(type)
+		overlayOpen(MODALS_IDS.MEETING_ALERT_MODAL)
+	}
 
-		const formattedValues = {
-			...values,
-			meetingId,
-		}
-
-		await create(formattedValues, {
-			onSuccess: () => {
-				setMeetingId('')
-				setEventId(null)
-				methods.reset()
-				toast.success('Presença registrada com sucesso!')
-			},
-			onError: () => toast.error('Erro ao registrar presença'),
-		})
+	const clearState = () => {
+		overlayClose(MODALS_IDS.MEETING_ALERT_MODAL)
+		setTimeout(() => {
+			setMeetingId('')
+			setEventId(null)
+		}, 800)
 	}
 
 	const formattedEvents = formatterComboBoxValues(
@@ -84,7 +79,40 @@ export const Meetings = () => {
 		'id',
 	)
 
-	const formattedPresenceList = formatTableData(meeting, methods.watch)
+	const formattedPresenceList = formatTableData(meeting?.meeting, methods.watch)
+
+	useEffect(() => {
+		const storedData = localStorage.getItem(meetingId)
+		if (storedData) {
+			const parsedData = JSON.parse(storedData)
+			const isSameMeeting = meetingId === parsedData.meetingId
+
+			if (!isSameMeeting) return
+
+			methods.reset(parsedData, { keepDefaultValues: true })
+		}
+	}, [meetingId, methods])
+
+	const hasPreviousRecord =
+		!!meeting?.presenceResponse.justification?.length &&
+		!!meeting?.presenceResponse.presence?.length
+
+	useEffect(() => {
+		if (!hasPreviousRecord) return
+
+		methods.reset(
+			{
+				presence: meeting?.presenceResponse.presence,
+				justification: meeting?.presenceResponse.justification,
+			},
+			{ keepDefaultValues: true },
+		)
+	}, [
+		hasPreviousRecord,
+		meeting?.presenceResponse.justification,
+		meeting?.presenceResponse.presence,
+		methods,
+	])
 
 	return (
 		<PageContent pageTitle="Reuniões" subheadingPage="Lista de presença">
@@ -136,14 +164,27 @@ export const Meetings = () => {
 						/>
 						<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 							<Button
+								onClick={() => handleOpenAlert('draft')}
 								type="button"
-								onClick={methods.handleSubmit(onSubmit)}
-								isLoading={isPending}
 								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 							>
-								Finalizar presença
+								Salvar rascunho
+							</Button>
+							<Button
+								onClick={() => handleOpenAlert('send')}
+								type="button"
+								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+							>
+								Enviar presenças
 							</Button>
 						</div>
+						<MeetingAlertModal
+							modalId={MODALS_IDS.MEETING_ALERT_MODAL}
+							type={type}
+							meetingId={meetingId}
+							clearState={clearState}
+							isUpdate={hasPreviousRecord}
+						/>
 					</FormProvider>
 				)}
 			</ListPage>

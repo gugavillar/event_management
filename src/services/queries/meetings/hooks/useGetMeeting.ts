@@ -5,15 +5,40 @@ import { useState } from 'react'
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
 
-import { MeetingAPI, MeetingsFromAPI } from '../meetings.types'
-import { getMeeting } from '../usecases'
+import {
+	FormMeetingPresence,
+	MeetingAPI,
+	MeetingsFromAPI,
+	PresencesFromApi,
+} from '../meetings.types'
+import { getMeeting, getMeetingPresenceById } from '../usecases'
 
 export const useGetMeeting = () => {
 	const [meetingId, setMeetingId] = useState('')
 
-	const query: UseQueryResult<MeetingAPI> = useQuery({
+	const query: UseQueryResult<{
+		meeting: MeetingAPI
+		presenceResponse: Omit<FormMeetingPresence, 'meetingId'>
+	}> = useQuery({
 		queryKey: [QUERY_KEYS.MEETING, meetingId],
-		queryFn: () => getMeeting(meetingId as MeetingsFromAPI['id']),
+		queryFn: async () => {
+			const presences: Array<PresencesFromApi> = await getMeetingPresenceById(
+				meetingId as MeetingsFromAPI['id'],
+			)
+			const presenceResponse = {
+				justification: presences?.map((presence) => ({
+					[presence.volunteerId]: presence.justification,
+				})),
+				presence: presences?.map((presence) => ({
+					[presence.volunteerId]: presence.presence,
+				})),
+			}
+			const meeting = await getMeeting(meetingId as MeetingsFromAPI['id'])
+			return {
+				meeting,
+				presenceResponse,
+			}
+		},
 		retry: 0,
 		enabled: !!meetingId,
 	})

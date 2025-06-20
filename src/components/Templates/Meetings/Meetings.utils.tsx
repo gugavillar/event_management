@@ -33,7 +33,7 @@ export const formatTableData = (
 ) => {
 	if (!data) return []
 
-	return data?.volunteers.map((volunteer, index) => ({
+	return data?.volunteers?.map((volunteer, index) => ({
 		id: volunteer.id,
 		name: volunteer.name,
 		meetingDate: format(data.meeting.date, 'dd/MM/yyyy'),
@@ -41,6 +41,7 @@ export const formatTableData = (
 			<CheckboxField
 				fieldClassName="justify-items-center"
 				fieldName={`presence.${index}.${volunteer.id}`}
+				className="size-5"
 				label=""
 				disabled={watch(`justification.${index}.${volunteer.id}`)}
 			/>
@@ -48,6 +49,7 @@ export const formatTableData = (
 		justification: (
 			<CheckboxField
 				fieldClassName="justify-items-center"
+				className="size-5"
 				fieldName={`justification.${index}.${volunteer.id}`}
 				label=""
 				disabled={watch(`presence.${index}.${volunteer.id}`)}

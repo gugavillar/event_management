@@ -26,3 +26,12 @@ export type FormMeetingPresence = {
 	presence: Array<Record<string, boolean>>
 	justification: Array<Record<string, boolean>>
 }
+
+export type PresencesFromApi = {
+	checkedAt: string
+	id: UUID
+	justification: boolean
+	meetingId: UUID
+	presence: boolean
+	volunteerId: UUID
+}

@@ -51,11 +51,22 @@ export const normalizeAttendanceData = (
 	return Object.values(result)
 }
 
-export const createMeetingPresence = async (data: MeetingPresenceRouteType) => {
+export const createMeetingPresence = async (
+	data: MeetingPresenceRouteType,
+	updatePresence: boolean,
+) => {
 	try {
 		meetingPresenceRoute.parse({ ...data })
 
 		const normalizedData = normalizeAttendanceData(data)
+
+		if (updatePresence) {
+			await prisma.meetingPresence.deleteMany({
+				where: {
+					meetingId: data.meetingId,
+				},
+			})
+		}
 
 		return await prisma.meetingPresence.createMany({
 			data: normalizedData,
