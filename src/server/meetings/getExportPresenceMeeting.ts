@@ -74,8 +74,6 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 			return row
 		})
 
-		console.table(data)
-
 		const tableHeader = Object.keys(data[0])
 
 		const worksheet = utils.json_to_sheet(data, {
