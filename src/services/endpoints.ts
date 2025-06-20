@@ -37,6 +37,7 @@ export const ENDPOINTS = {
 	GET_PARTICIPANTS_PAYMENTS: `${BASE_PATH.PARTICIPANTS}/payments`,
 	UPDATE_PARTICIPANT_PAYMENT: (payment_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/payments/${payment_id}`,
+	GET_PARTICIPANTS_CITIES: `${BASE_PATH.PARTICIPANTS}/cities`,
 
 	// Volunteers
 	CREATE_VOLUNTEER: BASE_PATH.VOLUNTEERS,
@@ -56,6 +57,7 @@ export const ENDPOINTS = {
 	GET_VOLUNTEERS_PAYMENTS: `${BASE_PATH.VOLUNTEERS}/payments`,
 	UPDATE_VOLUNTEER_PAYMENT: (payment_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}`,
+	GET_VOLUNTEERS_CITIES: `${BASE_PATH.VOLUNTEERS}/cities`,
 
 	// Functions
 	CREATE_FUNCTION: `${BASE_PATH.VOLUNTEERS}/functions`,

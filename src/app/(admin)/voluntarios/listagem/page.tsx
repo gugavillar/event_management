@@ -3,7 +3,11 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import { getVolunteers, getFunctions } from '@/services/queries/volunteers'
+import {
+	getVolunteers,
+	getFunctions,
+	getVolunteersCities,
+} from '@/services/queries/volunteers'
 
 type SearchParams = {
 	searchParams: Promise<{
@@ -12,6 +16,7 @@ type SearchParams = {
 		statusVolunteer?: string
 		roleVolunteer?: string
 		pageVolunteer?: string
+		cityVolunteer?: string
 	}>
 }
 
@@ -22,26 +27,31 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 		statusVolunteer: res.statusVolunteer ?? '',
 		roleVolunteer: res.roleVolunteer ?? '',
 		pageVolunteer: res.pageVolunteer ?? '',
+		cityVolunteer: res.cityVolunteer ?? '',
 	}))
 	const debounceSearchValue = params.searchVolunteer
 	const debounceEventIdValue = params.eventId
 	const debounceStatusValue = params.statusVolunteer
 	const debounceRoleValue = params.roleVolunteer
+	const debounceCityValue = params.cityVolunteer
 	const page = generatePage(params.pageVolunteer)
 
-	const [getAllEvents, getAllVolunteers, getAllFunctions] = await Promise.all([
-		async () => getEvents({ searchEvent: '', page: 1 }),
-		async () =>
-			getVolunteers({
-				searchVolunteer: debounceSearchValue,
-				eventId: debounceEventIdValue,
-				statusVolunteer: debounceStatusValue,
-				roleVolunteer: debounceRoleValue,
-				page,
-			}),
-		async () =>
-			getFunctions({ searchFunction: '', eventId: debounceEventIdValue }),
-	])
+	const [getAllEvents, getAllVolunteers, getAllFunctions, getCities] =
+		await Promise.all([
+			async () => getEvents({ searchEvent: '', page: 1 }),
+			async () =>
+				getVolunteers({
+					searchVolunteer: debounceSearchValue,
+					eventId: debounceEventIdValue,
+					statusVolunteer: debounceStatusValue,
+					roleVolunteer: debounceRoleValue,
+					volunteerCity: debounceCityValue,
+					page,
+				}),
+			async () =>
+				getFunctions({ searchFunction: '', eventId: debounceEventIdValue }),
+			async () => getVolunteersCities(),
+		])
 
 	return (
 		<HydrationInfinityProvider
@@ -57,14 +67,24 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 					debounceSearchValue,
 					debounceStatusValue,
 					debounceRoleValue,
+					debounceCityValue,
 					page,
 				]}
 			>
 				<HydrationProvider
-					queryFn={getAllFunctions}
-					queryKey={[QUERY_KEYS.VOLUNTEERS_FUNCTIONS, '', debounceEventIdValue]}
+					queryFn={getCities}
+					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES]}
 				>
-					<Volunteers />
+					<HydrationProvider
+						queryFn={getAllFunctions}
+						queryKey={[
+							QUERY_KEYS.VOLUNTEERS_FUNCTIONS,
+							'',
+							debounceEventIdValue,
+						]}
+					>
+						<Volunteers />
+					</HydrationProvider>
 				</HydrationProvider>
 			</HydrationProvider>
 		</HydrationInfinityProvider>

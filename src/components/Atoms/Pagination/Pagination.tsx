@@ -1,3 +1,4 @@
+'use client'
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
@@ -58,8 +59,8 @@ export const Pagination = ({
 				disabled={isFirstPage}
 				onClick={() => setPage(currentPage - 1)}
 			>
-				<ChevronLeft size={14} />
-				<span>Anterior</span>
+				<ChevronLeft size={18} />
+				<span className="hidden md:block">Anterior</span>
 			</button>
 			<div className="flex items-center gap-x-1">
 				{paginationValues?.map((page, index) =>
@@ -82,8 +83,8 @@ export const Pagination = ({
 				disabled={isLastPage}
 				onClick={() => setPage(currentPage + 1)}
 			>
-				<span>Próxima</span>
-				<ChevronRight size={14} />
+				<span className="hidden md:block">Próxima</span>
+				<ChevronRight size={18} />
 			</button>
 		</nav>
 	)

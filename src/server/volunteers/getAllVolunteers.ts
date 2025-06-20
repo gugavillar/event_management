@@ -12,6 +12,7 @@ export const getAllVolunteers = async (
 	role: string | null,
 	hasNoGroup: boolean | null,
 	hasNoRoom: boolean | null,
+	city: string | null,
 	page = 1,
 ) => {
 	try {
@@ -36,6 +37,11 @@ export const getAllVolunteers = async (
 											},
 										},
 									},
+					}),
+					...(city && {
+						address: {
+							city: { contains: city },
+						},
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
@@ -72,6 +78,11 @@ export const getAllVolunteers = async (
 											},
 										},
 									},
+					}),
+					...(city && {
+						address: {
+							city: { contains: city },
+						},
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),

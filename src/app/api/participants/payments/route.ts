@@ -8,6 +8,7 @@ const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('searchParticipant')
 	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 	const paymentTypeParams = request.nextUrl.searchParams.get('paymentType')
+	const cityParams = request.nextUrl.searchParams.get('participantCity')
 	const pageParams =
 		Number(request.nextUrl.searchParams.get('pageParticipantPayment')) || 1
 
@@ -16,6 +17,7 @@ const handlerGet = async (request: NextRequest) => {
 			await getAllParticipantsPayments(
 				eventIdParams,
 				searchParams,
+				cityParams,
 				paymentTypeParams as (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI],
 				pageParams,
 			),

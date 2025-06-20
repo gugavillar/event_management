@@ -3,7 +3,10 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import { getParticipants } from '@/services/queries/participants'
+import {
+	getParticipants,
+	getParticipantsCities,
+} from '@/services/queries/participants'
 
 type SearchParams = {
 	searchParams: Promise<{
@@ -11,6 +14,7 @@ type SearchParams = {
 		eventId?: string
 		statusParticipant?: string
 		pageParticipant?: string
+		cityParticipant?: string
 	}>
 }
 
@@ -20,21 +24,25 @@ export default async function ParticipantsPage({ searchParams }: SearchParams) {
 		eventId: res.eventId ?? '',
 		statusParticipant: res.statusParticipant ?? '',
 		pageParticipant: res.pageParticipant ?? '',
+		cityParticipant: res.cityParticipant ?? '',
 	}))
 	const debounceSearchValue = params.searchParticipant
 	const debounceEventIdValue = params.eventId
 	const debounceStatusValue = params.statusParticipant
+	const debounceCityValue = params.cityParticipant
 	const page = generatePage(params.pageParticipant)
 
-	const [getAllEvents, getAllParticipants] = await Promise.all([
+	const [getAllEvents, getAllParticipants, getCities] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
 			getParticipants({
 				searchParticipant: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				statusParticipant: debounceStatusValue,
+				participantCity: debounceCityValue,
 				page,
 			}),
+		async () => getParticipantsCities(),
 	])
 
 	return (
@@ -44,16 +52,22 @@ export default async function ParticipantsPage({ searchParams }: SearchParams) {
 			initialPageParam={1}
 		>
 			<HydrationProvider
-				queryFn={getAllParticipants}
-				queryKey={[
-					QUERY_KEYS.PARTICIPANTS,
-					debounceEventIdValue,
-					debounceSearchValue,
-					debounceStatusValue,
-					page,
-				]}
+				queryFn={getCities}
+				queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES]}
 			>
-				<Participants />
+				<HydrationProvider
+					queryFn={getAllParticipants}
+					queryKey={[
+						QUERY_KEYS.PARTICIPANTS,
+						debounceEventIdValue,
+						debounceSearchValue,
+						debounceStatusValue,
+						debounceCityValue,
+						page,
+					]}
+				>
+					<Participants />
+				</HydrationProvider>
 			</HydrationProvider>
 		</HydrationInfinityProvider>
 	)

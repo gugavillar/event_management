@@ -14,11 +14,16 @@ import {
 	PaymentSelectOptions,
 	PaymentTypeAPI,
 } from '@/constants'
-import { formatterComboBoxValues, removeCurrencyFormat } from '@/formatters'
+import {
+	formatterComboBoxValues,
+	formatterFieldSelectValues,
+	removeCurrencyFormat,
+} from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import {
 	useGetPayments,
+	useGetVolunteersCities,
 	useUpdateVolunteerPayment,
 } from '@/services/queries/volunteers'
 import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -39,6 +44,7 @@ export const VolunteersPayments = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
+	const { data: volunteersCities } = useGetVolunteersCities()
 	const {
 		data: volunteersPayments,
 		isLoading: isLoadingPayments,
@@ -50,6 +56,8 @@ export const VolunteersPayments = () => {
 		paymentType,
 		page,
 		setPage,
+		city,
+		setCity,
 	} = useGetPayments()
 	const { update, isPending } = useUpdateVolunteerPayment()
 
@@ -60,6 +68,13 @@ export const VolunteersPayments = () => {
 		true,
 		'Todos os eventos',
 	)
+
+	const formattedCities = formatterFieldSelectValues(
+		volunteersCities,
+		'city',
+		'city',
+	)
+	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
 
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
@@ -126,24 +141,29 @@ export const VolunteersPayments = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
-					<>
-						<ComboBox
-							keyOptionLabel="label"
-							keyOptionValue="value"
-							options={formattedEvents}
-							selectedValue={eventId}
-							setSelectedValue={setEventId}
-							lastItemRef={lastItemRef}
-						/>
-						<Select
-							placeholder="Selecione o tipo de pagamento"
-							options={PaymentSelectOptions}
-							value={paymentType}
-							onChange={(e) => setPaymentType(e.target.value)}
-						/>
-					</>
+					<ComboBox
+						keyOptionLabel="label"
+						keyOptionValue="value"
+						options={formattedEvents}
+						selectedValue={eventId}
+						setSelectedValue={setEventId}
+						lastItemRef={lastItemRef}
+					/>
 				}
 			>
+				<div className="flex flex-col items-center justify-between gap-8 md:flex-row">
+					<Select
+						placeholder="Selecione o tipo de pagamento"
+						options={PaymentSelectOptions}
+						value={paymentType}
+						onChange={(e) => setPaymentType(e.target.value)}
+					/>
+					<Select
+						options={formattedCities}
+						value={city}
+						onChange={(e) => setCity(e.target.value)}
+					/>
+				</div>
 				<ListManager
 					bodyData={formattedData}
 					headerLabels={HEADER_LABELS}

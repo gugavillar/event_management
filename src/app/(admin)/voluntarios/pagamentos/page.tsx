@@ -3,7 +3,7 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import { getPayments } from '@/services/queries/volunteers'
+import { getPayments, getVolunteersCities } from '@/services/queries/volunteers'
 
 type SearchParams = {
 	searchParams: Promise<{
@@ -11,6 +11,7 @@ type SearchParams = {
 		eventId?: string
 		paymentType?: string
 		pageVolunteerPayment?: string
+		cityVolunteer?: string
 	}>
 }
 
@@ -22,21 +23,25 @@ export default async function VolunteersPaymentsPage({
 		eventId: res.eventId ?? '',
 		paymentType: res.paymentType ?? '',
 		pageVolunteerPayment: res.pageVolunteerPayment ?? '',
+		cityVolunteer: res.cityVolunteer ?? '',
 	}))
 	const debounceSearchValue = params.searchVolunteer
 	const debounceEventIdValue = params.eventId
+	const debounceCityValue = params.cityVolunteer
 	const debouncePaymentType = params.paymentType
 	const page = generatePage(params.pageVolunteerPayment)
 
-	const [getAllEvents, getAllPayments] = await Promise.all([
+	const [getAllEvents, getAllPayments, getCities] = await Promise.all([
 		async () => getEvents({ searchEvent: '', page: 1 }),
 		async () =>
 			getPayments({
 				searchVolunteer: debounceSearchValue,
 				eventId: debounceEventIdValue,
 				paymentType: debouncePaymentType,
+				volunteerCity: debounceCityValue,
 				page,
 			}),
+		async () => getVolunteersCities(),
 	])
 
 	return (
@@ -47,6 +52,7 @@ export default async function VolunteersPaymentsPage({
 				debounceEventIdValue,
 				debounceSearchValue,
 				debouncePaymentType,
+				debounceCityValue,
 				page,
 			]}
 		>
@@ -55,7 +61,12 @@ export default async function VolunteersPaymentsPage({
 				queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
 				initialPageParam={1}
 			>
-				<VolunteersPayments />
+				<HydrationProvider
+					queryFn={getCities}
+					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES]}
+				>
+					<VolunteersPayments />
+				</HydrationProvider>
 			</HydrationInfinityProvider>
 		</HydrationProvider>
 	)

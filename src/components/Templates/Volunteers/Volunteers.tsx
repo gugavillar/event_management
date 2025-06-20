@@ -26,12 +26,16 @@ import {
 	overlayOpen,
 	StatusSelectOptions,
 } from '@/constants'
-import { formatterComboBoxValues } from '@/formatters'
+import {
+	formatterComboBoxValues,
+	formatterFieldSelectValues,
+} from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import {
 	useGetFunctions,
 	useGetVolunteers,
+	useGetVolunteersCities,
 } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -70,6 +74,7 @@ export const Volunteers = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
+	const { data: volunteersCities } = useGetVolunteersCities()
 	const {
 		data: volunteers,
 		isLoading,
@@ -83,6 +88,8 @@ export const Volunteers = () => {
 		setRole,
 		page,
 		setPage,
+		city,
+		setCity,
 	} = useGetVolunteers()
 	const { data: roles } = useGetFunctions(eventId)
 
@@ -126,6 +133,13 @@ export const Volunteers = () => {
 		value: role.volunteerRole.role,
 	}))
 	formattedRoles?.unshift(NO_FUNCTION)
+
+	const formattedCities = formatterFieldSelectValues(
+		volunteersCities,
+		'city',
+		'city',
+	)
+	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
 
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
@@ -205,6 +219,15 @@ export const Volunteers = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
+					<Select
+						placeholder="Selecione o status"
+						options={StatusSelectOptions}
+						value={status}
+						onChange={(e) => setStatus(e.target.value)}
+					/>
+				}
+			>
+				<div className="flex flex-col items-center justify-between gap-8 md:flex-row">
 					<ComboBox
 						keyOptionLabel="label"
 						keyOptionValue="value"
@@ -213,21 +236,17 @@ export const Volunteers = () => {
 						setSelectedValue={setEventId}
 						lastItemRef={lastItemRef}
 					/>
-				}
-			>
-				<div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-					<Select
-						placeholder="Selecione o status"
-						options={StatusSelectOptions}
-						value={status}
-						onChange={(e) => setStatus(e.target.value)}
-					/>
 					<Select
 						disabled={!eventId}
 						placeholder="Selecione a função"
 						options={formattedRoles ?? []}
 						value={role}
 						onChange={(e) => setRole(e.target.value)}
+					/>
+					<Select
+						options={formattedCities}
+						value={city}
+						onChange={(e) => setCity(e.target.value)}
 					/>
 				</div>
 				<ListManager

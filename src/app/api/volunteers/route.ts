@@ -11,6 +11,7 @@ const handlerGet = async (request: NextRequest) => {
 	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 	const statusParams = request.nextUrl.searchParams.get('statusVolunteer')
 	const roleParams = request.nextUrl.searchParams.get('roleVolunteer')
+	const cityParams = request.nextUrl.searchParams.get('volunteerCity')
 	const hasNoGroupParams = Boolean(
 		request.nextUrl.searchParams.get('hasNoGroup'),
 	)
@@ -27,6 +28,7 @@ const handlerGet = async (request: NextRequest) => {
 				roleParams,
 				hasNoGroupParams,
 				hasNoRoomParams,
+				cityParams,
 				pageParams,
 			),
 	})

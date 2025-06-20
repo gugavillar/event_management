@@ -20,6 +20,7 @@ export const useGetPayments = () => {
 	const [paymentType, setPaymentType] = useState(
 		searchParams.get('paymentType') || '',
 	)
+	const [city, setCity] = useState(searchParams.get('cityVolunteer') || '')
 	const [page, setPage] = useState(
 		Number(searchParams.get('pageVolunteerPayment')) || 1,
 	)
@@ -27,16 +28,18 @@ export const useGetPayments = () => {
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
 	const debouncePaymentType = useDebounce(paymentType, 500)
+	const debounceCity = useDebounce(city, 500)
 
 	useEffect(() => {
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debounceEventId, debounceSearch, debouncePaymentType])
+	}, [debounceEventId, debounceSearch, debouncePaymentType, debounceCity])
 
 	useAddSearchParams({
 		eventId: debounceEventId,
 		searchVolunteer: debounceSearch,
 		paymentType: debouncePaymentType,
+		cityVolunteer: debounceCity,
 		pageVolunteerPayment: page.toString(),
 	})
 
@@ -46,6 +49,7 @@ export const useGetPayments = () => {
 			debounceEventId,
 			debounceSearch,
 			debouncePaymentType,
+			debounceCity,
 			page,
 		],
 		queryFn: () =>
@@ -53,6 +57,7 @@ export const useGetPayments = () => {
 				eventId: debounceEventId,
 				searchVolunteer: debounceSearch,
 				paymentType: debouncePaymentType,
+				volunteerCity: debounceCity,
 				page,
 			}),
 		retry: 0,
@@ -68,5 +73,7 @@ export const useGetPayments = () => {
 		setPaymentType,
 		page,
 		setPage,
+		city,
+		setCity,
 	}
 }

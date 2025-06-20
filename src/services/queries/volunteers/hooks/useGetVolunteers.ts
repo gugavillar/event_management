@@ -20,6 +20,7 @@ export const useGetVolunteers = () => {
 	const [status, setStatus] = useState(
 		searchParams.get('statusVolunteer') || '',
 	)
+	const [city, setCity] = useState(searchParams.get('cityVolunteer') || '')
 	const [role, setRole] = useState(searchParams.get('roleVolunteer') || '')
 	const [page, setPage] = useState(
 		Number(searchParams.get('pageVolunteer')) || 1,
@@ -29,11 +30,18 @@ export const useGetVolunteers = () => {
 	const debounceSearch = useDebounce(search, 500)
 	const debounceStatus = useDebounce(status, 500)
 	const debounceRole = useDebounce(role, 500)
+	const debounceCity = useDebounce(city, 500)
 
 	useEffect(() => {
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debounceEventId, debounceSearch, debounceStatus, debounceRole])
+	}, [
+		debounceEventId,
+		debounceSearch,
+		debounceStatus,
+		debounceRole,
+		debounceCity,
+	])
 
 	useEffect(() => {
 		if (!eventId) setRole('')
@@ -44,6 +52,7 @@ export const useGetVolunteers = () => {
 		searchParticipant: debounceSearch,
 		statusParticipant: debounceStatus,
 		roleVolunteer: debounceRole,
+		cityVolunteer: debounceCity,
 		pageVolunteer: page.toString(),
 	})
 
@@ -54,6 +63,7 @@ export const useGetVolunteers = () => {
 			debounceSearch,
 			debounceStatus,
 			debounceRole,
+			debounceCity,
 			page,
 		],
 		queryFn: () =>
@@ -62,6 +72,7 @@ export const useGetVolunteers = () => {
 				searchVolunteer: debounceSearch,
 				statusVolunteer: debounceStatus,
 				roleVolunteer: debounceRole,
+				volunteerCity: debounceCity,
 				page,
 			}),
 		retry: 0,
@@ -79,5 +90,7 @@ export const useGetVolunteers = () => {
 		setRole,
 		page,
 		setPage,
+		city,
+		setCity,
 	}
 }

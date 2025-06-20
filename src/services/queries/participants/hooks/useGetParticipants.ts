@@ -20,6 +20,7 @@ export const useGetParticipants = () => {
 	const [status, setStatus] = useState(
 		searchParams.get('statusParticipant') || '',
 	)
+	const [city, setCity] = useState(searchParams.get('cityParticipant') || '')
 	const [page, setPage] = useState(
 		Number(searchParams.get('pageParticipant')) || 1,
 	)
@@ -27,16 +28,18 @@ export const useGetParticipants = () => {
 	const debounceEventId = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
 	const debounceStatus = useDebounce(status, 500)
+	const debounceCity = useDebounce(city, 500)
 
 	useEffect(() => {
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debounceEventId, debounceSearch, debounceStatus])
+	}, [debounceEventId, debounceSearch, debounceStatus, debounceCity])
 
 	useAddSearchParams({
 		eventId: debounceEventId,
 		searchParticipant: debounceSearch,
 		statusParticipant: debounceStatus,
+		cityParticipant: debounceCity,
 		pageParticipant: page.toString(),
 	})
 
@@ -46,6 +49,7 @@ export const useGetParticipants = () => {
 			debounceEventId,
 			debounceSearch,
 			debounceStatus,
+			debounceCity,
 			page,
 		],
 		queryFn: () =>
@@ -53,6 +57,7 @@ export const useGetParticipants = () => {
 				eventId: debounceEventId,
 				searchParticipant: debounceSearch,
 				statusParticipant: debounceStatus,
+				participantCity: debounceCity,
 				page,
 			}),
 		retry: 0,
@@ -68,5 +73,7 @@ export const useGetParticipants = () => {
 		setStatus,
 		page,
 		setPage,
+		city,
+		setCity,
 	}
 }

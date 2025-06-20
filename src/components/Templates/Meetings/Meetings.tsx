@@ -107,7 +107,7 @@ export const Meetings = () => {
 						<Select
 							placeholder="Selecione a reunião"
 							options={formattedMeetings}
-							disabled={!eventId}
+							disabled={!eventId || !formattedMeetings?.length}
 							value={meetingId}
 							onChange={(e) => {
 								methods.reset()

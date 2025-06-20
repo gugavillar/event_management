@@ -21,10 +21,16 @@ import {
 	ParticipantType,
 } from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
 import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
-import { formatterComboBoxValues } from '@/formatters'
+import {
+	formatterComboBoxValues,
+	formatterFieldSelectValues,
+} from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import { useGetParticipants } from '@/services/queries/participants'
+import {
+	useGetParticipants,
+	useGetParticipantsCities,
+} from '@/services/queries/participants'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
@@ -83,6 +89,7 @@ export const Participants = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
+	const { data: participantsCities } = useGetParticipantsCities()
 	const {
 		data: participants,
 		isLoading,
@@ -94,6 +101,8 @@ export const Participants = () => {
 		setStatus,
 		page,
 		setPage,
+		city,
+		setCity,
 	} = useGetParticipants()
 
 	const formattedEvents = formatterComboBoxValues(
@@ -103,6 +112,16 @@ export const Participants = () => {
 		true,
 		'Todos os eventos',
 	)
+
+	const formattedCities = formatterFieldSelectValues(
+		participantsCities,
+		'city',
+		'city',
+	)
+	formattedCities.unshift({
+		label: 'Todos as cidades',
+		value: '',
+	})
 
 	const lastItemRef = useInfiniteScrollObserver({
 		hasNextPage: Boolean(hasNextPage),
@@ -176,24 +195,29 @@ export const Participants = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
-					<>
-						<ComboBox
-							keyOptionLabel="label"
-							keyOptionValue="value"
-							options={formattedEvents}
-							selectedValue={eventId}
-							setSelectedValue={setEventId}
-							lastItemRef={lastItemRef}
-						/>
-						<Select
-							placeholder="Selecione o status"
-							options={StatusSelectOptions}
-							value={status}
-							onChange={(e) => setStatus(e.target.value)}
-						/>
-					</>
+					<ComboBox
+						keyOptionLabel="label"
+						keyOptionValue="value"
+						options={formattedEvents}
+						selectedValue={eventId}
+						setSelectedValue={setEventId}
+						lastItemRef={lastItemRef}
+					/>
 				}
 			>
+				<div className="flex flex-col items-center gap-8 md:flex-row">
+					<Select
+						placeholder="Selecione o status"
+						options={StatusSelectOptions}
+						value={status}
+						onChange={(e) => setStatus(e.target.value)}
+					/>
+					<Select
+						options={formattedCities}
+						value={city}
+						onChange={(e) => setCity(e.target.value)}
+					/>
+				</div>
 				<ListManager
 					bodyData={formattedParticipants}
 					headerLabels={HEADER_LABELS}

@@ -9,6 +9,7 @@ type GetVolunteersParams = {
 	roleVolunteer?: string
 	hasNoRoom?: boolean
 	hasNoGroup?: boolean
+	volunteerCity?: string
 	page: number
 }
 export const getVolunteers = async ({
@@ -16,6 +17,7 @@ export const getVolunteers = async ({
 	searchVolunteer,
 	statusVolunteer,
 	roleVolunteer,
+	volunteerCity,
 	hasNoRoom,
 	hasNoGroup,
 	page = 1,
@@ -28,6 +30,7 @@ export const getVolunteers = async ({
 			...(roleVolunteer && { roleVolunteer }),
 			...(hasNoGroup && { hasNoGroup }),
 			...(hasNoRoom && { hasNoRoom }),
+			...(volunteerCity && { volunteerCity }),
 			pageVolunteer: page,
 			limit: LIMIT_PER_PAGE,
 		},

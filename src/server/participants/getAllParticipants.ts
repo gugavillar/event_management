@@ -6,6 +6,7 @@ export const getAllParticipants = async (
 	status: CHECK_IN_STATUS | null,
 	hasNoGroup: boolean | null,
 	hasNoRoom: boolean | null,
+	city: string | null,
 	page = 1,
 ) => {
 	try {
@@ -21,6 +22,11 @@ export const getAllParticipants = async (
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
+					...(city && {
+						address: {
+							city: { contains: city },
+						},
+					}),
 				},
 				include: {
 					address: true,
@@ -39,6 +45,11 @@ export const getAllParticipants = async (
 					}),
 					...(hasNoGroup && { groupMemberships: { none: {} } }),
 					...(hasNoRoom && { roomMember: { none: {} } }),
+					...(city && {
+						address: {
+							city: { contains: city },
+						},
+					}),
 				},
 			}),
 		])

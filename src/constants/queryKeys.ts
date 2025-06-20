@@ -27,6 +27,7 @@ export const QUERY_KEYS = {
 	PARTICIPANT: 'participant',
 	PARTICIPANTS_PAYMENT: 'payment-participants',
 	PARTICIPANTS_INFINITY: 'participants-infinity',
+	PARTICIPANTS_CITIES: 'participants-cities',
 
 	// Volunteers
 	VOLUNTEERS_EXPORT_DATA: 'volunteers-export-data',
@@ -35,6 +36,7 @@ export const QUERY_KEYS = {
 	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
 	VOLUNTEERS_PAYMENTS: 'payment-volunteers',
 	VOLUNTEERS_INFINITY: 'volunteers-infinity',
+	VOLUNTEERS_CITIES: 'volunteers-cities',
 
 	// Dashboard
 	DASHBOARD: 'dashboard',

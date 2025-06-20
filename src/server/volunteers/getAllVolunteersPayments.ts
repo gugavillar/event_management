@@ -3,6 +3,7 @@ import { LIMIT_PER_PAGE, PaymentTypeAPI, prisma } from '@/constants'
 export const getAllVolunteersPayments = async (
 	eventId: string | null,
 	search: string | null,
+	city: string | null,
 	paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null,
 	page = 1,
 ) => {
@@ -17,6 +18,13 @@ export const getAllVolunteersPayments = async (
 					...(paymentType && {
 						paymentType:
 							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
+					}),
+					...(city && {
+						volunteer: {
+							address: {
+								city: { contains: city },
+							},
+						},
 					}),
 				},
 				include: {
@@ -34,6 +42,13 @@ export const getAllVolunteersPayments = async (
 					...(paymentType && {
 						paymentType:
 							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
+					}),
+					...(city && {
+						volunteer: {
+							address: {
+								city: { contains: city },
+							},
+						},
 					}),
 				},
 			}),
