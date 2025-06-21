@@ -18,41 +18,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Check for pending migrations
-        id: check_migrations
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          STATUS=$(pnpm prisma migrate status --schema=prisma/schema.prisma --json)
-          HAS_PENDING=$(echo "$STATUS" | jq '.hasPendingMigrations')
-          if [ "$HAS_PENDING" = "true" ]; then
-            echo "has_pending_migrations=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_pending_migrations=false" >> $GITHUB_OUTPUT
-          fi
-
       # - name: Delete database
       #   env:
       #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
       #   run: pnpm prisma migrate reset --force
 
-      - name: Run migrations
-        if: steps.check_migrations.outputs.has_pending_migrations == 'true'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: pnpm prisma migrate deploy
+      # - name: Run migrations
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      #   run: pnpm prisma migrate deploy
 
       - name: Generate Prisma client
         run: pnpm prisma generate
 
-      - name: Seed database
-        if: steps.check_migrations.outputs.has_pending_migrations == 'true'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: pnpm prisma db seed
+      # - name: Seed database
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      #   run: pnpm prisma db seed
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
