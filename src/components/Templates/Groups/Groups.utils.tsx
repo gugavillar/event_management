@@ -83,6 +83,22 @@ export const Content = (
 		)
 	}
 
+	const hasMembers = groups?.map((data) => !!data.members.length).some(Boolean)
+
+	if (!hasMembers) {
+		return (
+			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
+				<h3 className="text-lg font-bold text-gray-800">
+					Nenhum membro encontrado
+				</h3>
+				<p className="mt-2 text-gray-500">
+					Verifique se digitou corretamente ou experimente usar apenas parte do
+					nome.
+				</p>
+			</div>
+		)
+	}
+
 	return groups?.map(
 		(data) =>
 			!!data.members.length && (
