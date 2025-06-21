@@ -7,6 +7,7 @@ import { useInfiniteScrollObserver } from '@/hooks'
 import {
 	useGetInfinityParticipants,
 	UseGetInfinityParticipantsArgs,
+	useGetParticipant,
 } from '@/services/queries/participants'
 
 import { SearchBox } from '../SearchBox'
@@ -23,7 +24,7 @@ export const ParticipantField = ({
 	hasNoGroup,
 	hasNoRoom,
 }: ParticipantFieldProps) => {
-	const { control } = useFormContext()
+	const { control, watch } = useFormContext()
 	const {
 		data: participants,
 		fetchNextPage: fetchNextPageParticipants,
@@ -37,8 +38,26 @@ export const ParticipantField = ({
 		hasNoRoom,
 	})
 
+	const baseParticipants =
+		participants?.pages.flatMap((page) => page.data) ?? []
+
+	const selectedParticipantId = watch(fieldMemberName)
+
+	const { data: selectedParticipant } = useGetParticipant(selectedParticipantId)
+
+	const allParticipants = [...baseParticipants]
+
+	if (
+		selectedParticipant &&
+		!baseParticipants.some(
+			(participant) => participant.id === selectedParticipant.id,
+		)
+	) {
+		allParticipants.push(selectedParticipant)
+	}
+
 	const formattedParticipants = formatterComboBoxValues(
-		participants?.pages?.flatMap((page) => page.data),
+		allParticipants,
 		'name',
 		'id',
 	)

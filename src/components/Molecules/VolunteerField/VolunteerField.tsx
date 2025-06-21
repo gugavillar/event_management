@@ -7,6 +7,7 @@ import { useInfiniteScrollObserver } from '@/hooks'
 import {
 	useGetInfinityVolunteers,
 	UseGetInfinityVolunteersArgs,
+	useGetVolunteer,
 } from '@/services/queries/volunteers'
 
 import { SearchBox } from '../SearchBox'
@@ -23,7 +24,7 @@ export const VolunteerField = ({
 	hasNoRoom,
 	fieldError,
 }: VolunteerFieldProps) => {
-	const { control } = useFormContext()
+	const { control, watch } = useFormContext()
 	const {
 		data: volunteers,
 		fetchNextPage: fetchNextPageVolunteers,
@@ -33,8 +34,23 @@ export const VolunteerField = ({
 		setSearchVolunteer,
 	} = useGetInfinityVolunteers({ eventId, hasNoGroup, hasNoRoom })
 
+	const baseVolunteers = volunteers?.pages.flatMap((page) => page.data) ?? []
+
+	const selectedVolunteerId = watch(fieldMemberName)
+
+	const { data: selectedVolunteer } = useGetVolunteer(selectedVolunteerId)
+
+	const allVolunteers = [...baseVolunteers]
+
+	if (
+		selectedVolunteer &&
+		!baseVolunteers.some((volunteer) => volunteer.id === selectedVolunteer.id)
+	) {
+		allVolunteers.push(selectedVolunteer)
+	}
+
 	const formattedVolunteers = formatterComboBoxValues(
-		volunteers?.pages?.flatMap((page) => page.data),
+		allVolunteers,
 		'name',
 		'id',
 	)

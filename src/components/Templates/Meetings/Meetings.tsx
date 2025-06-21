@@ -1,9 +1,11 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useDebounce } from '@uidotdev/usehooks'
+import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Button, Select } from '@/components/Atoms'
+import { Button, Field, Select } from '@/components/Atoms'
 import {
 	ComboBox,
 	CreateMeetingButton,
@@ -32,6 +34,7 @@ import { formatTableData, HEADER_LABELS } from './Meetings.utils'
 
 export const Meetings = () => {
 	const [type, setType] = useState<'draft' | 'send'>('send')
+	const [search, setSearch] = useState('')
 	const methods = useForm<MeetingSchemaType>({
 		defaultValues: {
 			presence: [],
@@ -79,7 +82,12 @@ export const Meetings = () => {
 		'id',
 	)
 
-	const formattedPresenceList = formatTableData(meeting?.meeting, methods.watch)
+	const debounceSearch = useDebounce(search, 500)
+
+	let formattedPresenceList = formatTableData(meeting?.meeting, methods.watch)
+	formattedPresenceList = formattedPresenceList.filter((item) =>
+		item.name.toLowerCase().includes(debounceSearch.toLowerCase()),
+	)
 
 	useEffect(() => {
 		const storedData = localStorage.getItem(meetingId)
@@ -141,6 +149,14 @@ export const Meetings = () => {
 								methods.reset()
 								setMeetingId(e.target.value)
 							}}
+						/>
+						<Field
+							placeholder="Encontrar voluntário"
+							rightIcon={<Search size={24} />}
+							className="ps-11"
+							value={search}
+							disabled={!eventId && !formattedMeetings?.length}
+							onChange={(event) => setSearch?.(event.target.value)}
 						/>
 					</>
 				}
