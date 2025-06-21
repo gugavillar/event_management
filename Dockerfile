@@ -1,47 +1,31 @@
-# Base image with pnpm
-FROM node:24.1.0-alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
-# Build stage
-FROM base AS build
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-ARG DATABASE_URL
-ARG API_BASE_URL
-ARG API_IBGE_UF
-ARG PIX_KEY
+RUN corepack enable
 
-ENV DATABASE_URL=${DATABASE_URL}
-ENV API_BASE_URL=${API_BASE_URL}
-ENV API_IBGE_UF=${API_IBGE_UF}
-ENV PIX_KEY=${PIX_KEY}
+ARG NEXT_PUBLIC_API_BASE_URL
+ARG NEXT_PUBLIC_API_IBGE_UF
+ARG NEXT_PUBLIC_PIX_KEY
+
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+ENV NEXT_PUBLIC_API_IBGE_UF=$NEXT_PUBLIC_API_IBGE_UF
+ENV NEXT_PUBLIC_PIX_KEY=$NEXT_PUBLIC_PIX_KEY
 
 COPY . .
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-ENV NODE_ENV=production
+RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
 RUN pnpm run build
 
-# Final stage with minimal runtime
-FROM node:24.1.0-alpine AS dokploy
+FROM node:20-alpine
 WORKDIR /app
+
+RUN corepack enable
+
 ENV NODE_ENV=production
+EXPOSE 3000
 
-ARG DATABASE_URL
-ARG API_BASE_URL
-ARG API_IBGE_UF
-ARG PIX_KEY
-
-ENV DATABASE_URL=${DATABASE_URL}
-ENV API_BASE_URL=${API_BASE_URL}
-ENV API_IBGE_UF=${API_IBGE_UF}
-ENV PIX_KEY=${PIX_KEY}
-
-COPY --from=build /app/.next/standalone ./
-COPY --from=build /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=build /app/public ./public
 
-EXPOSE 3000
 CMD ["node", "server.js"]

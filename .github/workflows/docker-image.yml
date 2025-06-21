@@ -52,7 +52,6 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:latest
           platforms: linux/amd64
           build-args: |
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            API_BASE_URL=${{ secrets.API_BASE_URL }}
-            API_IBGE_UF=${{ secrets.API_IBGE_UF }}
-            PIX_KEY=${{ secrets.PIX_KEY }}
+            NEXT_PUBLIC_API_BASE_URL=${{ secrets.API_BASE_URL }}
+            NEXT_PUBLIC_API_IBGE_UF=${{ secrets.API_IBGE_UF }}
+            NEXT_PUBLIC_PIX_KEY=${{ secrets.PIX_KEY }}
