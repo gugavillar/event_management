@@ -83,34 +83,37 @@ export const Content = (
 		)
 	}
 
-	return groups?.map((data) => (
-		<div key={data.id} className="space-y-2">
-			<div className="flex items-center justify-between">
-				<Header>{data.name}</Header>
-				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<SquarePen
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleEditGroup(data.id)}
-						/>
-						<Tooltip>Editar</Tooltip>
+	return groups?.map(
+		(data) =>
+			!!data.members.length && (
+				<div key={data.id} className="space-y-2">
+					<div className="flex items-center justify-between">
+						<Header>{data.name}</Header>
+						<div className="flex space-x-4">
+							<div className="hs-tooltip">
+								<SquarePen
+									className="cursor-pointer"
+									size={20}
+									onClick={() => handleEditGroup(data.id)}
+								/>
+								<Tooltip>Editar</Tooltip>
+							</div>
+							<div className="hs-tooltip">
+								<Trash2
+									className="cursor-pointer"
+									size={20}
+									onClick={() => handleRemoveGroup(data.id)}
+								/>
+								<Tooltip>Excluir</Tooltip>
+							</div>
+						</div>
 					</div>
-					<div className="hs-tooltip">
-						<Trash2
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleRemoveGroup(data.id)}
-						/>
-						<Tooltip>Excluir</Tooltip>
-					</div>
+					<ListManager
+						headerLabels={HEADER_LABELS}
+						bodyData={data.members}
+						isLoading={isFetching}
+					/>
 				</div>
-			</div>
-			<ListManager
-				headerLabels={HEADER_LABELS}
-				bodyData={data.members}
-				isLoading={isFetching}
-			/>
-		</div>
-	))
+			),
+	)
 }

@@ -83,34 +83,37 @@ export const Content = (
 		)
 	}
 
-	return rooms?.map((data) => (
-		<div key={data.id} className="space-y-2">
-			<div className="flex items-center justify-between">
-				<Header>Quarto - {data.roomNumber}</Header>
-				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<SquarePen
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleEditRoom(data.id)}
-						/>
-						<Tooltip>Editar</Tooltip>
+	return rooms?.map(
+		(data) =>
+			!!data.members.length && (
+				<div key={data.id} className="space-y-2">
+					<div className="flex items-center justify-between">
+						<Header>Quarto - {data.roomNumber}</Header>
+						<div className="flex space-x-4">
+							<div className="hs-tooltip">
+								<SquarePen
+									className="cursor-pointer"
+									size={20}
+									onClick={() => handleEditRoom(data.id)}
+								/>
+								<Tooltip>Editar</Tooltip>
+							</div>
+							<div className="hs-tooltip">
+								<Trash2
+									className="cursor-pointer"
+									size={20}
+									onClick={() => handleRemoveRoom(data.id)}
+								/>
+								<Tooltip>Excluir</Tooltip>
+							</div>
+						</div>
 					</div>
-					<div className="hs-tooltip">
-						<Trash2
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleRemoveRoom(data.id)}
-						/>
-						<Tooltip>Excluir</Tooltip>
-					</div>
+					<ListManager
+						headerLabels={HEADER_LABELS}
+						bodyData={data.members}
+						isLoading={isFetching}
+					/>
 				</div>
-			</div>
-			<ListManager
-				headerLabels={HEADER_LABELS}
-				bodyData={data.members}
-				isLoading={isFetching}
-			/>
-		</div>
-	))
+			),
+	)
 }
