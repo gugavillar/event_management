@@ -1,5 +1,7 @@
+'use client'
 import { CircleX } from 'lucide-react'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
 type ModalProps = {
@@ -15,7 +17,15 @@ export const Modal = ({
 	handleClose,
 	isLarge,
 }: ModalProps) => {
-	return (
+	const [isMounted, setIsMounted] = useState(false)
+
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
+	if (!isMounted) return null
+
+	return createPortal(
 		<div
 			id={modalId}
 			className="hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden pb-12"
@@ -40,6 +50,7 @@ export const Modal = ({
 					{children}
 				</div>
 			</div>
-		</div>
+		</div>,
+		document.body,
 	)
 }

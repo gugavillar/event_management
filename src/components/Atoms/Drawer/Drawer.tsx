@@ -1,5 +1,7 @@
+'use client'
 import { CircleX } from 'lucide-react'
-import { ComponentProps, ReactNode } from 'react'
+import { ComponentProps, ReactNode, useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { Header } from '../Header'
@@ -18,7 +20,15 @@ export const Drawer = ({
 	handleClose,
 	className,
 }: DrawerProps) => {
-	return (
+	const [isMounted, setIsMounted] = useState(false)
+
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
+	if (!isMounted) return null
+
+	return createPortal(
 		<div
 			id={drawerId}
 			className={twMerge(
@@ -41,6 +51,7 @@ export const Drawer = ({
 				</button>
 			</div>
 			{children}
-		</div>
+		</div>,
+		document.body,
 	)
 }
