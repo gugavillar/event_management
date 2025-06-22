@@ -1,5 +1,6 @@
 'use client'
 import { ChevronLeft, ChevronRight, Ellipsis } from 'lucide-react'
+import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { PageButtonProps, PaginationProps } from './Pagination.types'
@@ -35,57 +36,57 @@ const PageButton = ({ label, setPage, isActive }: PageButtonProps) => {
 	)
 }
 
-export const Pagination = ({
-	currentPage,
-	totalPages = 1,
-	setPage,
-}: PaginationProps) => {
-	const isFirstPage = currentPage === 1
-	const isLastPage = currentPage === totalPages
-	const paginationValues = usePagination({
-		totalPages,
-		currentPage,
-		siblingCount: 1,
-	})
-	return (
-		<nav
-			className="!mt-5 flex w-full items-center justify-center gap-3 -space-x-px"
-			aria-label="Pagination"
-		>
-			<button
-				type="button"
-				className="focus:outline-hidden inline-flex min-h-9 min-w-9 items-center justify-center gap-x-1.5 px-2.5 py-2 text-sm text-gray-800 first:rounded-s-lg last:rounded-e-lg hover:bg-gray-100 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-				aria-label="Previous"
-				disabled={isFirstPage}
-				onClick={() => setPage(currentPage - 1)}
+export const Pagination = memo(
+	({ currentPage, totalPages = 1, setPage }: PaginationProps) => {
+		const isFirstPage = currentPage === 1
+		const isLastPage = currentPage === totalPages
+		const paginationValues = usePagination({
+			totalPages,
+			currentPage,
+			siblingCount: 1,
+		})
+		return (
+			<nav
+				className="!mt-5 flex w-full items-center justify-center gap-3 -space-x-px"
+				aria-label="Pagination"
 			>
-				<ChevronLeft size={18} />
-				<span className="hidden md:block">Anterior</span>
-			</button>
-			<div className="flex items-center gap-x-1">
-				{paginationValues?.map((page, index) =>
-					page === '...' ? (
-						<SpreadButton key={index} />
-					) : (
-						<PageButton
-							label={page as number}
-							key={index}
-							setPage={setPage}
-							isActive={page === currentPage}
-						/>
-					),
-				)}
-			</div>
-			<button
-				type="button"
-				className="focus:outline-hidden inline-flex min-h-9 min-w-9 items-center justify-center gap-x-1.5 px-2.5 py-2 text-sm text-gray-800 first:rounded-s-lg last:rounded-e-lg hover:bg-gray-100 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-				aria-label="Next"
-				disabled={isLastPage}
-				onClick={() => setPage(currentPage + 1)}
-			>
-				<span className="hidden md:block">Próxima</span>
-				<ChevronRight size={18} />
-			</button>
-		</nav>
-	)
-}
+				<button
+					type="button"
+					className="focus:outline-hidden inline-flex min-h-9 min-w-9 items-center justify-center gap-x-1.5 px-2.5 py-2 text-sm text-gray-800 first:rounded-s-lg last:rounded-e-lg hover:bg-gray-100 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+					aria-label="Previous"
+					disabled={isFirstPage}
+					onClick={() => setPage(currentPage - 1)}
+				>
+					<ChevronLeft size={18} />
+					<span className="hidden md:block">Anterior</span>
+				</button>
+				<div className="flex items-center gap-x-1">
+					{paginationValues?.map((page, index) =>
+						page === '...' ? (
+							<SpreadButton key={index} />
+						) : (
+							<PageButton
+								label={page as number}
+								key={index}
+								setPage={setPage}
+								isActive={page === currentPage}
+							/>
+						),
+					)}
+				</div>
+				<button
+					type="button"
+					className="focus:outline-hidden inline-flex min-h-9 min-w-9 items-center justify-center gap-x-1.5 px-2.5 py-2 text-sm text-gray-800 first:rounded-s-lg last:rounded-e-lg hover:bg-gray-100 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+					aria-label="Next"
+					disabled={isLastPage}
+					onClick={() => setPage(currentPage + 1)}
+				>
+					<span className="hidden md:block">Próxima</span>
+					<ChevronRight size={18} />
+				</button>
+			</nav>
+		)
+	},
+)
+
+Pagination.displayName = 'Pagination'

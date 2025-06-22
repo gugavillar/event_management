@@ -10,11 +10,14 @@ import {
 	UserAvatar,
 } from '@/components/Molecules'
 import { useSidebarContext } from '@/contexts'
+import { useCancelPrelineOverflow } from '@/hooks'
 
 export const Sidebar = () => {
 	const { collapsed, setCollapsed } = useSidebarContext()
 	const { width } = useWindowSize()
 	const { data } = useSession()
+
+	useCancelPrelineOverflow()
 
 	useEffect(() => {
 		if (width && width <= 1024) {

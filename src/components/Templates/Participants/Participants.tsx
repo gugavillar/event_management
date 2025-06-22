@@ -176,6 +176,11 @@ export const Participants = () => {
 	const hasMoreThanOnePage =
 		!!participants?.totalPages && participants.totalPages > 1
 
+	const handleCreateParticipant = useCallback(
+		() => handleOpenDrawerToCreateOrEditParticipant(),
+		[handleOpenDrawerToCreateOrEditParticipant],
+	)
+
 	return (
 		<PageContent
 			subheadingPage="Lista de participantes"
@@ -183,9 +188,7 @@ export const Participants = () => {
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<CreateParticipantButton
-					handleCreateParticipant={() =>
-						handleOpenDrawerToCreateOrEditParticipant()
-					}
+					handleCreateParticipant={handleCreateParticipant}
 				/>
 				<ExportParticipantsButton />
 			</div>

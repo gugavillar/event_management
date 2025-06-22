@@ -203,14 +203,15 @@ export const Volunteers = () => {
 	const hasMoreThanOnePage =
 		!!volunteers?.totalPages && volunteers.totalPages > 1
 
+	const handleCreateVolunteer = useCallback(
+		() => handleOpenDrawerToCreateOrEditVolunteer(),
+		[handleOpenDrawerToCreateOrEditVolunteer],
+	)
+
 	return (
 		<PageContent pageTitle="Voluntários" subheadingPage="Lista de voluntários">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<CreateVolunteerButton
-					handleCreateVolunteer={() =>
-						handleOpenDrawerToCreateOrEditVolunteer()
-					}
-				/>
+				<CreateVolunteerButton handleCreateVolunteer={handleCreateVolunteer} />
 				<ExportVolunteersButton />
 			</div>
 			<ListPage
