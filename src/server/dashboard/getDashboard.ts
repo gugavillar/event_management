@@ -1,6 +1,11 @@
 import { differenceInYears } from 'date-fns'
 
-import { CHECK_IN_STATUS, PaymentSelectOptions, prisma } from '@/constants'
+import {
+	CHECK_IN_STATUS,
+	PaymentSelectOptions,
+	PaymentTypeAPI,
+	prisma,
+} from '@/constants'
 
 const calculationAge = (birthdate: Date, finalEventDate: Date) => {
 	return differenceInYears(finalEventDate, birthdate)
@@ -146,12 +151,17 @@ export const getDashboard = async (eventId: string | null) => {
 
 		const paymentsTypesCounts = labelsToFilter.map((label) => {
 			const valueVolunteer =
-				volunteerPaymentByType.find(({ paymentType }) => paymentType === label)
-					?._count || 0
+				volunteerPaymentByType.find(
+					({ paymentType }) =>
+						paymentType === label ||
+						(paymentType === null && label === PaymentTypeAPI.OPEN),
+				)?._count || 0
 
 			const valueParticipant =
 				participantPaymentByType.find(
-					({ paymentType }) => paymentType === label,
+					({ paymentType }) =>
+						paymentType === label ||
+						(paymentType === null && label === PaymentTypeAPI.OPEN),
 				)?._count || 0
 
 			return valueVolunteer + valueParticipant
