@@ -2,7 +2,7 @@ import { BarChart, Spinner } from '@/components/Atoms'
 
 export type ChartValidationProps = {
 	categories?: string[]
-	series?: number[]
+	series?: ApexAxisChartSeries
 	isLoading: boolean
 }
 
@@ -19,7 +19,8 @@ export const ChartValidation = ({
 		)
 	}
 
-	const hasNoData = !series?.length || series.every((item) => item === 0)
+	const hasNoData =
+		!series?.length || series?.some(({ data }) => data.length === 0)
 
 	if (hasNoData) {
 		return (
@@ -29,5 +30,5 @@ export const ChartValidation = ({
 		)
 	}
 
-	return <BarChart categories={categories} series={[{ data: series }]} />
+	return <BarChart categories={categories} series={series} />
 }

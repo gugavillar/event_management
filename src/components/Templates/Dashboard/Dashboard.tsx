@@ -50,17 +50,17 @@ export const Dashboard = () => {
 			<DashboardCards isLoading={isLoading} data={data} />
 			<CitiesChart
 				categories={data?.participantsCities?.labels}
-				series={data?.participantsCities?.data}
+				series={[{ data: data?.participantsCities?.data ?? [] }]}
 				isLoading={isLoading}
 			/>
 			<PaymentsChart
 				categories={data?.paymentsTypes?.labels}
-				series={data?.paymentsTypes?.data}
+				series={data?.paymentsTypes.data}
 				isLoading={isLoading}
 			/>
 			<AgesChart
 				categories={data?.ageRanges?.labels}
-				series={data?.ageRanges?.data}
+				series={data?.ageRanges.data}
 				isLoading={isLoading}
 			/>
 		</PageContent>

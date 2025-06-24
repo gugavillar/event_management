@@ -7,11 +7,17 @@ export type DashboardFromAPI = {
 	volunteerPayment: number
 	paymentsTypes: {
 		labels: Array<string>
-		data: Array<number>
+		data: Array<{
+			name: string
+			data: Array<number>
+		}>
 	}
 	ageRanges: {
 		labels: Array<string>
-		data: Array<number>
+		data: Array<{
+			name: string
+			data: Array<number>
+		}>
 	}
 	participantsCities: {
 		labels: Array<string>

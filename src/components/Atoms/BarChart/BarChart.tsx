@@ -17,7 +17,7 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 			enabled: false,
 		},
 	},
-	colors: ['#00808B'],
+	colors: ['#14b8a6', '#0ea5e9'],
 	grid: {
 		strokeDashArray: 0,
 		borderColor: '#e5e7eb',
@@ -34,7 +34,7 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 		},
 	},
 	legend: {
-		show: false,
+		show: true,
 	},
 	dataLabels: {
 		enabled: true,
@@ -46,7 +46,9 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 		},
 	},
 	stroke: {
-		show: false,
+		show: true,
+		width: 2,
+		colors: ['transparent'],
 	},
 	xaxis: {
 		type: 'category',
@@ -78,7 +80,16 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 	tooltip: {
 		followCursor: false,
 		custom: ({ series, seriesIndex, dataPointIndex, w }) => {
-			return `<div class="bg-gray-900 flex flex-col gap-1 text-white rounded-md p-2"><p class="font-semibold">${w.globals.labels[dataPointIndex]}</p><p>Total: ${series[seriesIndex][dataPointIndex]}</p></div>`
+			const hasSeriesMoreThanOne = w.globals.seriesNames.length > 1
+			const label = hasSeriesMoreThanOne
+				? `${w.globals.seriesNames[seriesIndex]} - ${w.globals.labels[dataPointIndex]}`
+				: `${w.globals.labels[dataPointIndex]}`
+			const value = `${series[seriesIndex][dataPointIndex]}`
+
+			return `<div class="bg-gray-900 flex flex-col gap-1 text-white rounded-md p-2">
+				<p class="font-semibold">${label}</p>
+				<p>Total: ${value}</p>
+			</div>`
 		},
 	},
 }
