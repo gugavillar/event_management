@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { APIErrorResponse } from '@/@types/error'
 import { Step } from '@/components/Atoms'
 import {
 	AddressExternalForm,
@@ -14,6 +13,7 @@ import {
 } from '@/components/Organisms'
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateParticipant } from '@/services/queries/participants'
+import { generateToastError } from '@/utils/errors'
 
 import {
 	ExternalParticipantFormType,
@@ -104,14 +104,8 @@ export const ExternalParticipantForm = ({
 					methods.reset()
 					toast.success('Inscrição realizada com sucesso!')
 				},
-				onError: (error: unknown) => {
-					const err = error as APIErrorResponse
-					if (err?.data?.error) {
-						return toast.error(err.data.error)
-					}
-
-					toast.error('Erro ao realizar inscrição')
-				},
+				onError: (error) =>
+					generateToastError(error, 'Erro ao realizar inscrição'),
 			},
 		)
 	}
