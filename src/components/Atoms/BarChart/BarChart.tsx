@@ -50,6 +50,10 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 	},
 	xaxis: {
 		type: 'category',
+		labels: {
+			show: true,
+			trim: true,
+		},
 		axisBorder: {
 			show: false,
 		},
