@@ -31,7 +31,7 @@ export const Dropdown = ({ children, label }: DropdownProps) => {
 			</button>
 
 			<div
-				className="hs-dropdown-menu duration mt-2 hidden min-w-60 rounded-lg bg-white opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
+				className="hs-dropdown-menu duration z-10 mt-2 hidden min-w-60 rounded-lg bg-white opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
 				role="menu"
 			>
 				<div className="space-y-0.5 p-4">{children}</div>

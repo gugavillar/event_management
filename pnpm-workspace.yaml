@@ -3,5 +3,7 @@ ignoredBuiltDependencies:
   - '@prisma/engines'
   - esbuild
   - prisma
+
 onlyBuiltDependencies:
   - sharp
+  - unrs-resolver
