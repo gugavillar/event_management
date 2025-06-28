@@ -71,4 +71,9 @@ describe('Field component', () => {
 		)
 		expect(getByTestId('right-icon')).toBeInTheDocument()
 	})
+
+	it('disabled when disabled is true', () => {
+		const { getByTestId } = render(<Field data-testid="input-field" disabled />)
+		expect(getByTestId('input-field')).toBeDisabled()
+	})
 })

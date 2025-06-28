@@ -24,7 +24,7 @@ export const DrawerBody = ({
 			)}
 			{...props}
 		>
-			{isLoading ? <Spinner /> : children}
+			{isLoading ? <Spinner data-testid="loading-spinner" /> : children}
 		</section>
 	)
 }

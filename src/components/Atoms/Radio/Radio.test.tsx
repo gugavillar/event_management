@@ -124,4 +124,12 @@ describe('Radio component', () => {
 			}),
 		)
 	})
+
+	it('when position is column recives space-y-3 class', () => {
+		const { container } = render(
+			<Radio fieldName="test" options={options} position="column" />,
+		)
+
+		expect(container.firstChild).toHaveClass('space-y-3')
+	})
 })
