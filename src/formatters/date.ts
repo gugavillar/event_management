@@ -1,8 +1,6 @@
 import {
 	differenceInYears,
-	endOfDay,
 	format,
-	formatISO,
 	isBefore,
 	isEqual,
 	isPast,
@@ -26,16 +24,6 @@ export const formatToBrazilianDate = (date: string) => {
 	if (!date) return ''
 
 	return format(date, 'dd/MM/yyyy', { locale: ptBR })
-}
-
-export const formatToISODate = (date: string, startOrEnd: boolean) => {
-	if (!date) return ''
-
-	const formattedDate = startOrEnd
-		? startOfDay(new Date(date))
-		: endOfDay(new Date(date))
-
-	return formatISO(formattedDate)
 }
 
 export const isValidateDate = (date: string) => {

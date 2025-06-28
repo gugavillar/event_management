@@ -1,10 +1,10 @@
-import { endOfDay, formatISO, startOfDay } from 'date-fns'
-
 import {
+	formatDateToSendToApi,
 	formatToBrazilianDate,
-	formatToISODate,
 	isEqualOrIsBeforeFirstDate,
 	isValidateDate,
+	validateBirthdate,
+	validateDateRange,
 } from './date'
 
 describe('date formatters', () => {
@@ -20,68 +20,93 @@ describe('date formatters', () => {
 		expect(dateFormatted).toBe('')
 	})
 
-	it('formatToISODate return empty string when no value is passed', () => {
-		const dateFormatted = formatToISODate('', true)
+	it('isValidateDate return false when no value is passed', () => {
+		const isDateValid = isValidateDate('')
+		expect(isDateValid).toBe(false)
+	})
+
+	it('isValidateDate return true when brasilian date is valid', () => {
+		const isDateValid = isValidateDate('01/01/2000')
+		expect(isDateValid).toBe(true)
+	})
+
+	it('isValidateDate return false when brasilian date is not valid', () => {
+		const isDateValid = isValidateDate('31/02/2000')
+		expect(isDateValid).toBe(false)
+	})
+
+	it('isEqualOrIsBeforeFirstDate return false when firstDate is empty', () => {
+		const isDateValid = isEqualOrIsBeforeFirstDate('', '01/01/2000')
+		expect(isDateValid).toBe(false)
+	})
+
+	it('isEqualOrIsBeforeFirstDate return false when finalDate is empty', () => {
+		const isValidDate = isEqualOrIsBeforeFirstDate('01/01/2000', '')
+		expect(isValidDate).toBe(false)
+	})
+
+	it('isEqualOrIsBeforeFirstDate return false when firstDate is after finalDate', () => {
+		const isValidDate = isEqualOrIsBeforeFirstDate('02/01/2000', '01/01/2000')
+		expect(isValidDate).toBe(false)
+	})
+
+	it('isEqualOrIsBeforeFirstDate return true when firstDate is before finalDate', () => {
+		const isValidDate = isEqualOrIsBeforeFirstDate('01/01/2000', '02/01/2000')
+		expect(isValidDate).toBe(true)
+	})
+
+	it('isEqualOrIsBeforeFirstDate return true when firstDate is equal finalDate', () => {
+		const isValidDate = isEqualOrIsBeforeFirstDate('01/01/2000', '01/01/2000')
+		expect(isValidDate).toBe(true)
+	})
+
+	it('formatDateToSendToApi return empty string when no value is passed', () => {
+		const dateFormatted = formatDateToSendToApi('')
 		expect(dateFormatted).toBe('')
 	})
 
-	it('formatToISODate format correctly with start of day', () => {
-		const dateFormatted = formatToISODate(new Date().toString(), true)
-		expect(dateFormatted).toBe(formatISO(startOfDay(new Date())))
+	it('formatDateToSendToApi format correctly', () => {
+		const dateFormatted = formatDateToSendToApi('01/01/2000')
+		expect(dateFormatted).toBe('2000-01-01T02:00:00.000Z')
 	})
 
-	it('formatToISODate format correctly with end of day', () => {
-		const dateFormatted = formatToISODate(new Date().toString(), false)
-		expect(dateFormatted).toBe(formatISO(endOfDay(new Date())))
+	it('validateBirthdate return false when string is not passed', () => {
+		const isValidDate = validateBirthdate('')
+		expect(isValidDate).toBe(false)
 	})
 
-	it('its return false when no date is passed to validate date and future date', () => {
-		const isFuture = isValidateDate('')
-		expect(isFuture).toBe(false)
+	it('validateBirthdate return false when date is not valid', () => {
+		const isValidDate = validateBirthdate('31/02/2000')
+		expect(isValidDate).toBe(false)
 	})
 
-	it('its return true when date is passed to validate date and future date is future and valid', () => {
+	it('validateBirthdate return true when date is valid', () => {
+		const isValidDate = validateBirthdate('01/01/2000')
+		expect(isValidDate).toBe(true)
+	})
+
+	it('validateBirthdate return false when date is in the future', () => {
 		const today = new Date()
-		const tomorrow = today.setDate(today.getDate() + 1)
-		const dateTomorrow = new Date(tomorrow)
-		const isFuture = isValidateDate(
-			`${dateTomorrow.getDate()}/${dateTomorrow.getMonth() + 1}/${dateTomorrow.getFullYear()}`,
-		)
-		expect(isFuture).toBe(true)
+		const futureDate = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear() + 16}`
+		const isValidDate = validateBirthdate(futureDate)
+		expect(isValidDate).toBe(false)
 	})
 
-	it('its return false when no date is passed to is equal or is before first date', () => {
-		const isEqualOrIsBefore = isEqualOrIsBeforeFirstDate('', '')
-		expect(isEqualOrIsBefore).toBe(false)
+	it('validateDateRange return false when string is not passed', () => {
+		const isValidDate = validateDateRange('', 14, 19)
+		expect(isValidDate).toBe(false)
 	})
 
-	it('its return true when dates is passed to is before first date', () => {
-		const firstDate = new Date()
-		const stringFirstDate = `${firstDate.getDate()}/${firstDate.getMonth() + 1}/${firstDate.getFullYear()}`
-
-		const finalDate = new Date()
-		const newFinalDate = finalDate.setDate(finalDate.getDate() + 1)
-		const dateFinal = new Date(newFinalDate)
-		const stringFinalDate = `${dateFinal.getDate()}/${dateFinal.getMonth() + 1}/${dateFinal.getFullYear()}`
-
-		const isEqualOrIsBefore = isEqualOrIsBeforeFirstDate(
-			stringFirstDate,
-			stringFinalDate,
-		)
-		expect(isEqualOrIsBefore).toBe(true)
+	it('validateDateRange return false when date is not valid', () => {
+		const isValidDate = validateDateRange('31/02/2000', 14, 19)
+		expect(isValidDate).toBe(false)
 	})
 
-	it('its return true when dates is passed to is equal', () => {
-		const firstDate = new Date()
-		const stringFirstDate = `${firstDate.getDate()}/${firstDate.getMonth() + 1}/${firstDate.getFullYear()}`
-
-		const finalDate = new Date()
-		const stringFinalDate = `${finalDate.getDate()}/${finalDate.getMonth() + 1}/${finalDate.getFullYear()}`
-
-		const isEqualOrIsBefore = isEqualOrIsBeforeFirstDate(
-			stringFirstDate,
-			stringFinalDate,
-		)
-		expect(isEqualOrIsBefore).toBe(true)
+	it('validateDateRange return true when date is valid', () => {
+		const today = new Date()
+		const sixteenYearsAgo = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear() - 16}`
+		console.log(sixteenYearsAgo)
+		const isValidDate = validateDateRange(sixteenYearsAgo, 14, 19)
+		expect(isValidDate).toBe(true)
 	})
 })
