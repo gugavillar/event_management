@@ -105,7 +105,6 @@ describe('date formatters', () => {
 	it('validateDateRange return true when date is valid', () => {
 		const today = new Date()
 		const sixteenYearsAgo = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear() - 16}`
-		console.log(sixteenYearsAgo)
 		const isValidDate = validateDateRange(sixteenYearsAgo, 14, 19)
 		expect(isValidDate).toBe(true)
 	})
