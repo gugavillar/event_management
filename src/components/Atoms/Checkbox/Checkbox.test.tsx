@@ -38,4 +38,11 @@ describe('Checkbox component', () => {
 		getByRole('checkbox').click()
 		expect(getByRole('checkbox')).toBeChecked()
 	})
+
+	it('disabled when disabled', () => {
+		const { getByRole } = render(
+			<Checkbox label="Test checkbox" id="test" disabled />,
+		)
+		expect(getByRole('checkbox')).toBeDisabled()
+	})
 })
