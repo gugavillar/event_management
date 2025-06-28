@@ -22,18 +22,37 @@ export const useGetMeeting = () => {
 	}> = useQuery({
 		queryKey: [QUERY_KEYS.MEETING, meetingId],
 		queryFn: async () => {
+			const meeting = await getMeeting(meetingId as MeetingsFromAPI['id'])
 			const presences: Array<PresencesFromApi> = await getMeetingPresenceById(
 				meetingId as MeetingsFromAPI['id'],
 			)
-			const presenceResponse = {
-				justification: presences?.map((presence) => ({
-					[presence.volunteerId]: presence.justification,
-				})),
-				presence: presences?.map((presence) => ({
-					[presence.volunteerId]: presence.presence,
-				})),
+
+			if (!presences.length) {
+				return {
+					meeting,
+					presenceResponse: {
+						presence: [],
+						justification: [],
+					},
+				}
 			}
-			const meeting = await getMeeting(meetingId as MeetingsFromAPI['id'])
+
+			const presenceResponse = {
+				justification: meeting.volunteers.map(
+					(volunteer: MeetingAPI['volunteers'][number]) => ({
+						[volunteer.id]:
+							presences.find((p) => p.volunteerId === volunteer.id)
+								?.justification ?? false,
+					}),
+				),
+				presence: meeting.volunteers.map(
+					(volunteer: MeetingAPI['volunteers'][number]) => ({
+						[volunteer.id]:
+							presences.find((p) => p.volunteerId === volunteer.id)?.presence ??
+							false,
+					}),
+				),
+			}
 			return {
 				meeting,
 				presenceResponse,

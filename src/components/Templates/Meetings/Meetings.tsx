@@ -89,21 +89,46 @@ export const Meetings = () => {
 		item.name.toLowerCase().includes(debounceSearch.toLowerCase()),
 	)
 
-	useEffect(() => {
-		const storedData = localStorage.getItem(meetingId)
-		if (storedData) {
-			const parsedData = JSON.parse(storedData)
-			const isSameMeeting = meetingId === parsedData.meetingId
-
-			if (!isSameMeeting) return
-
-			methods.reset(parsedData, { keepDefaultValues: true })
-		}
-	}, [meetingId, methods])
-
 	const hasPreviousRecord =
 		!!meeting?.presenceResponse.justification?.length &&
 		!!meeting?.presenceResponse.presence?.length
+
+	useEffect(() => {
+		const storedData = localStorage.getItem(meetingId)
+
+		if (storedData && !hasPreviousRecord) {
+			const parsedData = JSON.parse(storedData)
+			const isSameMeeting = meetingId === parsedData.meetingId
+
+			if (!isSameMeeting || !meeting?.meeting) return
+
+			const presenceObject = Object.fromEntries(
+				parsedData.presence.map((item: Record<string, boolean>) => {
+					const [id, value] = Object.entries(item)[0]
+					return [id, value]
+				}),
+			)
+
+			const justificationObject = Object.fromEntries(
+				parsedData.justification.map((item: Record<string, boolean>) => {
+					const [id, value] = Object.entries(item)[0]
+					return [id, value]
+				}),
+			)
+
+			const justifications = meeting?.meeting.volunteers.map((volunteer) => ({
+				[volunteer.id]: justificationObject[volunteer.id] ?? false,
+			}))
+			const presences = meeting?.meeting.volunteers.map((volunteer) => ({
+				[volunteer.id]: presenceObject[volunteer.id] ?? false,
+			}))
+
+			methods.reset(
+				{ justification: justifications, presence: presences },
+				{ keepDefaultValues: true },
+			)
+		}
+	}, [hasPreviousRecord, meeting?.meeting, meetingId, methods])
 
 	useEffect(() => {
 		if (!hasPreviousRecord) return
