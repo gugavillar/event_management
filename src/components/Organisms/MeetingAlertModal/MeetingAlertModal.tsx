@@ -14,6 +14,7 @@ type MeetingAlertModalProps = {
 	meetingId: string
 	clearState: VoidFunction
 	isUpdate: boolean
+	hasPreviousRecord: boolean
 }
 
 export const MeetingAlertModal = memo(
@@ -23,6 +24,7 @@ export const MeetingAlertModal = memo(
 		meetingId,
 		clearState,
 		isUpdate,
+		hasPreviousRecord,
 	}: MeetingAlertModalProps) => {
 		const { reset, getValues, handleSubmit } =
 			useFormContext<MeetingSchemaType>()
@@ -51,6 +53,12 @@ export const MeetingAlertModal = memo(
 		}
 
 		const handleSaveList = () => {
+			if (hasPreviousRecord) {
+				return toast.error(
+					'Não é possível criar um rascunho. Já existem presenças salvas para esta reunião.',
+				)
+			}
+
 			const values = {
 				meetingId,
 				...getValues(),
@@ -67,8 +75,8 @@ export const MeetingAlertModal = memo(
 				: 'Confirmar envio das presenças?'
 		const description =
 			type === 'draft'
-				? 'As presenças serão armazenadas no seu dispositivo e poderão ser enviadas mais tarde.'
-				: 'As presenças serão registradas permanentemente no sistema e não poderão ser editadas depois.'
+				? 'Esta opção só pode ser usada se ainda não houver presenças salvas no sistema. As presenças serão armazenadas localmente no seu dispositivo e poderão ser enviadas depois.'
+				: 'As presenças serão registradas no sistema e poderão ser editadas posteriormente.'
 		return (
 			<Modal modalId={modalId}>
 				<div className="flex flex-col items-center justify-center">

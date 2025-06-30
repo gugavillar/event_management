@@ -208,6 +208,7 @@ export const Meetings = () => {
 								onClick={() => handleOpenAlert('draft')}
 								type="button"
 								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+								disabled={hasPreviousRecord || !meetingId}
 							>
 								Salvar rascunho
 							</Button>
@@ -215,11 +216,13 @@ export const Meetings = () => {
 								onClick={() => handleOpenAlert('send')}
 								type="button"
 								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+								disabled={!meetingId}
 							>
 								Enviar presenças
 							</Button>
 						</div>
 						<MeetingAlertModal
+							hasPreviousRecord={hasPreviousRecord}
 							modalId={MODALS_IDS.MEETING_ALERT_MODAL}
 							type={type}
 							meetingId={meetingId}
