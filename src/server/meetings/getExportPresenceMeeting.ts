@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { CHECK_IN_STATUS, prisma } from '@/constants'
 
 export const getExportPresenceMeeting = async (eventId: string) => {
 	try {
@@ -15,6 +15,10 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 				meeting: {
 					eventId,
 				},
+				OR: [
+					{ volunteer: { checkIn: null } },
+					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
 			},
 			include: {
 				meeting: {

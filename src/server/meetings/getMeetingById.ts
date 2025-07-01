@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { CHECK_IN_STATUS, prisma } from '@/constants'
 
 export const getMeetingById = async (id: string) => {
 	try {
@@ -26,6 +26,10 @@ export const getMeetingById = async (id: string) => {
 			const volunteers = await tx.volunteer.findMany({
 				where: {
 					eventId: meeting.eventId,
+					OR: [
+						{ checkIn: null },
+						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
+					],
 				},
 				select: {
 					id: true,

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { CHECK_IN_STATUS, prisma, StatusType } from '@/constants'
 import { formatPhone } from '@/formatters'
 
 export const getExportVolunteersData = async (eventId: string) => {
@@ -83,6 +83,9 @@ export const getExportVolunteersData = async (eventId: string) => {
 						group.participantId === volunteer.id &&
 						group.group.eventId === eventId,
 				)?.group.name || 'Sem grupo',
+			Status: !volunteer.checkIn
+				? StatusType[CHECK_IN_STATUS.NOT_ANSWERED].label
+				: StatusType[volunteer.checkIn].label,
 		}))
 
 		const tableHeader = Object.keys(data[0])

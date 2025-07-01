@@ -28,11 +28,13 @@ const queries = async (eventId: string | null) => {
 		await prisma.participant.count({
 			where: {
 				...(eventId && { eventId }),
+				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 			},
 		}),
 		await prisma.volunteer.count({
 			where: {
 				...(eventId && { eventId }),
+				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 			},
 		}),
 		await prisma.participant.count({
@@ -66,6 +68,10 @@ const queries = async (eventId: string | null) => {
 		await prisma.volunteerPayment.groupBy({
 			where: {
 				...(eventId && { eventId }),
+				OR: [
+					{ volunteer: { checkIn: null } },
+					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
 			},
 			by: ['paymentType'],
 			_count: true,
@@ -73,6 +79,10 @@ const queries = async (eventId: string | null) => {
 		await prisma.participantPayment.groupBy({
 			where: {
 				...(eventId && { eventId }),
+				OR: [
+					{ participant: { checkIn: null } },
+					{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
 			},
 			by: ['paymentType'],
 			_count: true,
@@ -80,6 +90,7 @@ const queries = async (eventId: string | null) => {
 		await prisma.participant.findMany({
 			where: {
 				...(eventId && { eventId }),
+				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 			},
 			select: {
 				birthdate: true,
@@ -93,6 +104,7 @@ const queries = async (eventId: string | null) => {
 		await prisma.volunteer.findMany({
 			where: {
 				...(eventId && { eventId }),
+				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 			},
 			select: {
 				birthdate: true,
@@ -106,6 +118,10 @@ const queries = async (eventId: string | null) => {
 		await prisma.participantAddress.groupBy({
 			where: {
 				...(eventId && { participant: { eventId } }),
+				OR: [
+					{ participant: { checkIn: null } },
+					{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
 			},
 			by: ['city'],
 			_count: true,
