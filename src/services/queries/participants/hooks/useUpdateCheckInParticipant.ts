@@ -17,6 +17,12 @@ export const useUpdateCheckInParticipant = () => {
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.PARTICIPANTS_EXPORT_DATA],
 			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.ROOMS],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.GROUPS],
+			})
 		},
 	})
 

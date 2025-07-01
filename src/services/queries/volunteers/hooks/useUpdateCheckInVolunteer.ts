@@ -17,6 +17,18 @@ export const useUpdateCheckInVolunteer = () => {
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.VOLUNTEERS_EXPORT_DATA],
 			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.ROOMS],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.GROUPS],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.MEETING],
+			})
 		},
 	})
 
