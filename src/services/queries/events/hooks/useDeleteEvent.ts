@@ -10,6 +10,7 @@ export const useDeleteEvent = () => {
 		mutationFn: deleteEvent,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENTS] })
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENTS_INFINITY] })
 		},
 	})
 

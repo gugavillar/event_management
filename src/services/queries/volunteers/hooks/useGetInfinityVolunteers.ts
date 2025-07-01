@@ -3,7 +3,7 @@ import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useState } from 'react'
 
-import { QUERY_KEYS } from '@/constants'
+import { CHECK_IN_STATUS, QUERY_KEYS } from '@/constants'
 
 import { getVolunteers } from '../usecases'
 import { VolunteersFromAPI } from '../volunteers.type'
@@ -12,12 +12,14 @@ export type UseGetInfinityVolunteersArgs = {
 	eventId: string
 	hasNoGroup?: boolean
 	hasNoRoom?: boolean
+	statusVolunteer?: CHECK_IN_STATUS
 }
 
 export const useGetInfinityVolunteers = ({
 	eventId,
 	hasNoGroup,
 	hasNoRoom,
+	statusVolunteer,
 }: UseGetInfinityVolunteersArgs) => {
 	const [searchVolunteer, setSearchVolunteer] = useState('')
 	const debounceVolunteer = useDebounce(searchVolunteer, 500)
@@ -33,12 +35,13 @@ export const useGetInfinityVolunteers = ({
 			debounceVolunteer,
 			hasNoGroup,
 			hasNoRoom,
+			statusVolunteer,
 		],
 		queryFn: async ({ pageParam }) =>
 			await getVolunteers({
 				searchVolunteer: debounceVolunteer,
 				eventId,
-				statusVolunteer: '',
+				...(statusVolunteer && { statusVolunteer }),
 				...(hasNoGroup && { hasNoGroup }),
 				...(hasNoRoom && { hasNoRoom }),
 				page: pageParam,

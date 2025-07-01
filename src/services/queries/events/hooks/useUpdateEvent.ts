@@ -11,6 +11,7 @@ export const useUpdateEvent = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENTS] })
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENT] })
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENTS_INFINITY] })
 		},
 	})
 

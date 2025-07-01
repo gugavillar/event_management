@@ -1,7 +1,7 @@
 'use client'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { MEMBERS } from '@/constants'
+import { CHECK_IN_STATUS, MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import {
@@ -36,6 +36,7 @@ export const ParticipantField = ({
 		eventId,
 		hasNoGroup,
 		hasNoRoom,
+		statusParticipant: CHECK_IN_STATUS.CONFIRMED,
 	})
 
 	const baseParticipants =
