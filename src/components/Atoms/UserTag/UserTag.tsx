@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { USER_STATUS } from '@/constants'
@@ -12,7 +12,7 @@ const STATUS_COLORS = {
 	[USER_STATUS.ACTIVE]: 'bg-emerald-400 bg-opacity-30',
 }
 
-export const UserTag = ({ status, className, ...props }: UserTagProps) => {
+export const UserTag = memo(({ status, className, ...props }: UserTagProps) => {
 	return (
 		<mark
 			className={twMerge(
@@ -25,4 +25,6 @@ export const UserTag = ({ status, className, ...props }: UserTagProps) => {
 			{status}
 		</mark>
 	)
-}
+})
+
+UserTag.displayName = 'UserTag'

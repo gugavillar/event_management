@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { CHECK_IN_STATUS, StatusType } from '@/constants'
@@ -13,7 +13,7 @@ const STATUS_COLORS = {
 	[CHECK_IN_STATUS.NOT_ANSWERED]: 'bg-gray-400 bg-opacity-30',
 }
 
-export const StatusTag = ({ status, className, ...props }: StatusTag) => {
+export const StatusTag = memo(({ status, className, ...props }: StatusTag) => {
 	return (
 		<mark
 			className={twMerge(
@@ -26,4 +26,6 @@ export const StatusTag = ({ status, className, ...props }: StatusTag) => {
 			{StatusType[status].label}
 		</mark>
 	)
-}
+})
+
+StatusTag.displayName = 'StatusTag'

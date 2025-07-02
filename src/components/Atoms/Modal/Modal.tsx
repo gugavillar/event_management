@@ -21,6 +21,9 @@ export const Modal = ({
 
 	useEffect(() => {
 		setIsMounted(true)
+		return () => {
+			setIsMounted(false)
+		}
 	}, [])
 
 	if (!isMounted) return null

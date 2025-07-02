@@ -24,6 +24,9 @@ export const Drawer = ({
 
 	useEffect(() => {
 		setIsMounted(true)
+		return () => {
+			setIsMounted(false)
+		}
 	}, [])
 
 	if (!isMounted) return null

@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import { ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { PaymentTypeAPI, PaymentType } from '@/constants'
@@ -15,21 +15,21 @@ const STATUS_COLORS = {
 	[PaymentTypeAPI.OPEN]: 'bg-gray-400 bg-opacity-30',
 }
 
-export const PaymentTag = ({
-	status,
-	className,
-	...props
-}: PaymentTagProps) => {
-	return (
-		<mark
-			className={twMerge(
-				'flex w-20 items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
-				className,
-				STATUS_COLORS[status],
-			)}
-			{...props}
-		>
-			{PaymentType[status].label}
-		</mark>
-	)
-}
+export const PaymentTag = memo(
+	({ status, className, ...props }: PaymentTagProps) => {
+		return (
+			<mark
+				className={twMerge(
+					'flex w-20 items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
+					className,
+					STATUS_COLORS[status],
+				)}
+				{...props}
+			>
+				{PaymentType[status].label}
+			</mark>
+		)
+	},
+)
+
+PaymentTag.displayName = 'PaymentTag'
