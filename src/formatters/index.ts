@@ -1,5 +1,6 @@
 export * from './currency'
 export * from './date'
 export * from './errors'
+export * from './exports'
 export * from './inputs'
 export * from './phones'

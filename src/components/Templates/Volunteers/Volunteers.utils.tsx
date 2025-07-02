@@ -1,4 +1,4 @@
-import { differenceInYears, format } from 'date-fns'
+import { format } from 'date-fns'
 import {
 	BriefcaseBusiness,
 	FileUser,
@@ -9,7 +9,7 @@ import {
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
-import { formatPhone } from '@/formatters'
+import { formatBirthdate, formatPhone } from '@/formatters'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 export const HEADER_LABELS = [
@@ -81,7 +81,10 @@ export const formatTableData = (
 				</div>
 			),
 			phone: formatPhone(volunteer.phone),
-			birthdate: `${format(volunteer.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(volunteer.event.finalDate), volunteer.birthdate)} anos`,
+			birthdate: formatBirthdate(
+				volunteer.birthdate,
+				volunteer.event.finalDate,
+			),
 			city: volunteer.address.city,
 			event: volunteer.event.name,
 			status: (

@@ -1,16 +1,16 @@
-import { differenceInYears, format } from 'date-fns'
 import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
+import { prisma } from '@/constants'
 import {
-	CHECK_IN_STATUS,
-	PaymentType,
-	PaymentTypeAPI,
-	prisma,
-	StatusType,
-} from '@/constants'
-import { currencyValue, formatPhone } from '@/formatters'
+	currencyValue,
+	formatBirthdate,
+	formatCheckIn,
+	formatPhone,
+	paymentDate,
+	paymentStatus,
+} from '@/formatters'
 
 export const getExportVolunteersData = async (eventId: string) => {
 	try {
@@ -72,7 +72,10 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Nome: volunteer.name,
 			Chamado: volunteer.called,
 			Email: volunteer.email,
-			Data_Nascimento: `${format(volunteer.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(volunteer.event.finalDate), volunteer.birthdate)} anos`,
+			Data_Nascimento: formatBirthdate(
+				volunteer.birthdate,
+				volunteer.event.finalDate,
+			),
 			Telefone: formatPhone(volunteer.phone),
 			Parente: volunteer.relative,
 			Telefone_Parente: formatPhone(volunteer.relativePhone),
@@ -94,29 +97,22 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Quarto:
 				volunteer.roomMember?.find(
 					(room) =>
-						room.participantId === volunteer.id &&
-						room.room.eventId === eventId,
+						room.volunteerId === volunteer.id && room.room.eventId === eventId,
 				)?.room.roomNumber || 'Sem quarto',
 			Grupo:
 				volunteer.groupMemberships?.find(
 					(group) =>
-						group.participantId === volunteer.id &&
+						group.volunteerId === volunteer.id &&
 						group.group.eventId === eventId,
 				)?.group.name || 'Sem grupo',
-			Status: !volunteer.checkIn
-				? StatusType[CHECK_IN_STATUS.NOT_ANSWERED].label
-				: StatusType[volunteer.checkIn].label,
+			Status: formatCheckIn(volunteer.checkIn),
 		}))
 
 		const paymentsData = payments.map((payment) => ({
 			Nome: payment.volunteer.name,
 			Valor_Pago: currencyValue(Number(payment.paymentValue)),
-			Status: !payment.paymentType
-				? PaymentType[PaymentTypeAPI.OPEN].label
-				: PaymentType[PaymentTypeAPI[payment.paymentType]].label,
-			Data_Pagamento: payment.paymentType
-				? format(payment.updatedAt, 'dd/MM/yyyy')
-				: '',
+			Status: paymentStatus(payment.volunteer.checkIn, payment.paymentType),
+			Data_Pagamento: paymentDate(payment.paymentType, payment.updatedAt),
 		}))
 
 		const tableHeaderVolunteers = Object.keys(volunteersData[0])

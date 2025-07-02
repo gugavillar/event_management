@@ -1,9 +1,9 @@
-import { differenceInYears, format } from 'date-fns'
+import { format } from 'date-fns'
 import { FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
 
 import { StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS } from '@/constants'
-import { formatPhone } from '@/formatters'
+import { formatBirthdate, formatPhone } from '@/formatters'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 export const HEADER_LABELS = [
@@ -55,7 +55,10 @@ export const formatTableData = (
 			id: participant.id,
 			name: participant.name,
 			contact: formatPhone(participant.phone),
-			birthdate: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(participant.event.finalDate), participant.birthdate)} anos`,
+			birthdate: formatBirthdate(
+				participant.birthdate,
+				participant.event.finalDate,
+			),
 			city: participant.address.city,
 			event: participant.event.name,
 			createdAt: format(participant.createdAt, 'dd/MM/yyyy - HH:mm'),

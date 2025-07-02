@@ -1,16 +1,16 @@
-import { differenceInYears, format } from 'date-fns'
 import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
+import { prisma } from '@/constants'
 import {
-	CHECK_IN_STATUS,
-	PaymentType,
-	PaymentTypeAPI,
-	prisma,
-	StatusType,
-} from '@/constants'
-import { currencyValue, formatPhone } from '@/formatters'
+	currencyValue,
+	formatBirthdate,
+	formatCheckIn,
+	formatPhone,
+	paymentDate,
+	paymentStatus,
+} from '@/formatters'
 
 export const getExportParticipantsData = async (eventId: string) => {
 	try {
@@ -66,7 +66,10 @@ export const getExportParticipantsData = async (eventId: string) => {
 			Nome: participant.name,
 			Chamado: participant.called,
 			Email: participant.email,
-			Data_Nascimento: `${format(participant.birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(participant.event.finalDate), participant.birthdate)} anos`,
+			Data_Nascimento: formatBirthdate(
+				participant.birthdate,
+				participant.event.finalDate,
+			),
 			Telefone: formatPhone(participant.phone),
 			Responsável: participant.responsible,
 			Telefone_Responsável: formatPhone(participant.responsiblePhone),
@@ -89,20 +92,14 @@ export const getExportParticipantsData = async (eventId: string) => {
 						group.participantId === participant.id &&
 						group.group.eventId === eventId,
 				)?.group.name || 'Sem grupo',
-			Status: !participant.checkIn
-				? StatusType[CHECK_IN_STATUS.NOT_ANSWERED].label
-				: StatusType[participant.checkIn].label,
+			Status: formatCheckIn(participant.checkIn),
 		}))
 
 		const paymentsData = payments.map((payment) => ({
 			Nome: payment.participant.name,
 			Valor_Pago: currencyValue(Number(payment.paymentValue)),
-			Status: !payment.paymentType
-				? PaymentType[PaymentTypeAPI.OPEN].label
-				: PaymentType[PaymentTypeAPI[payment.paymentType]].label,
-			Data_Pagamento: payment.paymentType
-				? format(payment.updatedAt, 'dd/MM/yyyy')
-				: '',
+			Status: paymentStatus(payment.participant.checkIn, payment.paymentType),
+			Data_Pagamento: paymentDate(payment.paymentType, payment.updatedAt),
 		}))
 
 		const tableHeaderParticipants = Object.keys(participantsData[0])
