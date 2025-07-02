@@ -288,7 +288,7 @@ model MeetingPresence {
   justification Boolean
   checkedAt     DateTime @default(now())
 
-  volunteer Volunteer @relation("MeetingsPresence", fields: [volunteerId], references: [id])
+  volunteer Volunteer @relation("MeetingsPresence", fields: [volunteerId], references: [id], onDelete: Cascade)
   meeting   Meetings  @relation(fields: [meetingId], references: [id])
 
   @@unique([volunteerId, meetingId])
