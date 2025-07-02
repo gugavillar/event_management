@@ -3,8 +3,14 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { CHECK_IN_STATUS, prisma, StatusType } from '@/constants'
-import { formatPhone } from '@/formatters'
+import {
+	CHECK_IN_STATUS,
+	PaymentType,
+	PaymentTypeAPI,
+	prisma,
+	StatusType,
+} from '@/constants'
+import { currencyValue, formatPhone } from '@/formatters'
 
 export const getExportParticipantsData = async (eventId: string) => {
 	try {
@@ -35,6 +41,20 @@ export const getExportParticipantsData = async (eventId: string) => {
 			},
 		})
 
+		const payments = await prisma.participantPayment.findMany({
+			where: {
+				eventId,
+			},
+			include: {
+				participant: true,
+			},
+			orderBy: {
+				participant: {
+					name: 'asc',
+				},
+			},
+		})
+
 		if (!participants.length) {
 			return NextResponse.json(
 				{ error: 'Nenhum participante cadastrado' },
@@ -42,7 +62,7 @@ export const getExportParticipantsData = async (eventId: string) => {
 			)
 		}
 
-		const data = participants.map((participant) => ({
+		const participantsData = participants.map((participant) => ({
 			Nome: participant.name,
 			Chamado: participant.called,
 			Email: participant.email,
@@ -74,16 +94,28 @@ export const getExportParticipantsData = async (eventId: string) => {
 				: StatusType[participant.checkIn].label,
 		}))
 
-		const tableHeader = Object.keys(data[0])
-		const worksheet = utils.json_to_sheet(data, {
-			header: tableHeader,
+		const paymentsData = payments.map((payment) => ({
+			Nome: payment.participant.name,
+			Valor_Pago: currencyValue(Number(payment.paymentValue)),
+			Status: !payment.paymentType
+				? PaymentType[PaymentTypeAPI.OPEN].label
+				: PaymentType[PaymentTypeAPI[payment.paymentType]].label,
+			Data_Pagamento: payment.paymentType
+				? format(payment.updatedAt, 'dd/MM/yyyy')
+				: '',
+		}))
+
+		const tableHeaderParticipants = Object.keys(participantsData[0])
+		const worksheetParticipants = utils.json_to_sheet(participantsData, {
+			header: tableHeaderParticipants,
+		})
+		const tableHeaderPayments = Object.keys(paymentsData[0])
+		const worksheetPayments = utils.json_to_sheet(paymentsData, {
+			header: tableHeaderPayments,
 		})
 		const workbook = utils.book_new()
-		utils.book_append_sheet(
-			workbook,
-			worksheet,
-			`Participantes - ${participants[0].event.name}`,
-		)
+		utils.book_append_sheet(workbook, worksheetParticipants, 'Participantes')
+		utils.book_append_sheet(workbook, worksheetPayments, 'Pagamentos')
 		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
 
 		return new NextResponse(buffer, {
