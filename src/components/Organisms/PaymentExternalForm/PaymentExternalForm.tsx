@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { SelectField } from '@/components/Molecules'
@@ -9,10 +9,13 @@ import { PAYMENT_METHOD_EXTERNAL_OPTIONS } from '@/constants'
 
 import { PaymentChoice } from './PaymentChoice'
 
-type PaymentExternalFormProps = ExternalParticipantFormProps
+type PaymentExternalFormProps = ExternalParticipantFormProps & {
+	setCurrentStep: Dispatch<SetStateAction<number>>
+}
 
 export const PaymentExternalForm = ({
 	registrationValue,
+	setCurrentStep,
 }: PaymentExternalFormProps) => {
 	const [pixValue, setPixValue] = useState<string | null>(null)
 	const { watch } = useFormContext<ExternalParticipantFormType>()
@@ -34,6 +37,7 @@ export const PaymentExternalForm = ({
 				pixValue={pixValue}
 				setPixValue={setPixValue}
 				registrationValue={registrationValue}
+				setCurrentStep={setCurrentStep}
 			/>
 		</div>
 	)

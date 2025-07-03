@@ -11,6 +11,11 @@ import {
 	PaymentExternalForm,
 } from '@/components/Organisms'
 import { VolunteerExternalForm } from '@/components/Organisms/VolunteerExternalForm'
+import {
+	MODALS_IDS,
+	overlayOpen,
+	PAYMENT_METHOD_EXTERNAL_OPTIONS,
+} from '@/constants'
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateVolunteer } from '@/services/queries/volunteers'
 import { generateToastError } from '@/utils/errors'
@@ -98,6 +103,9 @@ export const ExternalVolunteerForm = ({
 			{ ...formattedData },
 			{
 				onSuccess: () => {
+					if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
+						return overlayOpen(MODALS_IDS.PAYMENT_PIX_MODAL)
+					}
 					setCurrentStep(0)
 					methods.reset()
 					toast.success('Inscrição realizada com sucesso!')
@@ -118,7 +126,10 @@ export const ExternalVolunteerForm = ({
 						{
 							title: 'Pagamento',
 							content: (
-								<PaymentExternalForm registrationValue={registrationValue} />
+								<PaymentExternalForm
+									registrationValue={registrationValue}
+									setCurrentStep={setCurrentStep}
+								/>
 							),
 						},
 					]}

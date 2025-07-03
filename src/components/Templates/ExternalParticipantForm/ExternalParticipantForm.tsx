@@ -11,6 +11,11 @@ import {
 	PaymentExternalForm,
 	ParticipantExternalForm,
 } from '@/components/Organisms'
+import {
+	MODALS_IDS,
+	overlayOpen,
+	PAYMENT_METHOD_EXTERNAL_OPTIONS,
+} from '@/constants'
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateParticipant } from '@/services/queries/participants'
 import { generateToastError } from '@/utils/errors'
@@ -100,6 +105,9 @@ export const ExternalParticipantForm = ({
 			{ ...formattedData },
 			{
 				onSuccess: () => {
+					if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
+						return overlayOpen(MODALS_IDS.PAYMENT_PIX_MODAL)
+					}
 					setCurrentStep(0)
 					methods.reset()
 					toast.success('Inscrição realizada com sucesso!')
@@ -120,7 +128,10 @@ export const ExternalParticipantForm = ({
 						{
 							title: 'Pagamento',
 							content: (
-								<PaymentExternalForm registrationValue={registrationValue} />
+								<PaymentExternalForm
+									registrationValue={registrationValue}
+									setCurrentStep={setCurrentStep}
+								/>
 							),
 						},
 					]}

@@ -1,38 +1,27 @@
 'use client'
-import copy from 'copy-to-clipboard'
 import PixBR from 'pixbrasil'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import toast from 'react-hot-toast'
-import QRCode from 'react-qr-code'
 
-import { Button, Spinner } from '@/components/Atoms'
-import { PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
+import { MODALS_IDS, PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
 import { currencyValue } from '@/formatters'
 
-type PaymentChoiceProps = {
+import { ModalPaymentPix } from './ModalPaymentPix'
+
+export type PaymentChoiceProps = {
 	paymentMethod: string
 	registrationValue?: number
 	setPixValue: Dispatch<SetStateAction<string | null>>
 	pixValue: string | null
+	setCurrentStep: Dispatch<SetStateAction<number>>
 }
 
 export const PaymentChoice = ({
 	paymentMethod,
 	registrationValue,
-	setPixValue,
 	pixValue,
+	setPixValue,
+	setCurrentStep,
 }: PaymentChoiceProps) => {
-	const handleCopyPixValue = async () => {
-		if (!pixValue) return
-
-		const success = copy(pixValue)
-		if (success) {
-			return toast.success('PIX copiado com sucesso!')
-		}
-
-		toast.error('Erro ao copiar o PIX')
-	}
-
 	useEffect(() => {
 		if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
 			const pixPayload = PixBR({ ...PIX, amount: registrationValue })
@@ -52,36 +41,16 @@ export const PaymentChoice = ({
 				</span>
 			</h3>
 			{paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value ? (
-				<>
-					<div className="space-y-2.5 text-center">
-						<h2 className="text-lg font-semibold">
-							Para realizar o pagamento, utilize o QR Code abaixo ou copie o
-							código PIX.
-						</h2>
-						<p>
-							Após o pagamento, envie o comprovante para a secretaria da igreja
-							ou apresente-o no dia do evento.
-						</p>
-						<p>
-							<span className="font-semibold">Importante:</span> não se esqueça
-							de concluir sua inscrição após o envio do comprovante.
-						</p>
-					</div>
-					{pixValue ? (
-						<>
-							<QRCode value={pixValue} size={200} />
-							<Button
-								className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:w-2/5"
-								onClick={handleCopyPixValue}
-								disabled={!pixValue}
-							>
-								Copiar código
-							</Button>
-						</>
-					) : (
-						<Spinner className="size-16" />
-					)}
-				</>
+				<div className="space-y-8 text-center">
+					<h2 className="text-lg font-semibold">
+						Ao finalizar, será exibido o QR Code e um botão para copiar o código
+						PIX. Use a opção que preferir para pagar.
+					</h2>
+					<p>
+						Após o pagamento, envie o comprovante para a secretaria da igreja ou
+						apresente-o no dia do evento.
+					</p>
+				</div>
 			) : (
 				<div className="space-y-8 text-center">
 					<h2 className="text-lg font-semibold">
@@ -94,6 +63,11 @@ export const PaymentChoice = ({
 					</p>
 				</div>
 			)}
+			<ModalPaymentPix
+				modalId={MODALS_IDS.PAYMENT_PIX_MODAL}
+				pixValue={pixValue}
+				setCurrentStep={setCurrentStep}
+			/>
 		</div>
 	)
 }

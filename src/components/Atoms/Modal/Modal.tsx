@@ -9,6 +9,7 @@ type ModalProps = {
 	children: ReactNode
 	handleClose?: () => void
 	isLarge?: boolean
+	isStatic?: boolean
 }
 
 export const Modal = ({
@@ -16,6 +17,7 @@ export const Modal = ({
 	children,
 	handleClose,
 	isLarge,
+	isStatic,
 }: ModalProps) => {
 	const [isMounted, setIsMounted] = useState(false)
 
@@ -31,7 +33,10 @@ export const Modal = ({
 	return createPortal(
 		<div
 			id={modalId}
-			className="hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden pb-12"
+			className={twMerge(
+				'hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden pb-12',
+				isStatic && '[--overlay-backdrop:static]',
+			)}
 			data-testid="modal"
 		>
 			<div
