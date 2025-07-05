@@ -12,6 +12,7 @@ const STATUS_COLORS = {
 	[PaymentTypeAPI.CASH]: 'bg-yellow-400 bg-opacity-30',
 	[PaymentTypeAPI.PIX]: 'bg-green-500 bg-opacity-30',
 	[PaymentTypeAPI.DONATION]: 'bg-purple-400 bg-opacity-30',
+	[PaymentTypeAPI.DONATION_ROMERO]: 'bg-purple-600 bg-opacity-30',
 	[PaymentTypeAPI.OPEN]: 'bg-gray-400 bg-opacity-30',
 }
 
@@ -20,7 +21,7 @@ export const PaymentTag = memo(
 		return (
 			<mark
 				className={twMerge(
-					'flex w-20 items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
+					'flex w-fit min-w-36 items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
 					className,
 					STATUS_COLORS[status],
 				)}

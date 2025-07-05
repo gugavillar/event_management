@@ -18,6 +18,7 @@ export const PaymentModalSchema = z
 						PaymentTypeAPI.CASH,
 						PaymentTypeAPI.PIX,
 						PaymentTypeAPI.DONATION,
+						PaymentTypeAPI.DONATION_ROMERO,
 					],
 					{
 						required_error: 'Campo obrigatório',
@@ -33,6 +34,7 @@ export const PaymentModalSchema = z
 						PaymentTypeAPI.CASH,
 						PaymentTypeAPI.PIX,
 						PaymentTypeAPI.DONATION,
+						PaymentTypeAPI.DONATION_ROMERO,
 					].includes(val as PaymentTypeAPI),
 				{
 					message: 'Campo obrigatório',

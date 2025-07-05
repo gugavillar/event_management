@@ -28,6 +28,7 @@ enum PaymentType {
   PIX
   CASH
   DONATION
+  DONATION_ROMERO
 }
 
 enum GroupType {

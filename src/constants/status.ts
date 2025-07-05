@@ -3,6 +3,7 @@ export enum PaymentTypeAPI {
 	PIX = 'PIX',
 	CASH = 'CASH',
 	DONATION = 'DONATION',
+	DONATION_ROMERO = 'DONATION_ROMERO',
 	OPEN = 'OPEN',
 }
 
@@ -13,6 +14,10 @@ export const PaymentType = {
 	[PaymentTypeAPI.DONATION]: {
 		label: 'Doação',
 		value: PaymentTypeAPI.DONATION,
+	},
+	[PaymentTypeAPI.DONATION_ROMERO]: {
+		label: 'Doação Romero',
+		value: PaymentTypeAPI.DONATION_ROMERO,
 	},
 	[PaymentTypeAPI.OPEN]: {
 		label: 'Em aberto',

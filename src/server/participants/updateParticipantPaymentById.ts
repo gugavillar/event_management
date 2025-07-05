@@ -22,6 +22,7 @@ export const updateParticipantPaymentById = async ({
 				PaymentTypeAPI.CASH,
 				PaymentTypeAPI.PIX,
 				PaymentTypeAPI.DONATION,
+				PaymentTypeAPI.DONATION_ROMERO,
 			]),
 			paymentValue: z.number().optional(),
 		}).parse({ paymentId, ...values })
