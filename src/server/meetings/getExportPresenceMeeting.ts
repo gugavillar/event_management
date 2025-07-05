@@ -84,11 +84,7 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 			header: tableHeader,
 		})
 		const workbook = utils.book_new()
-		utils.book_append_sheet(
-			workbook,
-			worksheet,
-			`Presenças - ${presences[0].meeting.event.name}`,
-		)
+		utils.book_append_sheet(workbook, worksheet, 'Presenças')
 
 		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
 
