@@ -8,7 +8,7 @@ import {
 } from 'lucide-react'
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS } from '@/constants'
+import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -62,7 +62,11 @@ export const formatTableData = (
 	if (!data) return []
 
 	return data?.map((volunteer) => {
+		const isWithdrew = volunteer.checkIn === CHECK_IN_STATUS.WITHDREW
 		return {
+			...(isWithdrew && {
+				backgroundColor: LINE_COLOR.withdrew,
+			}),
 			id: volunteer.id,
 			name: volunteer.name,
 			role: (

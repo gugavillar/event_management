@@ -50,8 +50,10 @@ export const formatTableData = (
 			Number(payment.paymentValue) < Number(payment.event.volunteerPrice) &&
 			payment.paymentType !== null
 		return {
-			...(isPaymentNotTotal && {
-				backgroundColor: LINE_COLOR,
+			...((isPaymentNotTotal || isVolunteerWithdraw) && {
+				backgroundColor: isVolunteerWithdraw
+					? LINE_COLOR.withdrew
+					: LINE_COLOR.payment,
 			}),
 			id: payment.id,
 			name: payment.volunteer.name,

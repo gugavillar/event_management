@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import { FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
 
 import { StatusTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS } from '@/constants'
+import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -51,7 +51,11 @@ export const formatTableData = (
 	if (!data) return []
 
 	return data?.map((participant) => {
+		const isWithdrew = participant.checkIn === CHECK_IN_STATUS.WITHDREW
 		return {
+			...(isWithdrew && {
+				backgroundColor: LINE_COLOR.withdrew,
+			}),
 			id: participant.id,
 			name: participant.name,
 			contact: formatPhone(participant.phone),

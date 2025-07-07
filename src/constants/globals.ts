@@ -116,4 +116,7 @@ export const NO_FUNCTION = {
 	value: 'Sem funcao',
 }
 
-export const LINE_COLOR = '#fffbeb'
+export const LINE_COLOR = {
+	payment: '#fffbeb',
+	withdrew: '#fee2e2',
+}
