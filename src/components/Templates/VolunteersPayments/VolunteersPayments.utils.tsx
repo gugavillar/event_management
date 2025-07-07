@@ -2,7 +2,7 @@ import { HandCoins } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 import { PaymentTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
+import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
 import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -46,7 +46,13 @@ export const formatTableData = (
 	return payments.map((payment) => {
 		const isVolunteerWithdraw =
 			payment.volunteer.checkIn === CHECK_IN_STATUS.WITHDREW
+		const isPaymentNotTotal =
+			Number(payment.paymentValue) < Number(payment.event.volunteerPrice) &&
+			payment.paymentType !== null
 		return {
+			...(isPaymentNotTotal && {
+				backgroundColor: LINE_COLOR,
+			}),
 			id: payment.id,
 			name: payment.volunteer.name,
 			phone: formatPhone(payment.volunteer.phone),
@@ -55,6 +61,7 @@ export const formatTableData = (
 			eventValue: currencyValue(Number(payment.event.volunteerPrice)),
 			payment: (
 				<PaymentTag
+					isNotTotal={isPaymentNotTotal}
 					status={
 						!payment.paymentType ? PaymentTypeAPI.OPEN : payment.paymentType
 					}

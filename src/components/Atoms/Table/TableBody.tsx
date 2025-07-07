@@ -7,13 +7,22 @@ import { UUID } from 'crypto'
 import { type TableHeaderProps } from './TableHeader'
 import { Spinner } from '../Spinner'
 
-type RowsData = Array<{
-	id: UUID
-	[key: TableHeaderProps['headerLabels'][number]['accessor']]:
-		| string
-		| number
-		| ReactNode
-}>
+type HeaderAccessor = Extract<
+	TableHeaderProps['headerLabels'][number]['accessor'],
+	string
+>
+
+type RowsData = Array<
+	{
+		id: UUID
+		backgroundColor?: string
+	} & {
+		[K in Exclude<HeaderAccessor, 'backgroundColor'>]:
+			| string
+			| number
+			| ReactNode
+	}
+>
 
 export type TableBodyProps = ComponentProps<'tbody'> & {
 	headerLabels: TableHeaderProps['headerLabels']
@@ -50,10 +59,13 @@ export const TableBody = ({
 					</td>
 				</tr>
 			) : (
-				bodyData?.map((data) => (
+				bodyData?.map(({ backgroundColor, ...data }) => (
 					<tr
 						key={data?.id}
-						className="odd:bg-slate-50 even:bg-slate-800/5 hover:bg-slate-200"
+						className={twMerge(
+							'odd:bg-slate-50 even:bg-slate-800/5 hover:bg-slate-200',
+						)}
+						style={{ backgroundColor }}
 					>
 						{headerLabels?.map(({ accessor }) => {
 							const isToApplyClassOrFunction =

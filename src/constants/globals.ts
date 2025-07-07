@@ -115,3 +115,5 @@ export const NO_FUNCTION = {
 	label: 'Sem função',
 	value: 'Sem funcao',
 }
+
+export const LINE_COLOR = '#fffbeb'
