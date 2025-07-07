@@ -119,4 +119,5 @@ export const NO_FUNCTION = {
 export const LINE_COLOR = {
 	payment: '#fffbeb',
 	withdrew: '#fee2e2',
+	interested: '#e9d5ff',
 }

@@ -61,6 +61,7 @@ model Event {
   volunteerPrice                Decimal
   isParticipantRegistrationOpen Boolean              @default(true)
   isVolunteerRegistrationOpen   Boolean              @default(true)
+  isInterestedListOpen          Boolean              @default(false)
   createdAt                     DateTime             @default(now())
   updatedAt                     DateTime             @updatedAt
   userId                        String
@@ -176,6 +177,7 @@ model Participant {
   host             String
   hostPhone        String
   health           String?
+  interested       Boolean?
   checkIn          ParticipantOrVolunteerStatus?
   createdAt        DateTime                      @default(now())
   updatedAt        DateTime                      @updatedAt

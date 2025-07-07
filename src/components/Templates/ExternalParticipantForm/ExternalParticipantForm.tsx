@@ -28,11 +28,13 @@ import {
 export type ExternalParticipantFormProps = {
 	registrationValue?: number
 	eventId?: string
+	isInterestedList?: boolean
 }
 
 export const ExternalParticipantForm = ({
 	registrationValue,
 	eventId,
+	isInterestedList,
 }: ExternalParticipantFormProps) => {
 	const [currentStep, setCurrentStep] = useState(0)
 
@@ -99,6 +101,7 @@ export const ExternalParticipantForm = ({
 			hostPhone: data.hostPhone.replace(/\D/g, ''),
 			responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
 			eventId,
+			...(isInterestedList && { interested: true }),
 		}
 
 		await create(
@@ -110,7 +113,11 @@ export const ExternalParticipantForm = ({
 					}
 					setCurrentStep(0)
 					methods.reset()
-					toast.success('Inscrição realizada com sucesso!')
+					toast.success(
+						isInterestedList
+							? 'Inscrição de interesse realizada com sucesso, caso hajam desistências, entraremos em contato'
+							: 'Inscrição realizada com sucesso!',
+					)
 				},
 				onError: (error) =>
 					generateToastError(error, 'Erro ao realizar inscrição'),
@@ -125,15 +132,19 @@ export const ExternalParticipantForm = ({
 					steps={[
 						{ title: 'Participante', content: <ParticipantExternalForm /> },
 						{ title: 'Endereço', content: <AddressExternalForm /> },
-						{
-							title: 'Pagamento',
-							content: (
-								<PaymentExternalForm
-									registrationValue={registrationValue}
-									setCurrentStep={setCurrentStep}
-								/>
-							),
-						},
+						...(!isInterestedList
+							? [
+									{
+										title: 'Pagamento',
+										content: (
+											<PaymentExternalForm
+												registrationValue={registrationValue}
+												setCurrentStep={setCurrentStep}
+											/>
+										),
+									},
+								]
+							: []),
 					]}
 					isPending={isPending}
 					currentStep={currentStep}

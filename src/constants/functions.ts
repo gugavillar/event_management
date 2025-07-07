@@ -34,3 +34,11 @@ export const eventPermitCreateRegistration = (event: any, type: MEMBERS) => {
 		return event.isVolunteerRegistrationOpen
 	}
 }
+
+export const interestedListPermitCreateRegistration = (event: any) => {
+	if (!event) return false
+
+	if (!event.isInterestedListOpen) return false
+
+	return isFuture(new Date(event.initialDate))
+}

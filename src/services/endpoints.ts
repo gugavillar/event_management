@@ -20,6 +20,8 @@ export const ENDPOINTS = {
 	UPDATE_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
 	UPDATE_REGISTRATION_EVENT: (event_id: string) =>
 		`${BASE_PATH.EVENTS}/${event_id}/registration`,
+	UPDATE_INTERESTED_EVENT: (event_id: string) =>
+		`${BASE_PATH.EVENTS}/${event_id}/interested`,
 
 	// Participants
 	CREATE_PARTICIPANT: BASE_PATH.PARTICIPANTS,

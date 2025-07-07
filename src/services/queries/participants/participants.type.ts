@@ -23,6 +23,7 @@ export type ParticipantsAPI = {
 	host: string
 	hostPhone: string
 	checkIn: CHECK_IN_STATUS | null
+	interested?: boolean
 	createdAt: string
 	updatedAt: string
 	eventId: UUID

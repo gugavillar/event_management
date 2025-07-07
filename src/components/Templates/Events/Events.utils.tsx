@@ -51,6 +51,11 @@ export const formatTableData = (
 		memberType: MEMBERS,
 		action: 'open' | 'close',
 	) => void,
+	handleActivatedOrDeactivatedInterestedList: (
+		id: EventsAPI['id'],
+		action: 'open' | 'close',
+	) => void,
+	handleOpenInterestedLink: (id: EventsAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -105,6 +110,25 @@ export const formatTableData = (
 								{event.isVolunteerRegistrationOpen
 									? 'Fechar inscrição voluntários'
 									: 'Abrir inscrição voluntários'}
+							</p>
+							<p
+								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								onClick={() => handleOpenInterestedLink(event.id)}
+							>
+								Lista de interessados
+							</p>
+							<p
+								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								onClick={() =>
+									handleActivatedOrDeactivatedInterestedList(
+										event.id,
+										event.isInterestedListOpen ? 'close' : 'open',
+									)
+								}
+							>
+								{event.isInterestedListOpen
+									? 'Fechar lista de interessados'
+									: 'Abrir lista de interessados'}
 							</p>
 						</>
 					</Dropdown>

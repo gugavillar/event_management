@@ -11,7 +11,11 @@ import {
 	PageContent,
 } from '@/components/Organisms'
 import { MEMBERS, MembersTypes, MODALS_IDS, overlayOpen } from '@/constants'
-import { useGetEvents, useUpdateRegistration } from '@/services/queries/events'
+import {
+	useGetEvents,
+	useUpdateInterested,
+	useUpdateRegistration,
+} from '@/services/queries/events'
 import { EventsAPI } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
 
@@ -25,7 +29,8 @@ export const Events = () => {
 	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(
 		null,
 	)
-	const { update } = useUpdateRegistration()
+	const { update: updateRegistration } = useUpdateRegistration()
+	const { update: updateInterested } = useUpdateInterested()
 	const {
 		data: events,
 		isLoading,
@@ -52,13 +57,40 @@ export const Events = () => {
 		[],
 	)
 
+	const handleOpenInterestedLink = useCallback((id: EventsAPI['id']) => {
+		window.open(
+			`${window.location.origin}/lista-interessados/${id}/participante`,
+		)
+	}, [])
+
+	const handleActivatedOrDeactivatedInterestedList = useCallback(
+		(id: EventsAPI['id'], action: 'open' | 'close') => {
+			updateInterested(
+				{ action, eventId: id },
+				{
+					onSuccess: () => {
+						toast.success(
+							`Lista de interessados ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`,
+						)
+					},
+					onError: () => {
+						toast.error(
+							`Falha ao tentar ${action === 'open' ? 'abrir' : 'fechar'} lista de interessados`,
+						)
+					},
+				},
+			)
+		},
+		[updateInterested],
+	)
+
 	const handleBlockOrOpenRegistration = useCallback(
 		async (
 			id: EventsAPI['id'],
 			memberType: MEMBERS,
 			action: 'open' | 'close',
 		) => {
-			await update(
+			await updateRegistration(
 				{ eventId: id, memberType, action },
 				{
 					onSuccess: () => {
@@ -74,7 +106,7 @@ export const Events = () => {
 				},
 			)
 		},
-		[update],
+		[updateRegistration],
 	)
 
 	const formatData = formatTableData(
@@ -83,6 +115,8 @@ export const Events = () => {
 		handleOpenModalToDeleteEvent,
 		handleOpenSelectedLink,
 		handleBlockOrOpenRegistration,
+		handleActivatedOrDeactivatedInterestedList,
+		handleOpenInterestedLink,
 	)
 
 	const hasMoreThanOnePage = !!events?.totalPages && events.totalPages > 1

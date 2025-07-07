@@ -52,9 +52,13 @@ export const formatTableData = (
 
 	return data?.map((participant) => {
 		const isWithdrew = participant.checkIn === CHECK_IN_STATUS.WITHDREW
+		const isInterested = Boolean(participant.interested)
 		return {
 			...(isWithdrew && {
 				backgroundColor: LINE_COLOR.withdrew,
+			}),
+			...(isInterested && {
+				backgroundColor: LINE_COLOR.interested,
 			}),
 			id: participant.id,
 			name: participant.name,
@@ -75,7 +79,7 @@ export const formatTableData = (
 					}
 				/>
 			),
-			actions: (
+			actions: !isInterested && (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
 						<FileUser
