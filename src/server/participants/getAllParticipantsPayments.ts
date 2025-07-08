@@ -26,6 +26,10 @@ export const getAllParticipantsPayments = async (
 							},
 						},
 					}),
+					OR: [
+						{ participant: { interested: false } },
+						{ participant: { interested: null } },
+					],
 				},
 				include: {
 					event: true,
@@ -50,6 +54,10 @@ export const getAllParticipantsPayments = async (
 							},
 						},
 					}),
+					OR: [
+						{ participant: { interested: false } },
+						{ participant: { interested: null } },
+					],
 				},
 			}),
 		])

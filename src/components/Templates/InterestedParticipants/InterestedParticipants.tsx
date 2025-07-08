@@ -5,7 +5,11 @@ import { useCallback, useState } from 'react'
 
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	InterestedModalToParticipant,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import {
 	formatterComboBoxValues,
@@ -50,8 +54,6 @@ export const InterestedParticipants = () => {
 		setCity,
 	} = useGetParticipants(true)
 
-	console.log(participants)
-
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
@@ -84,9 +86,18 @@ export const InterestedParticipants = () => {
 		[],
 	)
 
+	const handleOpenModalInterestedParticipant = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
+		},
+		[],
+	)
+
 	const formattedInterestedParticipants = formatTableData(
 		participants?.data,
 		handleOpenModalToShowParticipantData,
+		handleOpenModalInterestedParticipant,
 	)
 
 	const hasMoreThanOnePage =
@@ -135,6 +146,11 @@ export const InterestedParticipants = () => {
 			</ListPage>
 			<ParticipantModalData
 				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
+				selectedParticipant={selectedParticipant}
+				setSelectedParticipant={setSelectedParticipant}
+			/>
+			<InterestedModalToParticipant
+				modalId={MODALS_IDS.PARTICIPANT_INTERESTED_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>

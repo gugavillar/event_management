@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { FileUser } from 'lucide-react'
+import { ArrowLeftRight, FileUser } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
 import { LINE_COLOR } from '@/constants'
@@ -40,6 +40,7 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	data: Array<ParticipantsAPI> | undefined,
 	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
+	handleInterestedModal: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -65,6 +66,14 @@ export const formatTableData = (
 							onClick={() => handleShowParticipant(participant.id)}
 						/>
 						<Tooltip>Informações</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<ArrowLeftRight
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleInterestedModal(participant.id)}
+						/>
+						<Tooltip>Mover para o evento</Tooltip>
 					</div>
 				</div>
 			),

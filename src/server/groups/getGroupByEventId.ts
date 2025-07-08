@@ -22,6 +22,9 @@ export const getGroupByEventId = async (
 				},
 				event: true,
 			},
+			orderBy: {
+				name: 'asc',
+			},
 		})
 
 		const filteredGroups = groups.map((group) => {

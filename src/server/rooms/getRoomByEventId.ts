@@ -22,6 +22,9 @@ export const getRoomByEventId = async (
 				},
 				event: true,
 			},
+			orderBy: {
+				roomNumber: 'asc',
+			},
 		})
 
 		const filteredRooms = rooms.map((room) => {

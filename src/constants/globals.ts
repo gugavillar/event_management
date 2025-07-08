@@ -10,6 +10,7 @@ export const MODALS_IDS = {
 	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
 	PARTICIPANT_EXPORT_MODAL: 'participant_export_modal',
+	PARTICIPANT_INTERESTED_MODAL: 'participant_interested_modal',
 
 	// GROUP
 	GROUP_DRAWER: 'group_manager',

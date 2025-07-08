@@ -21,6 +21,7 @@ export const getExportParticipantsData = async (eventId: string) => {
 		const participants = await prisma.participant.findMany({
 			where: {
 				eventId,
+				OR: [{ interested: false }, { interested: null }],
 			},
 			include: {
 				address: true,
@@ -44,6 +45,10 @@ export const getExportParticipantsData = async (eventId: string) => {
 		const payments = await prisma.participantPayment.findMany({
 			where: {
 				eventId,
+				OR: [
+					{ participant: { interested: false } },
+					{ participant: { interested: null } },
+				],
 			},
 			include: {
 				participant: true,
