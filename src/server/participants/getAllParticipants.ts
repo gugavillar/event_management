@@ -7,6 +7,7 @@ export const getAllParticipants = async (
 	hasNoGroup: boolean | null,
 	hasNoRoom: boolean | null,
 	city: string | null,
+	isInterested: boolean | null,
 	page = 1,
 ) => {
 	try {
@@ -27,6 +28,13 @@ export const getAllParticipants = async (
 							city: { contains: city },
 						},
 					}),
+					...(!isInterested
+						? {
+								OR: [{ interested: false }, { interested: null }],
+							}
+						: {
+								interested: true,
+							}),
 				},
 				include: {
 					address: true,
@@ -50,6 +58,13 @@ export const getAllParticipants = async (
 							city: { contains: city },
 						},
 					}),
+					...(!isInterested
+						? {
+								OR: [{ interested: false }, { interested: null }],
+							}
+						: {
+								interested: true,
+							}),
 				},
 			}),
 		])

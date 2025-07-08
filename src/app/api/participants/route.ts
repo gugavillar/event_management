@@ -15,6 +15,9 @@ const handlerGet = async (request: NextRequest) => {
 		request.nextUrl.searchParams.get('hasNoGroup'),
 	)
 	const hasNoRoomParams = Boolean(request.nextUrl.searchParams.get('hasNoRoom'))
+	const isInterestedParams = Boolean(
+		request.nextUrl.searchParams.get('isInterested'),
+	)
 	const pageParams =
 		Number(request.nextUrl.searchParams.get('pageParticipant')) || 1
 
@@ -27,6 +30,7 @@ const handlerGet = async (request: NextRequest) => {
 				hasNoGroupParams,
 				hasNoRoomParams,
 				cityParams,
+				isInterestedParams,
 				pageParams,
 			),
 	})

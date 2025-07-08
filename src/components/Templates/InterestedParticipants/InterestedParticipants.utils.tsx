@@ -1,8 +1,8 @@
 import { format } from 'date-fns'
-import { FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
+import { FileUser } from 'lucide-react'
 
-import { StatusTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
+import { Tooltip } from '@/components/Atoms'
+import { LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -28,10 +28,6 @@ export const HEADER_LABELS = [
 		accessor: 'event',
 	},
 	{
-		label: 'Status',
-		accessor: 'status',
-	},
-	{
 		label: 'Data de inscrição',
 		accessor: 'createdAt',
 	},
@@ -43,19 +39,13 @@ export const HEADER_LABELS = [
 
 export const formatTableData = (
 	data: Array<ParticipantsAPI> | undefined,
-	handleDeleteParticipant: (id: ParticipantsAPI['id']) => void,
-	handleCheckInParticipant: (id: ParticipantsAPI['id']) => void,
-	handleEditParticipant: (id: ParticipantsAPI['id']) => void,
 	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!data) return []
 
 	return data?.map((participant) => {
-		const isWithdrew = participant.checkIn === CHECK_IN_STATUS.WITHDREW
 		return {
-			...(isWithdrew && {
-				backgroundColor: LINE_COLOR.withdrew,
-			}),
+			backgroundColor: LINE_COLOR.interested,
 			id: participant.id,
 			name: participant.name,
 			contact: formatPhone(participant.phone),
@@ -66,15 +56,6 @@ export const formatTableData = (
 			city: participant.address.city,
 			event: participant.event.name,
 			createdAt: format(participant.createdAt, 'dd/MM/yyyy - HH:mm'),
-			status: (
-				<StatusTag
-					status={
-						!participant.checkIn
-							? CHECK_IN_STATUS.NOT_ANSWERED
-							: participant.checkIn
-					}
-				/>
-			),
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
@@ -84,30 +65,6 @@ export const formatTableData = (
 							onClick={() => handleShowParticipant(participant.id)}
 						/>
 						<Tooltip>Informações</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<SquarePen
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleEditParticipant(participant.id)}
-						/>
-						<Tooltip>Editar</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<TicketCheck
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleCheckInParticipant(participant.id)}
-						/>
-						<Tooltip>Check-In</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserRoundX
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleDeleteParticipant(participant.id)}
-						/>
-						<Tooltip>Excluir</Tooltip>
 					</div>
 				</div>
 			),

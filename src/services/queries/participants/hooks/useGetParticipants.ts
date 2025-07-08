@@ -11,7 +11,7 @@ import { useQuery } from '@/providers/QueryProvider'
 import { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
-export const useGetParticipants = () => {
+export const useGetParticipants = (isInterested?: boolean) => {
 	const searchParams = useSearchParams()
 	const [eventId, setEventId] = useState(searchParams.get('eventId') || '')
 	const [search, setSearch] = useState(
@@ -50,6 +50,7 @@ export const useGetParticipants = () => {
 			debounceSearch,
 			debounceStatus,
 			debounceCity,
+			isInterested,
 			page,
 		],
 		queryFn: () =>
@@ -58,6 +59,7 @@ export const useGetParticipants = () => {
 				searchParticipant: debounceSearch,
 				statusParticipant: debounceStatus,
 				participantCity: debounceCity,
+				isInterested,
 				page,
 			}),
 		retry: 0,

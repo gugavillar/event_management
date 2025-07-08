@@ -9,6 +9,7 @@ type GetParticipantsParams = {
 	participantCity?: string
 	hasNoRoom?: boolean
 	hasNoGroup?: boolean
+	isInterested?: boolean
 	page: number
 }
 export const getParticipants = async ({
@@ -18,6 +19,7 @@ export const getParticipants = async ({
 	participantCity,
 	hasNoGroup,
 	hasNoRoom,
+	isInterested,
 	page = 1,
 }: GetParticipantsParams) => {
 	const response = await api.get(ENDPOINTS.GET_PARTICIPANTS, {
@@ -28,6 +30,7 @@ export const getParticipants = async ({
 			...(participantCity && { participantCity }),
 			...(hasNoGroup && { hasNoGroup }),
 			...(hasNoRoom && { hasNoRoom }),
+			...(isInterested && { isInterested }),
 			pageParticipant: page,
 			limit: LIMIT_PER_PAGE,
 		},

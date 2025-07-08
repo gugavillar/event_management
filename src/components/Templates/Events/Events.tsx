@@ -73,8 +73,9 @@ export const Events = () => {
 							`Lista de interessados ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`,
 						)
 					},
-					onError: () => {
-						toast.error(
+					onError: (error) => {
+						generateToastError(
+							error,
 							`Falha ao tentar ${action === 'open' ? 'abrir' : 'fechar'} lista de interessados`,
 						)
 					},

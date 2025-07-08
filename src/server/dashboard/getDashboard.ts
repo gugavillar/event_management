@@ -23,6 +23,9 @@ const queries = async (eventId: string | null) => {
 			where: {
 				...(eventId && { eventId }),
 				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
+				AND: {
+					OR: [{ interested: false }, { interested: null }],
+				},
 			},
 			include: {
 				event: true,
@@ -40,6 +43,16 @@ const queries = async (eventId: string | null) => {
 		await prisma.participantPayment.findMany({
 			where: {
 				...(eventId && { eventId }),
+				OR: [
+					{ participant: { checkIn: null } },
+					{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
+				AND: {
+					OR: [
+						{ participant: { interested: false } },
+						{ participant: { interested: null } },
+					],
+				},
 			},
 			include: {
 				participant: true,
@@ -49,6 +62,10 @@ const queries = async (eventId: string | null) => {
 		await prisma.volunteerPayment.findMany({
 			where: {
 				...(eventId && { eventId }),
+				OR: [
+					{ volunteer: { checkIn: null } },
+					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
 			},
 			include: {
 				event: true,
@@ -62,6 +79,12 @@ const queries = async (eventId: string | null) => {
 					{ participant: { checkIn: null } },
 					{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
 				],
+				AND: {
+					OR: [
+						{ participant: { interested: false } },
+						{ participant: { interested: null } },
+					],
+				},
 			},
 			by: ['city'],
 			_count: true,
@@ -155,11 +178,6 @@ export const getDashboard = async (eventId: string | null) => {
 
 		const volunteersPaymentsByType = volunteersPayment.reduce(
 			(acc, volunteerPayment) => {
-				const { checkIn } = volunteerPayment.volunteer
-				const hasValidCheckIn = !checkIn || checkIn !== CHECK_IN_STATUS.WITHDREW
-
-				if (!hasValidCheckIn) return acc
-
 				const paidEnough =
 					volunteerPayment.paymentValue.toNumber() >=
 					volunteerPayment.event.volunteerPrice.toNumber()
@@ -176,11 +194,6 @@ export const getDashboard = async (eventId: string | null) => {
 
 		const participantsPaymentsByType = participantsPayment.reduce(
 			(acc, participantPayment) => {
-				const { checkIn } = participantPayment.participant
-				const hasValidCheckIn = !checkIn || checkIn !== CHECK_IN_STATUS.WITHDREW
-
-				if (!hasValidCheckIn) return acc
-
 				const paidEnough =
 					participantPayment.paymentValue.toNumber() >=
 					participantPayment.event.participantPrice.toNumber()

@@ -5,10 +5,10 @@ import { useQuery } from '@/providers/QueryProvider'
 
 import { getParticipantsCities } from '../usecases'
 
-export const useGetParticipantsCities = () => {
+export const useGetParticipantsCities = (isInterested?: boolean) => {
 	const query = useQuery({
-		queryKey: [QUERY_KEYS.PARTICIPANTS_CITIES],
-		queryFn: getParticipantsCities,
+		queryKey: [QUERY_KEYS.PARTICIPANTS_CITIES, isInterested],
+		queryFn: () => getParticipantsCities(isInterested),
 		retry: 0,
 	})
 

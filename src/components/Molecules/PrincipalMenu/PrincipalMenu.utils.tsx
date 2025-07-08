@@ -47,6 +47,10 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		hasSubMenu: true,
 		links: [
 			{ label: 'Listagem', href: '/participantes/listagem' },
+			{
+				label: 'Lista de interessados',
+				href: '/participantes/lista-interessados',
+			},
 			{ label: 'Pagamentos', href: '/participantes/pagamentos' },
 		],
 	},
