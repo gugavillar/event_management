@@ -56,7 +56,7 @@ export const getAllVolunteers = async (
 						},
 					},
 				},
-				orderBy: [{ name: 'asc' }, { createdAt: 'desc' }],
+				orderBy: { name: 'asc' },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),

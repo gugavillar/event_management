@@ -10,31 +10,18 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 					where: {
 						name: { contains: search },
 					},
-					select: {
-						id: true,
-						name: true,
-						email: true,
-						role: true,
-						firstAccess: true,
-						deletedAt: true,
-					},
-					orderBy: {
-						name: 'asc',
-					},
 				}),
-				...(!search && {
-					select: {
-						id: true,
-						name: true,
-						email: true,
-						role: true,
-						firstAccess: true,
-						deletedAt: true,
-					},
-					orderBy: {
-						createdAt: 'desc',
-					},
-				}),
+				select: {
+					id: true,
+					name: true,
+					email: true,
+					role: true,
+					firstAccess: true,
+					deletedAt: true,
+				},
+				orderBy: {
+					name: 'asc',
+				},
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),

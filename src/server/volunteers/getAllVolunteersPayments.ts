@@ -31,7 +31,7 @@ export const getAllVolunteersPayments = async (
 					event: true,
 					volunteer: true,
 				},
-				orderBy: [{ volunteer: { name: 'asc' } }, { createdAt: 'desc' }],
+				orderBy: { volunteer: { name: 'asc' } },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),

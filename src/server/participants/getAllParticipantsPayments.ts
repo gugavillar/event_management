@@ -35,7 +35,7 @@ export const getAllParticipantsPayments = async (
 					event: true,
 					participant: true,
 				},
-				orderBy: [{ participant: { name: 'asc' } }, { createdAt: 'desc' }],
+				orderBy: { participant: { name: 'asc' } },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),

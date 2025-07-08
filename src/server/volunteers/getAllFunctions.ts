@@ -15,7 +15,7 @@ export const getAllFunctions = async (
 				leaders: true,
 				volunteerRole: true,
 			},
-			orderBy: [{ volunteerRole: { role: 'asc' } }, { createdAt: 'desc' }],
+			orderBy: { volunteerRole: { role: 'asc' } },
 		})
 	} catch (error) {
 		console.error('@getAllFunctions error:', error)

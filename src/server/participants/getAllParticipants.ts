@@ -40,7 +40,7 @@ export const getAllParticipants = async (
 					address: true,
 					event: true,
 				},
-				orderBy: [{ name: 'asc' }, { createdAt: 'desc' }],
+				orderBy: isInterested === true ? { createdAt: 'asc' } : { name: 'asc' },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),

@@ -10,15 +10,8 @@ export const getAllEvents = async (search: string | null, page = 1) => {
 					where: {
 						name: { contains: search },
 					},
-					orderBy: {
-						name: 'asc',
-					},
 				}),
-				...(!search && {
-					orderBy: {
-						createdAt: 'desc',
-					},
-				}),
+				orderBy: !search ? { createdAt: 'desc' } : { name: 'asc' },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),
