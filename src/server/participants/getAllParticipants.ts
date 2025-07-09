@@ -4,10 +4,10 @@ export const getAllParticipants = async (
 	eventId: string | null,
 	search: string | null,
 	status: CHECK_IN_STATUS | null,
-	hasNoGroup: boolean | null,
-	hasNoRoom: boolean | null,
+	hasNoGroup: boolean,
+	hasNoRoom: boolean,
 	city: string | null,
-	isInterested: boolean | null,
+	isInterested: boolean,
 	page = 1,
 ) => {
 	try {

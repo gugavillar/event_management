@@ -12,7 +12,10 @@ import {
 	paymentStatus,
 } from '@/formatters'
 
-export const getExportParticipantsData = async (eventId: string) => {
+export const getExportParticipantsData = async (
+	eventId: string,
+	isInterested: boolean,
+) => {
 	try {
 		z.object({
 			eventId: z.string().uuid(),
@@ -21,7 +24,9 @@ export const getExportParticipantsData = async (eventId: string) => {
 		const participants = await prisma.participant.findMany({
 			where: {
 				eventId,
-				OR: [{ interested: false }, { interested: null }],
+				...(isInterested
+					? { interested: true }
+					: { OR: [{ interested: false }, { interested: null }] }),
 			},
 			include: {
 				address: true,
@@ -38,9 +43,58 @@ export const getExportParticipantsData = async (eventId: string) => {
 				},
 			},
 			orderBy: {
-				name: 'asc',
+				...(isInterested ? { createdAt: 'asc' } : { name: 'asc' }),
 			},
 		})
+
+		if (!participants.length) {
+			return NextResponse.json(
+				{
+					error: isInterested
+						? 'Nenhuma pessoa interessada cadastrada'
+						: 'Nenhum participante cadastrado',
+				},
+				{ status: 400 },
+			)
+		}
+
+		if (isInterested) {
+			const interestedData = participants.map((participant) => ({
+				Nome: participant.name,
+				Chamado: participant.called,
+				Email: participant.email,
+				Data_Nascimento: formatBirthdate(
+					participant.birthdate,
+					participant.event.finalDate,
+				),
+				Telefone: formatPhone(participant.phone),
+				Responsável: participant.responsible,
+				Telefone_Responsável: formatPhone(participant.responsiblePhone),
+				Endereço: `${participant.address?.street}, ${participant.address?.number}`,
+				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
+				Bairro: participant.address?.neighborhood,
+				Convidou: participant.host,
+				Telefone_Convidou: formatPhone(participant.hostPhone),
+				Religião: participant.religion || 'Não possui',
+				Alimentação_Saúde: participant.health || 'Não possui',
+			}))
+			const tableHeaderParticipants = Object.keys(interestedData[0])
+			const worksheetParticipants = utils.json_to_sheet(interestedData, {
+				header: tableHeaderParticipants,
+			})
+			const workbook = utils.book_new()
+			utils.book_append_sheet(workbook, worksheetParticipants, 'Interessados')
+			const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
+
+			return new NextResponse(buffer, {
+				status: 200,
+				headers: {
+					'Content-Type':
+						'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+					'Content-Disposition': 'attachment; filename="interessados.xlsx"',
+				},
+			})
+		}
 
 		const payments = await prisma.participantPayment.findMany({
 			where: {
@@ -59,13 +113,6 @@ export const getExportParticipantsData = async (eventId: string) => {
 				},
 			},
 		})
-
-		if (!participants.length) {
-			return NextResponse.json(
-				{ error: 'Nenhum participante cadastrado' },
-				{ status: 400 },
-			)
-		}
 
 		const participantsData = participants.map((participant) => ({
 			Nome: participant.name,

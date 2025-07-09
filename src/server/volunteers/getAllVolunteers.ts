@@ -10,8 +10,8 @@ export const getAllVolunteers = async (
 	search: string | null,
 	status: CHECK_IN_STATUS | null,
 	role: string | null,
-	hasNoGroup: boolean | null,
-	hasNoRoom: boolean | null,
+	hasNoGroup: boolean,
+	hasNoRoom: boolean,
 	city: string | null,
 	page = 1,
 ) => {

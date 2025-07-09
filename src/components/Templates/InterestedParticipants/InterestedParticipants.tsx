@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react'
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
 import {
+	ExportParticipantsButton,
 	InterestedModalToParticipant,
 	ListPage,
 	PageContent,
@@ -108,6 +109,9 @@ export const InterestedParticipants = () => {
 			subheadingPage="Lista de participantes interessados"
 			pageTitle="Participantes interessados"
 		>
+			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<ExportParticipantsButton isInterested />
+			</div>
 			<ListPage
 				placeholderField="Encontrar um participante"
 				className="lg:max-w-full"

@@ -20,12 +20,14 @@ import {
 
 type ExportParticipantsDataModalProps = {
 	modalId: string
+	isInterested?: boolean
 }
 
 const TOAST_ID = 'download-template-participants'
 
 export const ExportParticipantsDataModal = ({
 	modalId,
+	isInterested,
 }: ExportParticipantsDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportParticipantsFileModalType>({
@@ -40,7 +42,10 @@ export const ExportParticipantsDataModal = ({
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { data, isError, isFetching } = useGetExportParticipantsData(eventId)
+	const { data, isError, isFetching } = useGetExportParticipantsData(
+		eventId,
+		isInterested,
+	)
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -76,14 +81,19 @@ export const ExportParticipantsDataModal = ({
 		const eventName =
 			formattedEvents.find((event) => event.customProps.value === eventId)
 				?.customProps?.label ?? ''
-		saveAs(blob, `Participantes-${eventName}.xlsx`)
+		saveAs(
+			blob,
+			isInterested
+				? `Interessados-${eventName}.xlsx`
+				: `Participantes-${eventName}.xlsx`,
+		)
 
 		setEventId('')
 		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
 		methods.reset()
 		overlayClose(modalId)
-	}, [data, isError, eventId, formattedEvents, methods, modalId])
+	}, [data, isError, eventId, formattedEvents, methods, modalId, isInterested])
 
 	const handleSubmit = async (values: ExportParticipantsFileModalType) => {
 		if (!values.eventId) return
@@ -98,7 +108,9 @@ export const ExportParticipantsDataModal = ({
 					<div className="flex flex-col items-center justify-between gap-6">
 						<div className="flex flex-col items-center gap-2">
 							<Header as="h3" className="text-2xl">
-								Exportar participantes
+								{isInterested
+									? 'Exportar interessados'
+									: 'Exportar participantes'}
 							</Header>
 							<Text>Selecione o evento que deseja exportar os dados</Text>
 						</div>
