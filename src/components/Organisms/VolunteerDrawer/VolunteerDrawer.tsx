@@ -21,6 +21,7 @@ import {
 	useUpdateVolunteer,
 } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import { generateToastError } from '@/utils/errors'
 
 import { VolunteerType } from './VolunteerDrawer.schema'
 
@@ -87,6 +88,7 @@ export const VolunteerDrawer = memo(
 				birthdate: formatDateToSendToApi(values.birthdate),
 				phone: values.phone.replace(/\D/g, ''),
 				relativePhone: values.relativePhone.replace(/\D/g, ''),
+				inscriptionType: 'internal' as const,
 			}
 
 			if (selectedVolunteer) {
@@ -119,7 +121,8 @@ export const VolunteerDrawer = memo(
 						toast.success('Voluntário criado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: () => toast.error('Erro ao criar voluntário'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao criar voluntário'),
 				},
 			)
 		}

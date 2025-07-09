@@ -9,6 +9,7 @@ import { prisma } from '@/constants'
 
 export const createVolunteer = async (
 	data: VolunteerSchemaRouteType & { eventId: string },
+	inscriptionType: string | null,
 ) => {
 	try {
 		volunteerSchemaRoute
@@ -29,6 +30,19 @@ export const createVolunteer = async (
 		if (isAlreadyRegistered) {
 			return NextResponse.json(
 				{ error: 'Voluntário ja cadastrado' },
+				{ status: 400 },
+			)
+		}
+
+		const isRegistrationOpen = await prisma.event.findUnique({
+			where: {
+				id: data.eventId,
+			},
+		})
+
+		if (!isRegistrationOpen?.isVolunteerRegistrationOpen && !inscriptionType) {
+			return NextResponse.json(
+				{ error: 'Inscrições encerradas' },
 				{ status: 400 },
 			)
 		}

@@ -4,11 +4,23 @@ import { ENDPOINTS } from '@/services/endpoints'
 import { FormParticipant } from '../participants.type'
 
 export const createParticipant = async (
-	data: FormParticipant & { eventId: string },
+	data: FormParticipant & {
+		eventId: string
+		inscriptionType?: 'internal' | 'interested'
+	},
 ) => {
-	const response = await api.post(ENDPOINTS.CREATE_PARTICIPANT, {
-		...data,
-	})
+	const { inscriptionType, ...rest } = data
+	const response = await api.post(
+		ENDPOINTS.CREATE_PARTICIPANT,
+		{
+			...rest,
+		},
+		{
+			params: {
+				inscriptionType,
+			},
+		},
+	)
 
 	return response.data
 }

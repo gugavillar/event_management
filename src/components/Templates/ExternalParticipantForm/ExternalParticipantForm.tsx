@@ -101,7 +101,10 @@ export const ExternalParticipantForm = ({
 			hostPhone: data.hostPhone.replace(/\D/g, ''),
 			responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
 			eventId,
-			...(isInterestedList && { interested: true }),
+			...(isInterestedList && {
+				interested: true,
+				inscriptionType: 'interested' as const,
+			}),
 		}
 
 		await create(

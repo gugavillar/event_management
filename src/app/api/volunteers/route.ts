@@ -35,11 +35,13 @@ const handlerGet = async (request: NextRequest) => {
 }
 
 const handlePost = async (request: NextRequest) => {
+	const inscriptionTypeParam =
+		request.nextUrl.searchParams.get('inscriptionType')
 	const body: VolunteerSchemaRouteType & { eventId: string } =
 		await request.json()
 
 	return await requestProcess({
-		functions: async () => await createVolunteer(body),
+		functions: async () => await createVolunteer(body, inscriptionTypeParam),
 		isNecessarySession: false,
 	})
 }

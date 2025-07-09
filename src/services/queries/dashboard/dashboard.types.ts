@@ -23,4 +23,5 @@ export type DashboardFromAPI = {
 		labels: Array<string>
 		data: Array<number>
 	}
+	interestedParticipants: number
 }

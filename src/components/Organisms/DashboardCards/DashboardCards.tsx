@@ -8,7 +8,7 @@ type DashboardCardsProps = {
 
 export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 	return (
-		<section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+		<section className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
 			<InformationCard headingText="Participantes">
 				<div className="flex h-full items-center justify-end p-4 md:p-5">
 					<Header as="h3" className="text-5xl">
@@ -20,6 +20,13 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 				<div className="flex h-full items-center justify-end p-4 md:p-5">
 					<Header as="h3" className="text-5xl">
 						{isLoading ? <Spinner /> : data?.volunteers}
+					</Header>
+				</div>
+			</InformationCard>
+			<InformationCard headingText="Interessados">
+				<div className="flex h-full items-center justify-end p-4 md:p-5">
+					<Header as="h3" className="text-5xl">
+						{isLoading ? <Spinner /> : data?.interestedParticipants}
 					</Header>
 				</div>
 			</InformationCard>

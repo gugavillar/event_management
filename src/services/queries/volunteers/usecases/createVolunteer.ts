@@ -4,11 +4,23 @@ import { ENDPOINTS } from '@/services/endpoints'
 import { FormVolunteer } from '../volunteers.type'
 
 export const createVolunteer = async (
-	data: FormVolunteer & { eventId: string },
+	data: FormVolunteer & {
+		eventId: string
+		inscriptionType?: 'internal'
+	},
 ) => {
-	const response = await api.post(ENDPOINTS.CREATE_VOLUNTEER, {
-		...data,
-	})
+	const { inscriptionType, ...rest } = data
+	const response = await api.post(
+		ENDPOINTS.CREATE_VOLUNTEER,
+		{
+			...rest,
+		},
+		{
+			params: {
+				inscriptionType,
+			},
+		},
+	)
 
 	return response.data
 }

@@ -18,6 +18,7 @@ const queries = async (eventId: string | null) => {
 		participantsPayment,
 		volunteersPayment,
 		participantsCities,
+		interestedParticipants,
 	] = await Promise.all([
 		await prisma.participant.findMany({
 			where: {
@@ -89,6 +90,11 @@ const queries = async (eventId: string | null) => {
 			by: ['city'],
 			_count: true,
 		}),
+		await prisma.participant.count({
+			where: {
+				interested: true,
+			},
+		}),
 	])
 
 	return {
@@ -97,6 +103,7 @@ const queries = async (eventId: string | null) => {
 		participantsPayment,
 		volunteersPayment,
 		participantsCities,
+		interestedParticipants,
 	}
 }
 
@@ -108,6 +115,7 @@ export const getDashboard = async (eventId: string | null) => {
 			volunteers,
 			participantsPayment,
 			volunteersPayment,
+			interestedParticipants,
 		} = await queries(eventId)
 
 		const totalOfParticipants = participants.length
@@ -250,6 +258,7 @@ export const getDashboard = async (eventId: string | null) => {
 				labels: labelCitiesArray,
 				data: citiesCountArray,
 			},
+			interestedParticipants,
 		}
 	} catch (error) {
 		console.error('@getDashboard error:', error)

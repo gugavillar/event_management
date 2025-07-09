@@ -21,6 +21,7 @@ import {
 	useUpdateParticipant,
 } from '@/services/queries/participants'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import { generateToastError } from '@/utils/errors'
 
 import { ParticipantType } from './ParticipantDrawer.schema'
 
@@ -88,6 +89,7 @@ export const ParticipantDrawer = memo(
 				phone: data.phone.replace(/\D/g, ''),
 				hostPhone: data.hostPhone.replace(/\D/g, ''),
 				responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
+				inscriptionType: 'internal' as const,
 			}
 
 			if (selectedParticipant) {
@@ -120,7 +122,8 @@ export const ParticipantDrawer = memo(
 						toast.success('Participante criado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: () => toast.error('Erro ao criar participante'),
+					onError: (error) =>
+						generateToastError(error, 'Erro ao criar participante'),
 				},
 			)
 		}

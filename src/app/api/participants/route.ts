@@ -37,11 +37,13 @@ const handlerGet = async (request: NextRequest) => {
 }
 
 const handlePost = async (request: NextRequest) => {
+	const inscriptionTypeParam =
+		request.nextUrl.searchParams.get('inscriptionType')
 	const body: ParticipantSchemaRouteType & { eventId: string } =
 		await request.json()
 
 	return await requestProcess({
-		functions: async () => await createParticipant(body),
+		functions: async () => await createParticipant(body, inscriptionTypeParam),
 		isNecessarySession: false,
 	})
 }
