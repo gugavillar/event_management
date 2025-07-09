@@ -8,6 +8,9 @@ import {
 	StyleSheet,
 	Text,
 } from '@react-pdf/renderer'
+import { FileDown } from 'lucide-react'
+
+import { Spinner } from '@/components/Atoms'
 
 import { formatTableData } from './Groups.utils'
 
@@ -65,7 +68,17 @@ export const DownloadPDF = ({ groups }: DownloadPDFProps) => {
 			document={<MyDocument groups={groups} />}
 			fileName="grupos.pdf"
 		>
-			{({ loading }) => (loading ? 'Gerando...' : 'Imprimir')}
+			{({ loading }) =>
+				loading ? (
+					<span className="flex items-center gap-x-2">
+						<Spinner className="size-6" /> Gerando...
+					</span>
+				) : (
+					<span className="flex items-center gap-x-2">
+						<FileDown /> Export grupos
+					</span>
+				)
+			}
 		</PDFDownloadLink>
 	)
 }

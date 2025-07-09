@@ -8,6 +8,9 @@ import {
 	StyleSheet,
 	Text,
 } from '@react-pdf/renderer'
+import { FileDown } from 'lucide-react'
+
+import { Spinner } from '@/components/Atoms'
 
 import { formatTableData } from './Rooms.utils'
 
@@ -65,7 +68,17 @@ export const DownloadPDF = ({ rooms }: DownloadPDFProps) => {
 			document={<MyDocument rooms={rooms} />}
 			fileName="quartos.pdf"
 		>
-			{({ loading }) => (loading ? 'Gerando...' : 'Imprimir')}
+			{({ loading }) =>
+				loading ? (
+					<span className="flex items-center gap-x-2">
+						<Spinner className="size-6" /> Gerando...
+					</span>
+				) : (
+					<span className="flex items-center gap-x-2">
+						<FileDown /> Export quartos
+					</span>
+				)
+			}
 		</PDFDownloadLink>
 	)
 }
