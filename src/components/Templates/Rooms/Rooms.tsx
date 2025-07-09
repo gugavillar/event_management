@@ -29,6 +29,10 @@ const RoomDrawer = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.RoomDrawer),
 )
 
+const DownloadPDF = dynamic(() =>
+	import('./RoomsPrint').then((mod) => mod.DownloadPDF),
+)
+
 export const Rooms = ({ eventId }: { eventId?: string }) => {
 	const [selectedRoom, setSelectedRoom] = useState<RoomAPI['id'] | null>(null)
 
@@ -91,6 +95,7 @@ export const Rooms = ({ eventId }: { eventId?: string }) => {
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<DownloadPDF rooms={formattedRooms} />
 				<Button
 					type="button"
 					onClick={() => handleOpenDrawerToCreateOrEditRoom()}

@@ -25,8 +25,15 @@ const GroupDeleteModal = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.GroupDeleteModal),
 )
 
-const GroupDrawer = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.GroupDrawer),
+const GroupDrawer = dynamic(
+	() => import('@/components/Organisms').then((mod) => mod.GroupDrawer),
+	{
+		ssr: false,
+	},
+)
+
+const DownloadPDF = dynamic(() =>
+	import('./GroupsPrint').then((mod) => mod.DownloadPDF),
 )
 
 export const Groups = ({ eventId }: { eventId?: string }) => {
@@ -93,6 +100,7 @@ export const Groups = ({ eventId }: { eventId?: string }) => {
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<DownloadPDF groups={formattedGroups} />
 				<Button
 					type="button"
 					onClick={() => handleOpenDrawerToCreateOrEditGroup()}
