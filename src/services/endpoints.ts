@@ -42,6 +42,8 @@ export const ENDPOINTS = {
 	GET_PARTICIPANTS_CITIES: `${BASE_PATH.PARTICIPANTS}/cities`,
 	UPDATE_INTERESTED_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}/interested`,
+	RETURN_PARTICIPANT_PAYMENT: (payment_id: string) =>
+		`${BASE_PATH.PARTICIPANTS}/payments/${payment_id}/return`,
 
 	// Volunteers
 	CREATE_VOLUNTEER: BASE_PATH.VOLUNTEERS,

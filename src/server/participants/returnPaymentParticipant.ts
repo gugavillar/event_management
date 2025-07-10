@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { prisma } from '@/constants'
 
-export type ReturnPaymentVolunteerArgs = {
+export type ReturnPaymentParticipantArgs = {
 	paymentId: string
 	values: {
 		returnValue?: number
@@ -22,10 +22,10 @@ const generateData = (paidValue: number, returnValue?: number) => {
 	}
 }
 
-export const returnPaymentVolunteer = async ({
+export const returnPaymentParticipant = async ({
 	paymentId,
 	values,
-}: ReturnPaymentVolunteerArgs) => {
+}: ReturnPaymentParticipantArgs) => {
 	let returnPayment = {}
 
 	try {
@@ -34,7 +34,7 @@ export const returnPaymentVolunteer = async ({
 			paymentValue: z.number().optional(),
 		}).parse({ paymentId, ...values })
 
-		const payment = await prisma.volunteerPayment.findUnique({
+		const payment = await prisma.participantPayment.findUnique({
 			where: {
 				id: paymentId,
 			},
@@ -47,7 +47,7 @@ export const returnPaymentVolunteer = async ({
 			)
 		}
 
-		return await prisma.volunteerPayment.update({
+		return await prisma.participantPayment.update({
 			where: {
 				id: paymentId,
 			},
@@ -56,7 +56,7 @@ export const returnPaymentVolunteer = async ({
 			},
 		})
 	} catch (error) {
-		console.error('@returnPaymentVolunteer error:', error)
+		console.error('@returnPaymentParticipant error:', error)
 		throw Error
 	}
 }

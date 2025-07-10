@@ -11,6 +11,7 @@ export const MODALS_IDS = {
 	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
 	PARTICIPANT_EXPORT_MODAL: 'participant_export_modal',
 	PARTICIPANT_INTERESTED_MODAL: 'participant_interested_modal',
+	PARTICIPANT_RETURN_PAYMENT_MODAL: 'participant_return_payment_modal',
 
 	// GROUP
 	GROUP_DRAWER: 'group_manager',

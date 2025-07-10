@@ -25,7 +25,7 @@ export const QUERY_KEYS = {
 	PARTICIPANTS_EXPORT_DATA: 'participants-export-data',
 	PARTICIPANTS: 'participants',
 	PARTICIPANT: 'participant',
-	PARTICIPANTS_PAYMENT: 'payment-participants',
+	PARTICIPANTS_PAYMENTS: 'payment-participants',
 	PARTICIPANTS_INFINITY: 'participants-infinity',
 	PARTICIPANTS_CITIES: 'participants-cities',
 

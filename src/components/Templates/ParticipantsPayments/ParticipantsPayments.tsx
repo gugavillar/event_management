@@ -6,7 +6,12 @@ import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	ListPage,
+	ModalReturnPayment,
+	PageContent,
+} from '@/components/Organisms'
+import { ModalReturnPaymentType } from '@/components/Organisms/ModalReturnPayment/ModalReturnPayment.schema'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
 	MODALS_IDS,
@@ -26,6 +31,7 @@ import {
 	useGetPayments,
 	useUpdateParticipantPayment,
 } from '@/services/queries/participants'
+import { useReturnParticipantPayment } from '@/services/queries/participants/hooks/useReturnParticipantPayment'
 import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
 
@@ -60,6 +66,8 @@ export const ParticipantsPayments = () => {
 		setCity,
 	} = useGetPayments()
 	const { update, isPending } = useUpdateParticipantPayment()
+	const { update: returnPayment, isPending: isReturnPending } =
+		useReturnParticipantPayment()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -90,9 +98,18 @@ export const ParticipantsPayments = () => {
 		[],
 	)
 
+	const handleOpenModalToReturnPaymentParticipant = useCallback(
+		(payment: ParticipantsPaymentsAPI) => {
+			setSelectedParticipant(payment)
+			overlayOpen(MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL)
+		},
+		[],
+	)
+
 	const formattedData = formatTableData(
 		participantsPayments?.data,
 		handleOpenModalToPaymentParticipant,
+		handleOpenModalToReturnPaymentParticipant,
 	)
 
 	const handleUpdate = useCallback(
@@ -126,6 +143,39 @@ export const ParticipantsPayments = () => {
 			)
 		},
 		[selectedParticipant, update],
+	)
+
+	const handleReturnPayment = useCallback(
+		async (values: ModalReturnPaymentType) => {
+			if (!selectedParticipant) return
+
+			const formatValues = {
+				returnValue:
+					values.returnPaid === 'partial' && values.returnValue
+						? Number(removeCurrencyFormat(values.returnValue))
+						: Number(
+								removeCurrencyFormat(
+									selectedParticipant.event.participantPrice,
+								),
+							),
+			}
+
+			await returnPayment(
+				{ paymentId: selectedParticipant.id, data: formatValues },
+				{
+					onSuccess: () => {
+						setSelectedParticipant(null)
+						toast.success('Pagamento do participante devolvido com sucesso!')
+					},
+					onError: (error) =>
+						generateToastError(
+							error,
+							'Erro ao atualizar pagamento do participante',
+						),
+				},
+			)
+		},
+		[selectedParticipant, returnPayment],
 	)
 
 	const hasMoreThanOnePage =
@@ -183,6 +233,13 @@ export const ParticipantsPayments = () => {
 				modalType="participante"
 				handleSubmit={handleUpdate}
 				isPending={isPending}
+			/>
+			<ModalReturnPayment
+				modalId={MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL}
+				modalType="participante"
+				payment={selectedParticipant}
+				isPending={isReturnPending}
+				handleSubmit={handleReturnPayment}
 			/>
 		</PageContent>
 	)

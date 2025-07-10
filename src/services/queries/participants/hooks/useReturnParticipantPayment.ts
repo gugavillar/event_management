@@ -1,13 +1,13 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
 
-import { updateParticipantPayment } from '../usecases'
+import { returnParticipantPayment } from '../usecases'
 
-export const useUpdateParticipantPayment = () => {
+export const useReturnParticipantPayment = () => {
 	const queryClient = useQueryClient()
 
 	const mutation = useMutation({
-		mutationFn: updateParticipantPayment,
+		mutationFn: returnParticipantPayment,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.PARTICIPANTS_PAYMENTS],

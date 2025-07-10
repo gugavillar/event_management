@@ -7,6 +7,7 @@ import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import { Button, Header, Modal } from '@/components/Atoms'
 import { CurrencyInputField, RadioField } from '@/components/Molecules'
 import { overlayClose } from '@/constants'
+import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
 import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import {
@@ -20,7 +21,7 @@ type ModalReturnPaymentProps = {
 	modalType: 'participante' | 'voluntário'
 	handleSubmit: (values: ModalReturnPaymentType) => Promise<void>
 	isPending: boolean
-	payment: VolunteersPaymentsAPI | null
+	payment: VolunteersPaymentsAPI | ParticipantsPaymentsAPI | null
 }
 
 export const ModalReturnPayment = memo(
