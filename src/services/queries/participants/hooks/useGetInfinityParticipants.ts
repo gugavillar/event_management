@@ -3,7 +3,7 @@ import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useState } from 'react'
 
-import { CHECK_IN_STATUS, QUERY_KEYS } from '@/constants'
+import { CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
 
 import { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
@@ -13,6 +13,7 @@ export type UseGetInfinityParticipantsArgs = {
 	hasNoGroup?: boolean
 	hasNoRoom?: boolean
 	statusParticipant?: CHECK_IN_STATUS
+	limit?: number
 }
 
 export const useGetInfinityParticipants = ({
@@ -20,6 +21,7 @@ export const useGetInfinityParticipants = ({
 	hasNoGroup,
 	hasNoRoom,
 	statusParticipant,
+	limit = LIMIT_PER_PAGE,
 }: UseGetInfinityParticipantsArgs) => {
 	const [searchParticipant, setSearchParticipant] = useState('')
 	const debounceParticipant = useDebounce(searchParticipant, 500)
@@ -36,6 +38,7 @@ export const useGetInfinityParticipants = ({
 			hasNoGroup,
 			hasNoRoom,
 			statusParticipant,
+			limit,
 		],
 		queryFn: async ({ pageParam }) =>
 			await getParticipants({
@@ -45,6 +48,7 @@ export const useGetInfinityParticipants = ({
 				...(hasNoGroup && { hasNoGroup }),
 				...(hasNoRoom && { hasNoRoom }),
 				page: pageParam,
+				limitPerPage: limit,
 			}),
 		getNextPageParam: (lastPage: ParticipantsFromAPI) => {
 			const { currentPage, totalPages } = lastPage

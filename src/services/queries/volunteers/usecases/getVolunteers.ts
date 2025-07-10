@@ -11,6 +11,7 @@ type GetVolunteersParams = {
 	hasNoGroup?: boolean
 	volunteerCity?: string
 	page: number
+	limit?: number
 }
 export const getVolunteers = async ({
 	eventId,
@@ -21,6 +22,7 @@ export const getVolunteers = async ({
 	hasNoRoom,
 	hasNoGroup,
 	page = 1,
+	limit = LIMIT_PER_PAGE,
 }: GetVolunteersParams) => {
 	const response = await api.get(ENDPOINTS.GET_VOLUNTEERS, {
 		params: {
@@ -32,7 +34,7 @@ export const getVolunteers = async ({
 			...(hasNoRoom && { hasNoRoom }),
 			...(volunteerCity && { volunteerCity }),
 			pageVolunteer: page,
-			limit: LIMIT_PER_PAGE,
+			limit,
 		},
 	})
 	return response.data

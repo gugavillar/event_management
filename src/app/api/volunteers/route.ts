@@ -18,6 +18,7 @@ const handlerGet = async (request: NextRequest) => {
 	const hasNoRoomParams = Boolean(request.nextUrl.searchParams.get('hasNoRoom'))
 	const pageParams =
 		Number(request.nextUrl.searchParams.get('pageVolunteer')) || 1
+	const limitParams = Number(request.nextUrl.searchParams.get('limit'))
 
 	return await requestProcess({
 		functions: async () =>
@@ -30,6 +31,7 @@ const handlerGet = async (request: NextRequest) => {
 				hasNoRoomParams,
 				cityParams,
 				pageParams,
+				limitParams,
 			),
 	})
 }

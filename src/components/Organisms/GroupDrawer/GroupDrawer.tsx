@@ -180,6 +180,7 @@ export const GroupDrawer = ({
 												eventId={eventId}
 												fieldMemberName={fieldMemberName}
 												hasNoGroup={selectedGroup === null}
+												isEdition={Boolean(selectedGroup)}
 												fieldError={
 													formState.errors.members?.[index]?.member?.message
 												}
@@ -191,6 +192,7 @@ export const GroupDrawer = ({
 											eventId={eventId}
 											fieldMemberName={fieldMemberName}
 											hasNoGroup={selectedGroup === null}
+											isEdition={Boolean(selectedGroup)}
 											fieldError={
 												formState.errors.members?.[index]?.member?.message
 											}

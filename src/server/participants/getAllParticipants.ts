@@ -9,9 +9,10 @@ export const getAllParticipants = async (
 	city: string | null,
 	isInterested: boolean,
 	page = 1,
+	limit = LIMIT_PER_PAGE,
 ) => {
 	try {
-		const skip = (page - 1) * LIMIT_PER_PAGE
+		const skip = (page - 1) * limit
 
 		const [participants, totalOfParticipants] = await Promise.all([
 			prisma.participant.findMany({
@@ -42,7 +43,7 @@ export const getAllParticipants = async (
 				},
 				orderBy: isInterested === true ? { createdAt: 'asc' } : { name: 'asc' },
 				skip,
-				take: LIMIT_PER_PAGE,
+				take: limit,
 			}),
 			prisma.participant.count({
 				where: {
@@ -72,9 +73,9 @@ export const getAllParticipants = async (
 		return {
 			data: participants,
 			currentPage: page,
-			perPage: LIMIT_PER_PAGE,
+			perPage: limit,
 			totalCount: totalOfParticipants,
-			totalPages: Math.ceil(totalOfParticipants / LIMIT_PER_PAGE),
+			totalPages: Math.ceil(totalOfParticipants / limit),
 		}
 	} catch (error) {
 		console.error('@getAllParticipants error:', error)

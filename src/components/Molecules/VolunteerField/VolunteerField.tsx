@@ -1,13 +1,12 @@
 'use client'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { CHECK_IN_STATUS, MEMBERS } from '@/constants'
+import { CHECK_IN_STATUS, LIMIT_PER_PAGE_EDITION, MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import {
 	useGetInfinityVolunteers,
 	UseGetInfinityVolunteersArgs,
-	useGetVolunteer,
 } from '@/services/queries/volunteers'
 
 import { SearchBox } from '../SearchBox'
@@ -15,6 +14,7 @@ import { SearchBox } from '../SearchBox'
 type VolunteerFieldProps = UseGetInfinityVolunteersArgs & {
 	fieldMemberName: string
 	fieldError: string | undefined
+	isEdition?: boolean
 }
 
 export const VolunteerField = ({
@@ -23,8 +23,9 @@ export const VolunteerField = ({
 	hasNoGroup,
 	hasNoRoom,
 	fieldError,
+	isEdition,
 }: VolunteerFieldProps) => {
-	const { control, watch } = useFormContext()
+	const { control } = useFormContext()
 	const {
 		data: volunteers,
 		fetchNextPage: fetchNextPageVolunteers,
@@ -37,25 +38,13 @@ export const VolunteerField = ({
 		hasNoGroup,
 		hasNoRoom,
 		statusVolunteer: CHECK_IN_STATUS.CONFIRMED,
+		...(isEdition && { limit: LIMIT_PER_PAGE_EDITION }),
 	})
 
 	const baseVolunteers = volunteers?.pages.flatMap((page) => page.data) ?? []
 
-	const selectedVolunteerId = watch(fieldMemberName)
-
-	const { data: selectedVolunteer } = useGetVolunteer(selectedVolunteerId)
-
-	const allVolunteers = [...baseVolunteers]
-
-	if (
-		selectedVolunteer &&
-		!baseVolunteers.some((volunteer) => volunteer.id === selectedVolunteer.id)
-	) {
-		allVolunteers.push(selectedVolunteer)
-	}
-
 	const formattedVolunteers = formatterComboBoxValues(
-		allVolunteers,
+		baseVolunteers,
 		'name',
 		'id',
 	)

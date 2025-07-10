@@ -1,13 +1,12 @@
 'use client'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { CHECK_IN_STATUS, MEMBERS } from '@/constants'
+import { CHECK_IN_STATUS, LIMIT_PER_PAGE_EDITION, MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import {
 	useGetInfinityParticipants,
 	UseGetInfinityParticipantsArgs,
-	useGetParticipant,
 } from '@/services/queries/participants'
 
 import { SearchBox } from '../SearchBox'
@@ -15,6 +14,7 @@ import { SearchBox } from '../SearchBox'
 type ParticipantFieldProps = UseGetInfinityParticipantsArgs & {
 	fieldMemberName: string
 	fieldError: string | undefined
+	isEdition?: boolean
 }
 
 export const ParticipantField = ({
@@ -23,8 +23,9 @@ export const ParticipantField = ({
 	fieldMemberName,
 	hasNoGroup,
 	hasNoRoom,
+	isEdition,
 }: ParticipantFieldProps) => {
-	const { control, watch } = useFormContext()
+	const { control } = useFormContext()
 	const {
 		data: participants,
 		fetchNextPage: fetchNextPageParticipants,
@@ -37,28 +38,14 @@ export const ParticipantField = ({
 		hasNoGroup,
 		hasNoRoom,
 		statusParticipant: CHECK_IN_STATUS.CONFIRMED,
+		...(isEdition && { limit: LIMIT_PER_PAGE_EDITION }),
 	})
 
 	const baseParticipants =
 		participants?.pages.flatMap((page) => page.data) ?? []
 
-	const selectedParticipantId = watch(fieldMemberName)
-
-	const { data: selectedParticipant } = useGetParticipant(selectedParticipantId)
-
-	const allParticipants = [...baseParticipants]
-
-	if (
-		selectedParticipant &&
-		!baseParticipants.some(
-			(participant) => participant.id === selectedParticipant.id,
-		)
-	) {
-		allParticipants.push(selectedParticipant)
-	}
-
 	const formattedParticipants = formatterComboBoxValues(
-		allParticipants,
+		baseParticipants,
 		'name',
 		'id',
 	)

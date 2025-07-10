@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 export const LIMIT_PER_PAGE = 10
+export const LIMIT_PER_PAGE_EDITION = 300
 
 export const MODALS_IDS = {
 	// PARTICIPANT

@@ -20,6 +20,7 @@ const handlerGet = async (request: NextRequest) => {
 	)
 	const pageParams =
 		Number(request.nextUrl.searchParams.get('pageParticipant')) || 1
+	const limitParams = Number(request.nextUrl.searchParams.get('limit'))
 
 	return await requestProcess({
 		functions: async () =>
@@ -32,6 +33,7 @@ const handlerGet = async (request: NextRequest) => {
 				cityParams,
 				isInterestedParams,
 				pageParams,
+				limitParams,
 			),
 	})
 }

@@ -184,6 +184,7 @@ export const RoomDrawer = ({
 												eventId={eventId}
 												fieldMemberName={fieldMemberName}
 												hasNoRoom={selectedRoom === null}
+												isEdition={Boolean(selectedRoom)}
 												fieldError={
 													formState.errors.members?.[index]?.member?.message
 												}
@@ -195,6 +196,7 @@ export const RoomDrawer = ({
 											eventId={eventId}
 											hasNoRoom={selectedRoom === null}
 											fieldMemberName={fieldMemberName}
+											isEdition={Boolean(selectedRoom)}
 											fieldError={
 												formState.errors.members?.[index]?.member?.message
 											}

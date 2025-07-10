@@ -14,9 +14,10 @@ export const getAllVolunteers = async (
 	hasNoRoom: boolean,
 	city: string | null,
 	page = 1,
+	limit = LIMIT_PER_PAGE,
 ) => {
 	try {
-		const skip = (page - 1) * LIMIT_PER_PAGE
+		const skip = (page - 1) * limit
 
 		const [volunteers, totalOfVolunteers] = await Promise.all([
 			prisma.volunteer.findMany({
@@ -58,7 +59,7 @@ export const getAllVolunteers = async (
 				},
 				orderBy: { name: 'asc' },
 				skip,
-				take: LIMIT_PER_PAGE,
+				take: limit,
 			}),
 			prisma.volunteer.count({
 				where: {
@@ -93,9 +94,9 @@ export const getAllVolunteers = async (
 		return {
 			data: volunteers,
 			currentPage: page,
-			perPage: LIMIT_PER_PAGE,
+			perPage: limit,
 			totalCount: totalOfVolunteers,
-			totalPages: Math.ceil(totalOfVolunteers / LIMIT_PER_PAGE),
+			totalPages: Math.ceil(totalOfVolunteers / limit),
 		}
 	} catch (error) {
 		console.error('@getAllVolunteers error:', error)

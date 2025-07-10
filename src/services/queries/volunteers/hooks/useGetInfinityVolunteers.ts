@@ -3,7 +3,7 @@ import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { useState } from 'react'
 
-import { CHECK_IN_STATUS, QUERY_KEYS } from '@/constants'
+import { CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
 
 import { getVolunteers } from '../usecases'
 import { VolunteersFromAPI } from '../volunteers.type'
@@ -13,6 +13,7 @@ export type UseGetInfinityVolunteersArgs = {
 	hasNoGroup?: boolean
 	hasNoRoom?: boolean
 	statusVolunteer?: CHECK_IN_STATUS
+	limit?: number
 }
 
 export const useGetInfinityVolunteers = ({
@@ -20,6 +21,7 @@ export const useGetInfinityVolunteers = ({
 	hasNoGroup,
 	hasNoRoom,
 	statusVolunteer,
+	limit = LIMIT_PER_PAGE,
 }: UseGetInfinityVolunteersArgs) => {
 	const [searchVolunteer, setSearchVolunteer] = useState('')
 	const debounceVolunteer = useDebounce(searchVolunteer, 500)
@@ -36,6 +38,7 @@ export const useGetInfinityVolunteers = ({
 			hasNoGroup,
 			hasNoRoom,
 			statusVolunteer,
+			limit,
 		],
 		queryFn: async ({ pageParam }) =>
 			await getVolunteers({
@@ -45,6 +48,7 @@ export const useGetInfinityVolunteers = ({
 				...(hasNoGroup && { hasNoGroup }),
 				...(hasNoRoom && { hasNoRoom }),
 				page: pageParam,
+				limit,
 			}),
 		getNextPageParam: (lastPage: VolunteersFromAPI) => {
 			const { currentPage, totalPages } = lastPage
