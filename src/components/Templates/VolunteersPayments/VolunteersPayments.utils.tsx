@@ -1,4 +1,4 @@
-import { HandCoins } from 'lucide-react'
+import { BanknoteArrowUp, HandCoins } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 import { PaymentTag, Tooltip } from '@/components/Atoms'
@@ -40,6 +40,7 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	payments: Array<VolunteersPaymentsAPI> | undefined,
 	handlePaymentModal: (payment: VolunteersPaymentsAPI) => void,
+	handleReturnPaymentModal: (payment: VolunteersPaymentsAPI) => void,
 ) => {
 	if (!payments) return []
 
@@ -49,6 +50,8 @@ export const formatTableData = (
 		const isPaymentNotTotal =
 			Number(payment.paymentValue) < Number(payment.event.volunteerPrice) &&
 			payment.paymentType !== null
+		const isVolunteerPaidAndWithdraw =
+			isVolunteerWithdraw && Number(payment.paymentValue) > 0
 		return {
 			...((isPaymentNotTotal || isVolunteerWithdraw) && {
 				backgroundColor: isVolunteerWithdraw
@@ -89,6 +92,16 @@ export const formatTableData = (
 								: 'Informar pagamento'}
 						</Tooltip>
 					</div>
+					{isVolunteerPaidAndWithdraw && (
+						<div className="hs-tooltip">
+							<BanknoteArrowUp
+								className="cursor-pointer"
+								size={20}
+								onClick={() => handleReturnPaymentModal(payment)}
+							/>
+							<Tooltip>Devolver pagamento</Tooltip>
+						</div>
+					)}
 				</div>
 			),
 		}

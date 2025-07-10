@@ -6,7 +6,12 @@ import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	ListPage,
+	ModalReturnPayment,
+	PageContent,
+} from '@/components/Organisms'
+import { ModalReturnPaymentType } from '@/components/Organisms/ModalReturnPayment/ModalReturnPayment.schema'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
 	MODALS_IDS,
@@ -24,6 +29,7 @@ import { useGetInfinityEvents } from '@/services/queries/events'
 import {
 	useGetPayments,
 	useGetVolunteersCities,
+	useReturnVolunteerPayment,
 	useUpdateVolunteerPayment,
 } from '@/services/queries/volunteers'
 import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -60,6 +66,8 @@ export const VolunteersPayments = () => {
 		setCity,
 	} = useGetPayments()
 	const { update, isPending } = useUpdateVolunteerPayment()
+	const { update: returnPayment, isPending: isPendingReturn } =
+		useReturnVolunteerPayment()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -90,9 +98,18 @@ export const VolunteersPayments = () => {
 		[],
 	)
 
+	const handleOpenModalToReturnPaymentVolunteer = useCallback(
+		(payment: VolunteersPaymentsAPI) => {
+			setSelectedVolunteer(payment)
+			overlayOpen(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
+		},
+		[],
+	)
+
 	const formattedData = formatTableData(
 		volunteersPayments?.data,
 		handleOpenModalToPaymentVolunteer,
+		handleOpenModalToReturnPaymentVolunteer,
 	)
 
 	const handleUpdate = useCallback(
@@ -125,6 +142,37 @@ export const VolunteersPayments = () => {
 			)
 		},
 		[selectedVolunteer, update],
+	)
+
+	const handleReturnPayment = useCallback(
+		async (values: ModalReturnPaymentType) => {
+			if (!selectedVolunteer) return
+
+			const formatValues = {
+				returnValue:
+					values.returnPaid === 'partial' && values.returnValue
+						? Number(removeCurrencyFormat(values.returnValue))
+						: Number(
+								removeCurrencyFormat(selectedVolunteer.event.volunteerPrice),
+							),
+			}
+
+			await returnPayment(
+				{ paymentId: selectedVolunteer.id, data: formatValues },
+				{
+					onSuccess: () => {
+						setSelectedVolunteer(null)
+						toast.success('Pagamento do voluntário devolvido com sucesso!')
+					},
+					onError: (error) =>
+						generateToastError(
+							error,
+							'Erro ao atualizar pagamento do voluntário',
+						),
+				},
+			)
+		},
+		[selectedVolunteer, returnPayment],
 	)
 
 	const hasMoreThanOnePage =
@@ -182,6 +230,13 @@ export const VolunteersPayments = () => {
 				modalType="voluntário"
 				handleSubmit={handleUpdate}
 				isPending={isPending}
+			/>
+			<ModalReturnPayment
+				modalId={MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL}
+				modalType="voluntário"
+				handleSubmit={handleReturnPayment}
+				isPending={isPendingReturn}
+				payment={selectedVolunteer}
 			/>
 		</PageContent>
 	)

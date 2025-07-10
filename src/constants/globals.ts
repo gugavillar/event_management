@@ -36,6 +36,7 @@ export const MODALS_IDS = {
 	VOLUNTEER_ASSIGN_FUNCTION_MODAL: 'volunteer_assign_function_modal',
 	VOLUNTEER_PAYMENT_MODAL: 'volunteer_payment_modal',
 	VOLUNTEER_MODAL_DATA: 'volunteer_modal_data',
+	VOLUNTEER_RETURN_PAYMENT_MODAL: 'volunteer_return_payment_modal',
 
 	// USERS
 	USER_CREATE_MODAL: 'user_create_modal',

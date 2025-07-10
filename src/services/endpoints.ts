@@ -62,6 +62,8 @@ export const ENDPOINTS = {
 	UPDATE_VOLUNTEER_PAYMENT: (payment_id: string) =>
 		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}`,
 	GET_VOLUNTEERS_CITIES: `${BASE_PATH.VOLUNTEERS}/cities`,
+	RETURN_VOLUNTEER_PAYMENT: (payment_id: string) =>
+		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}/return`,
 
 	// Functions
 	CREATE_FUNCTION: `${BASE_PATH.VOLUNTEERS}/functions`,

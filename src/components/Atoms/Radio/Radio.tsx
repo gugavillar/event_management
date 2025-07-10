@@ -7,6 +7,7 @@ export type RadioProps = ComponentPropsWithoutRef<'input'> & {
 		label: string
 		description?: string
 		value: string
+		disabled?: boolean
 	}>
 	fieldName: string
 	position?: 'column' | 'row'
@@ -25,7 +26,13 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
 				data-testid="radio"
 			>
 				{options?.map((option) => (
-					<div className="relative flex items-center" key={option.value}>
+					<div
+						className={twMerge(
+							'relative flex items-center',
+							option.disabled && 'opacity-50',
+						)}
+						key={option.value}
+					>
 						<div className="flex h-5 items-center">
 							<input
 								ref={ref}
@@ -37,6 +44,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
 								)}
 								value={option.value}
 								id={`${fieldName}-${option.value}`}
+								disabled={option.disabled}
 								{...props}
 							/>
 						</div>
