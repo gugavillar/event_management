@@ -88,7 +88,7 @@ export const VolunteerDrawer = memo(
 				birthdate: formatDateToSendToApi(values.birthdate),
 				phone: values.phone.replace(/\D/g, ''),
 				relativePhone: values.relativePhone.replace(/\D/g, ''),
-				inscriptionType: 'internal' as const,
+				...(!selectedVolunteer && { inscriptionType: 'internal' as const }),
 			}
 
 			if (selectedVolunteer) {

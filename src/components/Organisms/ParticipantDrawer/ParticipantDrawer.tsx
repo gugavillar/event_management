@@ -89,7 +89,7 @@ export const ParticipantDrawer = memo(
 				phone: data.phone.replace(/\D/g, ''),
 				hostPhone: data.hostPhone.replace(/\D/g, ''),
 				responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
-				inscriptionType: 'internal' as const,
+				...(!selectedParticipant && { inscriptionType: 'internal' as const }),
 			}
 
 			if (selectedParticipant) {

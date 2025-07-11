@@ -7,7 +7,7 @@ import { validateBirthdate } from '@/formatters'
 export const VolunteerSchema = z
 	.object({
 		eventId: z.string().trim().min(1, 'Campo obrigatório'),
-		name: z.string().trim().min(1, 'Campo obrigatório'),
+		name: z.string().trim().min(3, 'Campo obrigatório'),
 		email: z
 			.string({ required_error: 'Campo obrigatório' })
 			.trim()
@@ -68,10 +68,10 @@ export const VolunteerSchema = z
 		health: z.string().nullable().optional(),
 		community: z.string().trim().min(1, 'Campo obrigatório'),
 		address: z.object({
-			street: z.string().trim().min(1, 'Campo obrigatório'),
-			neighborhood: z.string().trim().min(1, 'Campo obrigatório'),
+			street: z.string().trim().min(3, 'Campo obrigatório'),
+			neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
 			number: z.string().trim().min(1, 'Campo obrigatório'),
-			city: z.string().trim().min(1, 'Campo obrigatório'),
+			city: z.string().trim().min(3, 'Campo obrigatório'),
 			state: z
 				.string({ required_error: 'Campo obrigatório' })
 				.max(2)
