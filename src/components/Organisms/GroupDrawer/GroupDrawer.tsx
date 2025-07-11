@@ -111,6 +111,11 @@ export const GroupDrawer = ({
 		fetchNextPage,
 	})
 
+	const handleClose = () => {
+		reset()
+		setSelectedGroup(null)
+	}
+
 	useEffect(() => {
 		if (!data) return reset({}, { keepDefaultValues: true })
 
@@ -124,6 +129,7 @@ export const GroupDrawer = ({
 			drawerId={drawerId}
 			headingTitle={selectedGroup ? 'Editar grupo' : 'Criar grupo'}
 			className="max-w-3xl"
+			handleClose={handleClose}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">

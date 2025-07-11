@@ -128,6 +128,11 @@ export const ParticipantDrawer = memo(
 			)
 		}
 
+		const handleClose = () => {
+			reset()
+			setSelectedParticipant(null)
+		}
+
 		useEffect(() => {
 			if (!data) return reset({}, { keepDefaultValues: true })
 
@@ -138,7 +143,7 @@ export const ParticipantDrawer = memo(
 			<Drawer
 				drawerId={drawerId}
 				headingTitle="Dados do participante"
-				handleClose={() => setSelectedParticipant(null)}
+				handleClose={handleClose}
 			>
 				<DrawerBody isLoading={isLoading}>
 					<Controller

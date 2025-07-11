@@ -77,6 +77,11 @@ export const EventDrawer = ({
 		})
 	}
 
+	const handleClose = () => {
+		reset()
+		setSelectedEvent(null)
+	}
+
 	useEffect(() => {
 		if (!data) return reset()
 		reset({ ...data }, { keepDefaultValues: true })
@@ -86,7 +91,7 @@ export const EventDrawer = ({
 		<Drawer
 			drawerId={drawerId}
 			headingTitle={selectedEvent ? 'Editar evento' : 'Novo evento'}
-			handleClose={() => setSelectedEvent(null)}
+			handleClose={handleClose}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<InputField fieldName="name">Nome do evento</InputField>

@@ -127,6 +127,11 @@ export const VolunteerDrawer = memo(
 			)
 		}
 
+		const handleClose = () => {
+			reset()
+			setSelectedVolunteer(null)
+		}
+
 		useEffect(() => {
 			if (!data) return reset({}, { keepDefaultValues: true })
 
@@ -137,7 +142,7 @@ export const VolunteerDrawer = memo(
 			<Drawer
 				drawerId={drawerId}
 				headingTitle="Dados do voluntário"
-				handleClose={() => setSelectedVolunteer(null)}
+				handleClose={handleClose}
 			>
 				<DrawerBody isLoading={isLoading}>
 					<Controller

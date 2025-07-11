@@ -113,6 +113,11 @@ export const RoomDrawer = ({
 		fetchNextPage,
 	})
 
+	const handleClose = () => {
+		reset()
+		setSelectedRoom(null)
+	}
+
 	useEffect(() => {
 		if (!data) return reset({}, { keepDefaultValues: true })
 
@@ -126,6 +131,7 @@ export const RoomDrawer = ({
 			drawerId={drawerId}
 			headingTitle={selectedRoom ? 'Editar quarto' : 'Criar quarto'}
 			className="max-w-3xl"
+			handleClose={handleClose}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
