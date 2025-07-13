@@ -1,5 +1,8 @@
 import { isServer } from '@tanstack/react-query'
 import axios from 'axios'
+import { signOut } from 'next-auth/react'
+
+import { PRINCIPAL_LINKS } from '@/constants'
 
 import { BASE_URL } from './endpoints'
 
@@ -18,5 +21,11 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
 	(response) => response.data,
-	(error) => Promise.reject(error),
+	async (error) => {
+		if (!isServer && error?.response?.status === 401) {
+			await signOut({ callbackUrl: PRINCIPAL_LINKS.LOGIN })
+		}
+
+		return Promise.reject(error)
+	},
 )
