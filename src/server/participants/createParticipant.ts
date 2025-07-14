@@ -29,7 +29,7 @@ export const createParticipant = async (
 
 		if (isAlreadyRegistered) {
 			return NextResponse.json(
-				{ error: 'Participante ja cadastrado' },
+				{ error: 'Participante já cadastrado' },
 				{ status: 400 },
 			)
 		}
@@ -59,14 +59,6 @@ export const createParticipant = async (
 				data: {
 					...address,
 					participantId: participant.id,
-				},
-			})
-
-			await tx.participantPayment.create({
-				data: {
-					participantId: participant.id,
-					eventId: data.eventId,
-					paymentValue: 0,
 				},
 			})
 		})

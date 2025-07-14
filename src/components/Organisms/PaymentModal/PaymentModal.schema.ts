@@ -6,10 +6,16 @@ import { paymentOptionsRadio } from './PaymentModal.utils'
 
 export const PaymentModalSchema = z
 	.object({
-		paid: z.enum([paymentOptionsRadio[0].value, paymentOptionsRadio[1].value], {
-			required_error: 'Campo obrigatório',
-			message: 'Campo obrigatório',
-		}),
+		paid: z.enum(
+			[
+				paymentOptionsRadio(false)[0].value,
+				paymentOptionsRadio(false)[1].value,
+			],
+			{
+				required_error: 'Campo obrigatório',
+				message: 'Campo obrigatório',
+			},
+		),
 		paymentType: z
 			.union([
 				z.enum(
@@ -44,7 +50,7 @@ export const PaymentModalSchema = z
 	})
 	.superRefine((data, ctx) => {
 		if (
-			data.paid === paymentOptionsRadio[1].value &&
+			data.paid === paymentOptionsRadio(false)[1].value &&
 			(!data.paymentValue || data.paymentValue.trim() === '')
 		) {
 			ctx.addIssue({

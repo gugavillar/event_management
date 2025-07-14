@@ -65,7 +65,7 @@ export default async function ParticipantsPaymentsPage({
 			>
 				<HydrationProvider
 					queryFn={getCities}
-					queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES]}
+					queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, undefined]}
 				>
 					<ParticipantsPayments />
 				</HydrationProvider>

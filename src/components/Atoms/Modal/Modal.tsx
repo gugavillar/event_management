@@ -41,7 +41,7 @@ export const Modal = ({
 		>
 			<div
 				className={twMerge(
-					'm-3 mt-0 flex min-h-[calc(100%-3.5rem)] items-center opacity-0 transition-all ease-out hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 sm:mx-auto sm:w-full md:max-w-md',
+					'm-3 mt-0 flex min-h-[calc(100%-3.5rem)] items-center opacity-0 transition-all ease-out hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 sm:mx-auto sm:w-full md:max-w-lg',
 					isLarge && 'md:max-w-xl lg:max-w-6xl',
 				)}
 			>

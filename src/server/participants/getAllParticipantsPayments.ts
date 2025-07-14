@@ -11,53 +11,51 @@ export const getAllParticipantsPayments = async (
 		const skip = (page - 1) * LIMIT_PER_PAGE
 
 		const [payments, totalOfPayments] = await Promise.all([
-			prisma.participantPayment.findMany({
+			prisma.participant.findMany({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { participant: { name: { contains: search } } }),
+					...(search && { name: { contains: search } }),
 					...(paymentType && {
-						paymentType:
-							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
-					}),
-					...(city && {
-						participant: {
-							address: {
-								city: { contains: city },
+						payments: {
+							some: {
+								paymentType:
+									paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
 							},
 						},
 					}),
-					OR: [
-						{ participant: { interested: false } },
-						{ participant: { interested: null } },
-					],
+					...(city && {
+						address: {
+							city: { contains: city },
+						},
+					}),
+					OR: [{ interested: false }, { interested: null }],
 				},
 				include: {
 					event: true,
-					participant: true,
+					payments: true,
 				},
-				orderBy: { participant: { name: 'asc' } },
+				orderBy: { name: 'asc' },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),
-			prisma.participantPayment.count({
+			prisma.participant.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { participant: { name: { contains: search } } }),
+					...(search && { name: { contains: search } }),
 					...(paymentType && {
-						paymentType:
-							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
-					}),
-					...(city && {
-						participant: {
-							address: {
-								city: { contains: city },
+						payments: {
+							some: {
+								paymentType:
+									paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
 							},
 						},
 					}),
-					OR: [
-						{ participant: { interested: false } },
-						{ participant: { interested: null } },
-					],
+					...(city && {
+						address: {
+							city: { contains: city },
+						},
+					}),
+					OR: [{ interested: false }, { interested: null }],
 				},
 			}),
 		])

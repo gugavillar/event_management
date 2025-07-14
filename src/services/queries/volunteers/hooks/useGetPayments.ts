@@ -9,7 +9,7 @@ import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { getPayments } from '../usecases'
-import { VolunteersPaymentsFromAPI } from '../volunteers.type'
+import { VolunteersFromAPI } from '../volunteers.type'
 
 export const useGetPayments = () => {
 	const searchParams = useSearchParams()
@@ -43,7 +43,7 @@ export const useGetPayments = () => {
 		pageVolunteerPayment: page.toString(),
 	})
 
-	const query: UseQueryResult<VolunteersPaymentsFromAPI> = useQuery({
+	const query: UseQueryResult<VolunteersFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS_PAYMENTS,
 			debounceEventId,

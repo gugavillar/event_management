@@ -38,6 +38,17 @@ export type ParticipantsAPI = {
 		updatedAt: string
 		volunteerId: UUID
 	}
+	payments: Array<{
+		id: UUID
+		paymentValue: string
+		paymentType: PaymentTypeAPI | null
+		eventId: UUID
+		event: EventsAPI
+		participantId: UUID
+		participant: ParticipantsAPI
+		createdAt: string
+		updatedAt: string
+	}>
 	event: EventsAPI
 }
 

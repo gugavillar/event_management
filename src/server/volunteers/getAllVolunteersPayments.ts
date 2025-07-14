@@ -11,43 +11,47 @@ export const getAllVolunteersPayments = async (
 		const skip = (page - 1) * LIMIT_PER_PAGE
 
 		const [payments, totalOfPayments] = await Promise.all([
-			prisma.volunteerPayment.findMany({
+			prisma.volunteer.findMany({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { volunteer: { name: { contains: search } } }),
+					...(search && { name: { contains: search } }),
 					...(paymentType && {
-						paymentType:
-							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
+						payments: {
+							some: {
+								paymentType:
+									paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
+							},
+						},
 					}),
 					...(city && {
-						volunteer: {
-							address: {
-								city: { contains: city },
-							},
+						address: {
+							city: { contains: city },
 						},
 					}),
 				},
 				include: {
 					event: true,
-					volunteer: true,
+					payments: true,
 				},
-				orderBy: { volunteer: { name: 'asc' } },
+				orderBy: { name: 'asc' },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),
-			prisma.volunteerPayment.count({
+			prisma.volunteer.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { volunteer: { name: { contains: search } } }),
+					...(search && { name: { contains: search } }),
 					...(paymentType && {
-						paymentType:
-							paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
+						payments: {
+							some: {
+								paymentType:
+									paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
+							},
+						},
 					}),
 					...(city && {
-						volunteer: {
-							address: {
-								city: { contains: city },
-							},
+						address: {
+							city: { contains: city },
 						},
 					}),
 				},

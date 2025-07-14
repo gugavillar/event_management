@@ -5,7 +5,6 @@ import { PaymentTypeAPI, PaymentType } from '@/constants'
 
 type PaymentTagProps = ComponentProps<'mark'> & {
 	status: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI]
-	isNotTotal: boolean
 }
 
 const STATUS_COLORS = {
@@ -18,19 +17,16 @@ const STATUS_COLORS = {
 }
 
 export const PaymentTag = memo(
-	({ status, className, isNotTotal, ...props }: PaymentTagProps) => {
+	({ status, className, ...props }: PaymentTagProps) => {
 		return (
 			<mark
 				className={twMerge(
-					'flex w-fit min-w-36 items-center justify-center gap-x-1.5 rounded-3xl px-4 py-1 text-slate-800',
+					'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl px-4 py-1 text-slate-800',
 					className,
 					STATUS_COLORS[status],
 				)}
 				{...props}
 			>
-				{isNotTotal && (
-					<span className="inline-block size-2 rounded-full bg-amber-500"></span>
-				)}
 				{PaymentType[status].label}
 			</mark>
 		)

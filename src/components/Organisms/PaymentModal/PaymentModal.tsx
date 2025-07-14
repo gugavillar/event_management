@@ -20,10 +20,17 @@ type PaymentModalProps = {
 	modalType: 'participante' | 'voluntário'
 	handleSubmit: (values: PaymentModalType) => Promise<void>
 	isPending: boolean
+	isExistPayment: boolean
 }
 
 export const PaymentModal = memo(
-	({ modalId, modalType, handleSubmit, isPending }: PaymentModalProps) => {
+	({
+		modalId,
+		modalType,
+		handleSubmit,
+		isPending,
+		isExistPayment,
+	}: PaymentModalProps) => {
 		const methods = useForm<PaymentModalType>({
 			mode: 'onChange',
 			defaultValues: {
@@ -65,7 +72,7 @@ export const PaymentModal = memo(
 						</div>
 						<RadioField
 							fieldName="paid"
-							options={paymentOptionsRadio}
+							options={paymentOptionsRadio(isExistPayment)}
 							position="row"
 						>
 							O pagamento é total ou parcial?

@@ -44,6 +44,17 @@ export type VolunteersAPI = {
 		updatedAt: string
 		volunteerId: UUID
 	}
+	payments: Array<{
+		id: UUID
+		paymentValue: string
+		paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null
+		eventId: UUID
+		event: EventsAPI
+		volunteerId: UUID
+		volunteer: VolunteersAPI
+		createdAt: string
+		updatedAt: string
+	}>
 	eventRoles: Array<{
 		id: UUID
 		eventId: UUID
@@ -112,7 +123,7 @@ export type VolunteersPaymentsAPI = {
 }
 
 export type VolunteersPaymentsFromAPI = {
-	data: Array<VolunteersPaymentsAPI>
+	data: Array<VolunteersAPI>
 	currentPage: number
 	perPage: number
 	totalCount: number

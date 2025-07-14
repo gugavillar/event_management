@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server'
 
 import { PaymentTypeAPI } from '@/constants'
-import { getAllParticipantsPayments } from '@/server'
+import { getAllParticipantsPayments, createParticipantPayment } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 const handlerGet = async (request: NextRequest) => {
@@ -24,4 +24,12 @@ const handlerGet = async (request: NextRequest) => {
 	})
 }
 
-export { handlerGet as GET }
+const handlePost = async (request: NextRequest) => {
+	const body = await request.json()
+	return await requestProcess({
+		functions: async () => await createParticipantPayment(body),
+		isProtectedRoute: true,
+	})
+}
+
+export { handlerGet as GET, handlePost as POST }

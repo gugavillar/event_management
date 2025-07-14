@@ -6,12 +6,7 @@ import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
-import {
-	ListPage,
-	ModalReturnPayment,
-	PageContent,
-} from '@/components/Organisms'
-import { ModalReturnPaymentType } from '@/components/Organisms/ModalReturnPayment/ModalReturnPayment.schema'
+import { ListPage, PageContent } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
 	MODALS_IDS,
@@ -27,12 +22,11 @@ import {
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import {
+	useCreateParticipantPayment,
 	useGetParticipantsCities,
 	useGetPayments,
-	useUpdateParticipantPayment,
 } from '@/services/queries/participants'
-import { useReturnParticipantPayment } from '@/services/queries/participants/hooks/useReturnParticipantPayment'
-import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
 
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
@@ -43,7 +37,7 @@ const PaymentModal = dynamic(() =>
 
 export const ParticipantsPayments = () => {
 	const [selectedParticipant, setSelectedParticipant] =
-		useState<ParticipantsPaymentsAPI | null>(null)
+		useState<ParticipantsAPI | null>(null)
 	const {
 		data: events,
 		hasNextPage,
@@ -65,9 +59,9 @@ export const ParticipantsPayments = () => {
 		city,
 		setCity,
 	} = useGetPayments()
-	const { update, isPending } = useUpdateParticipantPayment()
-	const { update: returnPayment, isPending: isReturnPending } =
-		useReturnParticipantPayment()
+	const { create, isPending } = useCreateParticipantPayment()
+	// const { update: returnPayment, isPending: isReturnPending } =
+	// 	useReturnParticipantPayment()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -91,7 +85,7 @@ export const ParticipantsPayments = () => {
 	})
 
 	const handleOpenModalToPaymentParticipant = useCallback(
-		(payment: ParticipantsPaymentsAPI) => {
+		(payment: ParticipantsAPI) => {
 			setSelectedParticipant(payment)
 			overlayOpen(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
 		},
@@ -99,7 +93,7 @@ export const ParticipantsPayments = () => {
 	)
 
 	const handleOpenModalToReturnPaymentParticipant = useCallback(
-		(payment: ParticipantsPaymentsAPI) => {
+		(payment: ParticipantsAPI) => {
 			setSelectedParticipant(payment)
 			overlayOpen(MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL)
 		},
@@ -118,6 +112,8 @@ export const ParticipantsPayments = () => {
 
 			const formatValues = {
 				paymentType: values.paymentType as PaymentTypeAPI,
+				eventId: selectedParticipant.eventId,
+				participantId: selectedParticipant.id,
 				paymentValue:
 					values.paid === 'partial' && values.paymentValue
 						? Number(removeCurrencyFormat(values.paymentValue))
@@ -127,59 +123,60 @@ export const ParticipantsPayments = () => {
 								),
 							),
 			}
-			await update(
-				{ paymentId: selectedParticipant.id, data: formatValues },
+			await create(
+				{ data: formatValues },
 				{
 					onSuccess: () => {
 						setSelectedParticipant(null)
-						toast.success('Pagamento do participante atualizado com sucesso!')
+						toast.success('Pagamento do participante registrado com sucesso!')
 					},
 					onError: (error) =>
 						generateToastError(
 							error,
-							'Erro ao atualizar pagamento do participante',
+							'Erro ao registrar pagamento do participante',
 						),
 				},
 			)
 		},
-		[selectedParticipant, update],
+		[selectedParticipant, create],
 	)
 
-	const handleReturnPayment = useCallback(
-		async (values: ModalReturnPaymentType) => {
-			if (!selectedParticipant) return
+	// const handleReturnPayment = useCallback(
+	// 	async (values: ModalReturnPaymentType) => {
+	// 		if (!selectedParticipant) return
 
-			const formatValues = {
-				returnValue:
-					values.returnPaid === 'partial' && values.returnValue
-						? Number(removeCurrencyFormat(values.returnValue))
-						: Number(
-								removeCurrencyFormat(
-									selectedParticipant.event.participantPrice,
-								),
-							),
-			}
+	// 		const formatValues = {
+	// 			returnValue:
+	// 				values.returnPaid === 'partial' && values.returnValue
+	// 					? Number(removeCurrencyFormat(values.returnValue))
+	// 					: Number(
+	// 							removeCurrencyFormat(
+	// 								selectedParticipant.event.participantPrice,
+	// 							),
+	// 						),
+	// 		}
 
-			await returnPayment(
-				{ paymentId: selectedParticipant.id, data: formatValues },
-				{
-					onSuccess: () => {
-						setSelectedParticipant(null)
-						toast.success('Pagamento do participante devolvido com sucesso!')
-					},
-					onError: (error) =>
-						generateToastError(
-							error,
-							'Erro ao atualizar pagamento do participante',
-						),
-				},
-			)
-		},
-		[selectedParticipant, returnPayment],
-	)
+	// 		await returnPayment(
+	// 			{ paymentId: selectedParticipant.id, data: formatValues },
+	// 			{
+	// 				onSuccess: () => {
+	// 					setSelectedParticipant(null)
+	// 					toast.success('Pagamento do participante devolvido com sucesso!')
+	// 				},
+	// 				onError: (error) =>
+	// 					generateToastError(
+	// 						error,
+	// 						'Erro ao atualizar pagamento do participante',
+	// 					),
+	// 			},
+	// 		)
+	// 	},
+	// 	[selectedParticipant, returnPayment],
+	// )
 
 	const hasMoreThanOnePage =
 		!!participantsPayments?.totalPages && participantsPayments.totalPages > 1
+	const isExistPayment = Boolean(selectedParticipant?.payments?.length)
 
 	return (
 		<PageContent
@@ -233,14 +230,15 @@ export const ParticipantsPayments = () => {
 				modalType="participante"
 				handleSubmit={handleUpdate}
 				isPending={isPending}
+				isExistPayment={isExistPayment}
 			/>
-			<ModalReturnPayment
+			{/* <ModalReturnPayment
 				modalId={MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL}
 				modalType="participante"
 				payment={selectedParticipant}
 				isPending={isReturnPending}
 				handleSubmit={handleReturnPayment}
-			/>
+			/> */}
 		</PageContent>
 	)
 }

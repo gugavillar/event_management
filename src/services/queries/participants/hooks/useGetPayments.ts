@@ -8,7 +8,7 @@ import { QUERY_KEYS } from '@/constants'
 import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
-import { ParticipantsPaymentsFromAPI } from '../participants.type'
+import { ParticipantsFromAPI } from '../participants.type'
 import { getPayments } from '../usecases'
 
 export const useGetPayments = () => {
@@ -43,7 +43,7 @@ export const useGetPayments = () => {
 		pageParticipantPayment: page.toString(),
 	})
 
-	const query: UseQueryResult<ParticipantsPaymentsFromAPI> = useQuery({
+	const query: UseQueryResult<ParticipantsFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.PARTICIPANTS_PAYMENTS,
 			debounceEventId,

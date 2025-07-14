@@ -58,14 +58,6 @@ export const createVolunteer = async (
 					volunteerId: volunteer.id,
 				},
 			})
-
-			await tx.volunteerPayment.create({
-				data: {
-					volunteerId: volunteer.id,
-					eventId: data.eventId,
-					paymentValue: 0,
-				},
-			})
 		})
 	} catch (error) {
 		console.error('@createVolunteer error:', error)

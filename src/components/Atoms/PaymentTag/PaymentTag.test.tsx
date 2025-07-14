@@ -9,11 +9,7 @@ const PaymentTagStatusArray = Object.values(PaymentTypeAPI)
 describe('PaymentTag component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<PaymentTag
-				isNotTotal={false}
-				status={PaymentTypeAPI.CARD}
-				data-testid="payment-tag"
-			/>,
+			<PaymentTag status={PaymentTypeAPI.CARD} data-testid="payment-tag" />,
 		)
 
 		const paymentTag = getByTestId('payment-tag')
@@ -24,7 +20,6 @@ describe('PaymentTag component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<PaymentTag
-				isNotTotal={false}
 				status={PaymentTypeAPI.CARD}
 				data-testid="payment-tag"
 				className="custom-class"
@@ -39,7 +34,6 @@ describe('PaymentTag component', () => {
 	it('applies custom props', () => {
 		const { getByTestId } = render(
 			<PaymentTag
-				isNotTotal={false}
 				status={PaymentTypeAPI.CARD}
 				data-testid="payment-tag"
 				id="test"
@@ -56,7 +50,6 @@ describe('PaymentTag component', () => {
 
 		const { getByTestId } = render(
 			<PaymentTag
-				isNotTotal={false}
 				status={PaymentTagStatusArray[status]}
 				data-testid="payment-tag"
 			/>,

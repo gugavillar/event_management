@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { PaymentTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
-import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
+import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 export const HEADER_LABELS = [
 	{
@@ -38,20 +38,26 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	payments: Array<ParticipantsPaymentsAPI> | undefined,
-	handlePaymentModal: (payment: ParticipantsPaymentsAPI) => void,
-	handleReturnPaymentModal: (payment: ParticipantsPaymentsAPI) => void,
+	payments: Array<ParticipantsAPI> | undefined,
+	handlePaymentModal: (payment: ParticipantsAPI) => void,
+	handleReturnPaymentModal: (payment: ParticipantsAPI) => void,
 ) => {
 	if (!payments) return []
 
 	return payments.map((payment) => {
-		const isParticipantWithdraw =
-			payment.participant.checkIn === CHECK_IN_STATUS.WITHDREW
+		const isParticipantWithdraw = payment.checkIn === CHECK_IN_STATUS.WITHDREW
+		const totalPayment = payment.payments.reduce((total, p) => {
+			if (payment.id === p.participantId) {
+				return total + Number(p.paymentValue)
+			}
+			return total
+		}, 0)
+
 		const isPaymentNotTotal =
-			Number(payment.paymentValue) < Number(payment.event.participantPrice) &&
-			payment.paymentType !== null
+			totalPayment > 0 && totalPayment < Number(payment.event.participantPrice)
 		const isParticipantPaidAndWithdraw =
-			isParticipantWithdraw && Number(payment.paymentValue) > 0
+			isParticipantWithdraw && totalPayment > 0
+
 		return {
 			...((isPaymentNotTotal || isParticipantWithdraw) && {
 				backgroundColor: isParticipantWithdraw
@@ -59,18 +65,24 @@ export const formatTableData = (
 					: LINE_COLOR.payment,
 			}),
 			id: payment.id,
-			name: payment.participant.name,
-			phone: formatPhone(payment.participant.phone),
-			valuePayed: currencyValue(Number(payment.paymentValue)),
+			name: payment.name,
+			phone: formatPhone(payment.phone),
+			valuePayed: currencyValue(totalPayment),
 			eventName: payment.event.name,
 			eventValue: currencyValue(Number(payment.event.participantPrice)),
 			payment: (
-				<PaymentTag
-					isNotTotal={isPaymentNotTotal}
-					status={
-						!payment.paymentType ? PaymentTypeAPI.OPEN : payment.paymentType
-					}
-				/>
+				<div className="flex gap-2">
+					{!payment.payments.length ? (
+						<PaymentTag status={PaymentTypeAPI.OPEN} />
+					) : (
+						payment.payments.map((p) => (
+							<PaymentTag
+								key={p.id}
+								status={!p.paymentType ? PaymentTypeAPI.OPEN : p.paymentType}
+							/>
+						))
+					)}
+				</div>
 			),
 			actions: (
 				<div className="flex space-x-4">

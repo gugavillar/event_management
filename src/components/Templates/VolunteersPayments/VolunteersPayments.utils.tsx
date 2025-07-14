@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { PaymentTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
-import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
+import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 export const HEADER_LABELS = [
 	{
@@ -38,20 +38,25 @@ export const HEADER_LABELS = [
 ]
 
 export const formatTableData = (
-	payments: Array<VolunteersPaymentsAPI> | undefined,
-	handlePaymentModal: (payment: VolunteersPaymentsAPI) => void,
-	handleReturnPaymentModal: (payment: VolunteersPaymentsAPI) => void,
+	payments: Array<VolunteersAPI> | undefined,
+	handlePaymentModal: (payment: VolunteersAPI) => void,
+	handleReturnPaymentModal: (payment: VolunteersAPI) => void,
 ) => {
 	if (!payments) return []
 
 	return payments.map((payment) => {
-		const isVolunteerWithdraw =
-			payment.volunteer.checkIn === CHECK_IN_STATUS.WITHDREW
+		const isVolunteerWithdraw = payment.checkIn === CHECK_IN_STATUS.WITHDREW
+		const totalPayment = payment.payments.reduce((total, p) => {
+			if (payment.id === p.volunteerId) {
+				return total + Number(p.paymentValue)
+			}
+			return total
+		}, 0)
+
 		const isPaymentNotTotal =
-			Number(payment.paymentValue) < Number(payment.event.volunteerPrice) &&
-			payment.paymentType !== null
-		const isVolunteerPaidAndWithdraw =
-			isVolunteerWithdraw && Number(payment.paymentValue) > 0
+			totalPayment > 0 && totalPayment < Number(payment.event.volunteerPrice)
+		const isVolunteerPaidAndWithdraw = isVolunteerWithdraw && totalPayment > 0
+
 		return {
 			...((isPaymentNotTotal || isVolunteerWithdraw) && {
 				backgroundColor: isVolunteerWithdraw
@@ -59,18 +64,24 @@ export const formatTableData = (
 					: LINE_COLOR.payment,
 			}),
 			id: payment.id,
-			name: payment.volunteer.name,
-			phone: formatPhone(payment.volunteer.phone),
-			valuePayed: currencyValue(Number(payment.paymentValue)),
+			name: payment.name,
+			phone: formatPhone(payment.phone),
+			valuePayed: currencyValue(totalPayment),
 			eventName: payment.event.name,
 			eventValue: currencyValue(Number(payment.event.volunteerPrice)),
 			payment: (
-				<PaymentTag
-					isNotTotal={isPaymentNotTotal}
-					status={
-						!payment.paymentType ? PaymentTypeAPI.OPEN : payment.paymentType
-					}
-				/>
+				<div className="flex gap-2">
+					{!payment.payments.length ? (
+						<PaymentTag status={PaymentTypeAPI.OPEN} />
+					) : (
+						payment.payments.map((p) => (
+							<PaymentTag
+								key={p.id}
+								status={!p.paymentType ? PaymentTypeAPI.OPEN : p.paymentType}
+							/>
+						))
+					)}
+				</div>
 			),
 			actions: (
 				<div className="flex space-x-4">
