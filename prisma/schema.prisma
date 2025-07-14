@@ -62,6 +62,8 @@ model Event {
   isParticipantRegistrationOpen Boolean              @default(true)
   isVolunteerRegistrationOpen   Boolean              @default(true)
   isInterestedListOpen          Boolean              @default(false)
+  minAge                        Int?
+  maxAge                        Int?
   createdAt                     DateTime             @default(now())
   updatedAt                     DateTime             @updatedAt
   userId                        String

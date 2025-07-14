@@ -23,6 +23,8 @@ export const CreateEventButton = memo(
 			defaultValues: {
 				name: '',
 				gender: '',
+				minAge: '',
+				maxAge: '',
 				initialDate: '',
 				finalDate: '',
 				participantPrice: '',

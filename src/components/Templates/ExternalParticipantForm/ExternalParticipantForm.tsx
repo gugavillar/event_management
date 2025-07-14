@@ -27,12 +27,16 @@ import {
 
 export type ExternalParticipantFormProps = {
 	registrationValue?: number
+	minAge?: number | null
+	maxAge?: number | null
 	eventId?: string
 	isInterestedList?: boolean
 }
 
 export const ExternalParticipantForm = ({
 	registrationValue,
+	minAge,
+	maxAge,
 	eventId,
 	isInterestedList,
 }: ExternalParticipantFormProps) => {
@@ -64,13 +68,13 @@ export const ExternalParticipantForm = ({
 			},
 			paymentMethod: undefined,
 		},
-		resolver: zodResolver(stepsFields[currentStep].schema),
+		resolver: zodResolver(stepsFields(minAge, maxAge)[currentStep].schema),
 	})
 
 	const handleNext = async () => {
 		if (currentStep === stepsFields.length - 1) return
 
-		const fields = stepsFields[currentStep].fields
+		const fields = stepsFields(minAge, maxAge)[currentStep].fields
 		const output = await methods.trigger(fields, {
 			shouldFocus: true,
 		})

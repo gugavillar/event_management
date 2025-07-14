@@ -52,12 +52,26 @@ export const EventSchema = z
 				required_error: 'Campo obrigatório',
 			})
 			.min(1, 'Campo obrigatório'),
+		minAge: z.string().optional(),
+		maxAge: z.string().optional(),
 	})
 	.refine(
 		(data) => isEqualOrIsBeforeFirstDate(data.initialDate, data.finalDate),
 		{
 			message: 'Data inicial deve ser menor que a data final',
 			path: ['finalDate'],
+		},
+	)
+	.refine(
+		(data) => {
+			if (data.minAge && data.maxAge) {
+				return Number(data.minAge) <= Number(data.maxAge)
+			}
+			return true
+		},
+		{
+			message: 'Idade mínima deve ser menor que a idade máxima',
+			path: ['maxAge'],
 		},
 	)
 

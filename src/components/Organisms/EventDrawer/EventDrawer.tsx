@@ -47,6 +47,8 @@ export const EventDrawer = ({
 			volunteerPrice: Number(removeCurrencyFormat(values.volunteerPrice)),
 			initialDate: formatDateToSendToApi(values.initialDate),
 			finalDate: formatDateToSendToApi(values.finalDate),
+			...(values.minAge ? { minAge: Number(values.minAge) } : { minAge: null }),
+			...(values.maxAge ? { maxAge: Number(values.maxAge) } : { maxAge: null }),
 		} as FormEvent
 
 		if (selectedEvent) {
@@ -84,7 +86,15 @@ export const EventDrawer = ({
 
 	useEffect(() => {
 		if (!data) return reset()
-		reset({ ...data }, { keepDefaultValues: true })
+		const { maxAge, minAge, ...rest } = data
+		reset(
+			{
+				...rest,
+				...(minAge && { minAge: String(minAge) }),
+				...(maxAge && { maxAge: String(maxAge) }),
+			},
+			{ keepDefaultValues: true },
+		)
 	}, [data, reset])
 
 	return (
@@ -102,6 +112,14 @@ export const EventDrawer = ({
 				>
 					Gênero do evento
 				</SelectField>
+				<div className="flex gap-3">
+					<MaskedInputField fieldName="minAge" format="##" value={data?.minAge}>
+						Idade mínima
+					</MaskedInputField>
+					<MaskedInputField fieldName="maxAge" format="##" value={data?.maxAge}>
+						Idade máxima
+					</MaskedInputField>
+				</div>
 				<CurrencyInputField
 					type="tel"
 					fieldName="participantPrice"

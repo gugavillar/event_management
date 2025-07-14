@@ -58,6 +58,8 @@ export default async function RegistrationPage({ params }: Params) {
 					</header>
 					<ExternalParticipantForm
 						registrationValue={Number(event?.participantPrice)}
+						minAge={event?.minAge}
+						maxAge={event?.maxAge}
 						eventId={event?.id}
 					/>
 				</div>

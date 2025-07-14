@@ -7,6 +7,8 @@ export type FormEvent = {
 	gender: GenderTypeAPI
 	initialDate: string
 	finalDate: string
+	minAge?: number
+	maxAge?: number
 	participantPrice: number
 	volunteerPrice: number
 }
@@ -22,6 +24,8 @@ export type EventsAPI = {
 	isParticipantRegistrationOpen: boolean
 	isVolunteerRegistrationOpen: boolean
 	isInterestedListOpen: boolean
+	minAge: number | null
+	maxAge: number | null
 	createdAt: string
 	updatedAt: string
 	userId: UUID

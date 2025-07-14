@@ -67,13 +67,17 @@ export const validateBirthdate = (date: string) => {
 
 export const validateDateRange = (
 	date: string,
-	initialRange: number,
-	finalRange: number,
+	initialRange?: number | null,
+	finalRange?: number | null,
 ) => {
+	if (!initialRange) return true
+
 	if (!date) return false
 
 	const numberedDate = getNumberDate(date, 'dd/MM/yyyy')
 	const age = differenceInYears(new Date(), new Date(numberedDate))
 
-	return age >= initialRange && age <= finalRange
+	return finalRange
+		? age >= initialRange && age <= finalRange
+		: age >= initialRange
 }
