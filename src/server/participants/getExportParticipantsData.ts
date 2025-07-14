@@ -31,6 +31,7 @@ export const getExportParticipantsData = async (
 			include: {
 				address: true,
 				event: true,
+				payments: true,
 				roomMember: {
 					include: {
 						room: true,
@@ -96,24 +97,6 @@ export const getExportParticipantsData = async (
 			})
 		}
 
-		const payments = await prisma.participantPayment.findMany({
-			where: {
-				eventId,
-				OR: [
-					{ participant: { interested: false } },
-					{ participant: { interested: null } },
-				],
-			},
-			include: {
-				participant: true,
-			},
-			orderBy: {
-				participant: {
-					name: 'asc',
-				},
-			},
-		})
-
 		const participantsData = participants.map((participant) => ({
 			Nome: participant.name,
 			Chamado: participant.called,
@@ -147,12 +130,24 @@ export const getExportParticipantsData = async (
 			Status: formatCheckIn(participant.checkIn),
 		}))
 
-		const paymentsData = payments.map((payment) => ({
-			Nome: payment.participant.name,
-			Valor_Pago: currencyValue(Number(payment.paymentValue)),
-			Status: paymentStatus(payment.participant.checkIn, payment.paymentType),
-			Data_Pagamento: paymentDate(payment.paymentType, payment.updatedAt),
-		}))
+		const paymentsData = participants.map((payment) => {
+			const paymentValue = payment.payments.reduce(
+				(acc, p) => (acc += p.paymentValue.toNumber()),
+				0,
+			)
+			const statusPayments = payment.payments
+				.map((p) => paymentStatus(payment.checkIn, p.paymentType))
+				.join(', ')
+			const datesPayments = payment.payments
+				.map((p) => paymentDate(p.paymentType, p.updatedAt))
+				.join(', ')
+			return {
+				Nome: payment.name,
+				Valor_Pago: currencyValue(paymentValue),
+				Status: statusPayments,
+				Data_Pagamento: datesPayments,
+			}
+		})
 
 		const tableHeaderParticipants = Object.keys(participantsData[0])
 		const worksheetParticipants = utils.json_to_sheet(participantsData, {

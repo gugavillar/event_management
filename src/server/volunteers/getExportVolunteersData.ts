@@ -25,6 +25,7 @@ export const getExportVolunteersData = async (eventId: string) => {
 			include: {
 				address: true,
 				event: true,
+				payments: true,
 				eventRoles: {
 					include: {
 						leaders: true,
@@ -44,20 +45,6 @@ export const getExportVolunteersData = async (eventId: string) => {
 			},
 			orderBy: {
 				name: 'asc',
-			},
-		})
-
-		const payments = await prisma.volunteerPayment.findMany({
-			where: {
-				eventId,
-			},
-			include: {
-				volunteer: true,
-			},
-			orderBy: {
-				volunteer: {
-					name: 'asc',
-				},
 			},
 		})
 
@@ -108,12 +95,24 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Status: formatCheckIn(volunteer.checkIn),
 		}))
 
-		const paymentsData = payments.map((payment) => ({
-			Nome: payment.volunteer.name,
-			Valor_Pago: currencyValue(Number(payment.paymentValue)),
-			Status: paymentStatus(payment.volunteer.checkIn, payment.paymentType),
-			Data_Pagamento: paymentDate(payment.paymentType, payment.updatedAt),
-		}))
+		const paymentsData = volunteers.map((payment) => {
+			const paymentValue = payment.payments.reduce(
+				(acc, p) => (acc += p.paymentValue.toNumber()),
+				0,
+			)
+			const statusPayments = payment.payments
+				.map((p) => paymentStatus(payment.checkIn, p.paymentType))
+				.join(', ')
+			const datesPayments = payment.payments
+				.map((p) => paymentDate(p.paymentType, p.updatedAt))
+				.join(', ')
+			return {
+				Nome: payment.name,
+				Valor_Pago: currencyValue(paymentValue),
+				Status: statusPayments,
+				Data_Pagamento: datesPayments,
+			}
+		})
 
 		const tableHeaderVolunteers = Object.keys(volunteersData[0])
 		const worksheetVolunteers = utils.json_to_sheet(volunteersData, {
