@@ -34,7 +34,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"lodash": "^4.17.21",
 		"lucide-react": "^0.511.0",
-		"next": "15.3.3",
+		"next": "15.3.4",
 		"next-auth": "^4.24.11",
 		"pixbrasil": "^1.0.5",
 		"preline": "^2.7.0",
