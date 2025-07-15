@@ -1,16 +1,14 @@
-import { UUID } from 'crypto'
-
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
 import { ParticipantsPaymentsAPI } from '../participants.type'
 
 type CreateParticipantPaymentArgs = {
-	data: {
-		paymentType: ParticipantsPaymentsAPI['paymentType']
+	data: Pick<
+		ParticipantsPaymentsAPI,
+		'paymentType' | 'eventId' | 'participantId'
+	> & {
 		paymentValue: number
-		eventId: UUID
-		participantId: UUID
 	}
 }
 

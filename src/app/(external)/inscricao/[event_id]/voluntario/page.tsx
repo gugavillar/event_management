@@ -57,7 +57,7 @@ export default async function RegistrationPage({ params }: Params) {
 						<h2 className="text-3xl">Voluntário</h2>
 					</header>
 					<ExternalVolunteerForm
-						registrationValue={Number(event?.volunteerPrice)}
+						registrationValue={event?.volunteerPrice.toNumber()}
 						eventId={event?.id}
 					/>
 				</div>

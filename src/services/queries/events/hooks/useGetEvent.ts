@@ -9,13 +9,18 @@ import { useQuery } from '@/providers/QueryProvider'
 import { EventsAPI } from '../event.type'
 import { getEvent } from '../usecases'
 
+type EventFormatted = Omit<EventsAPI, 'initialDate' | 'finalDate'> & {
+	initialDate: string
+	finalDate: string
+}
+
 export const useGetEvent = (eventId: EventsAPI['id'] | null) => {
-	const query: UseQueryResult<EventsAPI> = useQuery({
+	const query: UseQueryResult<EventFormatted> = useQuery({
 		queryKey: [QUERY_KEYS.EVENT, eventId],
 		queryFn: () => getEvent(eventId as EventsAPI['id']),
 		retry: 0,
 		enabled: !!eventId,
-		select: (data) => ({
+		select: (data: EventsAPI) => ({
 			...data,
 			initialDate: format(data.initialDate, 'dd/MM/yyyy'),
 			finalDate: format(data.finalDate, 'dd/MM/yyyy'),

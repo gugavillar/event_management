@@ -54,7 +54,7 @@ export default async function InterestedPage({ params }: Params) {
 						<h2 className="text-3xl">Lista de interessados</h2>
 					</header>
 					<ExternalParticipantForm
-						registrationValue={Number(event?.participantPrice)}
+						registrationValue={event?.participantPrice.toNumber()}
 						eventId={event?.id}
 						isInterestedList
 					/>
