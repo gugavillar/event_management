@@ -17,6 +17,6 @@ export const useReturnVolunteerPayment = () => {
 
 	return {
 		...mutation,
-		update: mutation.mutateAsync,
+		returnPayment: mutation.mutateAsync,
 	}
 }

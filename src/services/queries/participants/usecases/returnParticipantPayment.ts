@@ -1,25 +1,16 @@
+import { UUID } from 'crypto'
+
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { ParticipantsPaymentsAPI } from '../participants.type'
-
 type ReturnParticipantPaymentArgs = {
-	paymentId: ParticipantsPaymentsAPI['id']
-	data: {
-		returnValue?: number
-	}
+	id: UUID
 }
 
 export const returnParticipantPayment = async ({
-	paymentId,
-	data,
+	id,
 }: ReturnParticipantPaymentArgs) => {
-	const response = await api.patch(
-		ENDPOINTS.RETURN_PARTICIPANT_PAYMENT(paymentId),
-		{
-			...data,
-		},
-	)
+	const response = await api.delete(ENDPOINTS.RETURN_PARTICIPANT_PAYMENT(id))
 
 	return response.data
 }

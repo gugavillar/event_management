@@ -2,57 +2,15 @@ import { z } from 'zod'
 
 import { prisma } from '@/constants'
 
-export type ReturnPaymentVolunteerArgs = {
-	paymentId: string
-	values: {
-		returnValue?: number
-	}
-}
-
-const generateData = (paidValue: number, returnValue?: number) => {
-	if (!returnValue || returnValue >= paidValue) {
-		return {
-			paymentValue: 0,
-			paymentType: null,
-		}
-	}
-
-	return {
-		paymentValue: paidValue - returnValue,
-	}
-}
-
-export const returnPaymentVolunteer = async ({
-	paymentId,
-	values,
-}: ReturnPaymentVolunteerArgs) => {
-	let returnPayment = {}
-
+export const returnPaymentVolunteer = async (id: string) => {
 	try {
 		z.object({
-			paymentId: z.string().uuid(),
-			paymentValue: z.number().optional(),
-		}).parse({ paymentId, ...values })
+			id: z.string().uuid(),
+		}).parse({ id })
 
-		const payment = await prisma.volunteerPayment.findUnique({
+		return await prisma.volunteerPayment.delete({
 			where: {
-				id: paymentId,
-			},
-		})
-
-		if (payment && values.returnValue) {
-			returnPayment = generateData(
-				payment.paymentValue.toNumber(),
-				values.returnValue,
-			)
-		}
-
-		return await prisma.volunteerPayment.update({
-			where: {
-				id: paymentId,
-			},
-			data: {
-				...returnPayment,
+				id,
 			},
 		})
 	} catch (error) {

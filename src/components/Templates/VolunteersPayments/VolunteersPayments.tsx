@@ -6,10 +6,15 @@ import toast from 'react-hot-toast'
 
 import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	ListPage,
+	ModalReturnPayment,
+	PageContent,
+} from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
 	MODALS_IDS,
+	overlayClose,
 	overlayOpen,
 	PaymentSelectOptions,
 	PaymentTypeAPI,
@@ -25,6 +30,7 @@ import {
 	useGetPayments,
 	useGetVolunteersCities,
 	useCreateVolunteerPayment,
+	useReturnVolunteerPayment,
 } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
@@ -60,8 +66,8 @@ export const VolunteersPayments = () => {
 		setCity,
 	} = useGetPayments()
 	const { create, isPending } = useCreateVolunteerPayment()
-	// const { update: returnPayment, isPending: isPendingReturn } =
-	// 	useReturnVolunteerPayment()
+	const { returnPayment, isPending: isPendingReturn } =
+		useReturnVolunteerPayment()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -140,36 +146,23 @@ export const VolunteersPayments = () => {
 		[selectedVolunteer, create],
 	)
 
-	// const handleReturnPayment = useCallback(
-	// 	async (values: ModalReturnPaymentType) => {
-	// 		if (!selectedVolunteer) return
+	const handleReturnPayment = useCallback(async () => {
+		if (!selectedVolunteer) return
 
-	// 		const formatValues = {
-	// 			returnValue:
-	// 				values.returnPaid === 'partial' && values.returnValue
-	// 					? Number(removeCurrencyFormat(values.returnValue))
-	// 					: Number(
-	// 							removeCurrencyFormat(selectedVolunteer.event.volunteerPrice),
-	// 						),
-	// 		}
+		const results = await Promise.allSettled(
+			selectedVolunteer.payments.map((p) => returnPayment({ id: p.id })),
+		)
+		const hasError = results.some((res) => res.status === 'rejected')
 
-	// 		await returnPayment(
-	// 			{ paymentId: selectedVolunteer.id, data: formatValues },
-	// 			{
-	// 				onSuccess: () => {
-	// 					setSelectedVolunteer(null)
-	// 					toast.success('Pagamento do voluntário devolvido com sucesso!')
-	// 				},
-	// 				onError: (error) =>
-	// 					generateToastError(
-	// 						error,
-	// 						'Erro ao atualizar pagamento do voluntário',
-	// 					),
-	// 			},
-	// 		)
-	// 	},
-	// 	[selectedVolunteer, returnPayment],
-	// )
+		if (hasError) {
+			toast.error('Erro ao devolver pagamento do voluntário')
+		} else {
+			toast.success('Pagamento do voluntário devolvido com sucesso!')
+		}
+
+		setSelectedVolunteer(null)
+		overlayClose(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
+	}, [returnPayment, selectedVolunteer])
 
 	const hasMoreThanOnePage =
 		!!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
@@ -230,13 +223,12 @@ export const VolunteersPayments = () => {
 				isPending={isPending}
 				isExistPayment={isExistPayment}
 			/>
-			{/* <ModalReturnPayment
+			<ModalReturnPayment
 				modalId={MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL}
 				modalType="voluntário"
-				handleSubmit={handleReturnPayment}
 				isPending={isPendingReturn}
-				payment={selectedVolunteer}
-			/> */}
+				handleReturnPayment={handleReturnPayment}
+			/>
 		</PageContent>
 	)
 }

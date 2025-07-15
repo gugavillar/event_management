@@ -9,18 +9,12 @@ type Params = {
 	}>
 }
 
-const handleUpdate = async (request: NextRequest, { params }: Params) => {
-	const body = await request.json()
+const handleDelete = async (_: NextRequest, { params }: Params) => {
 	const routeParam = await params.then((res) => res.payment_id ?? '')
-
 	return await requestProcess({
-		functions: async () =>
-			await returnPaymentParticipant({
-				paymentId: routeParam,
-				values: body,
-			}),
+		functions: async () => await returnPaymentParticipant(routeParam),
 		isProtectedRoute: true,
 	})
 }
 
-export { handleUpdate as PATCH }
+export { handleDelete as DELETE }

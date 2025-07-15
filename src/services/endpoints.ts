@@ -42,7 +42,7 @@ export const ENDPOINTS = {
 	UPDATE_INTERESTED_PARTICIPANT: (participant_id: string) =>
 		`${BASE_PATH.PARTICIPANTS}/${participant_id}/interested`,
 	RETURN_PARTICIPANT_PAYMENT: (payment_id: string) =>
-		`${BASE_PATH.PARTICIPANTS}/payments/${payment_id}/return`,
+		`${BASE_PATH.PARTICIPANTS}/payments/${payment_id}`,
 
 	// Volunteers
 	CREATE_VOLUNTEER: BASE_PATH.VOLUNTEERS,
@@ -63,7 +63,7 @@ export const ENDPOINTS = {
 	CREATE_VOLUNTEER_PAYMENT: `${BASE_PATH.VOLUNTEERS}/payments`,
 	GET_VOLUNTEERS_CITIES: `${BASE_PATH.VOLUNTEERS}/cities`,
 	RETURN_VOLUNTEER_PAYMENT: (payment_id: string) =>
-		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}/return`,
+		`${BASE_PATH.VOLUNTEERS}/payments/${payment_id}`,
 
 	// Functions
 	CREATE_FUNCTION: `${BASE_PATH.VOLUNTEERS}/functions`,

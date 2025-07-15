@@ -1,105 +1,62 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
-import { Button, Header, Modal } from '@/components/Atoms'
-import { CurrencyInputField, RadioField } from '@/components/Molecules'
+import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
-import { ParticipantsPaymentsAPI } from '@/services/queries/participants/participants.type'
-import { VolunteersPaymentsAPI } from '@/services/queries/volunteers/volunteers.type'
-
-import {
-	ModalReturnPaymentSchema,
-	ModalReturnPaymentType,
-} from './ModalReturnPayment.schema'
-import { paymentOptionsRadio } from './ModalReturnPayment.utils'
 
 type ModalReturnPaymentProps = {
 	modalId: string
 	modalType: 'participante' | 'voluntário'
-	handleSubmit: (values: ModalReturnPaymentType) => Promise<void>
+	handleReturnPayment: VoidFunction
 	isPending: boolean
-	payment: VolunteersPaymentsAPI | ParticipantsPaymentsAPI | null
 }
 
 export const ModalReturnPayment = memo(
 	({
 		modalId,
 		modalType,
-		handleSubmit,
 		isPending,
-		payment,
+		handleReturnPayment,
 	}: ModalReturnPaymentProps) => {
-		const methods = useForm<ModalReturnPaymentType>({
-			mode: 'onChange',
-			defaultValues: {
-				returnPaid: undefined,
-				returnValue: '',
-			},
-			resolver: zodResolver(ModalReturnPaymentSchema),
-		})
-
 		const handleClose = () => {
-			methods.reset()
 			overlayClose(modalId)
 		}
 
-		const onSubmit: SubmitHandler<ModalReturnPaymentType> = async (values) => {
-			await handleSubmit(values)
-			handleClose()
-		}
-
-		const isPartialPayment = methods.watch('returnPaid') === 'partial'
-		const isTotalDisabled =
-			Number(payment?.paymentValue) < Number(payment?.event.volunteerPrice)
-
 		return (
 			<Modal modalId={modalId} handleClose={handleClose}>
-				<FormProvider {...methods}>
-					<form
-						className="flex flex-col items-center justify-center gap-y-6"
-						onSubmit={methods.handleSubmit(onSubmit)}
-					>
-						<div className="flex flex-col items-center justify-between gap-2">
-							<OctagonAlert size={32} className="text-amber-300" />
-							<Header as="h3" className="text-center text-lg">
+				<div className="flex flex-col items-center justify-center">
+					<div className="flex flex-col items-center justify-between gap-6">
+						<OctagonAlert size={64} className="text-amber-300" />
+						<div className="space-y-4 text-center">
+							<Header as="h3" className="text-2xl">
 								Você deseja confirmar a devolução do pagamento do {modalType}?
 							</Header>
+							<Text>
+								Ao confirmar a devolução do pagamento, todos os registros de
+								pagamentos serão removidos e não podem ser recuperados.
+							</Text>
 						</div>
-						<RadioField
-							fieldName="returnPaid"
-							options={paymentOptionsRadio(isTotalDisabled)}
-							position="row"
-						>
-							A devolução é total ou parcial?
-						</RadioField>
-						{isPartialPayment && (
-							<CurrencyInputField type="tel" fieldName="returnValue">
-								Informe o valor devolvido
-							</CurrencyInputField>
-						)}
-						<div className="flex w-full flex-col justify-end gap-y-4 md:flex-row md:gap-x-5">
+						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button
 								type="button"
-								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200 md:w-32"
-								onClick={handleClose}
+								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
+								data-hs-overlay={`#${modalId}`}
 								disabled={isPending}
 							>
 								Cancelar
 							</Button>
 							<Button
-								type="submit"
-								disabled={!methods.formState.isValid || isPending}
+								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+								onClick={handleReturnPayment}
 								isLoading={isPending}
-								className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:w-32"
+								disabled={isPending}
 							>
 								Confirmar
 							</Button>
 						</div>
-					</form>
-				</FormProvider>
+					</div>
+				</div>
 			</Modal>
 		)
 	},
