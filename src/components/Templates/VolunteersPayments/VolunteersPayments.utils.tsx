@@ -6,6 +6,19 @@ import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
+const generateTooltipText = (
+	volunteerWithdraw: boolean,
+	paymentTotal: boolean,
+) => {
+	if (volunteerWithdraw) {
+		return 'Voluntário desistiu'
+	}
+	if (paymentTotal) {
+		return 'Voluntário pagou o valor total'
+	}
+	return 'Informar pagamento'
+}
+
 export const HEADER_LABELS = [
 	{
 		label: 'Nome',
@@ -55,7 +68,9 @@ export const formatTableData = (
 
 		const isPaymentNotTotal =
 			totalPayment > 0 && totalPayment < Number(payment.event.volunteerPrice)
+		const isPaymentTotal = totalPayment >= Number(payment.event.volunteerPrice)
 		const isVolunteerPaidAndWithdraw = isVolunteerWithdraw && totalPayment > 0
+		const canInformPayment = !isPaymentTotal && !isVolunteerWithdraw
 
 		return {
 			...((isPaymentNotTotal || isVolunteerWithdraw) && {
@@ -88,19 +103,17 @@ export const formatTableData = (
 					<div className="hs-tooltip">
 						<HandCoins
 							className={twMerge(
-								isVolunteerWithdraw
+								isVolunteerWithdraw || isPaymentTotal
 									? 'cursor-not-allowed opacity-50'
 									: 'cursor-pointer',
 							)}
 							size={20}
-							{...(!isVolunteerWithdraw && {
+							{...(canInformPayment && {
 								onClick: () => handlePaymentModal(payment),
 							})}
 						/>
 						<Tooltip>
-							{isVolunteerWithdraw
-								? 'Voluntário desistiu'
-								: 'Informar pagamento'}
+							{generateTooltipText(isVolunteerWithdraw, isPaymentTotal)}
 						</Tooltip>
 					</div>
 					{isVolunteerPaidAndWithdraw && (
