@@ -4,11 +4,6 @@ import { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
 
 import { EventsAPI } from '../events/event.type'
 
-export type ImportParticipantsDataValues = {
-	file: File
-	eventId: EventsAPI['id']
-}
-
 export type ParticipantsAPI = {
 	id: UUID
 	name: string
@@ -91,12 +86,4 @@ export type ParticipantsPaymentsAPI = {
 	participant: ParticipantsAPI
 	createdAt: string
 	updatedAt: string
-}
-
-export type ParticipantsPaymentsFromAPI = {
-	data: Array<ParticipantsPaymentsAPI>
-	currentPage: number
-	perPage: number
-	totalCount: number
-	totalPages: number
 }
