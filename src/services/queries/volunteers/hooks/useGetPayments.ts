@@ -2,7 +2,7 @@
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
 import { parseAsInteger, useQueryState } from 'nuqs'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
@@ -30,8 +30,14 @@ export const useGetPayments = () => {
 	const debounceSearch = useDebounce(search, 500)
 	const debouncePaymentType = useDebounce(paymentType, 500)
 	const debounceCity = useDebounce(city, 500)
+	const isFirstRender = useRef(true)
 
 	useEffect(() => {
+		if (isFirstRender.current) {
+			isFirstRender.current = false
+			return
+		}
+
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debouncePaymentType, debounceCity])
