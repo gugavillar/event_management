@@ -1,28 +1,29 @@
 'use client'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { parseAsInteger, useQueryState } from 'nuqs'
+import { useEffect } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
-import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { getPayments } from '../usecases'
 import { VolunteersFromAPI } from '../volunteers.type'
 
 export const useGetPayments = () => {
-	const searchParams = useSearchParams()
-	const [eventId, setEventId] = useState(searchParams.get('eventId') || '')
-	const [search, setSearch] = useState(
-		searchParams.get('searchVolunteer') || '',
-	)
-	const [paymentType, setPaymentType] = useState(
-		searchParams.get('paymentType') || '',
-	)
-	const [city, setCity] = useState(searchParams.get('cityVolunteer') || '')
-	const [page, setPage] = useState(
-		Number(searchParams.get('pageVolunteerPayment')) || 1,
+	const [eventId, setEventId] = useQueryState('eventId', {
+		defaultValue: '',
+	})
+	const [search, setSearch] = useQueryState('searchVolunteer', {
+		defaultValue: '',
+	})
+	const [paymentType, setPaymentType] = useQueryState('paymentType', {
+		defaultValue: '',
+	})
+	const [city, setCity] = useQueryState('cityVolunteer', { defaultValue: '' })
+	const [page, setPage] = useQueryState(
+		'pageVolunteerPayment',
+		parseAsInteger.withDefault(1),
 	)
 
 	const debounceEventId = useDebounce(eventId, 500)
@@ -34,14 +35,6 @@ export const useGetPayments = () => {
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debouncePaymentType, debounceCity])
-
-	useAddSearchParams({
-		eventId: debounceEventId,
-		searchVolunteer: debounceSearch,
-		paymentType: debouncePaymentType,
-		cityVolunteer: debounceCity,
-		pageVolunteerPayment: page.toString(),
-	})
 
 	const query: UseQueryResult<VolunteersFromAPI> = useQuery({
 		queryKey: [
@@ -60,7 +53,6 @@ export const useGetPayments = () => {
 				volunteerCity: debounceCity,
 				page,
 			}),
-		retry: 0,
 	})
 
 	return {

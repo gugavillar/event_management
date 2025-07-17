@@ -33,7 +33,11 @@ export const EventDrawer = ({
 	selectedEvent,
 	setSelectedEvent,
 }: EventDrawerProps) => {
-	const { handleSubmit, reset } = useFormContext<EventSchemaType>()
+	const {
+		handleSubmit,
+		reset,
+		formState: { isValid, isDirty },
+	} = useFormContext<EventSchemaType>()
 	const { create, isPending: isPendingCreate } = useCreateEvent()
 	const { update, isPending: isPendingUpdate } = useUpdateEvent()
 	const { data, isLoading } = useGetEvent(selectedEvent)
@@ -155,7 +159,7 @@ export const EventDrawer = ({
 					onClick={handleSubmit(onSubmit)}
 					type="submit"
 					isLoading={isPendingCreate || isPendingUpdate}
-					disabled={isPendingCreate || isPendingCreate || isLoading}
+					disabled={!isValid || !isDirty}
 				>
 					{selectedEvent ? 'Editar evento' : 'Criar evento'}
 				</Button>

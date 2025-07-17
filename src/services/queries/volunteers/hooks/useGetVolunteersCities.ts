@@ -9,7 +9,6 @@ export const useGetVolunteersCities = () => {
 	const query = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEERS_CITIES],
 		queryFn: getVolunteersCities,
-		retry: 0,
 	})
 
 	return { ...query }

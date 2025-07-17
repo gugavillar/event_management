@@ -11,7 +11,6 @@ export const useGetRoom = (roomId: RoomAPI['id'] | null) => {
 	const query: UseQueryResult<RoomAPI> = useQuery({
 		queryKey: [QUERY_KEYS.ROOM, roomId],
 		queryFn: () => getRoom(roomId as RoomAPI['id']),
-		retry: 0,
 		enabled: !!roomId,
 		select: (data: RoomAPI) => ({
 			...data,

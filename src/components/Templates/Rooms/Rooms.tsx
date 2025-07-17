@@ -33,7 +33,7 @@ const DownloadPDF = dynamic(() =>
 	import('./RoomsPrint').then((mod) => mod.DownloadPDF),
 )
 
-export const Rooms = ({ eventId }: { eventId?: string }) => {
+export const Rooms = ({ eventId }: { eventId: string }) => {
 	const [selectedRoom, setSelectedRoom] = useState<RoomAPI['id'] | null>(null)
 
 	const {

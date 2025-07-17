@@ -14,7 +14,6 @@ export const useGetExportParticipantsData = (
 	const query: UseQueryResult<BlobPart> = useQuery({
 		queryKey: [QUERY_KEYS.PARTICIPANTS_EXPORT_DATA, event_id, isInterested],
 		queryFn: () => getExportParticipantsData(event_id, isInterested),
-		retry: 0,
 		enabled: !!event_id,
 		staleTime: 100,
 	})

@@ -1,28 +1,31 @@
 'use client'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
-import { useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { parseAsInteger, useQueryState } from 'nuqs'
+import { useEffect } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
-import { useAddSearchParams } from '@/hooks'
 import { useQuery } from '@/providers/QueryProvider'
 
 import { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
 export const useGetParticipants = (isInterested?: boolean) => {
-	const searchParams = useSearchParams()
-	const [eventId, setEventId] = useState(searchParams.get('eventId') || '')
-	const [search, setSearch] = useState(
-		searchParams.get('searchParticipant') || '',
-	)
-	const [status, setStatus] = useState(
-		searchParams.get('statusParticipant') || '',
-	)
-	const [city, setCity] = useState(searchParams.get('cityParticipant') || '')
-	const [page, setPage] = useState(
-		Number(searchParams.get('pageParticipant')) || 1,
+	const [eventId, setEventId] = useQueryState('eventId', {
+		defaultValue: '',
+	})
+	const [search, setSearch] = useQueryState('searchParticipant', {
+		defaultValue: '',
+	})
+	const [status, setStatus] = useQueryState('statusParticipant', {
+		defaultValue: '',
+	})
+	const [city, setCity] = useQueryState('cityParticipant', {
+		defaultValue: '',
+	})
+	const [page, setPage] = useQueryState(
+		'pageParticipant',
+		parseAsInteger.withDefault(1),
 	)
 
 	const debounceEventId = useDebounce(eventId, 500)
@@ -34,14 +37,6 @@ export const useGetParticipants = (isInterested?: boolean) => {
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceCity])
-
-	useAddSearchParams({
-		eventId: debounceEventId,
-		searchParticipant: debounceSearch,
-		statusParticipant: debounceStatus,
-		cityParticipant: debounceCity,
-		pageParticipant: page.toString(),
-	})
 
 	const query: UseQueryResult<ParticipantsFromAPI> = useQuery({
 		queryKey: [
@@ -62,7 +57,6 @@ export const useGetParticipants = (isInterested?: boolean) => {
 				isInterested,
 				page,
 			}),
-		retry: 0,
 	})
 
 	return {

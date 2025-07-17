@@ -36,7 +36,7 @@ const DownloadPDF = dynamic(() =>
 	import('./GroupsPrint').then((mod) => mod.DownloadPDF),
 )
 
-export const Groups = ({ eventId }: { eventId?: string }) => {
+export const Groups = ({ eventId }: { eventId: string }) => {
 	const [selectedGroup, setSelectedGroup] = useState<GroupAPI['id'] | null>(
 		null,
 	)

@@ -23,7 +23,6 @@ export const useGetParticipant = (
 	const query: UseQueryResult<FormattedParticipantsAPI> = useQuery({
 		queryKey: [QUERY_KEYS.PARTICIPANT, participantId],
 		queryFn: () => getParticipant(participantId as ParticipantsAPI['id']),
-		retry: 0,
 		enabled: !!participantId,
 		select: ({ address, ...data }: ParticipantsAPI) => ({
 			...data,

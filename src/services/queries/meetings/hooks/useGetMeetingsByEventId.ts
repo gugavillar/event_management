@@ -15,7 +15,6 @@ export const useGetMeetingsByEventId = () => {
 	const query: UseQueryResult<Array<MeetingsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.MEETINGS, eventId],
 		queryFn: () => getMeetingsByEventId(eventId as EventsAPI['id']),
-		retry: 0,
 		enabled: !!eventId,
 	})
 

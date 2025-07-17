@@ -21,7 +21,6 @@ export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
 	const query: UseQueryResult<FormattedVolunteersAPI> = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEER, volunteerId],
 		queryFn: () => getVolunteer(volunteerId as VolunteersAPI['id']),
-		retry: 0,
 		enabled: !!volunteerId,
 		select: ({ address, ...data }: VolunteersAPI) => ({
 			...data,

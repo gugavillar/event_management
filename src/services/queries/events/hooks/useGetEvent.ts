@@ -18,7 +18,6 @@ export const useGetEvent = (eventId: EventsAPI['id'] | null) => {
 	const query: UseQueryResult<EventFormatted> = useQuery({
 		queryKey: [QUERY_KEYS.EVENT, eventId],
 		queryFn: () => getEvent(eventId as EventsAPI['id']),
-		retry: 0,
 		enabled: !!eventId,
 		select: (data: EventsAPI) => ({
 			...data,

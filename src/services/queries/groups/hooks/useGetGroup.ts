@@ -11,7 +11,6 @@ export const useGetGroup = (groupId: GroupAPI['id'] | null) => {
 	const query: UseQueryResult<GroupAPI> = useQuery({
 		queryKey: [QUERY_KEYS.GROUP, groupId],
 		queryFn: () => getGroup(groupId as GroupAPI['id']),
-		retry: 0,
 		enabled: !!groupId,
 		select: (data: GroupAPI) => ({
 			...data,

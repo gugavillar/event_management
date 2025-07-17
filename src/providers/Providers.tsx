@@ -1,5 +1,6 @@
 'use client'
 
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { ReactNode } from 'react'
 import { Toaster } from 'react-hot-toast'
 
@@ -11,7 +12,9 @@ import { QueryProvider } from './QueryProvider'
 export const Providers = ({ children }: Readonly<{ children: ReactNode }>) => {
 	return (
 		<SidebarProvider>
-			<QueryProvider>{children}</QueryProvider>
+			<NuqsAdapter>
+				<QueryProvider>{children}</QueryProvider>
+			</NuqsAdapter>
 			<Toaster position="top-right" toastOptions={{ duration: 3000 }} />
 			<PrelineScript />
 		</SidebarProvider>

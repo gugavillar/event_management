@@ -30,7 +30,6 @@ export const useGetFunctions = (externalEventId = '') => {
 				eventId,
 				searchFunction: debounceSearch,
 			}),
-		retry: 0,
 		enabled: !!eventId,
 	})
 

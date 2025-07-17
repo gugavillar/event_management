@@ -11,7 +11,6 @@ export const useGetExportVolunteerData = (event_id: string) => {
 	const query: UseQueryResult<BlobPart> = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEERS_EXPORT_DATA, event_id],
 		queryFn: () => getExportVolunteerData(event_id),
-		retry: 0,
 		enabled: !!event_id,
 		staleTime: 100,
 	})

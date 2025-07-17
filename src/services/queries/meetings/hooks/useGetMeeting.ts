@@ -58,7 +58,6 @@ export const useGetMeeting = () => {
 				presenceResponse,
 			}
 		},
-		retry: 0,
 		enabled: !!meetingId,
 	})
 
