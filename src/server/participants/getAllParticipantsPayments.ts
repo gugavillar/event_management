@@ -17,10 +17,15 @@ export const getAllParticipantsPayments = async (
 					...(search && { name: { contains: search } }),
 					...(paymentType && {
 						payments: {
-							some: {
-								paymentType:
-									paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
-							},
+							...(paymentType !== PaymentTypeAPI.OPEN
+								? {
+										some: {
+											paymentType,
+										},
+									}
+								: {
+										none: {},
+									}),
 						},
 					}),
 					...(city && {
@@ -44,10 +49,15 @@ export const getAllParticipantsPayments = async (
 					...(search && { name: { contains: search } }),
 					...(paymentType && {
 						payments: {
-							some: {
-								paymentType:
-									paymentType !== PaymentTypeAPI.OPEN ? paymentType : null,
-							},
+							...(paymentType !== PaymentTypeAPI.OPEN
+								? {
+										some: {
+											paymentType,
+										},
+									}
+								: {
+										none: {},
+									}),
 						},
 					}),
 					...(city && {
