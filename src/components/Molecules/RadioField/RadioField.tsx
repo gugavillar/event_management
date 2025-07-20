@@ -21,7 +21,7 @@ export const RadioField = ({
 
 	const error = get(formState.errors, fieldName)
 	return (
-		<div>
+		<div className="w-full">
 			<Label>{children}</Label>
 			<Radio
 				options={options}

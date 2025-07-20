@@ -168,6 +168,12 @@ export const VolunteersPayments = () => {
 		!!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
 
 	const isExistPayment = Boolean(selectedVolunteer?.payments?.length)
+	const paidValue =
+		selectedVolunteer?.payments?.reduce(
+			(total, p) => (total += Number(p.paymentValue)),
+			0,
+		) ?? 0
+	const eventValue = Number(selectedVolunteer?.event?.volunteerPrice) ?? 0
 
 	return (
 		<PageContent
@@ -222,6 +228,8 @@ export const VolunteersPayments = () => {
 				handleSubmit={handleUpdate}
 				isPending={isPending}
 				isExistPayment={isExistPayment}
+				paidValue={paidValue}
+				eventValue={eventValue}
 			/>
 			<ModalReturnPayment
 				modalId={MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL}

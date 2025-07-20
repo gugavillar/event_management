@@ -4,13 +4,14 @@ import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
 import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
-import { Button, Header, Modal } from '@/components/Atoms'
+import { Button, Header, Modal, Text } from '@/components/Atoms'
 import {
 	CurrencyInputField,
 	RadioField,
 	SelectField,
 } from '@/components/Molecules'
 import { overlayClose, PaymentSelectOptions, PaymentTypeAPI } from '@/constants'
+import { currencyValue } from '@/formatters'
 
 import { PaymentModalSchema, PaymentModalType } from './PaymentModal.schema'
 import { paymentOptionsRadio } from './PaymentModal.utils'
@@ -21,6 +22,8 @@ type PaymentModalProps = {
 	handleSubmit: (values: PaymentModalType) => Promise<void>
 	isPending: boolean
 	isExistPayment: boolean
+	paidValue: number
+	eventValue: number
 }
 
 export const PaymentModal = memo(
@@ -30,6 +33,8 @@ export const PaymentModal = memo(
 		handleSubmit,
 		isPending,
 		isExistPayment,
+		paidValue,
+		eventValue,
 	}: PaymentModalProps) => {
 		const methods = useForm<PaymentModalType>({
 			mode: 'onChange',
@@ -38,7 +43,7 @@ export const PaymentModal = memo(
 				paymentType: '',
 				paymentValue: '',
 			},
-			resolver: zodResolver(PaymentModalSchema),
+			resolver: zodResolver(PaymentModalSchema(eventValue, paidValue)),
 		})
 
 		const handleClose = () => {
@@ -69,6 +74,16 @@ export const PaymentModal = memo(
 							<Header as="h3" className="text-center text-lg">
 								Você deseja confirmar o pagamento do {modalType}?
 							</Header>
+						</div>
+						<div className="flex w-full items-center justify-between">
+							<Text>
+								<span className="font-semibold">Valor da inscrição: </span>
+								{currencyValue(eventValue)}
+							</Text>
+							<Text>
+								<span className="font-semibold">Valor já pago:</span>{' '}
+								{currencyValue(paidValue)}
+							</Text>
 						</div>
 						<RadioField
 							fieldName="paid"
