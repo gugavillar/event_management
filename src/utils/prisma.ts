@@ -91,7 +91,7 @@ export async function requestProcess<T>({
 		})
 	} catch (error) {
 		if (error instanceof ZodError) {
-			const errorsFormatted = formatZodValidationErrors(error.errors)
+			const errorsFormatted = formatZodValidationErrors(error.issues)
 
 			return NextResponse.json(
 				{

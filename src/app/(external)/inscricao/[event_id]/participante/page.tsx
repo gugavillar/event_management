@@ -18,7 +18,7 @@ export default async function RegistrationPage({ params }: Params) {
 	}))
 	const isValidEventId = z
 		.object({
-			event_id: z.string().uuid(),
+			event_id: z.uuid(),
 		})
 		.safeParse({ event_id: pageParams.event_id })
 

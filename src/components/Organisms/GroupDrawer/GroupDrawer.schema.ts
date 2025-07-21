@@ -4,11 +4,11 @@ import { MEMBERS, validateFieldsForNotEquals } from '@/constants'
 
 export const GroupSchema = z.object({
 	name: z
-		.string({ required_error: 'Campo obrigatório' })
+		.string({ error: 'Campo obrigatório' })
 		.trim()
 		.min(3, 'Campo obrigatório'),
 	eventId: z
-		.string({ required_error: 'Campo obrigatório' })
+		.string({ error: 'Campo obrigatório' })
 		.uuid({ message: 'Campo obrigatório' }),
 	members: z
 		.array(
@@ -16,8 +16,7 @@ export const GroupSchema = z.object({
 				type: z
 					.union([
 						z.enum([MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER], {
-							required_error: 'Campo obrigatório',
-							message: 'Campo obrigatório',
+							error: 'Campo obrigatório',
 						}),
 						z.string(),
 					])
@@ -27,17 +26,15 @@ export const GroupSchema = z.object({
 								value as MEMBERS,
 							),
 						{
-							message: 'Campo obrigatório',
+							error: 'Campo obrigatório',
 						},
 					),
-				member: z
-					.string({ required_error: 'Campo obrigatório' })
-					.uuid({ message: 'Campo obrigatório' }),
+				member: z.uuid({ message: 'Campo obrigatório' }),
 			}),
 		)
-		.superRefine((value, ctx) =>
+		.check((ctx) =>
 			validateFieldsForNotEquals(
-				value,
+				ctx.value,
 				ctx,
 				'member',
 				'Os membros devem ser diferentes',

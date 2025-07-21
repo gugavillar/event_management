@@ -1,5 +1,5 @@
 'use client'
-import { ApexOptions } from 'apexcharts'
+import { type ApexOptions } from 'apexcharts'
 import dynamic from 'next/dynamic'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -73,7 +73,6 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 		hover: {
 			filter: {
 				type: 'darken',
-				value: 0.9,
 			},
 		},
 	},

@@ -14,7 +14,7 @@ export const createParticipant = async (
 	try {
 		participantSchemaRoute
 			.extend({
-				eventId: z.string().uuid(),
+				eventId: z.uuid(),
 			})
 			.parse({ ...data })
 

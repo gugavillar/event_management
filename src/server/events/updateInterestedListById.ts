@@ -9,7 +9,7 @@ export const updateInterestedListById = async (
 ) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
+			id: z.uuid(),
 			action: z.enum(['open', 'close']),
 		}).parse({ id, action })
 

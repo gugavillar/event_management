@@ -1,39 +1,31 @@
-import { type ZodIssue } from 'zod'
+import { z } from 'zod'
 
 import { formatZodValidationErrors } from './errors'
 
-const MOCKED_ERROR: ZodIssue[] = [
-	{
-		code: 'too_small',
-		minimum: 3,
-		type: 'string',
-		inclusive: true,
-		exact: false,
-		message: 'String must contain at least 3 character(s)',
-		path: ['name'],
-	},
-	{
-		code: 'invalid_string',
-		validation: 'datetime',
-		message: 'Invalid datetime',
-		path: ['initialDate'],
-	},
-	{
-		code: 'invalid_string',
-		validation: 'datetime',
-		message: 'Invalid datetime',
-		path: ['finalDate'],
-	},
-]
+const schema = z.object({
+	name: z.string().min(3),
+	initialDate: z.iso.datetime(),
+	finalDate: z.iso.datetime(),
+})
+
+const MOCKED_ERROR = schema.safeParse({
+	name: '',
+	initialDate: '',
+	finalDate: '',
+})
 
 describe('errors formatters', () => {
-	it('it format zod errors return object with key field name and value message', () => {
-		const result = formatZodValidationErrors(MOCKED_ERROR)
+	it('formats zod errors into an object with field names as keys and messages as values', () => {
+		if (!MOCKED_ERROR.success) {
+			const result = formatZodValidationErrors(MOCKED_ERROR.error.issues)
 
-		expect(result).toEqual({
-			name: 'String must contain at least 3 character(s)',
-			initialDate: 'Invalid datetime',
-			finalDate: 'Invalid datetime',
-		})
+			expect(result).toEqual({
+				finalDate: 'Invalid ISO datetime',
+				initialDate: 'Invalid ISO datetime',
+				name: 'Too small: expected string to have >=3 characters',
+			})
+		} else {
+			throw new Error('Expected parsing to fail')
+		}
 	})
 })

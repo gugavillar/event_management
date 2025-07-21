@@ -9,7 +9,7 @@ export const updateRegistrationById = async (
 ) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
+			id: z.uuid(),
 			memberType: z.enum([MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER]),
 			action: z.enum(['open', 'close']),
 		}).parse({ id, memberType, action })

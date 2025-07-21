@@ -4,7 +4,9 @@ import { RefObject, useCallback, useEffect } from 'react'
 type UseClickOutsideArgs = {
 	isOpen: boolean
 	toggle: () => void
-	containerRef: RefObject<HTMLButtonElement | HTMLDivElement>
+	containerRef:
+		| RefObject<HTMLButtonElement | null>
+		| RefObject<HTMLDivElement | null>
 }
 
 export const useClickOutside = ({

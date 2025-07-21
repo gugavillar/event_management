@@ -8,7 +8,7 @@ export const updateVolunteerById = async (data: FormVolunteer, id: string) => {
 	try {
 		volunteerSchemaRoute
 			.extend({
-				id: z.string().uuid(),
+				id: z.uuid(),
 			})
 			.parse({ ...data, id })
 

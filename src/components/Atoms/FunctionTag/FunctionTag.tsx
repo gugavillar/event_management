@@ -11,10 +11,8 @@ export const FunctionTag = memo(
 		return (
 			<mark
 				className={twMerge(
-					'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl bg-gray-400 bg-opacity-30 px-4 py-1.5 text-slate-800',
-					!status
-						? 'bg-gray-400 bg-opacity-30'
-						: 'bg-emerald-400 bg-opacity-30',
+					'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl bg-gray-400/30 px-4 py-1.5 text-slate-800',
+					!status ? 'bg-gray-400/30' : 'bg-emerald-400/30',
 					className,
 				)}
 				{...props}

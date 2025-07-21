@@ -2,13 +2,12 @@ import { z } from 'zod'
 
 export const LoginButtonSchema = z.object({
 	email: z
-		.string({ required_error: 'Campo obrigatório' })
-		.min(1, 'Campo obrigatório')
 		.email({
 			message: 'Email inválido',
-		}),
+		})
+		.min(1, 'Campo obrigatório'),
 	password: z
-		.string({ required_error: 'Campo obrigatório' })
+		.string({ error: 'Campo obrigatório' })
 		.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 		.refine((value) => value.length >= 6, {
 			message: 'Password deve ter no mínimo 6 caracteres',
@@ -20,23 +19,23 @@ export type LoginButtonSchemaType = z.infer<typeof LoginButtonSchema>
 export const DefineNewPasswordSchema = z
 	.object({
 		password: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 			.refine((value) => value.length >= 6, {
 				message: 'Password deve ter no mínimo 6 caracteres',
 			}),
 		confirmPassword: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 			.refine((value) => value.length >= 6, {
 				message: 'Password deve ter no mínimo 6 caracteres',
 			}),
 	})
-	.superRefine((value, ctx) => {
-		if (value.password !== value.confirmPassword) {
-			ctx.addIssue({
+	.check((ctx) => {
+		if (ctx.value.password !== ctx.value.confirmPassword) {
+			ctx.issues.push({
 				code: 'custom',
-				path: ['confirmPassword'],
+				input: ctx.value,
 				message: 'Senhas diferentes',
 			})
 		}

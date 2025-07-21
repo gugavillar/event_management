@@ -4,11 +4,11 @@ import { MAX_FIELD_LENGTH, MEMBERS } from '@/constants'
 
 export const groupSchemaRoute = z.object({
 	name: z.string().min(3).max(MAX_FIELD_LENGTH),
-	eventId: z.string().uuid(),
+	eventId: z.uuid(),
 	members: z.array(
 		z.object({
 			type: z.enum([MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER]),
-			member: z.string().uuid(),
+			member: z.uuid(),
 		}),
 	),
 })

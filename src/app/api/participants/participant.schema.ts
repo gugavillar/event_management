@@ -6,10 +6,7 @@ import { MAX_FIELD_LENGTH } from '@/constants'
 export const participantSchemaRoute = z.object({
 	name: z.string().min(3).max(MAX_FIELD_LENGTH),
 	called: z.string().min(1).max(MAX_FIELD_LENGTH),
-	email: z
-		.string()
-		.email()
-		.refine((value) => validateEmail(value)),
+	email: z.email().refine((value) => validateEmail(value)),
 	phone: z.string().refine((value) => validatePhone(value)),
 	birthdate: z.string().datetime({ precision: 3 }),
 	responsible: z.string().min(3).max(MAX_FIELD_LENGTH),

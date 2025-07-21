@@ -6,7 +6,7 @@ import { CHECK_IN_STATUS, prisma } from '@/constants'
 export const getMeetingById = async (id: string) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
+			id: z.uuid(),
 		}).parse({ id })
 
 		return await prisma.$transaction(async (tx) => {

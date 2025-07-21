@@ -2,12 +2,12 @@
 import { useFormContext } from 'react-hook-form'
 
 import { InputField, SelectField } from '@/components/Molecules'
-import { ExternalParticipantFormType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
+import { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { UF } from '@/constants'
 import { useGetCities } from '@/services/queries/cities'
 
 export const AddressExternalForm = () => {
-	const { watch } = useFormContext<ExternalParticipantFormType>()
+	const { watch } = useFormContext<FullSchemaType>()
 
 	const selectedUF = watch('address.state')
 

@@ -8,7 +8,7 @@ export const createEvent = (data: FormEvent, userId: string) => {
 	try {
 		eventSchemaRoute
 			.extend({
-				userId: z.string().uuid(),
+				userId: z.uuid(),
 			})
 			.parse({ ...data, userId })
 

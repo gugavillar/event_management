@@ -14,7 +14,7 @@ export const createVolunteer = async (
 	try {
 		volunteerSchemaRoute
 			.extend({
-				eventId: z.string().uuid(),
+				eventId: z.uuid(),
 			})
 			.parse({ ...data })
 

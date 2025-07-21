@@ -6,14 +6,13 @@ import { isEqualOrIsBeforeFirstDate, isValidateDate } from '@/formatters'
 export const EventSchema = z
 	.object({
 		name: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.min(3, 'Campo obrigatório'),
 		gender: z
 			.union([
 				z.enum([GenderTypeAPI.MALE, GenderTypeAPI.FEMALE, GenderTypeAPI.BOTH], {
-					required_error: 'Campo obrigatório',
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 				z.string(),
 			])
@@ -24,32 +23,32 @@ export const EventSchema = z
 						GenderTypeAPI.FEMALE,
 						GenderTypeAPI.BOTH,
 					].includes(value as GenderTypeAPI),
-				{ message: 'Campo obrigatório' },
+				{ error: 'Campo obrigatório' },
 			),
 		initialDate: z
-			.string({ required_error: 'Campo obrigatório' })
-			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
+			.refine((value) => !!value?.length, { error: 'Campo obrigatório' })
 			.refine(
 				(value) =>
 					/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? isValidateDate(value) : false,
-				{ message: 'A data não é valida' },
+				{ error: 'A data não é valida' },
 			),
 		finalDate: z
-			.string({ required_error: 'Campo obrigatório' })
-			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
+			.refine((value) => !!value?.length, { error: 'Campo obrigatório' })
 			.refine(
 				(value) =>
 					/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? isValidateDate(value) : false,
-				{ message: 'A data não é valida' },
+				{ error: 'A data não é valida' },
 			),
 		participantPrice: z
 			.string({
-				required_error: 'Campo obrigatório',
+				error: 'Campo obrigatório',
 			})
 			.min(1, 'Campo obrigatório'),
 		volunteerPrice: z
 			.string({
-				required_error: 'Campo obrigatório',
+				error: 'Campo obrigatório',
 			})
 			.min(1, 'Campo obrigatório'),
 		minAge: z.string().optional(),
@@ -58,7 +57,7 @@ export const EventSchema = z
 	.refine(
 		(data) => isEqualOrIsBeforeFirstDate(data.initialDate, data.finalDate),
 		{
-			message: 'Data inicial deve ser menor que a data final',
+			error: 'Data inicial deve ser menor que a data final',
 			path: ['finalDate'],
 		},
 	)
@@ -70,7 +69,7 @@ export const EventSchema = z
 			return true
 		},
 		{
-			message: 'Idade mínima deve ser menor que a idade máxima',
+			error: 'Idade mínima deve ser menor que a idade máxima',
 			path: ['maxAge'],
 		},
 	)

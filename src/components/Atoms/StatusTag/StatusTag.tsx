@@ -8,9 +8,9 @@ type StatusTag = ComponentProps<'mark'> & {
 }
 
 const STATUS_COLORS = {
-	[CHECK_IN_STATUS.WITHDREW]: 'bg-red-400 bg-opacity-30',
-	[CHECK_IN_STATUS.CONFIRMED]: 'bg-emerald-400 bg-opacity-30',
-	[CHECK_IN_STATUS.NOT_ANSWERED]: 'bg-gray-400 bg-opacity-30',
+	[CHECK_IN_STATUS.WITHDREW]: 'bg-red-400/30',
+	[CHECK_IN_STATUS.CONFIRMED]: 'bg-emerald-400/30',
+	[CHECK_IN_STATUS.NOT_ANSWERED]: 'bg-gray-400/30',
 }
 
 export const StatusTag = memo(({ status, className, ...props }: StatusTag) => {

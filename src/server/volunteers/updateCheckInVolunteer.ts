@@ -13,7 +13,7 @@ export const updateCheckInVolunteer = async ({
 }: UpdateCheckInVolunteerArgs) => {
 	try {
 		z.object({
-			volunteerId: z.string().uuid(),
+			volunteerId: z.uuid(),
 			status: z.enum([CHECK_IN_STATUS.CONFIRMED, CHECK_IN_STATUS.WITHDREW]),
 		}).parse({ volunteerId, status })
 

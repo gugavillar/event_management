@@ -8,7 +8,7 @@ export const updateRoomById = async (data: FormRoom, id: string) => {
 	try {
 		roomSchemaRoute
 			.extend({
-				id: z.string().uuid(),
+				id: z.uuid(),
 			})
 			.parse({ ...data, id })
 

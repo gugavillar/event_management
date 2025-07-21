@@ -7,11 +7,11 @@ import {
 	MaskedInputField,
 	SelectField,
 } from '@/components/Molecules'
-import { ExternalVolunteerFormType } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
+import { FullSchemaType } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
 import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 
 export const VolunteerExternalForm = () => {
-	const { watch } = useFormContext<ExternalVolunteerFormType>()
+	const { watch } = useFormContext<FullSchemaType>()
 	const hasCell = watch('hasCell')
 	const hasHealth = watch('hasHealth')
 	return (

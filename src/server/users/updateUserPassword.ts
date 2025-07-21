@@ -10,7 +10,7 @@ export const updateUserPassword = async (
 ) => {
 	try {
 		z.object({
-			userIdLogged: z.string().uuid(),
+			userIdLogged: z.uuid(),
 			newPassword: z.string().min(6),
 		}).parse({ userIdLogged, newPassword })
 

@@ -10,7 +10,7 @@ export const updateUserRole = async (
 ) => {
 	try {
 		z.object({
-			userId: z.string().uuid(),
+			userId: z.uuid(),
 			role: z.enum([ROLES.ADMIN, ROLES.USER]),
 		}).parse({ userId, role })
 

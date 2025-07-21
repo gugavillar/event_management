@@ -21,7 +21,8 @@ import { useCreateParticipant } from '@/services/queries/participants'
 import { generateToastError } from '@/utils/errors'
 
 import {
-	ExternalParticipantFormType,
+	fullSchema,
+	FullSchemaType,
 	stepsFields,
 } from './ExternalParticipantForm.schema'
 
@@ -43,7 +44,7 @@ export const ExternalParticipantForm = ({
 	const [currentStep, setCurrentStep] = useState(0)
 
 	const { create, isPending } = useCreateParticipant()
-	const methods = useForm<ExternalParticipantFormType>({
+	const methods = useForm<FullSchemaType>({
 		mode: 'onChange',
 		defaultValues: {
 			name: '',
@@ -68,7 +69,7 @@ export const ExternalParticipantForm = ({
 			},
 			paymentMethod: undefined,
 		},
-		resolver: zodResolver(stepsFields(minAge, maxAge)[currentStep].schema),
+		resolver: zodResolver(fullSchema(minAge, maxAge)),
 	})
 
 	const handleNext = async () => {
@@ -90,7 +91,7 @@ export const ExternalParticipantForm = ({
 		setCurrentStep((step) => step - 1)
 	}
 
-	const onSubmit: SubmitHandler<ExternalParticipantFormType> = async () => {
+	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
 		const { hasReligion, religion, hasHealth, health, paymentMethod, ...data } =

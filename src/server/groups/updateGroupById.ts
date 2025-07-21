@@ -8,7 +8,7 @@ export const updateGroupById = async (data: FormGroup, id: string) => {
 	try {
 		groupSchemaRoute
 			.extend({
-				id: z.string().uuid(),
+				id: z.uuid(),
 			})
 			.parse({ ...data, id })
 

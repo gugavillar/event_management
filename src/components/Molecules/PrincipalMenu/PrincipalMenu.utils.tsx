@@ -7,10 +7,11 @@ import {
 	Speech,
 	UsersRound,
 } from 'lucide-react'
+import { ReactElement } from 'react'
 
 type BaseMenuLink = {
 	buttonLabel: string
-	buttonIcon: JSX.Element
+	buttonIcon: ReactElement
 }
 
 export type MenuLinkWithHref = BaseMenuLink & {

@@ -14,8 +14,7 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 					paymentOptionsRadio(false)[1].value,
 				],
 				{
-					required_error: 'Campo obrigatório',
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				},
 			),
 			paymentType: z
@@ -29,8 +28,7 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 							PaymentTypeAPI.DONATION_ROMERO,
 						],
 						{
-							required_error: 'Campo obrigatório',
-							message: 'Campo obrigatório',
+							error: 'Campo obrigatório',
 						},
 					),
 					z.string(),
@@ -45,31 +43,33 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 							PaymentTypeAPI.DONATION_ROMERO,
 						].includes(val as PaymentTypeAPI),
 					{
-						message: 'Campo obrigatório',
+						error: 'Campo obrigatório',
 					},
 				),
 			paymentValue: z.string().optional(),
 		})
-		.superRefine((data, ctx) => {
-			if (data.paymentValue) {
+		.check((ctx) => {
+			if (ctx.value.paymentValue) {
 				const totalPaid =
-					Number(removeCurrencyFormat(data.paymentValue)) + paidValue
+					Number(removeCurrencyFormat(ctx.value.paymentValue)) + paidValue
 				const limitValue = maxPaidValue - paidValue
 				if (totalPaid > maxPaidValue) {
-					ctx.addIssue({
+					ctx.issues.push({
+						input: ctx.value,
 						path: ['paymentValue'],
-						code: z.ZodIssueCode.custom,
+						code: 'custom',
 						message: `O valor inserido excede o valor restante de ${currencyValue(limitValue)}`,
 					})
 				}
 			}
 			if (
-				data.paid === paymentOptionsRadio(false)[1].value &&
-				(!data.paymentValue || data.paymentValue.trim() === '')
+				ctx.value.paid === paymentOptionsRadio(false)[1].value &&
+				(!ctx.value.paymentValue || ctx.value.paymentValue.trim() === '')
 			) {
-				ctx.addIssue({
+				ctx.issues.push({
+					input: ctx.value,
 					path: ['paymentValue'],
-					code: z.ZodIssueCode.custom,
+					code: 'custom',
 					message: 'Campo obrigatório',
 				})
 			}

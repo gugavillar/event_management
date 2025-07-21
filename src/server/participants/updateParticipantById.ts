@@ -11,7 +11,7 @@ export const updateParticipantById = async (
 	try {
 		participantSchemaRoute
 			.extend({
-				id: z.string().uuid(),
+				id: z.uuid(),
 			})
 			.parse({ ...data, id })
 

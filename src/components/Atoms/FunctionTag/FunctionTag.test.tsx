@@ -10,12 +10,12 @@ describe('Function Tag Component', () => {
 
 	it('renders correctly classes without status', () => {
 		const { getByTestId } = render(<FunctionTag data-testid="function-tag" />)
-		expect(getByTestId('function-tag')).toHaveClass('bg-gray-400 bg-opacity-30')
+		expect(getByTestId('function-tag')).toHaveClass('bg-gray-400/30')
 	})
 
 	it('renders correctly classes with status', () => {
 		const { getByText } = render(<FunctionTag status="Função" />)
-		expect(getByText('Função')).toHaveClass('bg-emerald-400 bg-opacity-30')
+		expect(getByText('Função')).toHaveClass('bg-emerald-400/30')
 	})
 
 	it('renders correctly function name', () => {

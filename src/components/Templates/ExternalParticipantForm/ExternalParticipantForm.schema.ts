@@ -12,23 +12,22 @@ export const ExternalParticipantFormSchemaStepOne = (
 		.object({
 			name: z.string().trim().min(3, 'Campo obrigatório'),
 			email: z
-				.string({ required_error: 'Campo obrigatório' })
+				.email({ error: 'Email inválido' })
 				.trim()
-				.email({ message: 'Email inválido' })
-				.refine((value) => validateEmail(value), { message: 'Email inválido' }),
+				.refine((value) => validateEmail(value), { error: 'Email inválido' }),
 			called: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.trim()
 				.min(1, 'Campo obrigatório'),
 			birthdate: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.trim()
 				.refine(
 					(value) =>
 						/^\d{2}\/\d{2}\/\d{4}/g.test(value)
 							? validateBirthdate(value)
 							: false,
-					{ message: 'Data inválida' },
+					{ error: 'Data inválida' },
 				)
 				.refine(
 					(value) =>
@@ -36,82 +35,82 @@ export const ExternalParticipantFormSchemaStepOne = (
 							? validateDateRange(value, minAge, maxAge)
 							: false,
 					{
-						message: maxAge
+						error: maxAge
 							? `Idade tem que ser entre ${minAge} e ${maxAge} anos`
 							: `Idade tem que ser maior ou igual a ${minAge} anos`,
 					},
 				),
 			phone: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.trim()
 				.refine(
 					(value) =>
 						!value || value.length < 15 ? false : validatePhone(value),
-					{ message: 'Telefone inválido' },
+					{ error: 'Telefone inválido' },
 				),
 			responsible: z.string().trim().min(3, 'Campo obrigatório'),
 			responsiblePhone: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.trim()
 				.refine(
 					(value) =>
 						!value || value.length < 15 ? false : validatePhone(value),
-					{ message: 'Telefone inválido' },
+					{ error: 'Telefone inválido' },
 				),
 			hasReligion: z
 				.union([
 					z.enum(['Yes', 'No'], {
-						required_error: 'Campo obrigatório',
-						message: 'Campo obrigatório',
+						error: 'Campo obrigatório',
 					}),
 					z.string(),
 				])
 				.refine((value) => ['Yes', 'No'].includes(value), {
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 			religion: z.string().optional(),
 			hasHealth: z
 				.union([
 					z.enum(['Yes', 'No'], {
-						required_error: 'Campo obrigatório',
-						message: 'Campo obrigatório',
+						error: 'Campo obrigatório',
 					}),
 					z.string(),
 				])
 				.refine((value) => ['Yes', 'No'].includes(value), {
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 			health: z.string().optional(),
 			host: z.string().trim().min(3, 'Campo obrigatório'),
 			hostPhone: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.trim()
 				.refine(
 					(value) =>
 						!value || value.length < 15 ? false : validatePhone(value),
-					{ message: 'Telefone inválido' },
+					{ error: 'Telefone inválido' },
 				),
 		})
-		.superRefine((value, ctx) => {
-			if (value.hasReligion === 'Yes' && !value.religion?.trim()) {
-				ctx.addIssue({
+		.check((ctx) => {
+			if (ctx.value.hasReligion === 'Yes' && !ctx.value.religion?.trim()) {
+				ctx.issues.push({
+					input: ctx.value,
 					code: 'custom',
 					message: 'Campo obrigatório',
 					path: ['religion'],
 				})
 			}
-			if (value.hasHealth === 'Yes' && !value.health?.trim()) {
-				ctx.addIssue({
+			if (ctx.value.hasHealth === 'Yes' && !ctx.value.health?.trim()) {
+				ctx.issues.push({
+					input: ctx.value,
 					code: 'custom',
 					message: 'Campo obrigatório',
 					path: ['health'],
 				})
 			}
 			validatePhonesNotEquals(
-				value.phone,
+				ctx.value.phone,
 				[
-					{ field: 'responsiblePhone', phone: value.responsiblePhone },
-					{ field: 'hostPhone', phone: value.hostPhone },
+					{ field: 'responsiblePhone', phone: ctx.value.responsiblePhone },
+					{ field: 'hostPhone', phone: ctx.value.hostPhone },
 				],
 				ctx,
 			)
@@ -125,10 +124,10 @@ export const ExternalParticipantFormSchemaStepTwo = () =>
 			number: z.string().trim().min(1, 'Campo obrigatório'),
 			city: z.string().trim().min(3, 'Campo obrigatório'),
 			state: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.max(2)
 				.refine((value) => validateUF(value), {
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 		}),
 	})
@@ -138,20 +137,23 @@ export const ExternalParticipantFormSchemaStepThree = () =>
 		paymentMethod: z
 			.union([
 				z.enum(['PIX', 'Cash/Card'], {
-					required_error: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 				z.string(),
 			])
 			.refine((value) => ['PIX', 'Cash/Card'].includes(value), {
-				message: 'Campo obrigatório',
+				error: 'Campo obrigatório',
 			}),
 	})
 
-export type ExternalParticipantFormType = z.infer<
-	ReturnType<typeof ExternalParticipantFormSchemaStepOne> &
-		ReturnType<typeof ExternalParticipantFormSchemaStepTwo> &
-		ReturnType<typeof ExternalParticipantFormSchemaStepThree>
->
+export const fullSchema = (minAge?: number | null, maxAge?: number | null) =>
+	z.object({
+		...ExternalParticipantFormSchemaStepOne(minAge, maxAge).shape,
+		...ExternalParticipantFormSchemaStepTwo().shape,
+		...ExternalParticipantFormSchemaStepThree().shape,
+	})
+
+export type FullSchemaType = z.infer<ReturnType<typeof fullSchema>>
 
 export const stepsFields = (minAge?: number | null, maxAge?: number | null) =>
 	[

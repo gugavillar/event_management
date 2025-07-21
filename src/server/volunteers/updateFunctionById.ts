@@ -8,9 +8,9 @@ export const updateFunctionById = async (
 ) => {
 	try {
 		z.object({
-			roleId: z.string().uuid(),
+			roleId: z.uuid(),
 			role: z.string().min(1).max(191),
-			events: z.array(z.object({ id: z.string().uuid() })),
+			events: z.array(z.object({ id: z.uuid() })),
 		}).parse({ roleId, ...data })
 
 		const updateEvents = data.events.map((e) => e.id)

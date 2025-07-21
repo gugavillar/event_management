@@ -8,7 +8,7 @@ export const updateEventById = async (data: FormEvent, id: string) => {
 	try {
 		eventSchemaRoute
 			.extend({
-				id: z.string().uuid(),
+				id: z.uuid(),
 			})
 			.parse({ ...data, id })
 

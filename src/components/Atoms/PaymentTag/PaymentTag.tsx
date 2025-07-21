@@ -8,12 +8,12 @@ type PaymentTagProps = ComponentProps<'mark'> & {
 }
 
 const STATUS_COLORS = {
-	[PaymentTypeAPI.CARD]: 'bg-blue-300 bg-opacity-30',
-	[PaymentTypeAPI.CASH]: 'bg-yellow-400 bg-opacity-30',
-	[PaymentTypeAPI.PIX]: 'bg-green-500 bg-opacity-30',
-	[PaymentTypeAPI.DONATION]: 'bg-purple-400 bg-opacity-30',
-	[PaymentTypeAPI.DONATION_ROMERO]: 'bg-purple-600 bg-opacity-30',
-	[PaymentTypeAPI.OPEN]: 'bg-gray-400 bg-opacity-30',
+	[PaymentTypeAPI.CARD]: 'bg-blue-300/30',
+	[PaymentTypeAPI.CASH]: 'bg-yellow-400/30',
+	[PaymentTypeAPI.PIX]: 'bg-green-500/30',
+	[PaymentTypeAPI.DONATION]: 'bg-purple-400/30',
+	[PaymentTypeAPI.DONATION_ROMERO]: 'bg-purple-600/30',
+	[PaymentTypeAPI.OPEN]: 'bg-gray-400/30',
 }
 
 export const PaymentTag = memo(

@@ -12,11 +12,11 @@ export const updateVolunteerFunction = async (
 ) => {
 	try {
 		z.object({
-			volunteerId: z.string().uuid(),
-			eventId: z.string().uuid(),
+			volunteerId: z.uuid(),
+			eventId: z.uuid(),
 			roles: z.array(
 				z.object({
-					roleId: z.string().uuid(),
+					roleId: z.uuid(),
 					isLeader: z.boolean(),
 				}),
 			),

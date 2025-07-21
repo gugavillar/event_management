@@ -9,16 +9,15 @@ export const ParticipantSchema = z
 		eventId: z.string().trim().min(1, 'Campo obrigatório'),
 		name: z.string().trim().min(3, 'Campo obrigatório'),
 		email: z
-			.string({ required_error: 'Campo obrigatório' })
-			.trim()
 			.email({ message: 'Email inválido' })
+			.trim()
 			.refine((value) => validateEmail(value), { message: 'Email inválido' }),
 		called: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.min(1, 'Campo obrigatório'),
 		birthdate: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine(
 				(value) =>
@@ -28,51 +27,49 @@ export const ParticipantSchema = z
 				{ message: 'Data inválida' },
 			),
 		phone: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine(
 				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ message: 'Telefone inválido' },
+				{ error: 'Telefone inválido' },
 			),
 		responsible: z.string().trim().min(3, 'Campo obrigatório'),
 		responsiblePhone: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine(
 				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ message: 'Telefone inválido' },
+				{ error: 'Telefone inválido' },
 			),
 		hasReligion: z
 			.union([
 				z.enum(['Yes', 'No'], {
-					required_error: 'Campo obrigatório',
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 				z.string(),
 			])
 			.refine((value) => ['Yes', 'No'].includes(value), {
-				message: 'Campo obrigatório',
+				error: 'Campo obrigatório',
 			}),
 		religion: z.string().nullable().optional(),
 		hasHealth: z
 			.union([
 				z.enum(['Yes', 'No'], {
-					required_error: 'Campo obrigatório',
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 				z.string(),
 			])
 			.refine((value) => ['Yes', 'No'].includes(value), {
-				message: 'Campo obrigatório',
+				error: 'Campo obrigatório',
 			}),
 		health: z.string().nullable().optional(),
 		host: z.string().trim().min(3, 'Campo obrigatório'),
 		hostPhone: z
-			.string({ required_error: 'Campo obrigatório' })
+			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine(
 				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ message: 'Telefone inválido' },
+				{ error: 'Telefone inválido' },
 			),
 		address: z.object({
 			street: z.string().trim().min(3, 'Campo obrigatório'),
@@ -80,33 +77,35 @@ export const ParticipantSchema = z
 			number: z.string().trim().min(1, 'Campo obrigatório'),
 			city: z.string().trim().min(3, 'Campo obrigatório'),
 			state: z
-				.string({ required_error: 'Campo obrigatório' })
+				.string({ error: 'Campo obrigatório' })
 				.max(2)
 				.refine((value) => validateUF(value), {
-					message: 'Campo obrigatório',
+					error: 'Campo obrigatório',
 				}),
 		}),
 	})
-	.superRefine((value, ctx) => {
-		if (value.hasReligion === 'Yes' && !value.religion?.trim()) {
-			ctx.addIssue({
+	.check((ctx) => {
+		if (ctx.value.hasReligion === 'Yes' && !ctx.value.religion?.trim()) {
+			ctx.issues.push({
+				input: ctx.value,
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['religion'],
 			})
 		}
-		if (value.hasHealth === 'Yes' && !value.health?.trim()) {
-			ctx.addIssue({
+		if (ctx.value.hasHealth === 'Yes' && !ctx.value.health?.trim()) {
+			ctx.issues.push({
+				input: ctx.value,
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['health'],
 			})
 		}
 		validatePhonesNotEquals(
-			value.phone,
+			ctx.value.phone,
 			[
-				{ field: 'responsiblePhone', phone: value.responsiblePhone },
-				{ field: 'hostPhone', phone: value.hostPhone },
+				{ field: 'responsiblePhone', phone: ctx.value.responsiblePhone },
+				{ field: 'hostPhone', phone: ctx.value.hostPhone },
 			],
 			ctx,
 		)

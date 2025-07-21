@@ -9,7 +9,7 @@ export type UpdateInterestedParticipantArgs = {
 export const updateInterestedParticipant = async (participantId: string) => {
 	try {
 		z.object({
-			participantId: z.string().uuid(),
+			participantId: z.uuid(),
 		}).parse({ participantId })
 
 		return await prisma.participant.update({

@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { SelectField } from '@/components/Molecules'
 import { ExternalParticipantFormProps } from '@/components/Templates'
-import { ExternalParticipantFormType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
+import { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { PAYMENT_METHOD_EXTERNAL_OPTIONS } from '@/constants'
 
 import { PaymentChoice } from './PaymentChoice'
@@ -18,7 +18,7 @@ export const PaymentExternalForm = ({
 	setCurrentStep,
 }: PaymentExternalFormProps) => {
 	const [pixValue, setPixValue] = useState<string | null>(null)
-	const { watch } = useFormContext<ExternalParticipantFormType>()
+	const { watch } = useFormContext<FullSchemaType>()
 
 	const paymentMethod = watch('paymentMethod')
 

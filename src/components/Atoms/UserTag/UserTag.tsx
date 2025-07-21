@@ -8,8 +8,8 @@ type UserTagProps = ComponentProps<'mark'> & {
 }
 
 const STATUS_COLORS = {
-	[USER_STATUS.INACTIVE]: 'bg-red-400 bg-opacity-30',
-	[USER_STATUS.ACTIVE]: 'bg-emerald-400 bg-opacity-30',
+	[USER_STATUS.INACTIVE]: 'bg-red-400/30',
+	[USER_STATUS.ACTIVE]: 'bg-emerald-400/30',
 }
 
 export const UserTag = memo(({ status, className, ...props }: UserTagProps) => {

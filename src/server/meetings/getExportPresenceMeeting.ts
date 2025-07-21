@@ -7,7 +7,7 @@ import { CHECK_IN_STATUS, prisma } from '@/constants'
 export const getExportPresenceMeeting = async (eventId: string) => {
 	try {
 		z.object({
-			eventId: z.string().uuid(),
+			eventId: z.uuid(),
 		}).parse({ eventId })
 
 		const presences = await prisma.meetingPresence.findMany({

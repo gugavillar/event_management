@@ -21,7 +21,8 @@ import { useCreateVolunteer } from '@/services/queries/volunteers'
 import { generateToastError } from '@/utils/errors'
 
 import {
-	ExternalVolunteerFormType,
+	fullSchema,
+	FullSchemaType,
 	stepsFields,
 } from './ExternalVolunteerForm.schema'
 
@@ -37,7 +38,7 @@ export const ExternalVolunteerForm = ({
 	const [currentStep, setCurrentStep] = useState(0)
 
 	const { create, isPending } = useCreateVolunteer()
-	const methods = useForm<ExternalVolunteerFormType>({
+	const methods = useForm<FullSchemaType>({
 		mode: 'onChange',
 		defaultValues: {
 			name: '',
@@ -61,7 +62,7 @@ export const ExternalVolunteerForm = ({
 			},
 			paymentMethod: undefined,
 		},
-		resolver: zodResolver(stepsFields[currentStep].schema),
+		resolver: zodResolver(fullSchema),
 	})
 
 	const handleNext = async () => {
@@ -83,7 +84,7 @@ export const ExternalVolunteerForm = ({
 		setCurrentStep((step) => step - 1)
 	}
 
-	const onSubmit: SubmitHandler<ExternalVolunteerFormType> = async () => {
+	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
 		const { hasCell, cell, hasHealth, health, paymentMethod, ...data } =

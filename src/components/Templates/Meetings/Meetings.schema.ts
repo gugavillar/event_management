@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const uuidBooleanObject = z.record(z.string().uuid(), z.boolean())
+const uuidBooleanObject = z.record(z.uuid(), z.boolean())
 
 const arrayOfUuidBooleanObjects = z.array(uuidBooleanObject)
 
@@ -9,7 +9,7 @@ export const MeetingSchema = z
 		presence: arrayOfUuidBooleanObjects,
 		justification: arrayOfUuidBooleanObjects,
 	})
-	.superRefine((data, ctx) => {
+	.check((ctx) => {
 		const flattenArray = (arr: Array<Record<string, boolean>>) => {
 			const result: Record<string, boolean> = {}
 			arr.forEach((obj) => {
@@ -20,29 +20,31 @@ export const MeetingSchema = z
 			return result
 		}
 
-		const presenceFlat = flattenArray(data.presence)
-		const justificationFlat = flattenArray(data.justification)
+		const presenceFlat = flattenArray(ctx.value.presence)
+		const justificationFlat = flattenArray(ctx.value.justification)
 
 		for (const uuid in presenceFlat) {
 			if (presenceFlat[uuid] && justificationFlat[uuid]) {
-				const presenceIndex = data.presence.findIndex((obj) => uuid in obj)
-				const justificationIndex = data.justification.findIndex(
+				const presenceIndex = ctx.value.presence.findIndex((obj) => uuid in obj)
+				const justificationIndex = ctx.value.justification.findIndex(
 					(obj) => uuid in obj,
 				)
 
 				if (presenceIndex !== -1) {
-					ctx.addIssue({
+					ctx.issues.push({
+						input: ctx.value,
 						path: ['presence', presenceIndex, uuid],
 						message: 'Apenas uma opção.',
-						code: z.ZodIssueCode.custom,
+						code: 'custom',
 					})
 				}
 
 				if (justificationIndex !== -1) {
-					ctx.addIssue({
+					ctx.issues.push({
+						input: ctx.value,
 						path: ['justification', justificationIndex, uuid],
 						message: 'Apenas uma opção.',
-						code: z.ZodIssueCode.custom,
+						code: 'custom',
 					})
 				}
 			}

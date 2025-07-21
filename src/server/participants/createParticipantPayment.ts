@@ -22,8 +22,8 @@ export const createParticipantPayment = async (
 				PaymentTypeAPI.DONATION_ROMERO,
 			]),
 			paymentValue: z.number(),
-			eventId: z.string().uuid(),
-			participantId: z.string().uuid(),
+			eventId: z.uuid(),
+			participantId: z.uuid(),
 		}).parse({ ...values })
 
 		return await prisma.participantPayment.create({

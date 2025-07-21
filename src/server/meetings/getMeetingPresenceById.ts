@@ -5,7 +5,7 @@ import { prisma } from '@/constants'
 export const getMeetingPresenceById = async (meetingId: string) => {
 	try {
 		z.object({
-			meetingId: z.string().uuid(),
+			meetingId: z.uuid(),
 		}).parse({ meetingId })
 
 		return await prisma.meetingPresence.findMany({

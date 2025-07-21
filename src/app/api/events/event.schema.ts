@@ -14,14 +14,16 @@ export const eventSchemaRoute = z.object({
 		GenderTypeAPI.FEMALE,
 		GenderTypeAPI.BOTH,
 	]),
-	initialDate: z.string().datetime({ precision: 3 }),
-	finalDate: z.string().datetime({ precision: 3 }),
-	participantPrice: z
+	initialDate: z.iso.datetime({ precision: 3 }),
+	finalDate: z.iso.datetime({ precision: 3 }),
+	participantPrice: z.coerce
 		.number()
-		.pipe(z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE)),
-	volunteerPrice: z
+		.min(MIN_CURRENCY_VALUE)
+		.max(MAX_CURRENCY_VALUE),
+	volunteerPrice: z.coerce
 		.number()
-		.pipe(z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE)),
+		.min(MIN_CURRENCY_VALUE)
+		.max(MAX_CURRENCY_VALUE),
 })
 
 export type EventSchemaRouteType = z.infer<typeof eventSchemaRoute>

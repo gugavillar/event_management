@@ -10,8 +10,8 @@ export const blockOrUnblockUser = async (
 ) => {
 	try {
 		z.object({
-			userId: z.string().uuid(),
-			userIdLogged: z.string().uuid(),
+			userId: z.uuid(),
+			userIdLogged: z.uuid(),
 		}).parse({ userId, userIdLogged })
 
 		const isSameUser = userId === userIdLogged

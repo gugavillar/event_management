@@ -12,7 +12,7 @@ export const createFunction = async ({
 			role: z.string().min(1).max(191),
 			events: z.array(
 				z.object({
-					id: z.string().uuid(),
+					id: z.uuid(),
 				}),
 			),
 		}).parse({ role, events })

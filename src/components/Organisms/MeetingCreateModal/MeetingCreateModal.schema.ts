@@ -3,9 +3,9 @@ import { z } from 'zod'
 import { isValidateDate } from '@/formatters'
 
 export const MeetingCreateModalSchema = z.object({
-	eventId: z.string().uuid(),
+	eventId: z.uuid(),
 	date: z
-		.string({ required_error: 'Campo obrigatório' })
+		.string({ error: 'Campo obrigatório' })
 		.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 		.refine(
 			(value) =>
@@ -13,7 +13,7 @@ export const MeetingCreateModalSchema = z.object({
 			{ message: 'A data não é valida' },
 		),
 	title: z
-		.string({ required_error: 'Campo obrigatório' })
+		.string({ error: 'Campo obrigatório' })
 		.trim()
 		.min(3, 'Campo obrigatório'),
 })

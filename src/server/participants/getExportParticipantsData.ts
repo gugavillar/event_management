@@ -18,7 +18,7 @@ export const getExportParticipantsData = async (
 ) => {
 	try {
 		z.object({
-			eventId: z.string().uuid(),
+			eventId: z.uuid(),
 		}).parse({ eventId })
 
 		const participants = await prisma.participant.findMany({

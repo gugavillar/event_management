@@ -8,7 +8,7 @@ export const getGroupByEventId = async (
 ) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
+			id: z.uuid(),
 			searchName: z.string().optional(),
 		}).parse({ id, searchName })
 

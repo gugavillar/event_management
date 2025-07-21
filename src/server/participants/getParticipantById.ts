@@ -5,7 +5,7 @@ import { prisma } from '@/constants'
 export const getParticipantById = async (id: string) => {
 	try {
 		z.object({
-			id: z.string().uuid(),
+			id: z.uuid(),
 		}).parse({ id })
 
 		return await prisma.participant.findUnique({
