@@ -1,6 +1,5 @@
 'use client'
 import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
 import { useQueryState } from 'nuqs'
 
 import { QUERY_KEYS } from '@/constants'
@@ -14,14 +13,13 @@ export const useGetDashboardData = () => {
 		defaultValue: '',
 	})
 
-	const debounceEventId = useDebounce(eventId, 500)
-
 	const query: UseQueryResult<DashboardFromAPI> = useQuery({
-		queryKey: [QUERY_KEYS.DASHBOARD, debounceEventId],
+		queryKey: [QUERY_KEYS.DASHBOARD, eventId],
 		queryFn: () =>
 			getDashboardData({
-				eventId: debounceEventId,
+				eventId,
 			}),
+		enabled: !!eventId,
 	})
 
 	return { ...query, eventId, setEventId }

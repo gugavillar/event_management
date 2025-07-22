@@ -12,6 +12,8 @@ import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetDashboardData } from '@/services/queries/dashboard'
 import { useGetInfinityEvents } from '@/services/queries/events'
 
+import { CardInfo } from './CardInfo'
+
 export const Dashboard = () => {
 	const {
 		data: events,
@@ -25,8 +27,6 @@ export const Dashboard = () => {
 		events?.pages?.flatMap((page) => page.data),
 		'name',
 		'id',
-		true,
-		'Todos os eventos',
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
@@ -47,22 +47,28 @@ export const Dashboard = () => {
 				label="Selecione o evento"
 				lastItemRef={lastItemRef}
 			/>
-			<DashboardCards isLoading={isLoading} data={data} />
-			<CitiesChart
-				categories={data?.participantsCities?.labels}
-				series={[{ data: data?.participantsCities?.data ?? [] }]}
-				isLoading={isLoading}
-			/>
-			<PaymentsChart
-				categories={data?.paymentsTypes?.labels}
-				series={data?.paymentsTypes.data}
-				isLoading={isLoading}
-			/>
-			<AgesChart
-				categories={data?.ageRanges?.labels}
-				series={data?.ageRanges.data}
-				isLoading={isLoading}
-			/>
+			{!eventId ? (
+				<CardInfo />
+			) : (
+				<>
+					<DashboardCards isLoading={isLoading} data={data} />
+					<CitiesChart
+						categories={data?.participantsCities?.labels}
+						series={[{ data: data?.participantsCities?.data ?? [] }]}
+						isLoading={isLoading}
+					/>
+					<PaymentsChart
+						categories={data?.paymentsTypes?.labels}
+						series={data?.paymentsTypes.data}
+						isLoading={isLoading}
+					/>
+					<AgesChart
+						categories={data?.ageRanges?.labels}
+						series={data?.ageRanges.data}
+						isLoading={isLoading}
+					/>
+				</>
+			)}
 		</PageContent>
 	)
 }
