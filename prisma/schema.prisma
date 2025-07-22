@@ -76,6 +76,7 @@ model Event {
   room                          Room[]               @relation("RoomToEvent")
   eventVolunteerRoles           EventVolunteerRole[]
   Meetings                      Meetings[]
+  donations                     Donation[]           @relation("EventDonations")
 
   @@map("events")
 }
@@ -297,4 +298,14 @@ model MeetingPresence {
   meeting   Meetings  @relation(fields: [meetingId], references: [id])
 
   @@unique([volunteerId, meetingId])
+}
+
+model Donation {
+  id        String   @id @default(uuid())
+  eventId   String
+  name      String
+  value     Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event    @relation("EventDonations", fields: [eventId], references: [id], onDelete: Cascade)
 }

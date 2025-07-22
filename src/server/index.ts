@@ -1,4 +1,5 @@
 export * from './dashboard'
+export * from './donations'
 export * from './events'
 export * from './groups'
 export * from './meetings'

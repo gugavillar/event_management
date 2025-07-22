@@ -1,31 +1,40 @@
 'use client'
-import { useQueryState } from 'nuqs'
 
+import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { DonationHeader, ListPage, PageContent } from '@/components/Organisms'
+import { useGetDonations } from '@/services/queries/donations'
 
-import { HEADER_LABELS } from './Donation.utils'
+import { formatTableData, HEADER_LABELS } from './Donation.utils'
 
 export const Donation = () => {
-	const [event, setEvent] = useQueryState('eventId', {
-		defaultValue: '',
-	})
+	const { data, isLoading, eventId, setEventId, page, setPage } =
+		useGetDonations()
+
+	const formatData = formatTableData(data?.data)
+
+	const hasMoreThanOnePage = !!data?.totalPages && data.totalPages > 1
+
 	return (
 		<PageContent subheadingPage="Lista das doações" pageTitle="Doações">
-			<DonationHeader eventId={event} setEventId={setEvent} />
+			<DonationHeader
+				eventId={eventId}
+				setEventId={setEventId}
+				sumOfAllDonations={data?.sumOfAllDonations}
+			/>
 			<ListPage className="lg:max-w-full">
 				<ListManager
-					bodyData={[]}
+					bodyData={formatData}
 					headerLabels={HEADER_LABELS}
-					isLoading={false}
+					isLoading={isLoading}
 				/>
-				{/* {hasMoreThanOnePage && (
-								<Pagination
-									currentPage={page}
-									totalPages={participants?.totalPages}
-									setPage={setPage}
-								/>
-							)} */}
+				{hasMoreThanOnePage && (
+					<Pagination
+						currentPage={page}
+						totalPages={data?.totalPages}
+						setPage={setPage}
+					/>
+				)}
 			</ListPage>
 		</PageContent>
 	)

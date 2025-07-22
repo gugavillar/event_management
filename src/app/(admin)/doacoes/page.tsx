@@ -1,10 +1,29 @@
 import { Donation } from '@/components/Templates'
-import { QUERY_KEYS } from '@/constants'
+import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
+import { HydrationProvider } from '@/providers/HydrationProver'
+import { getDonations } from '@/services/queries/donations'
 import { getEvents } from '@/services/queries/events'
 
-export default async function DonationPage() {
-	const getAllEvents = await getEvents({ searchEvent: '', page: 1 })
+type SearchParams = {
+	searchParams: Promise<{
+		eventId?: string
+		pageDonation?: string
+	}>
+}
+
+export default async function DonationPage({ searchParams }: SearchParams) {
+	const params = await searchParams.then((res) => ({
+		eventId: res.eventId ?? '',
+		page: res.pageDonation ?? '',
+	}))
+	const debounceValue = params.eventId
+	const page = generatePage(params.page)
+
+	const [getAllEvents, getAllDonations] = await Promise.all([
+		async () => await getEvents({ searchEvent: '', page: 1 }),
+		async () => getDonations({ eventId: debounceValue, page }),
+	])
 
 	return (
 		<HydrationInfinityProvider
@@ -12,7 +31,12 @@ export default async function DonationPage() {
 			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
 			initialPageParam={1}
 		>
-			<Donation />
+			<HydrationProvider
+				queryFn={getAllDonations}
+				queryKey={[QUERY_KEYS.DONATIONS, debounceValue, page]}
+			>
+				<Donation />
+			</HydrationProvider>
 		</HydrationInfinityProvider>
 	)
 }

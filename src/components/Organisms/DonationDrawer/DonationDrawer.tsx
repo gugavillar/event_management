@@ -1,5 +1,6 @@
 'use client'
 import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
@@ -7,9 +8,12 @@ import {
 	CurrencyInputField,
 	SearchBox,
 } from '@/components/Molecules'
-import { formatterComboBoxValues } from '@/formatters'
+import { overlayClose } from '@/constants'
+import { formatterComboBoxValues, removeCurrencyFormat } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
+import { useCreateDonation } from '@/services/queries/donations'
 import { useGetInfinityEvents } from '@/services/queries/events'
+import { generateToastError } from '@/utils/errors'
 
 import { DonationType } from './DonationDrawer.schema'
 
@@ -26,6 +30,7 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 		search,
 		setSearch,
 	} = useGetInfinityEvents()
+	const { create, isPending } = useCreateDonation()
 	const {
 		handleSubmit,
 		reset,
@@ -48,7 +53,19 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 	const onSubmit: SubmitHandler<DonationType> = async (values) => {
 		if (!values) return
 
-		console.log(values)
+		const formattedValues = {
+			...values,
+			value: Number(removeCurrencyFormat(values.value)),
+		}
+
+		await create(formattedValues, {
+			onSuccess: () => {
+				reset()
+				toast.success('Doação criada com sucesso!')
+				overlayClose(drawerId)
+			},
+			onError: (error) => generateToastError(error, 'Erro ao criar doação'),
+		})
 	}
 
 	const handleClose = () => {
@@ -91,6 +108,7 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 					onClick={handleSubmit(onSubmit)}
 					type="submit"
 					disabled={!isValid || !isDirty}
+					isLoading={isPending}
 				>
 					Criar doação
 				</Button>

@@ -9,6 +9,7 @@ const BASE_PATH = {
 	GROUPS: '/groups',
 	ROOMS: '/rooms',
 	MEETINGS: '/meetings',
+	DONATIONS: '/donations',
 }
 
 export const ENDPOINTS = {
@@ -112,4 +113,8 @@ export const ENDPOINTS = {
 		${BASE_PATH.MEETINGS}/files/${event_id}`,
 	GET_MEETING_PRESENCE: (meeting_id: string) =>
 		`${BASE_PATH.MEETINGS}/presence/${meeting_id}`,
+
+	// Donations
+	CREATE_DONATION: BASE_PATH.DONATIONS,
+	GET_DONATIONS: BASE_PATH.DONATIONS,
 }
