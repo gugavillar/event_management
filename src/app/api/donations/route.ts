@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server'
 import { createDonation, getAllDonations } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-export const handlerPost = async (request: NextRequest) => {
+const handlerPost = async (request: NextRequest) => {
 	const data = await request.json()
 
 	return await requestProcess({
