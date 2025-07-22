@@ -1,4 +1,5 @@
 export * from './Dashboard'
+export * from './Donation'
 export * from './Events'
 export * from './ExternalParticipantForm'
 export * from './ExternalVolunteerForm'

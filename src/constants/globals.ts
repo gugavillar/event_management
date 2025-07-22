@@ -53,6 +53,9 @@ export const MODALS_IDS = {
 
 	// PIX
 	PAYMENT_PIX_MODAL: 'payment_pix_modal',
+
+	// DONATION
+	DONATION_CREATE_DRAWER: 'donation_create_drawer',
 }
 
 export const prisma = new PrismaClient({

@@ -4,6 +4,7 @@ import {
 	CircleUserRound,
 	ConciergeBell,
 	Gauge,
+	HandHeart,
 	Speech,
 	UsersRound,
 } from 'lucide-react'
@@ -82,5 +83,11 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		buttonIcon: <Speech size={24} />,
 		hasSubMenu: false,
 		href: '/reunioes',
+	},
+	{
+		buttonLabel: 'Doações',
+		buttonIcon: <HandHeart size={24} />,
+		hasSubMenu: false,
+		href: '/doacoes',
 	},
 ]
