@@ -117,4 +117,6 @@ export const ENDPOINTS = {
 	// Donations
 	CREATE_DONATION: BASE_PATH.DONATIONS,
 	GET_DONATIONS: BASE_PATH.DONATIONS,
+	DELETE_DONATION: (donation_id: string) =>
+		`${BASE_PATH.DONATIONS}/${donation_id}`,
 }
