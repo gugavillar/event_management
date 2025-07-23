@@ -73,7 +73,7 @@ export const ExternalParticipantForm = ({
 	})
 
 	const handleNext = async () => {
-		if (currentStep === stepsFields.length - 1) return
+		if (currentStep === stepsFields(minAge, maxAge).length - 1) return
 
 		const fields = stepsFields(minAge, maxAge)[currentStep].fields
 		const output = await methods.trigger(fields, {
