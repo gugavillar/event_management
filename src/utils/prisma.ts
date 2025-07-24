@@ -111,7 +111,5 @@ export async function requestProcess<T>({
 			},
 			{ status: 500 },
 		)
-	} finally {
-		await prisma.$disconnect()
 	}
 }
