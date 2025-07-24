@@ -1,17 +1,34 @@
 'use client'
 
+import { useCallback, useState } from 'react'
+
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { DonationHeader, ListPage, PageContent } from '@/components/Organisms'
+import {
+	DonationDeleteModal,
+	DonationHeader,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
+import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetDonations } from '@/services/queries/donations'
+import { DonationAPI } from '@/services/queries/donations/donations.types'
 
 import { formatTableData, HEADER_LABELS } from './Donation.utils'
 
 export const Donation = () => {
+	const [selectedDonation, setSelectedDonation] = useState<
+		DonationAPI['id'] | null
+	>(null)
 	const { data, isLoading, eventId, setEventId, page, setPage } =
 		useGetDonations()
 
-	const formatData = formatTableData(data?.data)
+	const handleRemoveDonation = useCallback((id: DonationAPI['id']) => {
+		setSelectedDonation(id)
+		overlayOpen(MODALS_IDS.DONATION_REMOVE_MODAL)
+	}, [])
+
+	const formatData = formatTableData(data?.data, handleRemoveDonation)
 
 	const hasMoreThanOnePage = !!data?.totalPages && data.totalPages > 1
 
@@ -36,6 +53,11 @@ export const Donation = () => {
 					/>
 				)}
 			</ListPage>
+			<DonationDeleteModal
+				modalId={MODALS_IDS.DONATION_REMOVE_MODAL}
+				selectedDonation={selectedDonation}
+				setSelectedDonation={setSelectedDonation}
+			/>
 		</PageContent>
 	)
 }

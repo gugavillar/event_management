@@ -5,12 +5,12 @@ import { requestProcess } from '@/utils/prisma'
 
 type Params = {
 	params: Promise<{
-		event_id?: string
+		donation_id?: string
 	}>
 }
 
 const handleDelete = async (_: NextRequest, { params }: Params) => {
-	const routeParams = await params.then((res) => res.event_id ?? '')
+	const routeParams = await params.then((res) => res.donation_id ?? '')
 	return await requestProcess({
 		functions: async () => removeDonationById(routeParams),
 		isProtectedRoute: true,

@@ -56,6 +56,7 @@ export const MODALS_IDS = {
 
 	// DONATION
 	DONATION_CREATE_DRAWER: 'donation_create_drawer',
+	DONATION_REMOVE_MODAL: 'donation_remove_modal',
 }
 
 export const prisma = new PrismaClient({
