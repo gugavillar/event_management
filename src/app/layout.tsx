@@ -25,7 +25,7 @@ export default function RootLayout({
 	return (
 		<html lang="pt-BR">
 			<body
-				className={`flex h-dvh min-h-dvh w-full flex-col overflow-x-clip bg-stone-50 md:overflow-y-auto ${roboto.className}`}
+				className={`flex h-dvh min-h-dvh w-full flex-col overflow-x-clip md:overflow-y-auto ${roboto.className}`}
 			>
 				<Providers>{children}</Providers>
 			</body>

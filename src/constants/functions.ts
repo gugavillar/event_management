@@ -1,6 +1,6 @@
 import { isFuture } from 'date-fns'
 
-import { IMAGES_FORMS } from './globals'
+import { IMAGES_CLOSED, IMAGES_FORMS } from './globals'
 import { MEMBERS } from './status'
 
 export const overlayClose = async (elementId: string) => {
@@ -53,6 +53,20 @@ export const image = (eventName?: string) => {
 
 	if (eventName.toLowerCase().includes('cursilho masculino')) {
 		return IMAGES_FORMS['cursilho-masculino']
+	}
+
+	return ''
+}
+
+export const closedImage = (eventName?: string) => {
+	if (!eventName) return ''
+
+	if (eventName.toLowerCase().includes('happening')) {
+		return IMAGES_CLOSED.happening
+	}
+
+	if (eventName.toLowerCase().includes('cursilho masculino')) {
+		return IMAGES_CLOSED['cursilho-masculino']
 	}
 
 	return ''

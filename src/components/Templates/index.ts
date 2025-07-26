@@ -1,3 +1,4 @@
+export * from './ClosedInscriptions'
 export * from './Dashboard'
 export * from './Donation'
 export * from './Events'

@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
+import { ClosedInscriptions } from '@/components/Templates'
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
 import { image, interestedListPermitCreateRegistration } from '@/constants'
 import { getEventById } from '@/server'
@@ -31,7 +32,7 @@ export default async function InterestedPage({ params }: Params) {
 	const isRegistrationPermitted = interestedListPermitCreateRegistration(event)
 
 	if (!isRegistrationPermitted) {
-		notFound()
+		return <ClosedInscriptions eventName={event?.name} />
 	}
 
 	const backgroundImage = image(event?.name)

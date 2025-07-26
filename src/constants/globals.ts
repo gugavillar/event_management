@@ -131,6 +131,11 @@ export const LINE_COLOR = {
 }
 
 export const IMAGES_FORMS = {
-	'cursilho-masculino': '/cursilho_masculino.png',
-	happening: '/happening.png',
+	'cursilho-masculino': '/cursilho_masculino.webp',
+	happening: '/happening.webp',
+}
+
+export const IMAGES_CLOSED = {
+	'cursilho-masculino': '/cursilho_masculino_closed.webp',
+	happening: '/happening_closed.webp',
 }
