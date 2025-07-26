@@ -1,5 +1,6 @@
 import { isFuture } from 'date-fns'
 
+import { IMAGES_FORMS } from './globals'
 import { MEMBERS } from './status'
 
 export const overlayClose = async (elementId: string) => {
@@ -41,4 +42,18 @@ export const interestedListPermitCreateRegistration = (event: any) => {
 	if (!event.isInterestedListOpen) return false
 
 	return isFuture(new Date(event.initialDate))
+}
+
+export const image = (eventName?: string) => {
+	if (!eventName) return ''
+
+	if (eventName.toLowerCase().includes('happening')) {
+		return IMAGES_FORMS.happening
+	}
+
+	if (eventName.toLowerCase().includes('cursilho masculino')) {
+		return IMAGES_FORMS['cursilho-masculino']
+	}
+
+	return ''
 }

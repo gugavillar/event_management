@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
-import { eventPermitCreateRegistration, MEMBERS } from '@/constants'
+import { eventPermitCreateRegistration, image, MEMBERS } from '@/constants'
 import { getEventById } from '@/server'
 
 type Params = {
@@ -37,11 +37,13 @@ export default async function RegistrationPage({ params }: Params) {
 		notFound()
 	}
 
+	const backgroundImage = image(event?.name)
+
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
 			<div className="flex max-md:h-fit">
 				<Image
-					src="/background_hb.png"
+					src={backgroundImage}
 					width={0}
 					height={0}
 					sizes="100vw"
@@ -53,7 +55,7 @@ export default async function RegistrationPage({ params }: Params) {
 			<div className="size-full overflow-y-auto">
 				<div className="flex min-h-full flex-col items-center justify-center space-y-8 p-8">
 					<header className="space-y-2 text-center">
-						<h1 className="text-5xl">{event?.name}</h1>
+						<h1 className="text-4xl">{event?.name}</h1>
 						<h2 className="text-3xl">Participante</h2>
 					</header>
 					<ExternalParticipantForm

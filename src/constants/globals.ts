@@ -129,3 +129,8 @@ export const LINE_COLOR = {
 	withdrew: '#fee2e2',
 	interested: '#e9d5ff',
 }
+
+export const IMAGES_FORMS = {
+	'cursilho-masculino': '/cursilho_masculino.png',
+	happening: '/happening.png',
+}
