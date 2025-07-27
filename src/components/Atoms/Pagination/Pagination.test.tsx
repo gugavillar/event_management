@@ -1,12 +1,13 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 
 import { Pagination } from './Pagination'
+import { usePagination } from './Pagination.utils'
 
 jest.mock('./Pagination.utils', () => ({
 	usePagination: jest.fn(),
 }))
 
-const mockedUsePagination = require('./Pagination.utils').usePagination
+const mockedUsePagination = usePagination as jest.Mock
 
 describe('Pagination component', () => {
 	const setPage = jest.fn()
