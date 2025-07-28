@@ -92,6 +92,7 @@ const queries = async (eventId: string | null) => {
 		}),
 		await prisma.participant.count({
 			where: {
+				...(eventId && { eventId }),
 				interested: true,
 			},
 		}),
