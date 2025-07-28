@@ -39,6 +39,7 @@ export default async function RegistrationPage({ params }: Params) {
 	}
 
 	const backgroundImage = image(event?.name)
+	const isNotHappening = !event?.name.toLowerCase().includes('happening')
 
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
@@ -64,6 +65,7 @@ export default async function RegistrationPage({ params }: Params) {
 						minAge={event?.minAge}
 						maxAge={event?.maxAge}
 						eventId={event?.id}
+						isNotHappening={isNotHappening}
 					/>
 				</div>
 			</div>

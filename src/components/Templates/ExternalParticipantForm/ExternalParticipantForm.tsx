@@ -32,6 +32,7 @@ export type ExternalParticipantFormProps = {
 	maxAge?: number | null
 	eventId?: string
 	isInterestedList?: boolean
+	isNotHappening?: boolean
 }
 
 export const ExternalParticipantForm = ({
@@ -40,6 +41,7 @@ export const ExternalParticipantForm = ({
 	maxAge,
 	eventId,
 	isInterestedList,
+	isNotHappening,
 }: ExternalParticipantFormProps) => {
 	const [currentStep, setCurrentStep] = useState(0)
 
@@ -138,7 +140,12 @@ export const ExternalParticipantForm = ({
 			<FormProvider {...methods}>
 				<Step
 					steps={[
-						{ title: 'Participante', content: <ParticipantExternalForm /> },
+						{
+							title: 'Participante',
+							content: (
+								<ParticipantExternalForm isNotHappening={isNotHappening} />
+							),
+						},
 						{ title: 'Endereço', content: <AddressExternalForm /> },
 						...(!isInterestedList
 							? [

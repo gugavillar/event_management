@@ -40,9 +40,12 @@ export const FamilyContactInfo = ({
 		>
 			{type === 'participant' ? (
 				<>
-					<InfoBox label="Responsável" value={responsibleInfo.responsible} />
 					<InfoBox
-						label="Telefone do responsável"
+						label="Responsável/Parente próximo"
+						value={responsibleInfo.responsible}
+					/>
+					<InfoBox
+						label="Telefone do responsável/parente"
 						value={responsibleInfo.responsiblePhone}
 					/>
 					<InfoBox label="Quem convidou" value={responsibleInfo.host} />

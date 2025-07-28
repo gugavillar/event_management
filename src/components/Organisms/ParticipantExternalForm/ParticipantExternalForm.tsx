@@ -10,10 +10,22 @@ import {
 import { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 
-export const ParticipantExternalForm = () => {
+type ParticipantExternalFormProps = {
+	isNotHappening?: boolean
+}
+
+export const ParticipantExternalForm = ({
+	isNotHappening,
+}: ParticipantExternalFormProps) => {
 	const { watch } = useFormContext<FullSchemaType>()
 	const hasReligion = watch('hasReligion')
 	const hasHealth = watch('hasHealth')
+	const fieldResponsibleLabel = isNotHappening
+		? 'Parente próximo'
+		: 'Responsável'
+	const filedResponsiblePhoneLabel = isNotHappening
+		? 'Telefone parente'
+		: 'Telefone responsável'
 	return (
 		<div className="space-y-6">
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -56,9 +68,9 @@ export const ParticipantExternalForm = () => {
 				)}
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-				<InputField fieldName="responsible">Responsável</InputField>
+				<InputField fieldName="responsible">{fieldResponsibleLabel}</InputField>
 				<MaskedInputField format="(##) #####-####" fieldName="responsiblePhone">
-					Telefone responsável
+					{filedResponsiblePhoneLabel}
 				</MaskedInputField>
 
 				<InputField fieldName="host">Quem convidou</InputField>
