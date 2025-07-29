@@ -89,7 +89,7 @@ export const ExternalVolunteerForm = ({
 	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
-		const { hasCell, cell, hasHealth, health, paymentMethod, ...data } =
+		const { hasCell, cell, hasHealth, health, paymentMethod, terms, ...data } =
 			methods.getValues()
 
 		const formattedData = {

@@ -98,8 +98,15 @@ export const ExternalParticipantForm = ({
 	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
-		const { hasReligion, religion, hasHealth, health, paymentMethod, ...data } =
-			methods.getValues()
+		const {
+			hasReligion,
+			religion,
+			hasHealth,
+			health,
+			paymentMethod,
+			terms,
+			...data
+		} = methods.getValues()
 
 		const formattedData = {
 			...data,
