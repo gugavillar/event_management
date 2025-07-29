@@ -12,6 +12,7 @@ import {
 	ParticipantExternalForm,
 } from '@/components/Organisms'
 import {
+	MEMBERS,
 	MODALS_IDS,
 	overlayOpen,
 	PAYMENT_METHOD_EXTERNAL_OPTIONS,
@@ -62,6 +63,7 @@ export const ExternalParticipantForm = ({
 			religion: '',
 			host: '',
 			hostPhone: '',
+			terms: undefined,
 			address: {
 				street: '',
 				number: '',
@@ -146,7 +148,10 @@ export const ExternalParticipantForm = ({
 								<ParticipantExternalForm isNotHappening={isNotHappening} />
 							),
 						},
-						{ title: 'Endereço', content: <AddressExternalForm /> },
+						{
+							title: 'Endereço',
+							content: <AddressExternalForm type={MEMBERS.PARTICIPANT} />,
+						},
 						...(!isInterestedList
 							? [
 									{

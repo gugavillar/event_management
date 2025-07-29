@@ -89,6 +89,9 @@ export const ExternalVolunteerFormSchemaStepOne = z
 	})
 
 export const ExternalVolunteerFormSchemaStepTwo = z.object({
+	terms: z.boolean({ error: 'Campo obrigatório' }).refine((value) => value, {
+		error: 'Campo obrigatório',
+	}),
 	address: z.object({
 		street: z.string().trim().min(3, 'Campo obrigatório'),
 		neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
@@ -145,6 +148,7 @@ export const stepsFields = [
 	{
 		schema: ExternalVolunteerFormSchemaStepTwo,
 		fields: [
+			'terms',
 			'address.street',
 			'address.neighborhood',
 			'address.number',

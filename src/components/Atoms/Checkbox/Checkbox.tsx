@@ -1,9 +1,9 @@
-import { ComponentPropsWithRef, forwardRef } from 'react'
+import { ComponentPropsWithRef, forwardRef, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type CheckboxProps = ComponentPropsWithRef<'input'> & {
 	isInvalid?: boolean
-	label: string
+	label: string | ReactNode
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(

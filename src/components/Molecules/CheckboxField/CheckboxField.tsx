@@ -1,6 +1,6 @@
 'use client'
 import { get } from 'lodash'
-import { ComponentProps } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
@@ -8,7 +8,7 @@ import { Checkbox, HelperErrorText } from '@/components/Atoms'
 
 type CheckboxFieldProps = ComponentProps<'input'> & {
 	fieldName: string
-	label: string
+	label: string | ReactNode
 	fieldClassName?: string
 }
 

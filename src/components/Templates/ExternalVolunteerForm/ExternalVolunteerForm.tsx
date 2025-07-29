@@ -12,6 +12,7 @@ import {
 } from '@/components/Organisms'
 import { VolunteerExternalForm } from '@/components/Organisms/VolunteerExternalForm'
 import {
+	MEMBERS,
 	MODALS_IDS,
 	overlayOpen,
 	PAYMENT_METHOD_EXTERNAL_OPTIONS,
@@ -53,6 +54,7 @@ export const ExternalVolunteerForm = ({
 			health: '',
 			cell: '',
 			community: '',
+			terms: undefined,
 			address: {
 				street: '',
 				number: '',
@@ -123,7 +125,10 @@ export const ExternalVolunteerForm = ({
 				<Step
 					steps={[
 						{ title: 'Voluntário', content: <VolunteerExternalForm /> },
-						{ title: 'Endereço', content: <AddressExternalForm /> },
+						{
+							title: 'Endereço',
+							content: <AddressExternalForm type={MEMBERS.VOLUNTEER} />,
+						},
 						{
 							title: 'Pagamento',
 							content: (
