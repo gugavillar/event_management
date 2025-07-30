@@ -44,18 +44,18 @@ export default async function RegistrationPage({ params }: Params) {
 
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
-			<div className="flex max-md:h-fit">
+			<div className="size-full h-[50dvh] lg:h-dvh">
 				<Image
 					src={backgroundImage}
 					width={0}
 					height={0}
 					sizes="100vw"
-					className="h-3/5 w-full object-cover lg:size-full"
+					className="size-full object-cover"
 					alt="Background image"
 					priority
 				/>
 			</div>
-			<div className="size-full overflow-y-auto">
+			<div className="size-full h-[50dvh] overflow-y-auto lg:h-full">
 				<div className="flex min-h-full flex-col items-center justify-center space-y-8 p-8">
 					<header className="space-y-2 text-center">
 						<h1 className="text-4xl">{event?.name}</h1>
