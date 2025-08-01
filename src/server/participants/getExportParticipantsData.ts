@@ -135,9 +135,12 @@ export const getExportParticipantsData = async (
 				(acc, p) => (acc += p.paymentValue.toNumber()),
 				0,
 			)
-			const statusPayments = payment.payments
-				.map((p) => paymentStatus(payment.checkIn, p.paymentType))
-				.join(', ')
+			const hasPayment = payment.payments.length > 0
+			const statusPayments = !hasPayment
+				? paymentStatus(payment.checkIn, null)
+				: payment.payments
+						.map((p) => paymentStatus(payment.checkIn, p.paymentType))
+						.join(', ')
 			const datesPayments = payment.payments
 				.map((p) => paymentDate(p.paymentType, p.updatedAt))
 				.join(', ')

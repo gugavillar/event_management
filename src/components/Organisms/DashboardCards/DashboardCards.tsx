@@ -1,3 +1,5 @@
+import { twMerge } from 'tailwind-merge'
+
 import { Header, InformationCard, Spinner, Text } from '@/components/Atoms'
 import { DashboardFromAPI } from '@/services/queries/dashboard/dashboard.types'
 
@@ -31,35 +33,57 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 				</div>
 			</InformationCard>
 			<InformationCard headingText="Confirmadas">
-				<div className="flex h-full flex-col items-center justify-end p-4 md:p-5">
-					<Text className="text-lg font-semibold">
-						<Text as="span" className="text-base font-normal opacity-50">
-							Participantes:
-						</Text>{' '}
-						{isLoading ? <Spinner /> : data?.confirmedParticipants}
-					</Text>
-					<Text className="text-lg font-semibold">
-						<Text as="span" className="text-base font-normal opacity-50">
-							Voluntários:
-						</Text>{' '}
-						{isLoading ? <Spinner /> : data?.confirmedVolunteers}
-					</Text>
+				<div
+					className={twMerge(
+						'flex h-full flex-col items-center justify-end p-4 md:p-5',
+						isLoading && 'justify-center',
+					)}
+				>
+					{isLoading ? (
+						<Spinner />
+					) : (
+						<>
+							<Text className="text-lg font-semibold">
+								<Text as="span" className="text-base font-normal opacity-50">
+									Participantes:
+								</Text>{' '}
+								{data?.confirmedParticipants}
+							</Text>
+							<Text className="text-lg font-semibold">
+								<Text as="span" className="text-base font-normal opacity-50">
+									Voluntários:
+								</Text>{' '}
+								{data?.confirmedVolunteers}
+							</Text>
+						</>
+					)}
 				</div>
 			</InformationCard>
 			<InformationCard headingText="Pagas">
-				<div className="flex h-full flex-col items-center justify-end p-4 md:p-5">
-					<Text className="text-lg font-semibold">
-						<Text as="span" className="text-base font-normal opacity-50">
-							Participantes:
-						</Text>{' '}
-						{isLoading ? <Spinner /> : data?.participantPayment}
-					</Text>
-					<Text className="text-lg font-semibold">
-						<Text as="span" className="text-base font-normal opacity-50">
-							Voluntários:
-						</Text>{' '}
-						{isLoading ? <Spinner /> : data?.volunteerPayment}
-					</Text>
+				<div
+					className={twMerge(
+						'flex h-full flex-col items-center justify-end p-4 md:p-5',
+						isLoading && 'justify-center',
+					)}
+				>
+					{isLoading ? (
+						<Spinner />
+					) : (
+						<>
+							<Text className="text-lg font-semibold">
+								<Text as="span" className="text-base font-normal opacity-50">
+									Participantes:
+								</Text>{' '}
+								{isLoading ? <Spinner /> : data?.participantPayment}
+							</Text>
+							<Text className="text-lg font-semibold">
+								<Text as="span" className="text-base font-normal opacity-50">
+									Voluntários:
+								</Text>{' '}
+								{isLoading ? <Spinner /> : data?.volunteerPayment}
+							</Text>
+						</>
+					)}
 				</div>
 			</InformationCard>
 		</section>

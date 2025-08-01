@@ -4,6 +4,7 @@ import {
 	CHECK_IN_STATUS,
 	PaymentSelectOptions,
 	PaymentType,
+	PaymentTypeAPI,
 	prisma,
 } from '@/constants'
 
@@ -12,97 +13,65 @@ const calculationAge = (birthdate: Date, finalEventDate: Date) => {
 }
 
 const queries = async (eventId: string | null) => {
-	const [
-		participants,
-		volunteers,
-		participantsPayment,
-		volunteersPayment,
-		participantsCities,
-		interestedParticipants,
-	] = await Promise.all([
-		await prisma.participant.findMany({
-			where: {
-				...(eventId && { eventId }),
-				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
-				AND: {
-					OR: [{ interested: false }, { interested: null }],
-				},
-			},
-			include: {
-				event: true,
-			},
-		}),
-		await prisma.volunteer.findMany({
-			where: {
-				...(eventId && { eventId }),
-				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
-			},
-			include: {
-				event: true,
-			},
-		}),
-		await prisma.participantPayment.findMany({
-			where: {
-				...(eventId && { eventId }),
-				OR: [
-					{ participant: { checkIn: null } },
-					{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
-				],
-				AND: {
+	const [participants, volunteers, participantsCities, interestedParticipants] =
+		await Promise.all([
+			await prisma.participant.findMany({
+				where: {
+					...(eventId && { eventId }),
 					OR: [
-						{ participant: { interested: false } },
-						{ participant: { interested: null } },
+						{ checkIn: null },
+						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
+					],
+					AND: {
+						OR: [{ interested: false }, { interested: null }],
+					},
+				},
+				include: {
+					event: true,
+					payments: true,
+				},
+			}),
+			await prisma.volunteer.findMany({
+				where: {
+					...(eventId && { eventId }),
+					OR: [
+						{ checkIn: null },
+						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
 					],
 				},
-			},
-			include: {
-				participant: true,
-				event: true,
-			},
-		}),
-		await prisma.volunteerPayment.findMany({
-			where: {
-				...(eventId && { eventId }),
-				OR: [
-					{ volunteer: { checkIn: null } },
-					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
-				],
-			},
-			include: {
-				event: true,
-				volunteer: true,
-			},
-		}),
-		await prisma.participantAddress.groupBy({
-			where: {
-				...(eventId && { participant: { eventId } }),
-				OR: [
-					{ participant: { checkIn: null } },
-					{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
-				],
-				AND: {
-					OR: [
-						{ participant: { interested: false } },
-						{ participant: { interested: null } },
-					],
+				include: {
+					event: true,
+					payments: true,
 				},
-			},
-			by: ['city'],
-			_count: true,
-		}),
-		await prisma.participant.count({
-			where: {
-				...(eventId && { eventId }),
-				interested: true,
-			},
-		}),
-	])
+			}),
+			await prisma.participantAddress.groupBy({
+				where: {
+					...(eventId && { participant: { eventId } }),
+					OR: [
+						{ participant: { checkIn: null } },
+						{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+					],
+					AND: {
+						OR: [
+							{ participant: { interested: false } },
+							{ participant: { interested: null } },
+						],
+					},
+				},
+				by: ['city'],
+				_count: true,
+			}),
+			await prisma.participant.count({
+				where: {
+					...(eventId && { eventId }),
+					interested: true,
+				},
+			}),
+		])
 
 	return {
 		participants,
 		volunteers,
-		participantsPayment,
-		volunteersPayment,
 		participantsCities,
 		interestedParticipants,
 	}
@@ -114,8 +83,6 @@ export const getDashboard = async (eventId: string | null) => {
 			participantsCities,
 			participants,
 			volunteers,
-			participantsPayment,
-			volunteersPayment,
 			interestedParticipants,
 		} = await queries(eventId)
 
@@ -127,16 +94,40 @@ export const getDashboard = async (eventId: string | null) => {
 		const totalOfConfirmedVolunteers = volunteers.filter(
 			(volunteer) => volunteer.checkIn === CHECK_IN_STATUS.CONFIRMED,
 		).length
-		const totalOfParticipantsPayments = participantsPayment.filter(
-			(participant) =>
-				participant.paymentValue.toNumber() >=
-				participant.event.participantPrice.toNumber(),
-		).length
-		const totalOfVolunteersPayments = volunteersPayment.filter(
-			(volunteer) =>
-				volunteer.paymentValue.toNumber() >=
-				volunteer.event.volunteerPrice.toNumber(),
-		).length
+		const totalOfParticipantsPayments = participants.reduce(
+			(acc, participant) => {
+				const hasPayment = participant.payments.length > 0
+				if (hasPayment) {
+					const participantPaymentValue = participant.payments.reduce(
+						(value, p) => (value += p.paymentValue.toNumber()),
+						0,
+					)
+					if (
+						participantPaymentValue >=
+						participant.event.participantPrice.toNumber()
+					) {
+						return acc + 1
+					}
+				}
+				return acc
+			},
+			0,
+		)
+		const totalOfVolunteersPayments = volunteers.reduce((acc, volunteer) => {
+			const hasPayment = volunteer.payments.length > 0
+			if (hasPayment) {
+				const volunteerPaymentValue = volunteer.payments.reduce(
+					(value, v) => (value += v.paymentValue.toNumber()),
+					0,
+				)
+				if (
+					volunteerPaymentValue >= volunteer.event.volunteerPrice.toNumber()
+				) {
+					return acc + 1
+				}
+			}
+			return acc
+		}, 0)
 
 		const labelCitiesArray = participantsCities.map((city) => city.city)
 		const citiesCountArray = participantsCities.map((city) => city._count)
@@ -185,32 +176,52 @@ export const getDashboard = async (eventId: string | null) => {
 		const agesCountsVolunteersArray = Object.values(ageRangesVolunteers)
 		const agesCountsParticipantsArray = Object.values(ageRangesParticipants)
 
-		const volunteersPaymentsByType = volunteersPayment.reduce(
-			(acc, volunteerPayment) => {
-				const paidEnough =
-					volunteerPayment.paymentValue.toNumber() >=
-					volunteerPayment.event.volunteerPrice.toNumber()
-
-				const type = volunteerPayment.paymentType
-				const label = type && paidEnough ? PaymentType[type].label : 'Em aberto'
-
-				acc[label] = (acc[label] || 0) + 1
+		const volunteersPaymentsByType = volunteers.reduce(
+			(acc, volunteer) => {
+				if (!volunteer.payments.length) {
+					acc['Em aberto'] = (acc['Em aberto'] || 0) + 1
+					return acc
+				}
+				const volunteerPaidValue = volunteer.payments.reduce(
+					(value, v) => (value += v.paymentValue.toNumber()),
+					0,
+				)
+				const isPaidEnough =
+					volunteerPaidValue >= volunteer.event.volunteerPrice.toNumber()
+				const type =
+					volunteer.payments[volunteer.payments.length - 1].paymentType
+				if (!isPaidEnough) {
+					acc['Em aberto'] = (acc['Em aberto'] || 0) + 1
+				} else {
+					const label = PaymentType[type as PaymentTypeAPI].label
+					acc[label] = (acc[label] || 0) + 1
+				}
 
 				return acc
 			},
 			{} as Record<string, number>,
 		)
 
-		const participantsPaymentsByType = participantsPayment.reduce(
-			(acc, participantPayment) => {
-				const paidEnough =
-					participantPayment.paymentValue.toNumber() >=
-					participantPayment.event.participantPrice.toNumber()
-
-				const type = participantPayment.paymentType
-				const label = type && paidEnough ? PaymentType[type].label : 'Em aberto'
-
-				acc[label] = (acc[label] || 0) + 1
+		const participantsPaymentsByType = participants.reduce(
+			(acc, participant) => {
+				if (!participant.payments.length) {
+					acc['Em aberto'] = (acc['Em aberto'] || 0) + 1
+					return acc
+				}
+				const participantPaidValue = participant.payments.reduce(
+					(acc, p) => (acc += p.paymentValue.toNumber()),
+					0,
+				)
+				const isPaidEnough =
+					participantPaidValue >= participant.event.participantPrice.toNumber()
+				const type =
+					participant.payments[participant.payments.length - 1].paymentType
+				if (!isPaidEnough) {
+					acc['Em aberto'] = (acc['Em aberto'] || 0) + 1
+				} else {
+					const label = PaymentType[type as PaymentTypeAPI].label
+					acc[label] = (acc[label] || 0) + 1
+				}
 
 				return acc
 			},
