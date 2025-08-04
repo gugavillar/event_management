@@ -64,26 +64,24 @@ export const ExternalVolunteerFormSchemaStepOne = z
 			}),
 		health: z.string().optional(),
 	})
-	.check((ctx) => {
-		if (ctx.value.hasCell === 'Yes' && !ctx.value.cell?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
+	.superRefine((data, ctx) => {
+		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
+			ctx.addIssue({
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['cell'],
 			})
 		}
-		if (ctx.value.hasHealth === 'Yes' && !ctx.value.health?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
+		if (data.hasHealth === 'Yes' && !data.health?.trim()) {
+			ctx.addIssue({
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['health'],
 			})
 		}
 		validatePhonesNotEquals(
-			ctx.value.phone,
-			[{ field: 'relativePhone', phone: ctx.value.relativePhone }],
+			data.phone,
+			[{ field: 'relativePhone', phone: data.relativePhone }],
 			ctx,
 		)
 	})
@@ -119,11 +117,13 @@ export const ExternalVolunteerFormSchemaStepThree = z.object({
 		}),
 })
 
-export const fullSchema = z.object({
-	...ExternalVolunteerFormSchemaStepOne.shape,
-	...ExternalVolunteerFormSchemaStepTwo.shape,
-	...ExternalVolunteerFormSchemaStepThree.shape,
-})
+export const fullSchema = z.intersection(
+	z.intersection(
+		ExternalVolunteerFormSchemaStepOne,
+		ExternalVolunteerFormSchemaStepTwo,
+	),
+	ExternalVolunteerFormSchemaStepThree,
+)
 
 export type FullSchemaType = z.infer<typeof fullSchema>
 

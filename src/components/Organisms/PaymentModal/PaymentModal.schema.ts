@@ -48,14 +48,13 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 				),
 			paymentValue: z.string().optional(),
 		})
-		.check((ctx) => {
-			if (ctx.value.paymentValue) {
+		.superRefine((data, ctx) => {
+			if (data.paymentValue) {
 				const totalPaid =
-					Number(removeCurrencyFormat(ctx.value.paymentValue)) + paidValue
+					Number(removeCurrencyFormat(data.paymentValue)) + paidValue
 				const limitValue = maxPaidValue - paidValue
 				if (totalPaid > maxPaidValue) {
-					ctx.issues.push({
-						input: ctx.value,
+					ctx.addIssue({
 						path: ['paymentValue'],
 						code: 'custom',
 						message: `O valor inserido excede o valor restante de ${currencyValue(limitValue)}`,
@@ -63,11 +62,10 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 				}
 			}
 			if (
-				ctx.value.paid === paymentOptionsRadio(false)[1].value &&
-				(!ctx.value.paymentValue || ctx.value.paymentValue.trim() === '')
+				data.paid === paymentOptionsRadio(false)[1].value &&
+				(!data.paymentValue || data.paymentValue.trim() === '')
 			) {
-				ctx.issues.push({
-					input: ctx.value,
+				ctx.addIssue({
 					path: ['paymentValue'],
 					code: 'custom',
 					message: 'Campo obrigatório',

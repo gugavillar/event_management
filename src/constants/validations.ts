@@ -6,7 +6,7 @@ export const MAX_FIELD_LENGTH = 191
 
 export const validateFieldsForNotEquals = <T>(
 	value: Array<T>,
-	ctx: z.core.ParsePayload<T | Array<T>>,
+	ctx: z.RefinementCtx,
 	keyOfArray: keyof T,
 	errorMessage: string,
 ) => {
@@ -26,8 +26,7 @@ export const validateFieldsForNotEquals = <T>(
 
 	if (duplicatesFields?.size) {
 		duplicatesFields?.forEach((value) =>
-			ctx.issues.push({
-				input: ctx.value,
+			ctx.addIssue({
 				code: 'custom',
 				path: [`${value}.${keyOfArray as string}`],
 				message: errorMessage,
@@ -36,15 +35,14 @@ export const validateFieldsForNotEquals = <T>(
 	}
 }
 
-export const validatePhonesNotEquals = <T>(
+export const validatePhonesNotEquals = (
 	personPhone: string,
 	value: Array<{ phone: string; field: string }>,
-	ctx: z.core.ParsePayload<T>,
+	ctx: z.RefinementCtx,
 ) => {
 	value.forEach((value) => {
 		if (value.phone === personPhone) {
-			return ctx.issues.push({
-				input: ctx.value,
+			ctx.addIssue({
 				code: 'custom',
 				path: [value.field],
 				message: 'Telefone duplicado',

@@ -43,7 +43,6 @@ export const AddressExternalForm = ({ type }: AddressExternalFormProps) => {
 			<span>Li e concordo com os {generateLink(type)}</span>
 		)
 
-	console.log(checkboxLabel)
 	return (
 		<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 			<InputField fieldName="address.street">Endereço</InputField>

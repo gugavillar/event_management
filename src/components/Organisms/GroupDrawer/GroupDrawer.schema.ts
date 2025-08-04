@@ -32,9 +32,9 @@ export const GroupSchema = z.object({
 				member: z.uuid({ message: 'Campo obrigatório' }),
 			}),
 		)
-		.check((ctx) =>
+		.superRefine((data, ctx) =>
 			validateFieldsForNotEquals(
-				ctx.value,
+				data,
 				ctx,
 				'member',
 				'Os membros devem ser diferentes',

@@ -6,7 +6,7 @@ export const currencyValue = (value: number) => {
 }
 
 export const currencyFieldValue = (value: string) => {
-	if (!value || value === '000') return ''
+	if (!value || value === '000' || value === '00') return ''
 
 	return new Intl.NumberFormat('pt-BR', {
 		style: 'currency',

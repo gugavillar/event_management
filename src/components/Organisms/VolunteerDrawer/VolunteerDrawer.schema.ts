@@ -77,26 +77,24 @@ export const VolunteerSchema = z
 				}),
 		}),
 	})
-	.check((ctx) => {
-		if (ctx.value.hasCell === 'Yes' && !ctx.value.cell?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
+	.superRefine((data, ctx) => {
+		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
+			return ctx.addIssue({
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['cell'],
 			})
 		}
-		if (ctx.value.hasHealth === 'Yes' && !ctx.value.health?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
+		if (data.hasHealth === 'Yes' && !data.health?.trim()) {
+			return ctx.addIssue({
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['health'],
 			})
 		}
 		validatePhonesNotEquals(
-			ctx.value.phone,
-			[{ field: 'relativePhone', phone: ctx.value.relativePhone }],
+			data.phone,
+			[{ field: 'relativePhone', phone: data.relativePhone }],
 			ctx,
 		)
 	})

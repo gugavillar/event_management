@@ -31,11 +31,11 @@ export const DefineNewPasswordSchema = z
 				message: 'Password deve ter no mínimo 6 caracteres',
 			}),
 	})
-	.check((ctx) => {
-		if (ctx.value.password !== ctx.value.confirmPassword) {
-			ctx.issues.push({
+	.superRefine((data, ctx) => {
+		if (data.password !== data.confirmPassword) {
+			ctx.addIssue({
 				code: 'custom',
-				input: ctx.value,
+				path: ['confirmPassword'],
 				message: 'Senhas diferentes',
 			})
 		}

@@ -1,6 +1,6 @@
 {
 	"name": "event_management",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"private": true,
 	"prisma": {
 		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

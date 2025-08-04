@@ -89,28 +89,26 @@ export const ExternalParticipantFormSchemaStepOne = (
 					{ error: 'Telefone inválido' },
 				),
 		})
-		.check((ctx) => {
-			if (ctx.value.hasReligion === 'Yes' && !ctx.value.religion?.trim()) {
-				ctx.issues.push({
-					input: ctx.value,
+		.superRefine((data, ctx) => {
+			if (data.hasReligion === 'Yes' && !data.religion?.trim()) {
+				ctx.addIssue({
 					code: 'custom',
 					message: 'Campo obrigatório',
 					path: ['religion'],
 				})
 			}
-			if (ctx.value.hasHealth === 'Yes' && !ctx.value.health?.trim()) {
-				ctx.issues.push({
-					input: ctx.value,
+			if (data.hasHealth === 'Yes' && !data.health?.trim()) {
+				ctx.addIssue({
 					code: 'custom',
 					message: 'Campo obrigatório',
 					path: ['health'],
 				})
 			}
 			validatePhonesNotEquals(
-				ctx.value.phone,
+				data.phone,
 				[
-					{ field: 'responsiblePhone', phone: ctx.value.responsiblePhone },
-					{ field: 'hostPhone', phone: ctx.value.hostPhone },
+					{ field: 'responsiblePhone', phone: data.responsiblePhone },
+					{ field: 'hostPhone', phone: data.hostPhone },
 				],
 				ctx,
 			)
@@ -150,11 +148,13 @@ export const ExternalParticipantFormSchemaStepThree = () =>
 	})
 
 export const fullSchema = (minAge?: number | null, maxAge?: number | null) =>
-	z.object({
-		...ExternalParticipantFormSchemaStepOne(minAge, maxAge).shape,
-		...ExternalParticipantFormSchemaStepTwo().shape,
-		...ExternalParticipantFormSchemaStepThree().shape,
-	})
+	z.intersection(
+		z.intersection(
+			ExternalParticipantFormSchemaStepOne(minAge, maxAge),
+			ExternalParticipantFormSchemaStepTwo(),
+		),
+		ExternalParticipantFormSchemaStepThree(),
+	)
 
 export type FullSchemaType = z.infer<ReturnType<typeof fullSchema>>
 

@@ -84,28 +84,26 @@ export const ParticipantSchema = z
 				}),
 		}),
 	})
-	.check((ctx) => {
-		if (ctx.value.hasReligion === 'Yes' && !ctx.value.religion?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
+	.superRefine((data, ctx) => {
+		if (data.hasReligion === 'Yes' && !data.religion?.trim()) {
+			ctx.addIssue({
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['religion'],
 			})
 		}
-		if (ctx.value.hasHealth === 'Yes' && !ctx.value.health?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
+		if (data.hasHealth === 'Yes' && !data.health?.trim()) {
+			ctx.addIssue({
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['health'],
 			})
 		}
 		validatePhonesNotEquals(
-			ctx.value.phone,
+			data.phone,
 			[
-				{ field: 'responsiblePhone', phone: ctx.value.responsiblePhone },
-				{ field: 'hostPhone', phone: ctx.value.hostPhone },
+				{ field: 'responsiblePhone', phone: data.responsiblePhone },
+				{ field: 'hostPhone', phone: data.hostPhone },
 			],
 			ctx,
 		)

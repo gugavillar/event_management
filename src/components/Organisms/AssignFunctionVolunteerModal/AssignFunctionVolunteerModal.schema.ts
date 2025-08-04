@@ -13,9 +13,9 @@ export const AssignFunctionSchema = z.object({
 				isLeader: z.boolean({ message: 'Campo obrigatório' }).optional(),
 			}),
 		)
-		.check((ctx) =>
+		.superRefine((data, ctx) =>
 			validateFieldsForNotEquals(
-				ctx.value,
+				data,
 				ctx,
 				'roleId',
 				'As funções devem ser diferentes',
