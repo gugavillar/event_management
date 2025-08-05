@@ -17,10 +17,20 @@ type SidebarContextType = {
 export const SidebarContext = createContext({} as SidebarContextType)
 
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
-	const [collapsed, setCollapsed] = useState(false)
+	const localCollapse = window.localStorage.getItem('collapsed')
+	const [collapsed, setCollapsed] = useState(
+		localCollapse ? JSON.parse(localCollapse) : false,
+	)
+
+	const handleCollapse = () => {
+		window.localStorage.setItem('collapsed', String(!collapsed))
+		setCollapsed(!collapsed)
+	}
 
 	return (
-		<SidebarContext.Provider value={{ collapsed, setCollapsed }}>
+		<SidebarContext.Provider
+			value={{ collapsed, setCollapsed: handleCollapse }}
+		>
 			{children}
 		</SidebarContext.Provider>
 	)
