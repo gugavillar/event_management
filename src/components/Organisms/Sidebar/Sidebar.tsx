@@ -20,10 +20,10 @@ export const Sidebar = () => {
 	useCancelPrelineOverflow()
 
 	useEffect(() => {
-		if (width && width <= 1024) {
+		if (width && width <= 1024 && !collapsed) {
 			setCollapsed(true)
 		}
-	}, [setCollapsed, width])
+	}, [setCollapsed, width, collapsed])
 
 	return (
 		<aside
