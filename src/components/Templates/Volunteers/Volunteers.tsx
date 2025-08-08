@@ -74,7 +74,6 @@ export const Volunteers = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { data: volunteersCities } = useGetVolunteersCities()
 	const {
 		data: volunteers,
 		isLoading,
@@ -91,6 +90,7 @@ export const Volunteers = () => {
 		city,
 		setCity,
 	} = useGetVolunteers()
+	const { data: volunteersCities } = useGetVolunteersCities({ eventId })
 	const { data: roles } = useGetFunctions(eventId)
 
 	const methods = useForm<VolunteerType>({

@@ -1,22 +1,21 @@
 import { prisma } from '@/constants'
 
-export const getParticipantsCities = async (isInterested: boolean | null) => {
+export const getParticipantsCities = async (
+	isInterested: boolean | null,
+	eventId: string | null,
+) => {
 	try {
 		return await prisma.participantAddress.groupBy({
 			by: ['city'],
 			where: {
-				...(!isInterested
-					? {
-							OR: [
-								{ participant: { interested: false } },
-								{ participant: { interested: null } },
-							],
-						}
-					: {
-							participant: {
-								interested: true,
-							},
-						}),
+				participant: {
+					...(eventId && { eventId }),
+					...(isInterested
+						? { interested: true }
+						: {
+								OR: [{ interested: false }, { interested: null }],
+							}),
+				},
 			},
 			orderBy: {
 				city: 'asc',

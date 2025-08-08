@@ -42,7 +42,7 @@ export default async function ParticipantsPage({ searchParams }: SearchParams) {
 				participantCity: debounceCityValue,
 				page,
 			}),
-		async () => getParticipantsCities(),
+		async () => getParticipantsCities(false, debounceEventIdValue),
 	])
 
 	return (
@@ -53,7 +53,11 @@ export default async function ParticipantsPage({ searchParams }: SearchParams) {
 		>
 			<HydrationProvider
 				queryFn={getCities}
-				queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, undefined]}
+				queryKey={[
+					QUERY_KEYS.PARTICIPANTS_CITIES,
+					undefined,
+					debounceEventIdValue,
+				]}
 			>
 				<HydrationProvider
 					queryFn={getAllParticipants}

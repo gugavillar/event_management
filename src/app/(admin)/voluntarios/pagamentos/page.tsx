@@ -41,7 +41,7 @@ export default async function VolunteersPaymentsPage({
 				volunteerCity: debounceCityValue,
 				page,
 			}),
-		async () => getVolunteersCities(),
+		async () => getVolunteersCities(debounceEventIdValue),
 	])
 
 	return (
@@ -63,7 +63,7 @@ export default async function VolunteersPaymentsPage({
 			>
 				<HydrationProvider
 					queryFn={getCities}
-					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES]}
+					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES, debounceEventIdValue]}
 				>
 					<VolunteersPayments />
 				</HydrationProvider>

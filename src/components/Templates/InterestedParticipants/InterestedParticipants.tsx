@@ -41,7 +41,6 @@ export const InterestedParticipants = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { data: participantsCities } = useGetParticipantsCities(true)
 	const {
 		data: participants,
 		isLoading,
@@ -54,6 +53,12 @@ export const InterestedParticipants = () => {
 		city,
 		setCity,
 	} = useGetParticipants(true)
+	const { data: participantsCities } = useGetParticipantsCities({
+		isInterested: true,
+		eventId,
+	})
+
+	console.log(participantsCities, participants)
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),

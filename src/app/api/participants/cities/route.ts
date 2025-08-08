@@ -7,8 +7,10 @@ const handleGet = async (request: NextRequest) => {
 	const isInterestedParams = Boolean(
 		request.nextUrl.searchParams.get('isInterested'),
 	)
+	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 	return await requestProcess({
-		functions: async () => await getParticipantsCities(isInterestedParams),
+		functions: async () =>
+			await getParticipantsCities(isInterestedParams, eventIdParams),
 	})
 }
 

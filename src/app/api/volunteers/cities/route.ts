@@ -1,9 +1,12 @@
+import { NextRequest } from 'next/server'
+
 import { getVolunteerCities } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
-const handleGet = async () => {
+const handleGet = async (request: NextRequest) => {
+	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 	return await requestProcess({
-		functions: async () => await getVolunteerCities(),
+		functions: async () => await getVolunteerCities(eventIdParams),
 	})
 }
 

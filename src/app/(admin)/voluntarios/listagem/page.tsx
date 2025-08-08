@@ -50,7 +50,7 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 				}),
 			async () =>
 				getFunctions({ searchFunction: '', eventId: debounceEventIdValue }),
-			async () => getVolunteersCities(),
+			async () => getVolunteersCities(debounceEventIdValue),
 		])
 
 	return (
@@ -73,7 +73,7 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 			>
 				<HydrationProvider
 					queryFn={getCities}
-					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES]}
+					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES, debounceEventIdValue]}
 				>
 					<HydrationProvider
 						queryFn={getAllFunctions}

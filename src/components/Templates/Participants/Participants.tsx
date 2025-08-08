@@ -89,7 +89,6 @@ export const Participants = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { data: participantsCities } = useGetParticipantsCities()
 	const {
 		data: participants,
 		isLoading,
@@ -104,6 +103,7 @@ export const Participants = () => {
 		city,
 		setCity,
 	} = useGetParticipants()
+	const { data: participantsCities } = useGetParticipantsCities({ eventId })
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),

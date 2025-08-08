@@ -50,7 +50,6 @@ export const VolunteersPayments = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
-	const { data: volunteersCities } = useGetVolunteersCities()
 	const {
 		data: volunteersPayments,
 		isLoading: isLoadingPayments,
@@ -65,6 +64,7 @@ export const VolunteersPayments = () => {
 		city,
 		setCity,
 	} = useGetPayments()
+	const { data: volunteersCities } = useGetVolunteersCities({ eventId })
 	const { create, isPending } = useCreateVolunteerPayment()
 	const { returnPayment, isPending: isPendingReturn } =
 		useReturnVolunteerPayment()

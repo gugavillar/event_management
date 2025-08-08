@@ -45,7 +45,7 @@ export default async function InterestedParticipantsPage({
 				isInterested: true,
 				page,
 			}),
-		async () => getParticipantsCities(true),
+		async () => getParticipantsCities(true, debounceEventIdValue),
 	])
 
 	return (
@@ -56,7 +56,7 @@ export default async function InterestedParticipantsPage({
 		>
 			<HydrationProvider
 				queryFn={getCities}
-				queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, true]}
+				queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, true, debounceEventIdValue]}
 			>
 				<HydrationProvider
 					queryFn={getAllParticipants}

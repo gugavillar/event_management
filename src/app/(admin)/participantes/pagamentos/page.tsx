@@ -44,7 +44,7 @@ export default async function ParticipantsPaymentsPage({
 				participantCity: debounceCityValue,
 				page,
 			}),
-		async () => getParticipantsCities(),
+		async () => getParticipantsCities(false, debounceEventIdValue),
 	])
 	return (
 		<HydrationProvider
@@ -65,7 +65,11 @@ export default async function ParticipantsPaymentsPage({
 			>
 				<HydrationProvider
 					queryFn={getCities}
-					queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, undefined]}
+					queryKey={[
+						QUERY_KEYS.PARTICIPANTS_CITIES,
+						undefined,
+						debounceEventIdValue,
+					]}
 				>
 					<ParticipantsPayments />
 				</HydrationProvider>
