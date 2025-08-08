@@ -7,7 +7,6 @@ import { Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
 import {
 	ExportParticipantsButton,
-	InterestedModalToParticipant,
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
@@ -28,6 +27,12 @@ import { formatTableData, HEADER_LABELS } from './InterestedParticipants.utils'
 
 const ParticipantModalData = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.ParticipantModalData),
+)
+
+const InterestedModalToParticipant = dynamic(() =>
+	import('@/components/Organisms').then(
+		(mod) => mod.InterestedModalToParticipant,
+	),
 )
 
 export const InterestedParticipants = () => {
@@ -57,8 +62,6 @@ export const InterestedParticipants = () => {
 		isInterested: true,
 		eventId,
 	})
-
-	console.log(participantsCities, participants)
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -162,6 +165,7 @@ export const InterestedParticipants = () => {
 				modalId={MODALS_IDS.PARTICIPANT_INTERESTED_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
+				interested={false}
 			/>
 		</PageContent>
 	)

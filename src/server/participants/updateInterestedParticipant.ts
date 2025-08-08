@@ -4,17 +4,22 @@ import { prisma } from '@/constants'
 
 export type UpdateInterestedParticipantArgs = {
 	participantId: string
+	interested: boolean
 }
 
-export const updateInterestedParticipant = async (participantId: string) => {
+export const updateInterestedParticipant = async (
+	participantId: string,
+	interested: boolean,
+) => {
 	try {
 		z.object({
 			participantId: z.uuid(),
-		}).parse({ participantId })
+			interested: z.boolean(),
+		}).parse({ participantId, interested })
 
 		return await prisma.participant.update({
 			data: {
-				interested: false,
+				interested,
 			},
 			where: {
 				id: participantId,

@@ -13,6 +13,7 @@ type InterestedModalToParticipantProps = {
 	modalId: string
 	selectedParticipant: ParticipantsAPI['id'] | null
 	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
+	interested: boolean
 }
 
 export const InterestedModalToParticipant = memo(
@@ -20,6 +21,7 @@ export const InterestedModalToParticipant = memo(
 		modalId,
 		selectedParticipant,
 		setSelectedParticipant,
+		interested,
 	}: InterestedModalToParticipantProps) => {
 		const { update, isPending } = useUpdateInterestedParticipant()
 
@@ -27,7 +29,7 @@ export const InterestedModalToParticipant = memo(
 			if (!selectedParticipant) return
 
 			await update(
-				{ participantId: selectedParticipant },
+				{ participantId: selectedParticipant, interested },
 				{
 					onSuccess: () => {
 						setSelectedParticipant(null)
@@ -47,11 +49,14 @@ export const InterestedModalToParticipant = memo(
 						<OctagonAlert size={64} className="text-amber-300" />
 						<div className="space-y-4 text-center">
 							<Header as="h3" className="text-2xl">
-								Você deseja confirmar participação?
+								{interested
+									? 'Você deseja adicionar na lista de interessados?'
+									: 'Você deseja confirmar participação?'}
 							</Header>
 							<Text>
-								Ao confirmar este participante será movido da lista de interesse
-								para o evento
+								{interested
+									? 'Ao confirmar este participante será adicionado na lista de interessados'
+									: 'Ao confirmar este participante será adicionado na lista de participantes'}
 							</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">

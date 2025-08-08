@@ -51,6 +51,12 @@ const ParticipantDrawer = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.ParticipantDrawer),
 )
 
+const InterestedModalToParticipant = dynamic(() =>
+	import('@/components/Organisms').then(
+		(mod) => mod.InterestedModalToParticipant,
+	),
+)
+
 export const Participants = () => {
 	const [selectedParticipant, setSelectedParticipant] = useState<
 		null | ParticipantsAPI['id']
@@ -165,12 +171,21 @@ export const Participants = () => {
 		[],
 	)
 
+	const handleOpenModalInterestedParticipant = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
+		},
+		[],
+	)
+
 	const formattedParticipants = formatTableData(
 		participants?.data,
 		handleOpenModalToDeleteParticipant,
 		handleOpenModalToCheckInParticipant,
 		handleOpenDrawerToCreateOrEditParticipant,
 		handleOpenModalToShowParticipantData,
+		handleOpenModalInterestedParticipant,
 	)
 
 	const hasMoreThanOnePage =
@@ -255,6 +270,12 @@ export const Participants = () => {
 				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
+			/>
+			<InterestedModalToParticipant
+				modalId={MODALS_IDS.PARTICIPANT_INTERESTED_MODAL}
+				selectedParticipant={selectedParticipant}
+				setSelectedParticipant={setSelectedParticipant}
+				interested={true}
 			/>
 		</PageContent>
 	)

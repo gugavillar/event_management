@@ -1,5 +1,11 @@
 import { format } from 'date-fns'
-import { FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
+import {
+	ArrowLeftRight,
+	FileUser,
+	SquarePen,
+	TicketCheck,
+	UserRoundX,
+} from 'lucide-react'
 
 import { StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
@@ -47,6 +53,7 @@ export const formatTableData = (
 	handleCheckInParticipant: (id: ParticipantsAPI['id']) => void,
 	handleEditParticipant: (id: ParticipantsAPI['id']) => void,
 	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
+	handleInterestedParticipant: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -100,6 +107,14 @@ export const formatTableData = (
 							onClick={() => handleCheckInParticipant(participant.id)}
 						/>
 						<Tooltip>Check-In</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<ArrowLeftRight
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleInterestedParticipant(participant.id)}
+						/>
+						<Tooltip>Mover para lista de interessados</Tooltip>
 					</div>
 					<div className="hs-tooltip">
 						<UserRoundX
