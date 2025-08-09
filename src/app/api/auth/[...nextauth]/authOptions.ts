@@ -5,6 +5,8 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { prisma, ROLES } from '@/constants'
 
+const COOKIE_PREFIX = 'event-manager'
+
 export const authOptions: NextAuthOptions = {
 	providers: [
 		CredentialsProvider({
@@ -70,6 +72,34 @@ export const authOptions: NextAuthOptions = {
 		signIn: '/',
 	},
 	secret: process.env.NEXTAUTH_SECRET,
+	cookies: {
+		sessionToken: {
+			name: `${COOKIE_PREFIX}.session-token`,
+			options: {
+				httpOnly: true,
+				sameSite: 'lax',
+				path: '/',
+				secure: true,
+			},
+		},
+		callbackUrl: {
+			name: `${COOKIE_PREFIX}.callback-url`,
+			options: {
+				sameSite: 'lax',
+				path: '/',
+				secure: true,
+			},
+		},
+		csrfToken: {
+			name: `${COOKIE_PREFIX}.csrf-token`,
+			options: {
+				httpOnly: true,
+				sameSite: 'lax',
+				path: '/',
+				secure: true,
+			},
+		},
+	},
 
 	jwt: {
 		async encode({ secret, token }) {

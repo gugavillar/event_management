@@ -70,7 +70,7 @@ export const PaymentModal = memo(
 						onSubmit={methods.handleSubmit(onSubmit)}
 					>
 						<div className="flex flex-col items-center justify-between gap-2">
-							<OctagonAlert size={32} className="text-amber-300" />
+							<OctagonAlert size={64} className="text-amber-300" />
 							<Header as="h3" className="text-center text-lg">
 								Você deseja confirmar o pagamento do {modalType}?
 							</Header>

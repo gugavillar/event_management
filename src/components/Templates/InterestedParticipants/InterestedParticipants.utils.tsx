@@ -2,7 +2,6 @@ import { format } from 'date-fns'
 import { ArrowLeftRight, FileUser } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
-import { LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -46,7 +45,6 @@ export const formatTableData = (
 
 	return data?.map((participant) => {
 		return {
-			backgroundColor: LINE_COLOR.interested,
 			id: participant.id,
 			name: participant.name,
 			contact: formatPhone(participant.phone),
