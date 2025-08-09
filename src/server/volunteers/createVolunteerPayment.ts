@@ -1,6 +1,11 @@
 import { z } from 'zod'
 
-import { PaymentTypeAPI, prisma } from '@/constants'
+import {
+	MAX_CURRENCY_VALUE,
+	MIN_CURRENCY_VALUE,
+	PaymentTypeAPI,
+	prisma,
+} from '@/constants'
 
 export type CreateVolunteerPaymentArgs = {
 	paymentType: (typeof PaymentTypeAPI)['CARD' | 'CASH' | 'PIX' | 'DONATION']
@@ -21,7 +26,10 @@ export const createVolunteerPayment = async (
 				PaymentTypeAPI.DONATION,
 				PaymentTypeAPI.DONATION_ROMERO,
 			]),
-			paymentValue: z.number(),
+			paymentValue: z.coerce
+				.number()
+				.min(MIN_CURRENCY_VALUE)
+				.max(MAX_CURRENCY_VALUE),
 			eventId: z.uuid(),
 			volunteerId: z.uuid(),
 		}).parse({ ...values })

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { MAX_FIELD_LENGTH, prisma } from '@/constants'
 
 export const updateFunctionById = async (
 	data: { role: string; events: Array<{ id: string }> },
@@ -9,7 +9,7 @@ export const updateFunctionById = async (
 	try {
 		z.object({
 			roleId: z.uuid(),
-			role: z.string().min(1).max(191),
+			role: z.string().trim().min(1).max(MAX_FIELD_LENGTH),
 			events: z.array(z.object({ id: z.uuid() })),
 		}).parse({ roleId, ...data })
 

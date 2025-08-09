@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { MAX_FIELD_LENGTH, MEMBERS } from '@/constants'
 
 export const groupSchemaRoute = z.object({
-	name: z.string().min(3).max(MAX_FIELD_LENGTH),
+	name: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
 	eventId: z.uuid(),
 	members: z.array(
 		z.object({

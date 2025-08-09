@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { MEMBERS } from '@/constants'
 
 export const roomSchemaRoute = z.object({
-	roomNumber: z.string().min(1).max(2),
+	roomNumber: z.string().trim().min(1).max(2),
 	eventId: z.uuid(),
 	members: z.array(
 		z.object({

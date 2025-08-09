@@ -6,7 +6,7 @@ const arrayOfUuidBooleanObjects = z.array(uuidBooleanObject)
 
 export const meetingSchemaRoute = z.object({
 	eventId: z.uuid(),
-	title: z.string().min(3),
+	title: z.string().trim().min(3),
 	date: z.iso.datetime({ precision: 3 }),
 })
 

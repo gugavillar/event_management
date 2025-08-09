@@ -8,7 +8,7 @@ import {
 } from '@/constants'
 
 export const eventSchemaRoute = z.object({
-	name: z.string().min(3).max(MAX_FIELD_LENGTH),
+	name: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
 	gender: z.enum([
 		GenderTypeAPI.MALE,
 		GenderTypeAPI.FEMALE,
