@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
@@ -98,35 +97,6 @@ export const authOptions: NextAuthOptions = {
 				path: '/',
 				secure: true,
 			},
-		},
-	},
-
-	jwt: {
-		async encode({ secret, token }) {
-			if (!token) {
-				throw new Error('No token to encode!')
-			}
-
-			return jwt.sign(token, secret)
-		},
-
-		async decode({ secret, token }) {
-			if (!token) {
-				throw new Error('No token to decode')
-			}
-
-			try {
-				const decodedToken = jwt.verify(token, secret)
-
-				if (typeof decodedToken === 'string') {
-					return JSON.parse(decodedToken)
-				} else {
-					return decodedToken
-				}
-			} catch (err) {
-				console.error('Token inválido ou expirado', err)
-				return null
-			}
 		},
 	},
 
