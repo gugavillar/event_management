@@ -1,5 +1,15 @@
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import { Donation } from '@/components/Templates'
-import { generatePage, QUERY_KEYS } from '@/constants'
+import {
+	generatePage,
+	PAGES_ROLES,
+	QUERY_KEYS,
+	ROLES,
+	validatePagePermission,
+} from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getDonations } from '@/services/queries/donations'
@@ -13,6 +23,16 @@ type SearchParams = {
 }
 
 export default async function DonationPage({ searchParams }: SearchParams) {
+	const session = await getServerSession(authOptions)
+	const hasPermission = validatePagePermission(
+		session?.user?.role as ROLES,
+		PAGES_ROLES['/doacoes'],
+	)
+
+	if (!hasPermission) {
+		return redirect('/dashboard')
+	}
+
 	const params = await searchParams.then((res) => ({
 		eventId: res.eventId ?? '',
 		page: res.pageDonation ?? '',

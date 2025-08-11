@@ -3,10 +3,10 @@ import { ChevronUp, UserRoundCog } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { User } from 'next-auth'
 import { signOut } from 'next-auth/react'
-import { Fragment, memo } from 'react'
+import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { Avatar } from '@/components/Atoms'
+import { Avatar, Tooltip } from '@/components/Atoms'
 import { PRINCIPAL_LINKS, ROLES } from '@/constants'
 
 type UserAvatarProps = {
@@ -27,23 +27,35 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 
 	return (
 		<footer className="border-gray-200 max-md:border-l max-md:pl-4 md:mt-auto md:border-t md:pt-4">
-			<div className="hs-dropdown relative inline-flex w-full [--strategy:absolute]">
+			<div className="hs-dropdown relative inline-flex w-full">
 				<button
 					type="button"
 					className={twMerge(
-						'focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 hover:bg-slate-900/80',
+						'hs-tooltip focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 [--placement:auto] hover:bg-slate-900/80',
 						collapsed && 'justify-center',
 					)}
 				>
-					{!collapsed ? (
-						<Fragment>
-							<Avatar>{avatar}</Avatar>
-							{user?.name}
-							<ChevronUp className="ml-auto" size={20} />
-						</Fragment>
-					) : (
+					<div
+						className={twMerge(
+							!collapsed ? 'flex w-full items-center gap-2' : 'sr-only',
+						)}
+					>
+						<Avatar>{avatar}</Avatar>
+						{user?.name}
+						<ChevronUp className="ml-auto" size={20} />
+					</div>
+					<div className={twMerge(collapsed ? 'block' : 'sr-only')}>
+						<Tooltip
+							className={
+								collapsed
+									? 'hs-tooltip-shown:visible'
+									: 'hs-tooltip-shown:hidden'
+							}
+						>
+							Usuários
+						</Tooltip>
 						<UserRoundCog size={24} />
-					)}
+					</div>
 				</button>
 
 				<div

@@ -1,12 +1,23 @@
 import { twMerge } from 'tailwind-merge'
 
 import { Link, Tooltip } from '@/components/Atoms'
+import { PAGES_ROLES, ROLES } from '@/constants'
 
 import { MenuLinkWithSubMenu } from './PrincipalMenu.utils'
 
 type SubMenuItemProps = Omit<MenuLinkWithSubMenu, 'hasSubMenu'> & {
 	collapsed: boolean
 	path: string
+	userRole?: string
+}
+
+const validateHasMenu = (
+	links: MenuLinkWithSubMenu['links'],
+	userRole: ROLES,
+) => {
+	return links.some((link) =>
+		PAGES_ROLES[link.href as keyof typeof PAGES_ROLES].includes(userRole),
+	)
 }
 
 export const SubMenuItem = ({
@@ -15,18 +26,23 @@ export const SubMenuItem = ({
 	collapsed,
 	links,
 	path,
+	userRole,
 }: SubMenuItemProps) => {
 	const validateLabelPath = buttonLabel
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.toLowerCase()
 
+	if (!validateHasMenu(links, userRole as ROLES)) {
+		return null
+	}
+
 	return (
-		<div className="hs-dropdown relative inline-flex [--strategy:absolute]">
+		<div className="hs-dropdown relative inline-flex">
 			<button
 				type="button"
 				className={twMerge(
-					'hs-tooltip focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 hover:bg-slate-900/80',
+					'hs-tooltip focus:outline-hidden inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 [--placement:auto] hover:bg-slate-900/80',
 					collapsed && 'justify-center',
 					path.includes(validateLabelPath) && 'bg-slate-900/80',
 				)}
@@ -48,15 +64,24 @@ export const SubMenuItem = ({
 				aria-orientation="vertical"
 			>
 				<div className="p-1">
-					{links.map(({ href, label }) => (
-						<Link
-							key={label}
-							className="focus:outline-hidden flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
-							href={href}
-						>
-							{label}
-						</Link>
-					))}
+					{links.map(({ href, label }) => {
+						if (
+							!PAGES_ROLES[href as keyof typeof PAGES_ROLES].includes(
+								userRole as ROLES,
+							)
+						) {
+							return null
+						}
+						return (
+							<Link
+								key={label}
+								className="focus:outline-hidden flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+								href={href}
+							>
+								{label}
+							</Link>
+						)
+					})}
 				</div>
 			</div>
 		</div>

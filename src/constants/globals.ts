@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
+import { ROLES } from './status'
+
 export const LIMIT_PER_PAGE = 10
 export const LIMIT_PER_PAGE_EDITION = 300
 
@@ -137,4 +139,20 @@ export const IMAGES_FORMS = {
 export const IMAGES_CLOSED = {
 	'cursilho-masculino': '/cursilho_masculino_closed.webp',
 	happening: '/happening_closed.webp',
+}
+
+export const PAGES_ROLES = {
+	'/dashboard': [ROLES.ADMIN, ROLES.USER],
+	'/eventos': [ROLES.ADMIN, ROLES.USER],
+	'/participantes/listagem': [ROLES.ADMIN, ROLES.USER],
+	'/participantes/lista-interessados': [ROLES.ADMIN, ROLES.USER],
+	'/participantes/pagamentos': [ROLES.ADMIN, ROLES.USER],
+	'/voluntarios/listagem': [ROLES.ADMIN, ROLES.USER],
+	'/voluntarios/funcoes': [ROLES.ADMIN, ROLES.USER],
+	'/voluntarios/pagamentos': [ROLES.ADMIN, ROLES.USER],
+	'/grupos': [ROLES.ADMIN, ROLES.USER],
+	'/quartos': [ROLES.ADMIN, ROLES.USER],
+	'/reunioes': [ROLES.ADMIN, ROLES.USER],
+	'/doacoes': [ROLES.ADMIN],
+	'/usuarios': [ROLES.ADMIN],
 }

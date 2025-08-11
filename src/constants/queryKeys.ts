@@ -7,7 +7,7 @@ const makeQueryClient = () =>
 				staleTime: 60 * 1000,
 				refetchOnMount: false,
 				refetchOnReconnect: false,
-				refetchOnWindowFocus: false,
+				refetchOnWindowFocus: true,
 				retry: false,
 			},
 		},

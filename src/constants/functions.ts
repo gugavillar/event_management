@@ -1,7 +1,7 @@
 import { isFuture } from 'date-fns'
 
 import { IMAGES_CLOSED, IMAGES_FORMS } from './globals'
-import { MEMBERS } from './status'
+import { MEMBERS, ROLES } from './status'
 
 export const overlayClose = async (elementId: string) => {
 	const overlay = await import('preline/preline')
@@ -70,4 +70,8 @@ export const closedImage = (eventName?: string) => {
 	}
 
 	return ''
+}
+
+export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
+	return pageRole.includes(userRole)
 }

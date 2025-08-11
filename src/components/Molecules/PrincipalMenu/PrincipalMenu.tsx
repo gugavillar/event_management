@@ -1,5 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { memo } from 'react'
 
 import { MenuItem } from './MenuItem'
@@ -12,6 +13,7 @@ type PrincipalMenuProps = {
 
 export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 	const path = usePathname()
+	const { data } = useSession()
 	return (
 		<nav
 			className="flex w-full flex-row justify-evenly md:mt-8 md:flex-col md:space-y-4"
@@ -24,6 +26,7 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 						path={path}
 						key={item.buttonLabel}
 						collapsed={collapsed}
+						userRole={data?.user?.role}
 					/>
 				) : (
 					<MenuItem
@@ -31,6 +34,7 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 						path={path}
 						key={item.buttonLabel}
 						collapsed={collapsed}
+						userRole={data?.user?.role}
 					/>
 				),
 			)}
