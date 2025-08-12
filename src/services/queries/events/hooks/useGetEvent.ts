@@ -15,7 +15,7 @@ type EventFormatted = Omit<EventsAPI, 'initialDate' | 'finalDate'> & {
 }
 
 export const useGetEvent = (eventId: EventsAPI['id'] | null) => {
-	const query: UseQueryResult<EventFormatted> = useQuery({
+	const { data, isLoading }: UseQueryResult<EventFormatted> = useQuery({
 		queryKey: [QUERY_KEYS.EVENT, eventId],
 		queryFn: () => getEvent(eventId as EventsAPI['id']),
 		enabled: !!eventId,
@@ -28,5 +28,5 @@ export const useGetEvent = (eventId: EventsAPI['id'] | null) => {
 		}),
 	})
 
-	return { ...query }
+	return { data, isLoading }
 }

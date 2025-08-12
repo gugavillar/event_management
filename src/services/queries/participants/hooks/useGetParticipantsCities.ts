@@ -12,10 +12,10 @@ export const useGetParticipantsCities = ({
 	isInterested?: boolean
 	eventId?: string
 }) => {
-	const query = useQuery({
+	const { data } = useQuery({
 		queryKey: [QUERY_KEYS.PARTICIPANTS_CITIES, isInterested, eventId],
 		queryFn: () => getParticipantsCities(isInterested, eventId),
 	})
 
-	return { ...query }
+	return { data }
 }

@@ -15,7 +15,7 @@ export const useLogin = () => {
 	)
 	const { push } = useRouter()
 
-	const query = useMutation({
+	const { isPending, mutateAsync: login } = useMutation({
 		mutationFn: async ({ email, password }: LoginButtonSchemaType) =>
 			await signIn('credentials', {
 				email,
@@ -53,9 +53,9 @@ export const useLogin = () => {
 	})
 
 	return {
-		...query,
+		isPending,
 		hasToDefineNewPassword,
 		setHasToDefineNewPassword,
-		login: query.mutateAsync,
+		login,
 	}
 }

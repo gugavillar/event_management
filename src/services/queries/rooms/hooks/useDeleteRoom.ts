@@ -6,7 +6,7 @@ import { deleteRoom } from '../usecases'
 export const useDeleteRoom = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: remove } = useMutation({
 		mutationFn: deleteRoom,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ROOMS] })
@@ -14,7 +14,7 @@ export const useDeleteRoom = () => {
 	})
 
 	return {
-		...mutation,
-		remove: mutation.mutateAsync,
+		isPending,
+		remove,
 	}
 }

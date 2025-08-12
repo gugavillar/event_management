@@ -6,7 +6,7 @@ import { blockOrUnblockUser } from '../usecases'
 export const useBlockOrUnblockUser = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: update } = useMutation({
 		mutationFn: blockOrUnblockUser,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS] })
@@ -14,7 +14,7 @@ export const useBlockOrUnblockUser = () => {
 	})
 
 	return {
-		...mutation,
-		update: mutation.mutateAsync,
+		isPending,
+		update,
 	}
 }

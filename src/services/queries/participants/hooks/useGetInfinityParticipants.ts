@@ -26,7 +26,12 @@ export const useGetInfinityParticipants = ({
 	const [searchParticipant, setSearchParticipant] = useState('')
 	const debounceParticipant = useDebounce(searchParticipant, 500)
 
-	const query: UseInfiniteQueryResult<{
+	const {
+		data,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	}: UseInfiniteQueryResult<{
 		pages: Array<ParticipantsFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
@@ -58,10 +63,10 @@ export const useGetInfinityParticipants = ({
 	})
 
 	return {
-		data: query.data,
-		hasNextPage: query.hasNextPage,
-		isFetchingNextPage: query.isFetchingNextPage,
-		fetchNextPage: query.fetchNextPage,
+		data,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
 		searchParticipant,
 		setSearchParticipant,
 	}

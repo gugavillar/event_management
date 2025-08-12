@@ -45,7 +45,7 @@ export const useGetParticipants = (isInterested?: boolean) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceCity])
 
-	const query: UseQueryResult<ParticipantsFromAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<ParticipantsFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.PARTICIPANTS,
 			debounceEventId,
@@ -67,7 +67,8 @@ export const useGetParticipants = (isInterested?: boolean) => {
 	})
 
 	return {
-		...query,
+		data,
+		isLoading,
 		eventId,
 		setEventId,
 		setSearch,

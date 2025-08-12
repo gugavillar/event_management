@@ -16,7 +16,10 @@ import { getMeeting, getMeetingPresenceById } from '../usecases'
 export const useGetMeeting = () => {
 	const [meetingId, setMeetingId] = useState('')
 
-	const query: UseQueryResult<{
+	const {
+		data,
+		isLoading,
+	}: UseQueryResult<{
 		meeting: MeetingAPI
 		presenceResponse: Omit<FormMeetingPresence, 'meetingId'>
 	}> = useQuery({
@@ -61,5 +64,5 @@ export const useGetMeeting = () => {
 		enabled: !!meetingId,
 	})
 
-	return { ...query, meetingId, setMeetingId }
+	return { data, isLoading, meetingId, setMeetingId }
 }

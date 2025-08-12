@@ -11,12 +11,12 @@ export const useGetExportParticipantsData = (
 	event_id: string,
 	isInterested?: boolean,
 ) => {
-	const query: UseQueryResult<BlobPart> = useQuery({
+	const { isError, isFetching, data }: UseQueryResult<BlobPart> = useQuery({
 		queryKey: [QUERY_KEYS.PARTICIPANTS_EXPORT_DATA, event_id, isInterested],
 		queryFn: () => getExportParticipantsData(event_id, isInterested),
 		enabled: !!event_id,
 		staleTime: 100,
 	})
 
-	return { ...query }
+	return { isError, isFetching, data }
 }

@@ -52,7 +52,7 @@ export const useGetVolunteers = () => {
 		if (!eventId) setRole('')
 	}, [eventId, setRole])
 
-	const query: UseQueryResult<VolunteersFromAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<VolunteersFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS,
 			debounceEventId,
@@ -74,7 +74,8 @@ export const useGetVolunteers = () => {
 	})
 
 	return {
-		...query,
+		data,
+		isLoading,
 		eventId,
 		setEventId,
 		setSearch,

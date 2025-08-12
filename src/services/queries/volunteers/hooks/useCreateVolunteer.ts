@@ -6,7 +6,7 @@ import { createVolunteer } from '../usecases'
 export const useCreateVolunteer = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: create } = useMutation({
 		mutationFn: createVolunteer,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.VOLUNTEERS] })
@@ -20,7 +20,7 @@ export const useCreateVolunteer = () => {
 	})
 
 	return {
-		...mutation,
-		create: mutation.mutateAsync,
+		isPending,
+		create,
 	}
 }

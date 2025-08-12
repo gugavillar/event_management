@@ -6,7 +6,7 @@ import { updateRegistration } from '../usecases'
 export const useUpdateRegistration = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { mutateAsync: update } = useMutation({
 		mutationFn: updateRegistration,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.EVENTS] })
@@ -15,7 +15,6 @@ export const useUpdateRegistration = () => {
 	})
 
 	return {
-		...mutation,
-		update: mutation.mutateAsync,
+		update,
 	}
 }

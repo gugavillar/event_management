@@ -6,7 +6,7 @@ import { createParticipantPayment } from '../usecases'
 export const useCreateParticipantPayment = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: create } = useMutation({
 		mutationFn: createParticipantPayment,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -16,7 +16,7 @@ export const useCreateParticipantPayment = () => {
 	})
 
 	return {
-		...mutation,
-		create: mutation.mutateAsync,
+		isPending,
+		create,
 	}
 }

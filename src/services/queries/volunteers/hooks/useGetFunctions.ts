@@ -23,15 +23,16 @@ export const useGetFunctions = (externalEventId = '') => {
 		setEventId(selectedEvent)
 	}, [selectedEvent])
 
-	const query: UseQueryResult<Array<VolunteersFunctionsFromAPI>> = useQuery({
-		queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch, eventId],
-		queryFn: () =>
-			getFunctions({
-				eventId,
-				searchFunction: debounceSearch,
-			}),
-		enabled: !!eventId,
-	})
+	const { data, isLoading }: UseQueryResult<Array<VolunteersFunctionsFromAPI>> =
+		useQuery({
+			queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch, eventId],
+			queryFn: () =>
+				getFunctions({
+					eventId,
+					searchFunction: debounceSearch,
+				}),
+			enabled: !!eventId,
+		})
 
-	return { ...query, setSearch, search, eventId, setEventId }
+	return { data, isLoading, setSearch, search, eventId, setEventId }
 }

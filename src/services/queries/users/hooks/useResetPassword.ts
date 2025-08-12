@@ -6,7 +6,7 @@ import { resetPassword } from '../usecases'
 export const useResetPassword = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: update } = useMutation({
 		mutationFn: resetPassword,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS] })
@@ -14,7 +14,7 @@ export const useResetPassword = () => {
 	})
 
 	return {
-		...mutation,
-		update: mutation.mutateAsync,
+		isPending,
+		update,
 	}
 }

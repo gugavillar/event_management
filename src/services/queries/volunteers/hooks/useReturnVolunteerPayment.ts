@@ -6,7 +6,7 @@ import { returnVolunteerPayment } from '../usecases'
 export const useReturnVolunteerPayment = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: returnPayment } = useMutation({
 		mutationFn: returnVolunteerPayment,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -16,7 +16,7 @@ export const useReturnVolunteerPayment = () => {
 	})
 
 	return {
-		...mutation,
-		returnPayment: mutation.mutateAsync,
+		isPending,
+		returnPayment,
 	}
 }

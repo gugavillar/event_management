@@ -13,7 +13,7 @@ export const useGetDashboardData = () => {
 		defaultValue: '',
 	})
 
-	const query: UseQueryResult<DashboardFromAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<DashboardFromAPI> = useQuery({
 		queryKey: [QUERY_KEYS.DASHBOARD, eventId],
 		queryFn: () =>
 			getDashboardData({
@@ -22,5 +22,5 @@ export const useGetDashboardData = () => {
 		enabled: !!eventId,
 	})
 
-	return { ...query, eventId, setEventId }
+	return { data, isLoading, eventId, setEventId }
 }

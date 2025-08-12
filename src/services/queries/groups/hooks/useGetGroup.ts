@@ -8,7 +8,7 @@ import { GroupAPI } from '../groups.types'
 import { getGroup } from '../usecases'
 
 export const useGetGroup = (groupId: GroupAPI['id'] | null) => {
-	const query: UseQueryResult<GroupAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<GroupAPI> = useQuery({
 		queryKey: [QUERY_KEYS.GROUP, groupId],
 		queryFn: () => getGroup(groupId as GroupAPI['id']),
 		enabled: !!groupId,
@@ -24,5 +24,5 @@ export const useGetGroup = (groupId: GroupAPI['id'] | null) => {
 		}),
 	})
 
-	return { ...query }
+	return { data, isLoading }
 }

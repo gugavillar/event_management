@@ -6,7 +6,7 @@ import { updateCheckInVolunteer } from '../usecases'
 export const useUpdateCheckInVolunteer = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: update } = useMutation({
 		mutationFn: updateCheckInVolunteer,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.VOLUNTEERS] })
@@ -33,7 +33,7 @@ export const useUpdateCheckInVolunteer = () => {
 	})
 
 	return {
-		...mutation,
-		update: mutation.mutateAsync,
+		isPending,
+		update,
 	}
 }

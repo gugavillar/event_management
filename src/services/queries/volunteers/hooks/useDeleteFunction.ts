@@ -6,7 +6,7 @@ import { deleteFunction } from '../usecases'
 export const useDeleteFunction = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: remove } = useMutation({
 		mutationFn: deleteFunction,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -25,7 +25,7 @@ export const useDeleteFunction = () => {
 	})
 
 	return {
-		...mutation,
-		remove: mutation.mutateAsync,
+		isPending,
+		remove,
 	}
 }

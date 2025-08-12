@@ -18,7 +18,7 @@ type FormattedVolunteersAPI = Omit<VolunteersAPI, 'address'> & {
 }
 
 export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
-	const query: UseQueryResult<FormattedVolunteersAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<FormattedVolunteersAPI> = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEER, volunteerId],
 		queryFn: () => getVolunteer(volunteerId as VolunteersAPI['id']),
 		enabled: !!volunteerId,
@@ -35,5 +35,5 @@ export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
 		}),
 	})
 
-	return { ...query }
+	return { data, isLoading }
 }

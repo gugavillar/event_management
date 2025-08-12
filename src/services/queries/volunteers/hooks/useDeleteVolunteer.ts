@@ -6,7 +6,7 @@ import { deleteVolunteer } from '../usecases'
 export const useDeleteVolunteer = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: remove } = useMutation({
 		mutationFn: deleteVolunteer,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.VOLUNTEERS] })
@@ -20,7 +20,7 @@ export const useDeleteVolunteer = () => {
 	})
 
 	return {
-		...mutation,
-		remove: mutation.mutateAsync,
+		isPending,
+		remove,
 	}
 }

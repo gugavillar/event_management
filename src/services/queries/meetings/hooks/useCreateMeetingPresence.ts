@@ -6,7 +6,7 @@ import { createMeetingPresence } from '../usecases'
 export const useCreateMeetingPresence = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: create } = useMutation({
 		mutationFn: createMeetingPresence,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -19,7 +19,7 @@ export const useCreateMeetingPresence = () => {
 	})
 
 	return {
-		...mutation,
-		create: mutation.mutateAsync,
+		isPending,
+		create,
 	}
 }

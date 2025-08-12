@@ -26,7 +26,12 @@ export const useGetInfinityVolunteers = ({
 	const [searchVolunteer, setSearchVolunteer] = useState('')
 	const debounceVolunteer = useDebounce(searchVolunteer, 500)
 
-	const query: UseInfiniteQueryResult<{
+	const {
+		data,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	}: UseInfiniteQueryResult<{
 		pages: Array<VolunteersFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
@@ -58,10 +63,10 @@ export const useGetInfinityVolunteers = ({
 	})
 
 	return {
-		data: query.data,
-		hasNextPage: query.hasNextPage,
-		isFetchingNextPage: query.isFetchingNextPage,
-		fetchNextPage: query.fetchNextPage,
+		data,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
 		searchVolunteer,
 		setSearchVolunteer,
 	}

@@ -30,10 +30,10 @@ export const useGetDonations = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventId])
 
-	const query: UseQueryResult<DonationsFromAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<DonationsFromAPI> = useQuery({
 		queryKey: [QUERY_KEYS.DONATIONS, eventId, page],
 		queryFn: () => getDonations({ eventId, page }),
 	})
 
-	return { ...query, eventId, setEventId, page, setPage }
+	return { data, isLoading, eventId, setEventId, page, setPage }
 }

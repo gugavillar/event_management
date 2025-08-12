@@ -8,7 +8,7 @@ import { RoomAPI } from '../rooms.types'
 import { getRoom } from '../usecases'
 
 export const useGetRoom = (roomId: RoomAPI['id'] | null) => {
-	const query: UseQueryResult<RoomAPI> = useQuery({
+	const { isLoading, data }: UseQueryResult<RoomAPI> = useQuery({
 		queryKey: [QUERY_KEYS.ROOM, roomId],
 		queryFn: () => getRoom(roomId as RoomAPI['id']),
 		enabled: !!roomId,
@@ -24,5 +24,5 @@ export const useGetRoom = (roomId: RoomAPI['id'] | null) => {
 		}),
 	})
 
-	return { ...query }
+	return { isLoading, data }
 }

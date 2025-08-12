@@ -6,7 +6,7 @@ import { useMutation } from '@/providers/QueryProvider'
 import { updatePassword } from '../usecases'
 
 export const useUpdatePassword = () => {
-	const mutation = useMutation({
+	const { isPending, mutateAsync: update } = useMutation({
 		mutationFn: updatePassword,
 		onSuccess: () => {
 			setTimeout(async () => {
@@ -19,7 +19,7 @@ export const useUpdatePassword = () => {
 	})
 
 	return {
-		...mutation,
-		update: mutation.mutateAsync,
+		isPending,
+		update,
 	}
 }

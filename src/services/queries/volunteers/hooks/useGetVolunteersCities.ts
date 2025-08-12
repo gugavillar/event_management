@@ -6,10 +6,10 @@ import { useQuery } from '@/providers/QueryProvider'
 import { getVolunteersCities } from '../usecases'
 
 export const useGetVolunteersCities = ({ eventId }: { eventId?: string }) => {
-	const query = useQuery({
+	const { data } = useQuery({
 		queryKey: [QUERY_KEYS.VOLUNTEERS_CITIES, eventId],
 		queryFn: () => getVolunteersCities(eventId),
 	})
 
-	return { ...query }
+	return { data }
 }

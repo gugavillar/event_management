@@ -6,7 +6,7 @@ import { createGroup } from '../usecases'
 export const useCreateGroup = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: create } = useMutation({
 		mutationFn: createGroup,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GROUPS] })
@@ -14,7 +14,7 @@ export const useCreateGroup = () => {
 	})
 
 	return {
-		...mutation,
-		create: mutation.mutateAsync,
+		isPending,
+		create,
 	}
 }

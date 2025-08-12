@@ -42,7 +42,7 @@ export const useGetPayments = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debouncePaymentType, debounceCity])
 
-	const query: UseQueryResult<VolunteersFromAPI> = useQuery({
+	const { isLoading, data }: UseQueryResult<VolunteersFromAPI> = useQuery({
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS_PAYMENTS,
 			debounceEventId,
@@ -62,7 +62,8 @@ export const useGetPayments = () => {
 	})
 
 	return {
-		...query,
+		isLoading,
+		data,
 		eventId,
 		setEventId,
 		setSearch,

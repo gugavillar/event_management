@@ -32,10 +32,10 @@ export const useGetUsers = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouceValue])
 
-	const query: UseQueryResult<UsersFromAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<UsersFromAPI> = useQuery({
 		queryKey: [QUERY_KEYS.USERS, debouceValue, page],
 		queryFn: () => getUsers({ searchUser: debouceValue, page }),
 	})
 
-	return { ...query, search, setSearch, page, setPage }
+	return { data, isLoading, search, setSearch, page, setPage }
 }

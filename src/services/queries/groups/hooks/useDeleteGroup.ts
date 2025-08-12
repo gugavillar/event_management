@@ -6,7 +6,7 @@ import { deleteGroup } from '../usecases'
 export const useDeleteGroup = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: remove } = useMutation({
 		mutationFn: deleteGroup,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GROUPS] })
@@ -14,7 +14,7 @@ export const useDeleteGroup = () => {
 	})
 
 	return {
-		...mutation,
-		remove: mutation.mutateAsync,
+		isPending,
+		remove,
 	}
 }

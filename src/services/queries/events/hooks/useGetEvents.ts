@@ -32,10 +32,10 @@ export const useGetEvents = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouceValue])
 
-	const query: UseQueryResult<EventsFromAPI> = useQuery({
+	const { data, isLoading }: UseQueryResult<EventsFromAPI> = useQuery({
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue, page],
 		queryFn: () => getEvents({ searchEvent: debouceValue, page }),
 	})
 
-	return { ...query, search, setSearch, page, setPage }
+	return { data, isLoading, search, setSearch, page, setPage }
 }

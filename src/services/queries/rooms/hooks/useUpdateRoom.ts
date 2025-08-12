@@ -6,7 +6,7 @@ import { updateRoom } from '../usecases'
 export const useUpdateRoom = () => {
 	const queryClient = useQueryClient()
 
-	const mutation = useMutation({
+	const { isPending, mutateAsync: update } = useMutation({
 		mutationFn: updateRoom,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.ROOMS] })
@@ -15,7 +15,7 @@ export const useUpdateRoom = () => {
 	})
 
 	return {
-		...mutation,
-		update: mutation.mutateAsync,
+		isPending,
+		update,
 	}
 }

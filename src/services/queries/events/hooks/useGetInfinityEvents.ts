@@ -12,7 +12,12 @@ export const useGetInfinityEvents = () => {
 	const [search, setSearch] = useState('')
 	const debouceValue = useDebounce(search, 500)
 
-	const query: UseInfiniteQueryResult<{
+	const {
+		data,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
+	}: UseInfiniteQueryResult<{
 		pages: Array<EventsFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
@@ -27,10 +32,10 @@ export const useGetInfinityEvents = () => {
 	})
 
 	return {
-		data: query.data,
-		hasNextPage: query.hasNextPage,
-		isFetchingNextPage: query.isFetchingNextPage,
-		fetchNextPage: query.fetchNextPage,
+		data,
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage,
 		search,
 		setSearch,
 	}

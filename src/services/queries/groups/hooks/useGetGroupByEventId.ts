@@ -22,7 +22,7 @@ export const useGetGroupByEventId = (eventId: string) => {
 
 	const debounceSearchMember = useDebounce(searchMemberGroup, 500)
 
-	const query: UseQueryResult<Array<GroupAPI>> = useQuery({
+	const { data, isLoading }: UseQueryResult<Array<GroupAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.GROUPS, groupEventId, debounceSearchMember],
 		queryFn: () =>
 			getGroupByEventId(groupEventId as GroupAPI['id'], debounceSearchMember),
@@ -30,7 +30,8 @@ export const useGetGroupByEventId = (eventId: string) => {
 	})
 
 	return {
-		...query,
+		data,
+		isLoading,
 		groupEventId,
 		setGroupEventId,
 		searchMemberGroup,

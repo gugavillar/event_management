@@ -12,11 +12,11 @@ import { getMeetingsByEventId } from '../usecases'
 export const useGetMeetingsByEventId = () => {
 	const [eventId, setEventId] = useState<EventsAPI['id'] | null>(null)
 
-	const query: UseQueryResult<Array<MeetingsFromAPI>> = useQuery({
+	const { data }: UseQueryResult<Array<MeetingsFromAPI>> = useQuery({
 		queryKey: [QUERY_KEYS.MEETINGS, eventId],
 		queryFn: () => getMeetingsByEventId(eventId as EventsAPI['id']),
 		enabled: !!eventId,
 	})
 
-	return { ...query, eventId, setEventId }
+	return { data, eventId, setEventId }
 }
