@@ -1,6 +1,6 @@
 FROM node:20-alpine AS base
 
-FROM base as deps
+FROM base AS deps
 
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
@@ -25,7 +25,7 @@ FROM base AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_SHARP_PATH "/app/node_modules/sharp"
+ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
