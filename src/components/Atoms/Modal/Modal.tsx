@@ -34,7 +34,7 @@ export const Modal = ({
 		<div
 			id={modalId}
 			className={twMerge(
-				'hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden pb-12',
+				'hs-overlay pointer-events-none fixed start-0 top-0 z-[80] hidden size-full overflow-y-auto overflow-x-hidden',
 				isStatic && '[--overlay-backdrop:static]',
 			)}
 			data-testid="modal"

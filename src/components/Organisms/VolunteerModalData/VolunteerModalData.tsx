@@ -27,7 +27,7 @@ export const VolunteerModalData = memo(
 				handleClose={() => setSelectedVolunteer(null)}
 				isLarge
 			>
-				<div className="flex flex-col space-y-4 max-md:overflow-y-auto">
+				<div className="flex flex-col space-y-4 max-md:h-[85dvh] max-md:overflow-y-auto">
 					<Header as="h3" className="text-center">
 						Dados do voluntário
 					</Header>
