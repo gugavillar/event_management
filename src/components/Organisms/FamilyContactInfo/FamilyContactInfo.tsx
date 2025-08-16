@@ -47,11 +47,13 @@ export const FamilyContactInfo = ({
 					<InfoBox
 						label="Telefone do responsável/parente"
 						value={responsibleInfo.responsiblePhone}
+						isPhone
 					/>
 					<InfoBox label="Quem convidou" value={responsibleInfo.host} />
 					<InfoBox
 						label="Contato de quem convidou"
 						value={responsibleInfo.hostPhone}
+						isPhone
 					/>
 				</>
 			) : (
@@ -60,6 +62,7 @@ export const FamilyContactInfo = ({
 					<InfoBox
 						label="Telefone do parente"
 						value={responsibleInfo.relativePhone}
+						isPhone
 					/>
 				</>
 			)}

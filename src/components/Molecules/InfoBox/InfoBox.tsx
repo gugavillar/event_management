@@ -1,3 +1,5 @@
+import { PhoneCall } from 'lucide-react'
+import Link from 'next/link'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -6,20 +8,33 @@ import { Text } from '@/components/Atoms'
 type InfoBoxProps = ComponentProps<'div'> & {
 	label: string
 	value?: string
+	isPhone?: boolean
 }
 
 export const InfoBox = ({
 	label,
 	value,
 	className,
+	isPhone,
 	...props
 }: InfoBoxProps) => {
 	if (!value) return null
 
+	const phoneNumber = isPhone ? value.replace(/\D/g, '') : value
+
 	return (
 		<div className={twMerge('space-y-0.5 px-6', className)} {...props}>
 			<Text className="opacity-50">{label}</Text>
-			<Text>{value}</Text>
+			{isPhone ? (
+				<div className="flex items-center gap-2 max-sm:flex">
+					<Text>{value}</Text>
+					<Link href={`tel:0${phoneNumber}`}>
+						<PhoneCall size={16} />
+					</Link>
+				</div>
+			) : (
+				<Text>{value}</Text>
+			)}
 		</div>
 	)
 }

@@ -35,7 +35,7 @@ export const PersonalInfoCard = ({
 			<InfoBox label="Email" value={userInfo.email} />
 			<InfoBox label="Como quer ser chamado" value={userInfo.called} />
 			<InfoBox label="Data de nascimento" value={userInfo.birthdate} />
-			<InfoBox label="Telefone" value={userInfo.phone} />
+			<InfoBox label="Telefone" value={userInfo.phone} isPhone />
 			{type === 'participant' ? (
 				<InfoBox label="Religião" value={userInfo?.religion ?? 'Não possui'} />
 			) : (
