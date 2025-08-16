@@ -1,7 +1,13 @@
-FROM node:20-alpine AS builder
-WORKDIR /app
+FROM node:20-alpine AS base
 
+FROM base as deps
+
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 RUN corepack enable
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 
 ARG NEXT_PUBLIC_API_BASE_URL
 ARG NEXT_PUBLIC_API_IBGE_UF
@@ -12,20 +18,29 @@ ENV NEXT_PUBLIC_API_IBGE_UF=$NEXT_PUBLIC_API_IBGE_UF
 ENV NEXT_PUBLIC_PIX_KEY=$NEXT_PUBLIC_PIX_KEY
 
 COPY . .
-RUN pnpm install --frozen-lockfile
 RUN pnpm prisma generate
 RUN pnpm run build
 
-FROM node:20-alpine
+FROM base AS production
 WORKDIR /app
 
-RUN corepack enable
-
 ENV NODE_ENV=production
-EXPOSE 3000
+ENV NEXT_SHARP_PATH "/app/node_modules/sharp"
 
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=deps /app/public ./public
+
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+COPY --from=deps /app/next.config.mjs ./
+COPY --from=deps --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=deps --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
 
 CMD ["node", "server.js"]
