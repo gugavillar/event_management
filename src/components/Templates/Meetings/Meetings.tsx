@@ -147,6 +147,11 @@ export const Meetings = () => {
 		methods,
 	])
 
+	useEffect(() => {
+		if (!eventId) return
+		setMeetingId('')
+	}, [eventId, setMeetingId])
+
 	return (
 		<PageContent pageTitle="Reuniões" subheadingPage="Lista de presença">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
@@ -180,7 +185,7 @@ export const Meetings = () => {
 							rightIcon={<Search size={24} />}
 							className="ps-11"
 							value={search}
-							disabled={!eventId && !formattedMeetings?.length}
+							disabled={!eventId || !formattedMeetings?.length}
 							onChange={(event) => setSearch?.(event.target.value)}
 						/>
 					</>
