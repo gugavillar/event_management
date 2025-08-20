@@ -11,7 +11,7 @@ export const DrawerFooter = ({
 	return (
 		<footer
 			className={twMerge(
-				'absolute bottom-0 flex min-h-16 w-full flex-col items-center justify-between gap-y-2 px-6 pb-6 pt-3 md:flex-row md:gap-x-6',
+				'absolute bottom-0 flex min-h-16 w-full flex-col items-center justify-between gap-y-2 px-6 pt-3 pb-6 md:flex-row md:gap-x-6',
 				className,
 			)}
 			{...props}

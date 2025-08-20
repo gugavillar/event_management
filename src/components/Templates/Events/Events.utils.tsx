@@ -72,13 +72,13 @@ export const formatTableData = (
 					<Dropdown label={<Link2 className="cursor-pointer" size={18} />}>
 						<>
 							<p
-								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() => handleOpenLink(event.id, 'participante')}
 							>
 								Inscrição participantes
 							</p>
 							<p
-								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() =>
 									handleBlockOrOpenRegistration(
 										event.id,
@@ -92,13 +92,13 @@ export const formatTableData = (
 									: 'Abrir inscrição participantes'}
 							</p>
 							<p
-								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() => handleOpenLink(event.id, 'voluntario')}
 							>
 								Inscrição voluntários
 							</p>
 							<p
-								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() =>
 									handleBlockOrOpenRegistration(
 										event.id,
@@ -112,13 +112,13 @@ export const formatTableData = (
 									: 'Abrir inscrição voluntários'}
 							</p>
 							<p
-								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() => handleOpenInterestedLink(event.id)}
 							>
 								Lista de interessados
 							</p>
 							<p
-								className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
+								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() =>
 									handleActivatedOrDeactivatedInterestedList(
 										event.id,

@@ -20,7 +20,7 @@ export const TableHeader = memo(
 							key={uuid()}
 							scope="col"
 							className={twMerge(
-								'px-6 py-3 text-start text-xs font-medium uppercase text-gray-100',
+								'px-6 py-3 text-start text-xs font-medium text-gray-100 uppercase',
 								className,
 							)}
 						>

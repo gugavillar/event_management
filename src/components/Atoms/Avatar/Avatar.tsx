@@ -13,7 +13,7 @@ export const Avatar = ({ className, children, ...props }: AvatarProps) => {
 	return (
 		<span
 			className={twMerge(
-				'inline-flex size-8 min-w-8 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold leading-none text-gray-800',
+				'inline-flex size-8 min-w-8 items-center justify-center rounded-full bg-gray-100 text-xs leading-none font-semibold text-gray-800',
 				className,
 			)}
 			{...props}

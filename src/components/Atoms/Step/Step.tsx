@@ -71,7 +71,7 @@ export const Step = ({
 			<div className="mt-auto flex items-center justify-between gap-x-2">
 				<button
 					type="button"
-					className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:bg-gray-50 disabled:pointer-events-none disabled:opacity-50"
+					className="inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:bg-gray-50 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 					onClick={handlePrev}
 					disabled={isPending}
 				>
@@ -81,7 +81,7 @@ export const Step = ({
 				{!isLastStep && (
 					<button
 						type="button"
-						className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
+						className="inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 						onClick={handleNext}
 					>
 						Próximo
@@ -92,7 +92,7 @@ export const Step = ({
 					<Button
 						type="button"
 						isLoading={isPending}
-						className="focus:outline-hidden inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 disabled:pointer-events-none disabled:opacity-50"
+						className="inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 						onClick={handleFinish}
 					>
 						Finalizar
