@@ -35,13 +35,13 @@ export const Drawer = ({
 		<div
 			id={drawerId}
 			className={twMerge(
-				'hs-overlay fixed end-0 top-0 z-[80] hidden size-full max-w-lg translate-x-full border-s bg-white transition-all duration-300 hs-overlay-open:translate-x-0',
+				'hs-overlay hs-overlay-open:translate-x-0 fixed end-0 top-0 z-[80] hidden size-full max-w-lg translate-x-full border-s bg-white transition-all duration-300',
 				className,
 			)}
 			style={{ marginTop: 0 }}
 			data-testid="drawer"
 		>
-			<div className="flex items-center justify-between border-b px-4 py-3">
+			<div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
 				<Header as="h3">{headingTitle}</Header>
 				<button
 					type="button"

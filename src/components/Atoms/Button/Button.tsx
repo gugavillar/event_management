@@ -22,7 +22,7 @@ export const Button = ({
 	return (
 		<button
 			className={twMerge(
-				'inline-flex items-center gap-x-2 rounded-lg border px-4 py-3 text-sm font-semibold disabled:pointer-events-none disabled:opacity-50',
+				'inline-flex items-center gap-x-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold disabled:pointer-events-none disabled:opacity-50',
 				className,
 			)}
 			disabled={isLoading}

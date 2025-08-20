@@ -20,7 +20,6 @@ const eslintConfig = [
 			'plugin:import/recommended',
 			'plugin:import/errors',
 			'plugin:import/warnings',
-			'plugin:tailwindcss/recommended',
 			'plugin:@tanstack/eslint-plugin-query/recommended',
 			'next/core-web-vitals',
 		),
@@ -34,13 +33,6 @@ const eslintConfig = [
 				'error',
 				{
 					ignoreRestSiblings: true,
-				},
-			],
-
-			'tailwindcss/no-custom-classname': [
-				'warn',
-				{
-					whitelist: ['^hs-.+', 'custom-class'],
 				},
 			],
 

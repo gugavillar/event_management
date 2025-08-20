@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Field, HelperErrorText, Label } from '@/components/Atoms'
-import { useClickOutside } from '@/hooks'
+import { useClickAway } from '@/hooks'
 
 import { SearchBoxOptionsProps, SearchBoxProps } from './SearchBox.types'
 
@@ -30,12 +30,12 @@ const ComboBoxOptions = <T,>({
 }: SearchBoxOptionsProps<T>) => {
 	const handleSelectValue = (value: T, isDisabled?: boolean) => {
 		if (isDisabled) return
-
 		setSelectedValue(value)
 		setIsOpen(false)
 	}
+
 	return (
-		<div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
+		<div className="absolute right-0 left-0 z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg">
 			<ul>
 				{options?.map((opt, index) => {
 					const valueOption = opt.customProps[keyOptionValue]
@@ -43,6 +43,7 @@ const ComboBoxOptions = <T,>({
 
 					const refProps =
 						index === options.length - 1 ? { ref: lastItemRef } : {}
+
 					return (
 						<li
 							key={valueOption}
@@ -85,7 +86,7 @@ export const SearchBox = <T,>({
 
 	useEffect(() => {
 		if (isOpen && inputRef.current) {
-			return inputRef.current.focus()
+			inputRef.current.focus()
 		}
 	}, [isOpen])
 
@@ -93,31 +94,42 @@ export const SearchBox = <T,>({
 		options?.find((opt) => opt.customProps[keyOptionValue] === selectedValue)
 			?.customProps[keyOptionLabel] ?? ''
 
-	useClickOutside({ isOpen, toggle: () => setIsOpen(false), containerRef })
+	useClickAway(containerRef, () => setIsOpen(false))
 
 	return (
-		<div className={twMerge('w-full', className)}>
+		<div className={twMerge('w-full', className)} ref={containerRef}>
 			{label && <Label {...(error && { 'aria-invalid': true })}>{label}</Label>}
-			<div className="relative w-full" ref={containerRef}>
+			<div className="relative w-full">
 				{isOpen ? (
 					<Field
 						ref={inputRef}
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
+						className="min-h-[48px] w-full"
 					/>
 				) : (
 					<button
 						type="button"
 						className={twMerge(
-							'inline-flex w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-base shadow-sm focus:ring-2',
-							error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+							'inline-flex min-h-[48px] w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-base shadow-sm focus:ring-2 focus:ring-gray-300 focus-visible:outline-none',
+							error && 'border-red-500 focus:ring-red-500',
 							disabled && 'pointer-events-none opacity-50',
 						)}
 						onClick={() => setIsOpen((prev) => !prev)}
 						disabled={disabled}
 					>
 						{isLoading ? 'Carregando...' : selectLabel || 'Selecione uma opção'}
-						{error ? <Warning /> : <ChevronDown size={14} />}
+						{error ? (
+							<Warning />
+						) : (
+							<ChevronDown
+								size={14}
+								className={twMerge(
+									'transition-transform duration-200',
+									isOpen && 'rotate-180',
+								)}
+							/>
+						)}
 					</button>
 				)}
 				{isOpen && (

@@ -18,12 +18,12 @@ export const InformationCard = ({
 	return (
 		<div
 			className={twMerge(
-				'flex flex-col rounded-xl border bg-white shadow-sm',
+				'flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm',
 				className,
 			)}
 			{...props}
 		>
-			<div className="flex items-center justify-between rounded-t-xl border-b bg-gray-100 px-4 py-2">
+			<div className="flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-100 px-4 py-2">
 				<Text className="opacity-50">{headingText}</Text>
 				{actionButton}
 			</div>

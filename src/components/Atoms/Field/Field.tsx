@@ -29,7 +29,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 			>
 				<input
 					className={twMerge(
-						'block w-full rounded-lg py-3 pl-4 pr-8 text-base',
+						'block w-full rounded-lg py-3 ps-8 pl-4 text-base',
 						className,
 						isInvalid &&
 							'border-red-500 focus:border-red-500 focus:ring-red-500',

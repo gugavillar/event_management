@@ -1,2 +1,2 @@
-export * from './useClickOutside'
+export * from './useClickAway'
 export * from './useInfiniteScrollObserver'

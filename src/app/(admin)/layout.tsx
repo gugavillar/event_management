@@ -22,7 +22,7 @@ export default async function AdminLayout({
 	return (
 		<SessionProvider session={session}>
 			<AuthGuard>
-				<main className="grid h-full grid-cols-1 md:grid-cols-admin">
+				<main className="grid h-full grid-cols-1 md:grid-cols-[auto_1fr]">
 					<Sidebar />
 					<div className="overflow-y-auto bg-slate-100/50 max-md:h-[calc(100dvh-5.5rem)]">
 						{children}

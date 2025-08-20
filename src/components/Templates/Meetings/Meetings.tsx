@@ -208,7 +208,7 @@ export const Meetings = () => {
 							bodyData={formattedPresenceList}
 							isLoading={isLoading}
 						/>
-						<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+						<div className="mt-6 flex flex-col items-center justify-end gap-5 md:flex-row">
 							<Button
 								onClick={() => handleOpenAlert('draft')}
 								type="button"

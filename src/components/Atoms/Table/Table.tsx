@@ -19,7 +19,7 @@ export const Table = ({
 	return (
 		<div className="-m-1.5 overflow-x-auto">
 			<div className="inline-block min-w-full p-1.5 align-middle">
-				<div className="overflow-hidden rounded-lg border shadow-md">
+				<div className="overflow-hidden rounded-lg border border-gray-200 shadow-md">
 					<table
 						className={twMerge(
 							'min-w-full divide-y divide-gray-200',
