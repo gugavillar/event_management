@@ -9,8 +9,10 @@ import {
 	Text,
 } from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
+import { useMemo } from 'react'
 
 import { Spinner } from '@/components/Atoms'
+import { generatePrintKey } from '@/constants'
 
 import { formatTableData } from './Groups.utils'
 
@@ -60,10 +62,13 @@ const MyDocument = ({ groups }: DownloadPDFProps) => {
 }
 
 export const DownloadPDF = ({ groups }: DownloadPDFProps) => {
+	const renderKey = useMemo(() => generatePrintKey(groups), [groups])
+
 	if (!groups.length) return null
 
 	return (
 		<PDFDownloadLink
+			key={renderKey}
 			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 text-base font-semibold text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
 			document={<MyDocument groups={groups} />}
 			fileName="grupos.pdf"

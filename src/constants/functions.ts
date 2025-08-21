@@ -75,3 +75,9 @@ export const closedImage = (eventName?: string) => {
 export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
 	return pageRole.includes(userRole)
 }
+
+export const generatePrintKey = <T>(
+	data: Array<{ id: string; members: Array<T> }>,
+) => {
+	return data.map((d) => `${d.id}:${d.members.length}`).join('|')
+}
