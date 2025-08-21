@@ -9,6 +9,7 @@ type SubMenuItemProps = Omit<MenuLinkWithSubMenu, 'hasSubMenu'> & {
 	collapsed: boolean
 	path: string
 	userRole?: string
+	width: number | null
 }
 
 const validateHasMenu = (
@@ -27,6 +28,7 @@ export const SubMenuItem = ({
 	links,
 	path,
 	userRole,
+	width,
 }: SubMenuItemProps) => {
 	const validateLabelPath = buttonLabel
 		.normalize('NFD')
@@ -42,9 +44,10 @@ export const SubMenuItem = ({
 			<button
 				type="button"
 				className={twMerge(
-					'hs-tooltip inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 [--placement:auto] hover:bg-slate-900/80 focus:outline-hidden',
+					'hs-tooltip inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 hover:bg-slate-900/80 focus:outline-hidden',
 					collapsed && 'justify-center',
 					path.includes(validateLabelPath) && 'bg-slate-900/80',
+					width && width < 768 ? '[--placement:bottom]' : '[--placement:right]',
 				)}
 			>
 				<Tooltip

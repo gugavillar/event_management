@@ -105,13 +105,13 @@ export const SearchBox = <T,>({
 						ref={inputRef}
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
-						className="min-h-[48px] w-full"
+						className="min-h-12 w-full"
 					/>
 				) : (
 					<button
 						type="button"
 						className={twMerge(
-							'inline-flex min-h-[48px] w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-base shadow-sm focus:ring-2 focus:ring-gray-300 focus-visible:outline-none',
+							'inline-flex min-h-12 w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-base shadow-sm focus:ring-2 focus:ring-gray-300 focus-visible:outline-none',
 							error && 'border-red-500 focus:ring-red-500',
 							disabled && 'pointer-events-none opacity-50',
 						)}

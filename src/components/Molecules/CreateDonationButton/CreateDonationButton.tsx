@@ -27,7 +27,7 @@ export const CreateDonationButton = memo(() => {
 				type="button"
 				leftIcon={<HandHeart />}
 				data-hs-overlay={`#${MODALS_IDS.DONATION_CREATE_DRAWER}`}
-				className="max-w-60 items-center justify-center self-end border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+				className="max-w-60 items-center justify-center self-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:self-end"
 			>
 				Criar uma nova doação
 			</Button>

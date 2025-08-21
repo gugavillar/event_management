@@ -9,6 +9,7 @@ type MenuItemProps = Omit<MenuLinkWithHref, 'hasSubMenu'> & {
 	path: string
 	collapsed: boolean
 	userRole?: ROLES
+	width: number | null
 }
 
 export const MenuItem = ({
@@ -18,6 +19,7 @@ export const MenuItem = ({
 	collapsed,
 	path,
 	userRole,
+	width,
 }: MenuItemProps) => {
 	if (
 		!PAGES_ROLES[href as keyof typeof PAGES_ROLES].includes(userRole as ROLES)
@@ -29,9 +31,10 @@ export const MenuItem = ({
 			key={buttonLabel}
 			href={href}
 			className={twMerge(
-				'hs-tooltip rounded-lg p-2 text-gray-100 transition-colors duration-500 [--placement:auto] hover:bg-slate-900/80',
+				'hs-tooltip rounded-lg p-2 text-gray-100 transition-colors duration-500 hover:bg-slate-900/80',
 				collapsed && 'justify-center gap-x-0',
 				path === href && 'bg-slate-900/80',
+				width && width < 768 ? '[--placement:bottom]' : '[--placement:right]',
 			)}
 		>
 			<Tooltip
