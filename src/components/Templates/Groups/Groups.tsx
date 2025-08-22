@@ -7,7 +7,11 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import {
+	GenerateGroupList,
+	ListPage,
+	PageContent,
+} from '@/components/Organisms'
 import {
 	GroupSchema,
 	GroupSchemaType,
@@ -30,10 +34,6 @@ const GroupDrawer = dynamic(
 	{
 		ssr: false,
 	},
-)
-
-const DownloadPDF = dynamic(() =>
-	import('./GroupsPrint').then((mod) => mod.DownloadPDF),
 )
 
 export const Groups = ({ eventId }: { eventId: string }) => {
@@ -100,7 +100,10 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<DownloadPDF groups={formattedGroups} />
+				<GenerateGroupList
+					formattedGroups={formattedGroups}
+					modalId={MODALS_IDS.GENERATE_LIST_GROUP_MODAL}
+				/>
 				<Button
 					type="button"
 					onClick={() => handleOpenDrawerToCreateOrEditGroup()}

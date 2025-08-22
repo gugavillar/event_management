@@ -119,7 +119,9 @@ export const Content = (
 		return (
 			<div key={data.id} className="space-y-2">
 				<div className="flex items-center justify-between">
-					<Header>{data.name}</Header>
+					<Header>
+						{data.name} - Quantidade de membros: {data.members.length}
+					</Header>
 					<div className="flex space-x-4">
 						<div className="hs-tooltip">
 							<SquarePen

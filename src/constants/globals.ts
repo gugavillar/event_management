@@ -19,6 +19,7 @@ export const MODALS_IDS = {
 	// GROUP
 	GROUP_DRAWER: 'group_manager',
 	GROUP_REMOVE_MODAL: 'group_remove_modal',
+	GENERATE_LIST_GROUP_MODAL: 'generate_list_group_modal',
 
 	// ROOM
 	ROOM_DRAWER: 'rooms_manager',

@@ -78,6 +78,11 @@ export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
 
 export const generatePrintKey = <T>(
 	data: Array<{ id: string; members: Array<T> }>,
+	listType?: string,
 ) => {
+	if (listType) {
+		return data.map((d) => `${d.id}:${d.members.length}-${listType}`).join('|')
+	}
+
 	return data.map((d) => `${d.id}:${d.members.length}`).join('|')
 }

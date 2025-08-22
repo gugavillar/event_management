@@ -16,8 +16,13 @@ import { generatePrintKey } from '@/constants'
 
 import { formatTableData } from './Groups.utils'
 
-type DownloadPDFProps = {
+export type DownloadPDFProps = {
 	groups: ReturnType<typeof formatTableData>
+	listType: 'portrait' | 'landscape' | ''
+}
+
+type DocumentsProps = {
+	groups: DownloadPDFProps['groups']
 }
 
 const styles = StyleSheet.create({
@@ -26,7 +31,7 @@ const styles = StyleSheet.create({
 	tableRow: { flexDirection: 'row' },
 	title: { fontSize: 16, paddingBottom: 5, fontWeight: 'bold' },
 	tableCell: {
-		width: '50%',
+		width: '70%',
 		borderWidth: 0.5,
 		fontSize: 14,
 		paddingHorizontal: 5,
@@ -39,9 +44,38 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 5,
 		paddingVertical: 2,
 	},
+	tableCellMemberType: {
+		width: '30%',
+		borderWidth: 0.5,
+		fontSize: 14,
+		paddingHorizontal: 5,
+		paddingVertical: 2,
+	},
 })
 
-const MyDocument = ({ groups }: DownloadPDFProps) => {
+const PortraitList = ({ groups }: DocumentsProps) => {
+	return (
+		<Document>
+			<Page size="A4" style={styles.page}>
+				{groups.map((group) => (
+					<View key={group.id} style={styles.section} wrap={false}>
+						<Text style={styles.title}>
+							{group.name} - Quantidade de membros: {group.members.length}
+						</Text>
+						{group.members.map((member) => (
+							<View style={styles.tableRow} key={member.id}>
+								<Text style={styles.tableCell}>{member.member}</Text>
+								<Text style={styles.tableCellMemberType}>{member.type}</Text>
+							</View>
+						))}
+					</View>
+				))}
+			</Page>
+		</Document>
+	)
+}
+
+const LandscapeList = ({ groups }: DocumentsProps) => {
 	return (
 		<Document>
 			{groups.map((group) => (
@@ -52,7 +86,9 @@ const MyDocument = ({ groups }: DownloadPDFProps) => {
 					style={styles.page}
 				>
 					<View style={styles.section} wrap={false}>
-						<Text style={styles.title}>{group.name}</Text>
+						<Text style={styles.title}>
+							{group.name} - Quantidade de membros: {group.members.length}
+						</Text>
 						{group.members.map((member) => (
 							<View style={styles.tableRow} key={member.id}>
 								<Text style={styles.tableCell}>{member.member}</Text>
@@ -72,17 +108,29 @@ const MyDocument = ({ groups }: DownloadPDFProps) => {
 	)
 }
 
-export const DownloadPDF = ({ groups }: DownloadPDFProps) => {
-	const renderKey = useMemo(() => generatePrintKey(groups), [groups])
+export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
+	const renderKey = useMemo(
+		() => generatePrintKey(groups, listType),
+		[groups, listType],
+	)
 
 	if (!groups.length) return null
+
+	const fileName =
+		listType === 'portrait' ? 'grupos-resumida.pdf' : 'grupos-detalhada.pdf'
 
 	return (
 		<PDFDownloadLink
 			key={renderKey}
 			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 text-base font-semibold text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
-			document={<MyDocument groups={groups} />}
-			fileName="grupos.pdf"
+			document={
+				listType === 'portrait' ? (
+					<PortraitList groups={groups} />
+				) : (
+					<LandscapeList groups={groups} />
+				)
+			}
+			fileName={fileName}
 		>
 			{({ loading }) =>
 				loading ? (
