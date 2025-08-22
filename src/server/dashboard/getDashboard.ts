@@ -259,6 +259,10 @@ export const getDashboard = async (eventId: string | null) => {
 			)
 		})
 
+		const birthdatePeople = [...birthdayParticipant, ...birthdayVolunteer].sort(
+			(peopleA, peopleB) => peopleA.name.localeCompare(peopleB.name),
+		)
+
 		return {
 			confirmedVolunteers: totalOfConfirmedVolunteers,
 			confirmedParticipants: totalOfConfirmedParticipants,
@@ -291,7 +295,7 @@ export const getDashboard = async (eventId: string | null) => {
 				data: citiesCountArray,
 			},
 			interestedParticipants,
-			birthdayPeople: [...birthdayParticipant, ...birthdayVolunteer],
+			birthdayPeople: birthdatePeople,
 		}
 	} catch (error) {
 		console.error('@getDashboard error:', error)
