@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
 	section: { marginBottom: 10 },
 	tableRow: { flexDirection: 'row' },
 	title: { fontSize: 16, paddingBottom: 5, fontWeight: 'bold' },
-	tableCellLeft: {
-		width: '70%',
+	tableCell: {
+		width: '50%',
 		borderWidth: 0.5,
 		fontSize: 14,
 		paddingHorizontal: 5,
 		paddingVertical: 2,
 	},
-	tableCellRight: {
+	tableCellPhoneAndBirthdate: {
 		width: '30%',
 		borderWidth: 0.5,
 		fontSize: 14,
@@ -44,19 +44,30 @@ const styles = StyleSheet.create({
 const MyDocument = ({ groups }: DownloadPDFProps) => {
 	return (
 		<Document>
-			<Page size="A4" style={styles.page}>
-				{groups.map((group) => (
-					<View key={group.id} style={styles.section} wrap={false}>
+			{groups.map((group) => (
+				<Page
+					key={group.id}
+					size="A4"
+					orientation="landscape"
+					style={styles.page}
+				>
+					<View style={styles.section} wrap={false}>
 						<Text style={styles.title}>{group.name}</Text>
 						{group.members.map((member) => (
 							<View style={styles.tableRow} key={member.id}>
-								<Text style={styles.tableCellLeft}>{member.member}</Text>
-								<Text style={styles.tableCellRight}>{member.type}</Text>
+								<Text style={styles.tableCell}>{member.member}</Text>
+								<Text style={styles.tableCellPhoneAndBirthdate}>
+									{member.birthdate}
+								</Text>
+								<Text style={styles.tableCell}>{member.address}</Text>
+								<Text style={styles.tableCellPhoneAndBirthdate}>
+									{member.phone}
+								</Text>
 							</View>
 						))}
 					</View>
-				))}
-			</Page>
+				</Page>
+			))}
 		</Document>
 	)
 }

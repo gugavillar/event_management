@@ -18,7 +18,10 @@ export const getGroupByEventId = async (
 			},
 			include: {
 				members: {
-					include: { participant: true, volunteer: true },
+					include: {
+						participant: { include: { address: true, event: true } },
+						volunteer: { include: { address: true, event: true } },
+					},
 				},
 				event: true,
 			},

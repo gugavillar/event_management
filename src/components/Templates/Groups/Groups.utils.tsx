@@ -3,6 +3,7 @@ import { SquarePen, Trash2 } from 'lucide-react'
 import { Header, Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { MEMBERS, MembersTypes } from '@/constants'
+import { formatBirthdate, formatPhone } from '@/formatters'
 import { GroupAPI } from '@/services/queries/groups/groups.types'
 
 export const HEADER_LABELS = [
@@ -27,12 +28,21 @@ export const formatTableData = (data: Array<GroupAPI> | undefined) => {
 	return data?.map((group) => {
 		return {
 			id: group.id,
-			name: group.name,
+			name: group.name.trim(),
 			members: group.members.map((member) => {
+				const memberType =
+					member.type === MEMBERS.PARTICIPANT ? 'participant' : 'volunteer'
+
 				return {
 					id: member.id,
 					type: MembersTypes[member.type].label,
 					group: group.name,
+					birthdate: formatBirthdate(
+						member[memberType]?.birthdate as string,
+						member[memberType]?.event?.finalDate as string,
+					),
+					phone: formatPhone(member[memberType]?.phone ?? ''),
+					address: `${member[memberType]?.address?.street?.trim()}, ${member[memberType]?.address?.number?.trim()}, ${member[memberType]?.address?.neighborhood?.trim()}, ${member[memberType]?.address?.city}-${member[memberType]?.address?.state}`,
 					member:
 						member.type === MEMBERS.PARTICIPANT
 							? member.participant?.name
