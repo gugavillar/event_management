@@ -1,4 +1,5 @@
 'use client'
+import { Header, Table } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import {
 	AgesChart,
@@ -12,7 +13,9 @@ import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetDashboardData } from '@/services/queries/dashboard'
 import { useGetInfinityEvents } from '@/services/queries/events'
 
+import { DownloadPDF } from './BirthdayPeoplePrint'
 import { CardInfo } from './CardInfo'
+import { formatTableData, HEADERS_LABELS } from './Dashboard.utils'
 
 export const Dashboard = () => {
 	const {
@@ -34,6 +37,8 @@ export const Dashboard = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	})
+
+	const formattedBirthdayPeople = formatTableData(data?.birthdayPeople ?? [])
 
 	return (
 		<PageContent subheadingPage="Veja estatísticas totais ou apenas do evento selecionado">
@@ -67,6 +72,17 @@ export const Dashboard = () => {
 						series={data?.ageRanges.data}
 						isLoading={isLoading}
 					/>
+					<div className="space-y-4">
+						<div className="flex flex-col items-center justify-between md:flex-row">
+							<Header>Aniversariantes do evento</Header>
+							<DownloadPDF birthdayPeople={formattedBirthdayPeople} />
+						</div>
+						<Table
+							headerLabels={HEADERS_LABELS}
+							isLoading={isLoading}
+							bodyData={formattedBirthdayPeople}
+						/>
+					</div>
 				</>
 			)}
 		</PageContent>

@@ -41,8 +41,13 @@ export const formatCheckIn = (
 export const formatBirthdate = (
 	birthdate: string | Date,
 	eventFinalDate: string | Date,
+	showAge = true,
 ) => {
 	if (!birthdate || !eventFinalDate) return ''
+
+	if (!showAge) {
+		return format(birthdate, 'dd/MM/yyyy')
+	}
 
 	return `${format(birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(eventFinalDate), birthdate)} anos`
 }

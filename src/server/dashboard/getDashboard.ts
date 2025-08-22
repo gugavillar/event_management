@@ -1,4 +1,4 @@
-import { differenceInYears } from 'date-fns'
+import { differenceInYears, getMonth } from 'date-fns'
 
 import {
 	CHECK_IN_STATUS,
@@ -239,6 +239,26 @@ export const getDashboard = async (eventId: string | null) => {
 			(paymentOption) => volunteersPaymentsByType[paymentOption.label] || 0,
 		)
 
+		const birthdayParticipant = participants.filter((p) => {
+			const birthdateMonth = getMonth(p.birthdate)
+			const initialEventMonth = getMonth(p.event.initialDate)
+			const finalEventMonth = getMonth(p.event.finalDate)
+			return (
+				birthdateMonth === initialEventMonth ||
+				birthdateMonth === finalEventMonth
+			)
+		})
+
+		const birthdayVolunteer = volunteers.filter((v) => {
+			const birthdateMonth = getMonth(v.birthdate)
+			const initialEventMonth = getMonth(v.event.initialDate)
+			const finalEventMonth = getMonth(v.event.finalDate)
+			return (
+				birthdateMonth === initialEventMonth ||
+				birthdateMonth === finalEventMonth
+			)
+		})
+
 		return {
 			confirmedVolunteers: totalOfConfirmedVolunteers,
 			confirmedParticipants: totalOfConfirmedParticipants,
@@ -271,6 +291,7 @@ export const getDashboard = async (eventId: string | null) => {
 				data: citiesCountArray,
 			},
 			interestedParticipants,
+			birthdayPeople: [...birthdayParticipant, ...birthdayVolunteer],
 		}
 	} catch (error) {
 		console.error('@getDashboard error:', error)

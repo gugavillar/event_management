@@ -1,3 +1,5 @@
+import { UUID } from 'crypto'
+
 export type DashboardFromAPI = {
 	participants: number
 	volunteers: number
@@ -24,4 +26,12 @@ export type DashboardFromAPI = {
 		data: Array<number>
 	}
 	interestedParticipants: number
+	birthdayPeople: Array<{
+		id: UUID
+		name: string
+		birthdate: string
+		event: {
+			finalDate: string
+		}
+	}>
 }
