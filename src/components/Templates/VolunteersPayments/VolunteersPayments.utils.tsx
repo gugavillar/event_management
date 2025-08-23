@@ -25,6 +25,10 @@ export const HEADER_LABELS = [
 		accessor: 'name',
 	},
 	{
+		label: 'Chamado',
+		accessor: 'called',
+	},
+	{
 		label: 'Telefone',
 		accessor: 'phone',
 	},
@@ -80,6 +84,7 @@ export const formatTableData = (
 			}),
 			id: payment.id,
 			name: payment.name,
+			called: payment.called,
 			phone: formatPhone(payment.phone),
 			valuePayed: currencyValue(totalPayment),
 			eventName: payment.event.name,
