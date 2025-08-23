@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
+import { overlayClose } from '@/constants'
 import { useDeleteTransaction } from '@/services/queries/transactions/hooks'
 import { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
 import { generateToastError } from '@/utils/errors'
@@ -27,6 +28,7 @@ export const TransactionDeleteModal = ({
 			onSuccess: () => {
 				toast.success('Transação excluída com sucesso!')
 				setSelectedTransaction(null)
+				overlayClose(modalId)
 			},
 			onError: (error) =>
 				generateToastError(error, 'Erro ao excluir transação'),

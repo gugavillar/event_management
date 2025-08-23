@@ -93,7 +93,7 @@ export const Transaction = () => {
 				/>
 			) : (
 				<>
-					<section className="grid grid-cols-1 gap-8 md:grid-cols-3">
+					<section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 						<TransactionCard
 							headerText="Entradas"
 							value={data?.sumOfAllIncome ?? 0}

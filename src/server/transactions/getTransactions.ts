@@ -93,30 +93,38 @@ export const getTransactions = async (
 				if (isAccountIncome) {
 					return {
 						...total,
-						totalAccountIncome: Number(transaction.amount),
+						totalAccountIncome:
+							total.totalAccountIncome + Number(transaction.amount),
 					}
 				}
 				if (isAccountOutcome) {
 					return {
 						...total,
-						totalAccountOutcome: Number(transaction.amount),
+						totalAccountOutcome:
+							total.totalAccountOutcome + Number(transaction.amount),
 					}
 				}
 				if (isCashIncome) {
 					return {
 						...total,
-						totalCashIncome: Number(transaction.amount),
+						totalCashIncome: total.totalCashIncome + Number(transaction.amount),
 					}
 				}
 				if (isCashOutcome) {
 					return {
 						...total,
-						totalCashOutcome: Number(transaction.amount),
+						totalCashOutcome:
+							total.totalCashOutcome + Number(transaction.amount),
 					}
 				}
 				return total
 			},
-			{},
+			{
+				totalAccountIncome: 0,
+				totalAccountOutcome: 0,
+				totalCashIncome: 0,
+				totalCashOutcome: 0,
+			},
 		)
 
 		return {
