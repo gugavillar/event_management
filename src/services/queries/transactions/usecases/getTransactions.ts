@@ -4,16 +4,19 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 type GetTransactionsParams = {
 	eventId?: string
+	searchTransaction?: string
 	page: number
 }
 
 export const getTransactions = async ({
 	page,
 	eventId,
+	searchTransaction,
 }: GetTransactionsParams) => {
 	const response = await api.get(ENDPOINTS.GET_TRANSACTIONS, {
 		params: {
 			...(eventId && { eventId }),
+			...(searchTransaction && { searchTransaction }),
 			page,
 			limit: LIMIT_PER_PAGE,
 		},

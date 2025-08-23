@@ -1,7 +1,7 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
-import { TransactionsAPI } from '../transations.types'
+import { TransactionsAPI } from '../transactions.types'
 
 export const deleteTransaction = async (
 	transactionId: TransactionsAPI['id'],

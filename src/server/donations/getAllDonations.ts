@@ -39,7 +39,7 @@ export const getAllDonations = async (eventId: string | null, page = 1) => {
 
 		return {
 			data: donations,
-			sumOfAllDonations: sumOfAllDonations._sum.value,
+			sumOfAllDonations: sumOfAllDonations._sum.value?.toNumber(),
 			currentPage: page,
 			perPage: LIMIT_PER_PAGE,
 			totalCount: totalOfDonations,

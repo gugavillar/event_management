@@ -159,5 +159,5 @@ export const PAGES_ROLES = {
 	'/reunioes': [ROLES.ADMIN, ROLES.USER],
 	'/doacoes': [ROLES.ADMIN],
 	'/usuarios': [ROLES.ADMIN],
-	'/pagamentos': [ROLES.ADMIN],
+	'/transacoes': [ROLES.ADMIN],
 }

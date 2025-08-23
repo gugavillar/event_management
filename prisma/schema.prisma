@@ -322,12 +322,13 @@ model Donation {
 }
 
 model Transactions {
-  id          String           @id @default(uuid())
+  id          String                          @id @default(uuid())
   eventId     String
   type        TransactionsType
   amount      Decimal
   description String
   date        DateTime
-  createdAt   DateTime         @default(now())
-  event       Event            @relation("TransactionEvents", fields: [eventId], references: [id], onDelete: Cascade)
+  amountType  TransactionsIncomeOrOutcomeType
+  createdAt   DateTime                        @default(now())
+  event       Event                           @relation("TransactionEvents", fields: [eventId], references: [id], onDelete: Cascade)
 }

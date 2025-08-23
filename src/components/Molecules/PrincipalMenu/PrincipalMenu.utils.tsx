@@ -95,6 +95,6 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		buttonLabel: 'Pagamentos',
 		buttonIcon: <Landmark size={24} />,
 		hasSubMenu: false,
-		href: '/pagamentos',
+		href: '/transacoes',
 	},
 ]

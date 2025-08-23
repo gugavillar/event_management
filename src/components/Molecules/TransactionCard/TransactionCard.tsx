@@ -1,17 +1,17 @@
 import { Header, InformationCard } from '@/components/Atoms'
 import { currencyValue } from '@/formatters'
 
-type PaymentCardProps = {
+type TransactionCardProps = {
 	value: number
 	headerText: string
 	headerClassName?: string
 }
 
-export const PaymentCard = ({
+export const TransactionCard = ({
 	value,
 	headerText,
 	headerClassName,
-}: PaymentCardProps) => {
+}: TransactionCardProps) => {
 	return (
 		<InformationCard headingText={headerText} headerClassName={headerClassName}>
 			<div className="flex h-full items-center justify-end p-4 md:p-5">

@@ -1,5 +1,5 @@
 import { PageContent } from '@/components/Organisms'
-import { Payment } from '@/components/Templates'
+import { Transaction } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { getEvents } from '@/services/queries/events'
@@ -16,7 +16,7 @@ export default async function PaymentsPage() {
 			initialPageParam={1}
 		>
 			<PageContent title="Pagamentos" subheadingPage="Prestação de contas">
-				<Payment />
+				<Transaction />
 			</PageContent>
 		</HydrationInfinityProvider>
 	)

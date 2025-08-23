@@ -1,6 +1,6 @@
 import { UUID } from 'crypto'
 
-import { Rooms } from '@/components/Templates/Rooms'
+import { Rooms } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'

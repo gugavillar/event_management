@@ -21,7 +21,8 @@ export const CreateTransaction = () => {
 			date: '',
 			description: '',
 			eventId: '',
-			transactionType: '',
+			type: '',
+			amountType: '',
 		},
 	})
 	const handleCreateTransaction = () => {

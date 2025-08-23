@@ -2,11 +2,11 @@ import { z } from 'zod'
 
 import { isValidateDate } from '@/formatters'
 
-import { TRANSACTION_TYPE } from './TransactionDrawer.utils'
+import { AMOUNT_TYPE, TRANSACTION_TYPE } from './TransactionDrawer.utils'
 
 export const TransactionSchema = z.object({
 	eventId: z.string().trim().min(1, 'Campo obrigatório'),
-	transactionType: z.enum([...TRANSACTION_TYPE.map(({ value }) => value)], {
+	type: z.enum([...TRANSACTION_TYPE.map(({ value }) => value)], {
 		error: 'Campo obrigatório',
 	}),
 	amount: z
@@ -14,6 +14,9 @@ export const TransactionSchema = z.object({
 			error: 'Campo obrigatório',
 		})
 		.min(1, 'Campo obrigatório'),
+	amountType: z.enum([...AMOUNT_TYPE.map(({ value }) => value)], {
+		error: 'Campo obrigatório',
+	}),
 	description: z.string().trim().min(3, 'Campo obrigatório'),
 	date: z
 		.string({ error: 'Campo obrigatório' })
