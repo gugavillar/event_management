@@ -5,7 +5,6 @@ import { isValidateDate } from '@/formatters'
 import { AMOUNT_TYPE, TRANSACTION_TYPE } from './TransactionDrawer.utils'
 
 export const TransactionSchema = z.object({
-	eventId: z.string().trim().min(1, 'Campo obrigatório'),
 	type: z.enum([...TRANSACTION_TYPE.map(({ value }) => value)], {
 		error: 'Campo obrigatório',
 	}),

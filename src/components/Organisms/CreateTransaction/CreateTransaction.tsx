@@ -12,7 +12,7 @@ import {
 	TransactionType,
 } from '../TransactionDrawer/TransactionDrawer.schema'
 
-export const CreateTransaction = () => {
+export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 	const methods = useForm<TransactionType>({
 		mode: 'onChange',
 		resolver: zodResolver(TransactionSchema),
@@ -20,7 +20,6 @@ export const CreateTransaction = () => {
 			amount: '',
 			date: '',
 			description: '',
-			eventId: '',
 			type: '',
 			amountType: '',
 		},
@@ -39,7 +38,10 @@ export const CreateTransaction = () => {
 				Criar transação
 			</Button>
 			<FormProvider {...methods}>
-				<TransactionDrawer drawerId={MODALS_IDS.TRANSACTION_CREATE_DRAWER} />
+				<TransactionDrawer
+					drawerId={MODALS_IDS.TRANSACTION_CREATE_DRAWER}
+					eventId={eventId}
+				/>
 			</FormProvider>
 		</>
 	)

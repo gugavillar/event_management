@@ -1,8 +1,15 @@
 'use client'
 
+import { useState } from 'react'
+
 import { Pagination } from '@/components/Atoms'
 import { ComboBox, ListManager, TransactionCard } from '@/components/Molecules'
-import { CreateTransaction, ListPage } from '@/components/Organisms'
+import {
+	CreateTransaction,
+	ListPage,
+	TransactionDeleteModal,
+} from '@/components/Organisms'
+import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -16,6 +23,9 @@ import {
 } from './Transactions.utils'
 
 export const Transaction = () => {
+	const [selectedTransaction, setSelectedTransaction] = useState<
+		TransactionsAPI['id'] | null
+	>(null)
 	const {
 		data: events,
 		hasNextPage,
@@ -46,7 +56,8 @@ export const Transaction = () => {
 	})
 
 	const handleRemoveTransaction = (id: TransactionsAPI['id']) => {
-		console.log(id)
+		setSelectedTransaction(id)
+		overlayOpen(MODALS_IDS.TRANSACTION_REMOVE_MODAL)
 	}
 
 	const formatData = formatTableData(data?.data, handleRemoveTransaction)
@@ -55,6 +66,12 @@ export const Transaction = () => {
 
 	const balanceAmount =
 		(data?.sumOfAllIncome ?? 0) - (data?.sumOfAllOutcome ?? 0)
+	const balanceAmountCash =
+		(data?.totalOfAccountAndCash?.totalCashIncome ?? 0) -
+		(data?.totalOfAccountAndCash?.totalCashOutcome ?? 0)
+	const balanceAmountAccount =
+		(data?.totalOfAccountAndCash?.totalAccountIncome ?? 0) -
+		(data?.totalOfAccountAndCash?.totalAccountOutcome ?? 0)
 
 	return (
 		<>
@@ -87,9 +104,15 @@ export const Transaction = () => {
 							value={data?.sumOfAllOutcome ?? 0}
 							headerClassName="bg-red-100"
 						/>
-						<TransactionCard headerText="Saldo" value={balanceAmount} />
+						<TransactionCard
+							headerText="Saldo"
+							value={balanceAmount}
+							isShowAccounts
+							amountAccount={balanceAmountAccount}
+							amountCash={balanceAmountCash}
+						/>
 					</section>
-					<CreateTransaction />
+					<CreateTransaction eventId={eventId} />
 					<ListPage
 						placeholderField="Encontrar uma transação"
 						search={searchTransaction}
@@ -110,6 +133,11 @@ export const Transaction = () => {
 					</ListPage>
 				</>
 			)}
+			<TransactionDeleteModal
+				modalId={MODALS_IDS.TRANSACTION_REMOVE_MODAL}
+				selectedTransaction={selectedTransaction}
+				setSelectedTransaction={setSelectedTransaction}
+			/>
 		</>
 	)
 }

@@ -76,7 +76,7 @@ export const HEADER_LABELS = [
 	},
 	{
 		label: '',
-		accessor: 'actions',
+		accessor: 'action',
 	},
 ]
 

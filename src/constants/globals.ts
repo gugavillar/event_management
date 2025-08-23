@@ -63,6 +63,7 @@ export const MODALS_IDS = {
 
 	// TRANSACTIONS
 	TRANSACTION_CREATE_DRAWER: 'transaction_create_drawer',
+	TRANSACTION_REMOVE_MODAL: 'transaction_remove_modal',
 }
 
 export const prisma = new PrismaClient({

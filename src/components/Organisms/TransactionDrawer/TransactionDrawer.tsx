@@ -1,6 +1,6 @@
 'use client'
 import { memo } from 'react'
-import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
@@ -8,17 +8,10 @@ import {
 	CurrencyInputField,
 	InputField,
 	MaskedInputField,
-	SearchBox,
 	SelectField,
 } from '@/components/Molecules'
 import { overlayClose } from '@/constants'
-import {
-	formatDateToSendToApi,
-	formatterComboBoxValues,
-	removeCurrencyFormat,
-} from '@/formatters'
-import { useInfiniteScrollObserver } from '@/hooks'
-import { useGetInfinityEvents } from '@/services/queries/events'
+import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
 import { useCreateTransaction } from '@/services/queries/transactions/hooks'
 import { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
 import { generateToastError } from '@/utils/errors'
@@ -28,37 +21,17 @@ import { AMOUNT_TYPE, TRANSACTION_TYPE } from './TransactionDrawer.utils'
 
 type TransactionDrawerProps = {
 	drawerId: string
+	eventId: string
 }
 
 export const TransactionDrawer = memo(
-	({ drawerId }: TransactionDrawerProps) => {
+	({ drawerId, eventId }: TransactionDrawerProps) => {
 		const { create, isPending } = useCreateTransaction()
 		const {
 			handleSubmit,
 			reset,
-			control,
-			formState: { isValid, isDirty, errors },
+			formState: { isValid, isDirty },
 		} = useFormContext<TransactionType>()
-		const {
-			data: events,
-			hasNextPage,
-			isFetchingNextPage,
-			fetchNextPage,
-			search,
-			setSearch,
-		} = useGetInfinityEvents()
-
-		const formattedEvents = formatterComboBoxValues(
-			events?.pages?.flatMap((page) => page.data),
-			'name',
-			'id',
-		)
-
-		const lastItemRef = useInfiniteScrollObserver({
-			hasNextPage: Boolean(hasNextPage),
-			isFetchingNextPage,
-			fetchNextPage,
-		})
 
 		const handleSubmitForm: SubmitHandler<TransactionType> = async (values) => {
 			if (!values) return
@@ -69,6 +42,7 @@ export const TransactionDrawer = memo(
 				amountType: values.amountType as TransactionsAPI['amountType'],
 				type: values.type as TransactionsAPI['type'],
 				date: formatDateToSendToApi(values.date),
+				eventId,
 			}
 
 			await create(formatValues, {
@@ -93,24 +67,6 @@ export const TransactionDrawer = memo(
 				handleClose={handleClose}
 			>
 				<DrawerBody>
-					<Controller
-						name="eventId"
-						control={control}
-						render={({ field }) => (
-							<SearchBox
-								search={search}
-								setSearch={setSearch}
-								keyOptionLabel="label"
-								keyOptionValue="value"
-								options={formattedEvents}
-								selectedValue={field.value}
-								setSelectedValue={field.onChange}
-								lastItemRef={lastItemRef}
-								label="Evento"
-								error={errors.eventId?.message}
-							/>
-						)}
-					/>
 					<SelectField
 						fieldName="type"
 						placeholder="Selecione uma opção"

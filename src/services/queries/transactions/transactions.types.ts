@@ -31,4 +31,10 @@ export type TransactionsFromAPI = {
 	perPage: number
 	totalCount: number
 	totalPages: number
+	totalOfAccountAndCash: {
+		totalAccountIncome: number
+		totalAccountOutcome: number
+		totalCashIncome: number
+		totalCashOutcome: number
+	}
 }

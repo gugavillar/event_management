@@ -13,6 +13,7 @@ export const getTransactions = async (
 			totalOfTransactions,
 			transactionsIncome,
 			transactionsOutcome,
+			allTransactions,
 		] = await Promise.all([
 			prisma.transactions.findMany({
 				...(eventId && {
@@ -30,7 +31,7 @@ export const getTransactions = async (
 				include: {
 					event: true,
 				},
-				orderBy: { createdAt: 'asc' },
+				orderBy: { date: 'asc' },
 				skip,
 				take: LIMIT_PER_PAGE,
 			}),
@@ -70,7 +71,53 @@ export const getTransactions = async (
 					},
 				}),
 			}),
+			prisma.transactions.findMany({
+				...(eventId && {
+					where: {
+						eventId,
+					},
+				}),
+			}),
 		])
+
+		const totalOfAccountAndCash = allTransactions.reduce(
+			(total, transaction) => {
+				const isAccountIncome =
+					transaction.type === 'INCOME' && transaction.amountType === 'ACCOUNT'
+				const isAccountOutcome =
+					transaction.type === 'OUTCOME' && transaction.amountType === 'ACCOUNT'
+				const isCashIncome =
+					transaction.type === 'INCOME' && transaction.amountType === 'CASH'
+				const isCashOutcome =
+					transaction.type === 'OUTCOME' && transaction.amountType === 'CASH'
+				if (isAccountIncome) {
+					return {
+						...total,
+						totalAccountIncome: Number(transaction.amount),
+					}
+				}
+				if (isAccountOutcome) {
+					return {
+						...total,
+						totalAccountOutcome: Number(transaction.amount),
+					}
+				}
+				if (isCashIncome) {
+					return {
+						...total,
+						totalCashIncome: Number(transaction.amount),
+					}
+				}
+				if (isCashOutcome) {
+					return {
+						...total,
+						totalCashOutcome: Number(transaction.amount),
+					}
+				}
+				return total
+			},
+			{},
+		)
 
 		return {
 			data: transactions,
@@ -80,6 +127,7 @@ export const getTransactions = async (
 			perPage: LIMIT_PER_PAGE,
 			totalCount: totalOfTransactions,
 			totalPages: Math.ceil(totalOfTransactions / LIMIT_PER_PAGE),
+			totalOfAccountAndCash,
 		}
 	} catch (error) {
 		console.error('@getTransactions error:', error)
