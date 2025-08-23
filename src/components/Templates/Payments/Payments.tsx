@@ -1,20 +1,22 @@
 'use client'
-import { useState } from 'react'
 
 import { ComboBox, PaymentCard } from '@/components/Molecules'
-import { CreateTransaction } from '@/components/Organisms'
+import { CreateTransaction, TransactionsTable } from '@/components/Organisms'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
+import { useGetTransactions } from '@/services/queries/transactions/hooks'
+
+import { PaymentCardInfo } from './Payments.utils'
 
 export const Payment = () => {
-	const [selectedValue, setSelectedValue] = useState<string>('')
 	const {
 		data: events,
 		hasNextPage,
 		isFetchingNextPage,
 		fetchNextPage,
 	} = useGetInfinityEvents()
+	const { eventId, isLoading, setEventId } = useGetTransactions()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -27,6 +29,7 @@ export const Payment = () => {
 		isFetchingNextPage,
 		fetchNextPage,
 	})
+
 	return (
 		<>
 			<ComboBox
@@ -34,25 +37,36 @@ export const Payment = () => {
 				keyOptionLabel="label"
 				keyOptionValue="value"
 				options={formattedEvents}
-				selectedValue={selectedValue}
-				setSelectedValue={setSelectedValue}
+				selectedValue={eventId}
+				setSelectedValue={setEventId}
 				lastItemRef={lastItemRef}
 				label="Evento"
 			/>
-			<section className="grid grid-cols-1 gap-8 md:grid-cols-3">
-				<PaymentCard
-					headerText="Entradas"
-					value={0}
-					headerClassName="bg-green-100"
+			{!eventId ? (
+				<PaymentCardInfo
+					isFetching={isLoading}
+					payments={[]}
+					selectedEvent={eventId}
 				/>
-				<PaymentCard
-					headerText="Saídas"
-					value={0}
-					headerClassName="bg-red-100"
-				/>
-				<PaymentCard headerText="Saldo" value={0} />
-			</section>
-			<CreateTransaction />
+			) : (
+				<>
+					<section className="grid grid-cols-1 gap-8 md:grid-cols-3">
+						<PaymentCard
+							headerText="Entradas"
+							value={0}
+							headerClassName="bg-green-100"
+						/>
+						<PaymentCard
+							headerText="Saídas"
+							value={0}
+							headerClassName="bg-red-100"
+						/>
+						<PaymentCard headerText="Saldo" value={0} />
+					</section>
+					<CreateTransaction />
+					<TransactionsTable />
+				</>
+			)}
 		</>
 	)
 }

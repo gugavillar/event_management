@@ -10,6 +10,7 @@ const BASE_PATH = {
 	ROOMS: '/rooms',
 	MEETINGS: '/meetings',
 	DONATIONS: '/donations',
+	TRANSACTIONS: '/transactions',
 }
 
 export const ENDPOINTS = {
@@ -119,4 +120,10 @@ export const ENDPOINTS = {
 	GET_DONATIONS: BASE_PATH.DONATIONS,
 	DELETE_DONATION: (donation_id: string) =>
 		`${BASE_PATH.DONATIONS}/${donation_id}`,
+
+	// Transactions
+	GET_TRANSACTIONS: BASE_PATH.TRANSACTIONS,
+	CREATE_TRANSACTION: BASE_PATH.TRANSACTIONS,
+	DELETE_TRANSACTION: (transaction_id: string) =>
+		`${BASE_PATH.TRANSACTIONS}/${transaction_id}`,
 }

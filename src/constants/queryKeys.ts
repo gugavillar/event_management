@@ -62,6 +62,9 @@ export const QUERY_KEYS = {
 
 	// Donations
 	DONATIONS: 'donations',
+
+	// Transactions
+	TRANSACTIONS: 'transactions',
 } as const
 
 export const getQueryClient = () => {
