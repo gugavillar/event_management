@@ -98,11 +98,13 @@ export const Transaction = () => {
 							headerText="Entradas"
 							value={data?.sumOfAllIncome ?? 0}
 							headerClassName="bg-green-100"
+							isLoading={isLoading}
 						/>
 						<TransactionCard
 							headerText="Saídas"
 							value={data?.sumOfAllOutcome ?? 0}
 							headerClassName="bg-red-100"
+							isLoading={isLoading}
 						/>
 						<TransactionCard
 							headerText="Saldo"
@@ -110,6 +112,7 @@ export const Transaction = () => {
 							isShowAccounts
 							amountAccount={balanceAmountAccount}
 							amountCash={balanceAmountCash}
+							isLoading={isLoading}
 						/>
 					</section>
 					<CreateTransaction eventId={eventId} />

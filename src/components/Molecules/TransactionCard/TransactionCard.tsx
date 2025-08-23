@@ -1,10 +1,11 @@
-import { Header, InformationCard } from '@/components/Atoms'
+import { Header, InformationCard, Spinner } from '@/components/Atoms'
 import { currencyValue } from '@/formatters'
 
 type TransactionCardBase = {
 	value: number
 	headerText: string
 	headerClassName?: string
+	isLoading?: boolean
 }
 
 type TransactionCardWithAccounts = TransactionCardBase & {
@@ -30,15 +31,16 @@ export const TransactionCard = ({
 	isShowAccounts,
 	amountAccount,
 	amountCash,
+	isLoading,
 }: TransactionCardProps) => {
 	return (
 		<InformationCard headingText={headerText} headerClassName={headerClassName}>
 			<div className="flex h-full items-center justify-end p-4 md:p-5">
 				<Header as="h3" className="text-4xl">
-					{currencyValue(value)}
+					{isLoading ? <Spinner /> : currencyValue(value)}
 				</Header>
 			</div>
-			{isShowAccounts && (
+			{isShowAccounts && !isLoading && (
 				<div className="flex flex-col items-end px-4 pb-4">
 					<p className="font-semibold">
 						Conta:{' '}

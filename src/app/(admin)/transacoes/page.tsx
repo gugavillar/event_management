@@ -15,7 +15,7 @@ export default async function PaymentsPage() {
 			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
 			initialPageParam={1}
 		>
-			<PageContent title="Pagamentos" subheadingPage="Prestação de contas">
+			<PageContent pageTitle="Transações" subheadingPage="Prestação de contas">
 				<Transaction />
 			</PageContent>
 		</HydrationInfinityProvider>
