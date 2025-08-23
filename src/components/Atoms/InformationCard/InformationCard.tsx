@@ -6,6 +6,7 @@ import { Text } from '@/components/Atoms'
 type InformationCardProps = ComponentProps<'div'> & {
 	headingText: string
 	actionButton?: ReactNode
+	headerClassName?: string
 }
 
 export const InformationCard = ({
@@ -13,6 +14,7 @@ export const InformationCard = ({
 	headingText,
 	children,
 	actionButton,
+	headerClassName,
 	...props
 }: InformationCardProps) => {
 	return (
@@ -23,7 +25,12 @@ export const InformationCard = ({
 			)}
 			{...props}
 		>
-			<div className="flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-100 px-4 py-2">
+			<div
+				className={twMerge(
+					'flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-100 px-4 py-2',
+					headerClassName,
+				)}
+			>
 				<Text className="opacity-50">{headingText}</Text>
 				{actionButton}
 			</div>

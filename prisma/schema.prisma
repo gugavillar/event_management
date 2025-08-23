@@ -36,6 +36,16 @@ enum GroupType {
   VOLUNTEER
 }
 
+enum TransactionsType {
+  INCOME
+  OUTCOME
+}
+
+enum TransactionsIncomeOrOutcomeType {
+  CASH
+  ACCOUNT
+}
+
 model User {
   id           String    @id @default(uuid())
   name         String
@@ -77,6 +87,7 @@ model Event {
   eventVolunteerRoles           EventVolunteerRole[]
   Meetings                      Meetings[]
   donations                     Donation[]           @relation("EventDonations")
+  transactions                  Transactions[]       @relation("TransactionEvents")
 
   @@map("events")
 }
@@ -308,4 +319,15 @@ model Donation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   event     Event    @relation("EventDonations", fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model Transactions {
+  id          String           @id @default(uuid())
+  eventId     String
+  type        TransactionsType
+  amount      Decimal
+  description String
+  date        DateTime
+  createdAt   DateTime         @default(now())
+  event       Event            @relation("TransactionEvents", fields: [eventId], references: [id], onDelete: Cascade)
 }

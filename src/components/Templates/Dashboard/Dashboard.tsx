@@ -73,7 +73,7 @@ export const Dashboard = () => {
 						isLoading={isLoading}
 					/>
 					<div className="space-y-4">
-						<div className="flex flex-col items-center justify-between md:flex-row">
+						<div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
 							<Header>Aniversariantes do evento</Header>
 							<DownloadPDF birthdayPeople={formattedBirthdayPeople} />
 						</div>
