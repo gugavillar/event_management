@@ -18,6 +18,14 @@ export const HEADER_LABELS = [
 		accessor: 'name',
 	},
 	{
+		label: 'Chamado',
+		accessor: 'called',
+	},
+	{
+		label: 'Cidade',
+		accessor: 'city',
+	},
+	{
 		label: 'Função',
 		accessor: 'role',
 	},
@@ -29,10 +37,7 @@ export const HEADER_LABELS = [
 		label: 'Data de nascimento',
 		accessor: 'birthdate',
 	},
-	{
-		label: 'Cidade',
-		accessor: 'city',
-	},
+
 	{
 		label: 'Evento',
 		accessor: 'event',
@@ -69,6 +74,7 @@ export const formatTableData = (
 			}),
 			id: volunteer.id,
 			name: volunteer.name,
+			called: volunteer.called,
 			role: (
 				<div className="flex gap-2">
 					{!volunteer.eventRoles?.length ? (

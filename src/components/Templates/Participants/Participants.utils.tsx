@@ -18,16 +18,20 @@ export const HEADER_LABELS = [
 		accessor: 'name',
 	},
 	{
+		label: 'Chamado',
+		accessor: 'called',
+	},
+	{
+		label: 'Cidade',
+		accessor: 'city',
+	},
+	{
 		label: 'Telefone',
 		accessor: 'contact',
 	},
 	{
 		label: 'Data de nascimento',
 		accessor: 'birthdate',
-	},
-	{
-		label: 'Cidade',
-		accessor: 'city',
 	},
 	{
 		label: 'Evento',
@@ -65,6 +69,7 @@ export const formatTableData = (
 			}),
 			id: participant.id,
 			name: participant.name,
+			called: participant.called,
 			contact: formatPhone(participant.phone),
 			birthdate: formatBirthdate(
 				participant.birthdate,
