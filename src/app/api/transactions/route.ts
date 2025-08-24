@@ -21,6 +21,7 @@ const handlerGet = async (request: NextRequest) => {
 	return await requestProcess({
 		functions: async () =>
 			await getTransactions(eventId, searchTransaction, pageParams),
+		isProtectedRoute: true,
 	})
 }
 

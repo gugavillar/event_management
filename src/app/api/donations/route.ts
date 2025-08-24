@@ -18,6 +18,7 @@ const handlerGet = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await getAllDonations(searchParams, pageParams),
+		isProtectedRoute: true,
 	})
 }
 
