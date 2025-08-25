@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { Text } from '@/components/Atoms'
+import { Text, WhatsAppIcon } from '@/components/Atoms'
 
 type InfoBoxProps = ComponentProps<'div'> & {
 	label: string
@@ -30,6 +30,9 @@ export const InfoBox = ({
 					<Text>{value}</Text>
 					<Link href={`tel:0${phoneNumber}`}>
 						<PhoneCall size={16} />
+					</Link>
+					<Link target="_blank" href={`https://wa.me/+55${phoneNumber}`}>
+						<WhatsAppIcon className="size-4 text-gray-800" />
 					</Link>
 				</div>
 			) : (

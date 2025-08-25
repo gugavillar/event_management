@@ -1,4 +1,4 @@
-import { BanknoteArrowUp, HandCoins } from 'lucide-react'
+import { BanknoteArrowUp, FileUser, HandCoins } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 import { PaymentTag, Tooltip } from '@/components/Atoms'
@@ -58,6 +58,7 @@ export const formatTableData = (
 	payments: Array<ParticipantsAPI> | undefined,
 	handlePaymentModal: (payment: ParticipantsAPI) => void,
 	handleReturnPaymentModal: (payment: ParticipantsAPI) => void,
+	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!payments) return []
 
@@ -107,6 +108,14 @@ export const formatTableData = (
 			),
 			actions: (
 				<div className="flex space-x-4">
+					<div className="hs-tooltip">
+						<FileUser
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleShowParticipant(payment.id)}
+						/>
+						<Tooltip>Informações</Tooltip>
+					</div>
 					<div className="hs-tooltip">
 						<HandCoins
 							className={twMerge(

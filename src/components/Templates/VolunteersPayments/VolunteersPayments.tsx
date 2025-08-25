@@ -41,9 +41,15 @@ const PaymentModal = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.PaymentModal),
 )
 
+const VolunteerModalData = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.VolunteerModalData),
+)
 export const VolunteersPayments = () => {
 	const [selectedVolunteer, setSelectedVolunteer] =
 		useState<VolunteersAPI | null>(null)
+	const [selectVolunteer, setSelectVolunteer] = useState<
+		VolunteersAPI['id'] | null
+	>(null)
 	const {
 		data: events,
 		hasNextPage,
@@ -106,10 +112,19 @@ export const VolunteersPayments = () => {
 		[],
 	)
 
+	const handleOpenModalToShowVolunteerData = useCallback(
+		(id: VolunteersAPI['id']) => {
+			setSelectVolunteer(id)
+			overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
+		},
+		[],
+	)
+
 	const formattedData = formatTableData(
 		volunteersPayments?.data,
 		handleOpenModalToPaymentVolunteer,
 		handleOpenModalToReturnPaymentVolunteer,
+		handleOpenModalToShowVolunteerData,
 	)
 
 	const handleUpdate = useCallback(
@@ -236,6 +251,11 @@ export const VolunteersPayments = () => {
 				modalType="voluntário"
 				isPending={isPendingReturn}
 				handleReturnPayment={handleReturnPayment}
+			/>
+			<VolunteerModalData
+				modalId={MODALS_IDS.VOLUNTEER_MODAL_DATA}
+				selectedVolunteer={selectVolunteer}
+				setSelectedVolunteer={setSelectVolunteer}
 			/>
 		</PageContent>
 	)

@@ -41,9 +41,16 @@ const PaymentModal = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.PaymentModal),
 )
 
+const ParticipantModalData = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ParticipantModalData),
+)
+
 export const ParticipantsPayments = () => {
 	const [selectedParticipant, setSelectedParticipant] =
 		useState<ParticipantsAPI | null>(null)
+	const [selectParticipant, setSelectParticipant] = useState<
+		ParticipantsAPI['id'] | null
+	>(null)
 	const {
 		data: events,
 		hasNextPage,
@@ -106,10 +113,19 @@ export const ParticipantsPayments = () => {
 		[],
 	)
 
+	const handleOpenModalToShowParticipantData = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+		},
+		[],
+	)
+
 	const formattedData = formatTableData(
 		participantsPayments?.data,
 		handleOpenModalToPaymentParticipant,
 		handleOpenModalToReturnPaymentParticipant,
+		handleOpenModalToShowParticipantData,
 	)
 
 	const handleUpdate = useCallback(
@@ -236,6 +252,11 @@ export const ParticipantsPayments = () => {
 				modalType="participante"
 				isPending={isReturnPending}
 				handleReturnPayment={handleReturnPayment}
+			/>
+			<ParticipantModalData
+				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
+				selectedParticipant={selectParticipant}
+				setSelectedParticipant={setSelectParticipant}
 			/>
 		</PageContent>
 	)
