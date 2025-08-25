@@ -1,6 +1,6 @@
 import { SquarePen, Trash2 } from 'lucide-react'
 
-import { Header, Spinner, Tooltip } from '@/components/Atoms'
+import { Header, Spinner, Tooltip, Text } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { MEMBERS, MembersTypes } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
@@ -116,12 +116,32 @@ export const Content = (
 			memberB.type?.localeCompare(memberA.type),
 		)
 
+		const totalOfParticipants = sortedMembers?.filter(
+			(member) => member.type === MembersTypes[MEMBERS.PARTICIPANT].label,
+		)?.length
+
+		const totalOfLeaders = sortedMembers?.filter(
+			(member) => member.type === MembersTypes[MEMBERS.VOLUNTEER].label,
+		)?.length
+
 		return (
 			<div key={data.id} className="space-y-2">
 				<div className="flex items-center justify-between">
-					<Header>
-						{data.name} - Quantidade de membros: {data.members.length}
-					</Header>
+					<div className="flex flex-col space-y-2.5">
+						<Header>{data.name}</Header>
+						<Text className="text-lg font-semibold">
+							Participantes:{' '}
+							<Text as="span" className="font-normal">
+								{totalOfParticipants}
+							</Text>
+						</Text>
+						<Text className="text-lg font-semibold">
+							Líderes:{' '}
+							<Text as="span" className="font-normal">
+								{totalOfLeaders}
+							</Text>
+						</Text>
+					</div>
 					<div className="flex space-x-4">
 						<div className="hs-tooltip">
 							<SquarePen

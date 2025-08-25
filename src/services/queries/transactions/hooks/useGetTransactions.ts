@@ -23,7 +23,6 @@ export const useGetTransactions = () => {
 		parseAsInteger.withDefault(1),
 	)
 
-	const debouceValue = useDebounce(eventId, 500)
 	const debounceSearch = useDebounce(searchTransaction, 500)
 	const isFirstRender = useRef(true)
 
@@ -35,13 +34,13 @@ export const useGetTransactions = () => {
 
 		if (page !== 1) setPage(1)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouceValue])
+	}, [debounceSearch])
 
 	const { data, isLoading }: UseQueryResult<TransactionsFromAPI> = useQuery({
-		queryKey: [QUERY_KEYS.TRANSACTIONS, debouceValue, page, debounceSearch],
+		queryKey: [QUERY_KEYS.TRANSACTIONS, eventId, page, debounceSearch],
 		queryFn: () =>
 			getTransactions({
-				eventId: debouceValue,
+				eventId,
 				searchTransaction: debounceSearch,
 				page,
 			}),
