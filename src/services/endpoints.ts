@@ -126,4 +126,6 @@ export const ENDPOINTS = {
 	CREATE_TRANSACTION: BASE_PATH.TRANSACTIONS,
 	DELETE_TRANSACTION: (transaction_id: string) =>
 		`${BASE_PATH.TRANSACTIONS}/${transaction_id}`,
+	EXPORT_TRANSACTIONS_DATA: (event_id: string) =>
+		`${BASE_PATH.TRANSACTIONS}/files/${event_id}`,
 }

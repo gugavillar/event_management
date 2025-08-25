@@ -3,7 +3,12 @@
 import { useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
-import { ComboBox, ListManager, TransactionCard } from '@/components/Molecules'
+import {
+	ComboBox,
+	ExportTransactionsButton,
+	ListManager,
+	TransactionCard,
+} from '@/components/Molecules'
 import {
 	CreateTransaction,
 	ListPage,
@@ -73,6 +78,10 @@ export const Transaction = () => {
 		(data?.totalOfAccountAndCash?.totalAccountIncome ?? 0) -
 		(data?.totalOfAccountAndCash?.totalAccountOutcome ?? 0)
 
+	const eventName = formattedEvents.find(
+		(event) => event.customProps.value === eventId,
+	)?.customProps.label
+
 	return (
 		<>
 			<ComboBox
@@ -113,7 +122,13 @@ export const Transaction = () => {
 								isLoading={isLoading}
 							/>
 						</section>
-						<CreateTransaction eventId={eventId} />
+						<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">
+							<ExportTransactionsButton
+								eventId={eventId}
+								eventName={eventName}
+							/>
+							<CreateTransaction eventId={eventId} />
+						</div>
 						<ListPage
 							placeholderField="Encontrar uma transação"
 							search={searchTransaction}

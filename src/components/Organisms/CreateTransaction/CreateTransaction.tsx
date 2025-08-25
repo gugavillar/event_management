@@ -33,7 +33,7 @@ export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 				type="button"
 				onClick={handleCreateTransaction}
 				leftIcon={<CircleDollarSign />}
-				className="max-w-sm min-w-60 items-center justify-center self-end border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+				className="max-w-sm min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 			>
 				Criar transação
 			</Button>

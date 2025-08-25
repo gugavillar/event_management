@@ -65,6 +65,7 @@ export const QUERY_KEYS = {
 
 	// Transactions
 	TRANSACTIONS: 'transactions',
+	TRANSACTIONS_EXPORT_DATA: 'transactions-export-data',
 } as const
 
 export const getQueryClient = () => {
