@@ -14,7 +14,7 @@ const handlerPost = async (request: NextRequest) => {
 
 const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('eventId')
-	const pageParams = Number(request.nextUrl.searchParams.get('pageEvent')) || 1
+	const pageParams = Number(request.nextUrl.searchParams.get('page')) || 1
 
 	return await requestProcess({
 		functions: async () => await getAllDonations(searchParams, pageParams),

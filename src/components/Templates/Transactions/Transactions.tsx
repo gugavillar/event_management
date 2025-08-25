@@ -85,57 +85,56 @@ export const Transaction = () => {
 				lastItemRef={lastItemRef}
 				label="Evento"
 			/>
-			{!eventId ? (
-				<TransactionCardInfo
-					isFetching={isLoading}
-					payments={formatData}
-					selectedEvent={eventId}
-				/>
-			) : (
-				<>
-					<section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-						<TransactionCard
-							headerText="Entradas"
-							value={data?.sumOfAllIncome ?? 0}
-							headerClassName="bg-green-100"
-							isLoading={isLoading}
-						/>
-						<TransactionCard
-							headerText="Saídas"
-							value={data?.sumOfAllOutcome ?? 0}
-							headerClassName="bg-red-100"
-							isLoading={isLoading}
-						/>
-						<TransactionCard
-							headerText="Saldo"
-							value={balanceAmount}
-							isShowAccounts
-							amountAccount={balanceAmountAccount}
-							amountCash={balanceAmountCash}
-							isLoading={isLoading}
-						/>
-					</section>
-					<CreateTransaction eventId={eventId} />
-					<ListPage
-						placeholderField="Encontrar uma transação"
-						search={searchTransaction}
-						setSearch={setSearchTransaction}
-					>
-						<ListManager
-							bodyData={formatData}
-							headerLabels={HEADER_LABELS}
-							isLoading={isLoading}
-						/>
-						{hasMoreThanOnePage && (
-							<Pagination
-								currentPage={page}
-								setPage={setPage}
-								totalPages={data?.totalPages}
+			<TransactionCardInfo
+				isFetching={isLoading}
+				payments={formatData}
+				selectedEvent={eventId}
+				content={
+					<>
+						<section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+							<TransactionCard
+								headerText="Entradas"
+								value={data?.sumOfAllIncome ?? 0}
+								headerClassName="bg-green-100"
+								isLoading={isLoading}
 							/>
-						)}
-					</ListPage>
-				</>
-			)}
+							<TransactionCard
+								headerText="Saídas"
+								value={data?.sumOfAllOutcome ?? 0}
+								headerClassName="bg-red-100"
+								isLoading={isLoading}
+							/>
+							<TransactionCard
+								headerText="Saldo"
+								value={balanceAmount}
+								isShowAccounts
+								amountAccount={balanceAmountAccount}
+								amountCash={balanceAmountCash}
+								isLoading={isLoading}
+							/>
+						</section>
+						<CreateTransaction eventId={eventId} />
+						<ListPage
+							placeholderField="Encontrar uma transação"
+							search={searchTransaction}
+							setSearch={setSearchTransaction}
+						>
+							<ListManager
+								bodyData={formatData}
+								headerLabels={HEADER_LABELS}
+								isLoading={isLoading}
+							/>
+							{hasMoreThanOnePage && (
+								<Pagination
+									currentPage={page}
+									setPage={setPage}
+									totalPages={data?.totalPages}
+								/>
+							)}
+						</ListPage>
+					</>
+				}
+			/>
 			<TransactionDeleteModal
 				modalId={MODALS_IDS.TRANSACTION_REMOVE_MODAL}
 				selectedTransaction={selectedTransaction}

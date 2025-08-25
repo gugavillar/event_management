@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { BanknoteArrowDown, BanknoteArrowUp, Trash2 } from 'lucide-react'
+import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
@@ -14,17 +15,19 @@ export const TransactionCardInfo = ({
 	isFetching,
 	payments,
 	selectedEvent,
+	content,
 }: {
 	selectedEvent: string
 	isFetching: boolean
 	payments: Array<any>
+	content: ReactNode
 }) => {
 	if (!selectedEvent) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
 				<h3 className="text-lg font-bold text-gray-800">Selecione um evento</h3>
 				<p className="mt-2 text-gray-500">
-					Os registros são exibidos conforme o evento selecionado. Escolha um
+					As transações são exibidas conforme o evento selecionado. Escolha um
 					para continuar.
 				</p>
 			</div>
@@ -35,10 +38,10 @@ export const TransactionCardInfo = ({
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
 				<h3 className="text-lg font-bold text-gray-800">
-					Nenhum registro encontrado
+					Nenhuma transação encontrada
 				</h3>
 				<p className="mt-2 text-gray-500">
-					Nenhum registro foi criado para o evento selecionado.
+					Nenhuma transação foi criada para o evento selecionado.
 				</p>
 			</div>
 		)
@@ -51,6 +54,8 @@ export const TransactionCardInfo = ({
 			</div>
 		)
 	}
+
+	return content
 }
 
 export const HEADER_LABELS = [

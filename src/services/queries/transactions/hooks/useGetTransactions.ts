@@ -45,6 +45,7 @@ export const useGetTransactions = () => {
 				searchTransaction: debounceSearch,
 				page,
 			}),
+		enabled: !!eventId,
 	})
 
 	return {
