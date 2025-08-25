@@ -7,7 +7,7 @@ import {
 	amountType,
 	transactionType,
 } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
-import { prisma } from '@/constants'
+import { generateColumnWidths, prisma } from '@/constants'
 import { currencyValue } from '@/formatters'
 
 export const getExportTransactions = async (eventId: string) => {
@@ -75,6 +75,10 @@ export const getExportTransactions = async (eventId: string) => {
 			},
 		)
 		const workbook = utils.book_new()
+		worksheetIncomeTransactions['!cols'] =
+			generateColumnWidths(incomeTransactions)
+		worksheetOutcomeTransactions['!cols'] =
+			generateColumnWidths(outcomeTransactions)
 		utils.book_append_sheet(workbook, worksheetIncomeTransactions, 'Entradas')
 		utils.book_append_sheet(workbook, worksheetOutcomeTransactions, 'Saídas')
 
@@ -153,6 +157,8 @@ export const getExportTransactions = async (eventId: string) => {
 			['Saldo geral', '', '', currencyValue(geralBalance)],
 		]
 		const worksheetTransactionsBalance = utils.aoa_to_sheet(data)
+		worksheetTransactionsBalance['!cols'] = generateColumnWidths(data)
+
 		utils.book_append_sheet(workbook, worksheetTransactionsBalance, 'Geral')
 		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
 

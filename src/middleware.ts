@@ -40,5 +40,6 @@ export const config = {
 		'/reunioes',
 		'/doacoes',
 		'/usuarios',
+		'/transacoes',
 	],
 }

@@ -92,7 +92,7 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 		href: '/doacoes',
 	},
 	{
-		buttonLabel: 'Pagamentos',
+		buttonLabel: 'Transações',
 		buttonIcon: <Landmark size={24} />,
 		hasSubMenu: false,
 		href: '/transacoes',

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { generateColumnWidths, prisma } from '@/constants'
 import {
 	currencyValue,
 	formatBirthdate,
@@ -85,6 +85,7 @@ export const getExportParticipantsData = async (
 			})
 			const workbook = utils.book_new()
 			utils.book_append_sheet(workbook, worksheetParticipants, 'Interessados')
+			worksheetParticipants['!cols'] = generateColumnWidths(interestedData)
 			const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
 
 			return new NextResponse(buffer, {
@@ -156,10 +157,12 @@ export const getExportParticipantsData = async (
 		const worksheetParticipants = utils.json_to_sheet(participantsData, {
 			header: tableHeaderParticipants,
 		})
+		worksheetParticipants['!cols'] = generateColumnWidths(participantsData)
 		const tableHeaderPayments = Object.keys(paymentsData[0])
 		const worksheetPayments = utils.json_to_sheet(paymentsData, {
 			header: tableHeaderPayments,
 		})
+		worksheetPayments['!cols'] = generateColumnWidths(paymentsData)
 		const workbook = utils.book_new()
 		utils.book_append_sheet(workbook, worksheetParticipants, 'Participantes')
 		utils.book_append_sheet(workbook, worksheetPayments, 'Pagamentos')

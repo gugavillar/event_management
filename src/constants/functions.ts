@@ -86,3 +86,29 @@ export const generatePrintKey = <T>(
 
 	return data.map((d) => `${d.id}:${d.members.length}`).join('|')
 }
+
+export const generateColumnWidths = (data: any[] | any[][]) => {
+	let aoa: any[][]
+
+	if (Array.isArray(data[0])) {
+		aoa = data as any[][]
+	} else {
+		const headers = Object.keys(data[0])
+		aoa = [
+			headers,
+			...(data as Record<string, any>[]).map((row) =>
+				headers.map((h) => row[h]),
+			),
+		]
+	}
+
+	const colWidths = aoa[0].map((_, colIndex) => {
+		const maxLength = aoa
+			.map((row) => row?.[colIndex]?.toString().length || 0)
+			.reduce((a, b) => Math.max(a, b), 0)
+
+		return { wch: maxLength + 1 }
+	})
+
+	return colWidths
+}
