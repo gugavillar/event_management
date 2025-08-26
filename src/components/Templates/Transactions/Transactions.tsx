@@ -84,19 +84,26 @@ export const Transaction = () => {
 
 	return (
 		<>
-			<ComboBox
-				className="max-w-[25.875rem]"
-				keyOptionLabel="label"
-				keyOptionValue="value"
-				options={formattedEvents}
-				selectedValue={eventId}
-				setSelectedValue={setEventId}
-				lastItemRef={lastItemRef}
-				label="Evento"
-			/>
+			<div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+				<ComboBox
+					className="max-w-[25.875rem]"
+					keyOptionLabel="label"
+					keyOptionValue="value"
+					options={formattedEvents}
+					selectedValue={eventId}
+					setSelectedValue={setEventId}
+					lastItemRef={lastItemRef}
+					label="Evento"
+				/>
+				{eventId && (
+					<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">
+						<ExportTransactionsButton eventId={eventId} eventName={eventName} />
+						<CreateTransaction eventId={eventId} />
+					</div>
+				)}
+			</div>
 			<TransactionCardInfo
 				isFetching={isLoading}
-				payments={formatData}
 				selectedEvent={eventId}
 				content={
 					<>
@@ -122,13 +129,6 @@ export const Transaction = () => {
 								isLoading={isLoading}
 							/>
 						</section>
-						<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">
-							<ExportTransactionsButton
-								eventId={eventId}
-								eventName={eventName}
-							/>
-							<CreateTransaction eventId={eventId} />
-						</div>
 						<ListPage
 							placeholderField="Encontrar uma transação"
 							search={searchTransaction}

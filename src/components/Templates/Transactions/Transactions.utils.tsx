@@ -13,13 +13,11 @@ import { TransactionsAPI } from '@/services/queries/transactions/transactions.ty
 
 export const TransactionCardInfo = ({
 	isFetching,
-	payments,
 	selectedEvent,
 	content,
 }: {
 	selectedEvent: string
 	isFetching: boolean
-	payments: Array<any>
 	content: ReactNode
 }) => {
 	if (!selectedEvent) {
@@ -29,19 +27,6 @@ export const TransactionCardInfo = ({
 				<p className="mt-2 text-gray-500">
 					As transações são exibidas conforme o evento selecionado. Escolha um
 					para continuar.
-				</p>
-			</div>
-		)
-	}
-
-	if (!isFetching && !payments?.length) {
-		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">
-					Nenhuma transação encontrada
-				</h3>
-				<p className="mt-2 text-gray-500">
-					Nenhuma transação foi criada para o evento selecionado.
 				</p>
 			</div>
 		)

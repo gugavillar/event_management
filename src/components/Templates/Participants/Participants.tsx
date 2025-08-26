@@ -202,10 +202,10 @@ export const Participants = () => {
 			pageTitle="Participantes"
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
+				<ExportParticipantsButton />
 				<CreateParticipantButton
 					handleCreateParticipant={handleCreateParticipant}
 				/>
-				<ExportParticipantsButton />
 			</div>
 			<ListPage
 				placeholderField="Encontrar um participante"

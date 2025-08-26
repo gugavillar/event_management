@@ -100,10 +100,12 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<GenerateGroupList
-					formattedGroups={formattedGroups}
-					modalId={MODALS_IDS.GENERATE_LIST_GROUP_MODAL}
-				/>
+				{!!formattedGroups.length && (
+					<GenerateGroupList
+						formattedGroups={formattedGroups}
+						modalId={MODALS_IDS.GENERATE_LIST_GROUP_MODAL}
+					/>
+				)}
 				<Button
 					type="button"
 					onClick={() => handleOpenDrawerToCreateOrEditGroup()}

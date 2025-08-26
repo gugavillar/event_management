@@ -211,8 +211,8 @@ export const Volunteers = () => {
 	return (
 		<PageContent pageTitle="Voluntários" subheadingPage="Lista de voluntários">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<CreateVolunteerButton handleCreateVolunteer={handleCreateVolunteer} />
 				<ExportVolunteersButton />
+				<CreateVolunteerButton handleCreateVolunteer={handleCreateVolunteer} />
 			</div>
 			<ListPage
 				placeholderField="Encontrar um voluntário"
