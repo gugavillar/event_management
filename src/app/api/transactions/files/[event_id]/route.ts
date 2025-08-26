@@ -13,6 +13,7 @@ const handlerGet = async (request: NextRequest, { params }: Params) => {
 	const routeParams = await params.then((res) => res.event_id ?? '')
 	return await requestProcess({
 		functions: async () => await getExportTransactions(routeParams),
+		isProtectedRoute: true,
 	})
 }
 
