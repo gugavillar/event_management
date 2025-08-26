@@ -139,6 +139,7 @@ export const LINE_COLOR = {
 export const IMAGES_FORMS = {
 	'cursilho-masculino': '/cursilho_masculino.webp',
 	happening: '/happening.webp',
+	'cursilho-feminino': '/cursilho_feminino.webp',
 }
 
 export const IMAGES_CLOSED = {

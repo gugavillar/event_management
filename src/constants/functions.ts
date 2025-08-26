@@ -55,6 +55,10 @@ export const image = (eventName?: string) => {
 		return IMAGES_FORMS['cursilho-masculino']
 	}
 
+	if (eventName.toLowerCase().includes('cursilho feminino')) {
+		return IMAGES_FORMS['cursilho-feminino']
+	}
+
 	return ''
 }
 
