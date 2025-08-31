@@ -93,6 +93,7 @@ export const generatePrintKey = <T>(
 
 export const generateColumnWidths = (data: any[] | any[][]) => {
 	let aoa: any[][]
+	if (!data.length) return [{ wch: 20 }]
 
 	if (Array.isArray(data[0])) {
 		aoa = data as any[][]
