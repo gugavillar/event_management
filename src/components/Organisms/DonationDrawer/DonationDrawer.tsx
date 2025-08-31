@@ -7,8 +7,9 @@ import {
 	InputField,
 	CurrencyInputField,
 	SearchBox,
+	SelectField,
 } from '@/components/Molecules'
-import { overlayClose } from '@/constants'
+import { overlayClose, PaymentSelectOptions, PaymentTypeAPI } from '@/constants'
 import { formatterComboBoxValues, removeCurrencyFormat } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useCreateDonation } from '@/services/queries/donations'
@@ -20,6 +21,15 @@ import { DonationType } from './DonationDrawer.schema'
 type DonationDrawerProps = {
 	drawerId: string
 }
+
+const paymentMethods = PaymentSelectOptions.filter(
+	(item) =>
+		![
+			PaymentTypeAPI.DONATION,
+			PaymentTypeAPI.DONATION_ROMERO,
+			PaymentTypeAPI.OPEN,
+		].includes(item.value),
+)
 
 export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 	const {
@@ -98,6 +108,13 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 					)}
 				/>
 				<InputField fieldName="name">Nome do doador</InputField>
+				<SelectField
+					fieldName="type"
+					options={paymentMethods}
+					placeholder="Selecione o tipo"
+				>
+					Tipo
+				</SelectField>
 				<CurrencyInputField type="tel" fieldName="value">
 					Valor
 				</CurrencyInputField>

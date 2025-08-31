@@ -141,6 +141,11 @@ export const VolunteersPayments = () => {
 						: Number(
 								removeCurrencyFormat(selectedVolunteer.event.volunteerPrice),
 							),
+				...(values.paymentType === PaymentTypeAPI.CARD && {
+					paymentReceived: Number(
+						removeCurrencyFormat(values.paymentReceived as string),
+					),
+				}),
 			}
 
 			await create(

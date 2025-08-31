@@ -9,6 +9,7 @@ type CreateParticipantPaymentArgs = {
 		'paymentType' | 'eventId' | 'participantId'
 	> & {
 		paymentValue: number
+		paymentReceived?: number
 	}
 }
 

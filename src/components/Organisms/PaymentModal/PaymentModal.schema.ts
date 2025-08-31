@@ -47,6 +47,7 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 					},
 				),
 			paymentValue: z.string().optional(),
+			paymentReceived: z.string().optional(),
 		})
 		.superRefine((data, ctx) => {
 			if (data.paymentValue) {
@@ -67,6 +68,16 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 			) {
 				ctx.addIssue({
 					path: ['paymentValue'],
+					code: 'custom',
+					message: 'Campo obrigatório',
+				})
+			}
+			if (
+				data.paymentType === PaymentTypeAPI.CARD &&
+				(!data.paymentReceived || data?.paymentReceived.trim() === '')
+			) {
+				ctx.addIssue({
+					path: ['paymentReceived'],
 					code: 'custom',
 					message: 'Campo obrigatório',
 				})

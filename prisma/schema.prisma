@@ -165,15 +165,17 @@ model VolunteerAddress {
 }
 
 model VolunteerPayment {
-  id           String       @id @default(uuid())
-  paymentValue Decimal
-  paymentType  PaymentType?
-  eventId      String
-  event        Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  volunteerId  String
-  volunteer    Volunteer    @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id              String         @id @default(uuid())
+  paymentValue    Decimal
+  paymentReceived Decimal?
+  paymentType     PaymentType?
+  eventId         String
+  event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  volunteerId     String
+  volunteer       Volunteer      @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  Transactions    Transactions[] @relation("TransactionVolunteerPayment")
 
   @@map("volunteers_payments")
 }
@@ -222,15 +224,17 @@ model ParticipantAddress {
 }
 
 model ParticipantPayment {
-  id            String       @id @default(uuid())
-  paymentValue  Decimal
-  paymentType   PaymentType?
-  eventId       String
-  event         Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  participantId String
-  participant   Participant  @relation(fields: [participantId], references: [id], onDelete: Cascade)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id              String         @id @default(uuid())
+  paymentValue    Decimal
+  paymentReceived Decimal?
+  paymentType     PaymentType?
+  eventId         String
+  event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participantId   String
+  participant     Participant    @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  Transactions    Transactions[] @relation("TransactionParticipantPayment")
 
   @@map("participants_payments")
 }
@@ -312,23 +316,31 @@ model MeetingPresence {
 }
 
 model Donation {
-  id        String   @id @default(uuid())
-  eventId   String
-  name      String
-  value     Decimal
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  event     Event    @relation("EventDonations", fields: [eventId], references: [id], onDelete: Cascade)
+  id          String        @id @default(uuid())
+  eventId     String
+  name        String
+  value       Decimal
+  type        PaymentType?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  event       Event         @relation("EventDonations", fields: [eventId], references: [id], onDelete: Cascade)
+  transaction Transactions? @relation("TransactionDonation")
 }
 
 model Transactions {
-  id          String                          @id @default(uuid())
-  eventId     String
-  type        TransactionsType
-  amount      Decimal
-  description String
-  date        DateTime
-  amountType  TransactionsIncomeOrOutcomeType
-  createdAt   DateTime                        @default(now())
-  event       Event                           @relation("TransactionEvents", fields: [eventId], references: [id], onDelete: Cascade)
+  id                   String                          @id @default(uuid())
+  eventId              String
+  type                 TransactionsType
+  amount               Decimal
+  description          String
+  date                 DateTime
+  amountType           TransactionsIncomeOrOutcomeType
+  createdAt            DateTime                        @default(now())
+  event                Event                           @relation("TransactionEvents", fields: [eventId], references: [id], onDelete: Cascade)
+  donationId           String?                         @unique
+  donation             Donation?                       @relation("TransactionDonation", fields: [donationId], references: [id], onDelete: Cascade)
+  participantPaymentId String?
+  participantPayment   ParticipantPayment?             @relation("TransactionParticipantPayment", fields: [participantPaymentId], references: [id], onDelete: Cascade)
+  volunteerPaymentId   String?
+  volunteerPayment     VolunteerPayment?               @relation("TransactionVolunteerPayment", fields: [volunteerPaymentId], references: [id], onDelete: Cascade)
 }

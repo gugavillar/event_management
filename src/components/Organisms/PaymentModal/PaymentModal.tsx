@@ -42,6 +42,7 @@ export const PaymentModal = memo(
 				paid: undefined,
 				paymentType: '',
 				paymentValue: '',
+				paymentReceived: '',
 			},
 			resolver: zodResolver(PaymentModalSchema(eventValue, paidValue)),
 		})
@@ -61,6 +62,8 @@ export const PaymentModal = memo(
 		)
 
 		const isPartialPayment = methods.watch('paid') === 'partial'
+		const isCardPaymentType =
+			methods.watch('paymentType') === PaymentTypeAPI.CARD
 
 		return (
 			<Modal modalId={modalId} handleClose={handleClose}>
@@ -102,6 +105,11 @@ export const PaymentModal = memo(
 						{isPartialPayment && (
 							<CurrencyInputField type="tel" fieldName="paymentValue">
 								Informe o valor pago
+							</CurrencyInputField>
+						)}
+						{isCardPaymentType && (
+							<CurrencyInputField type="tel" fieldName="paymentReceived">
+								Informe o valor recebido
 							</CurrencyInputField>
 						)}
 						<div className="flex w-full flex-col justify-end gap-y-4 md:flex-row md:gap-x-5">

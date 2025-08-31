@@ -10,6 +10,7 @@ import {
 export type CreateParticipantPaymentArgs = {
 	paymentType: (typeof PaymentTypeAPI)['CARD' | 'CASH' | 'PIX' | 'DONATION']
 	paymentValue: number
+	paymentReceived?: number
 	eventId: string
 	participantId: string
 }
@@ -32,12 +33,45 @@ export const createParticipantPayment = async (
 				.max(MAX_CURRENCY_VALUE),
 			eventId: z.uuid(),
 			participantId: z.uuid(),
+			paymentReceived: z.number().optional(),
 		}).parse({ ...values })
 
-		return await prisma.participantPayment.create({
-			data: {
-				...values,
-			},
+		return await prisma.$transaction(async (tx) => {
+			const payment = await tx.participantPayment.create({
+				data: {
+					...values,
+				},
+			})
+
+			if (
+				[PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO].includes(
+					values.paymentType,
+				)
+			) {
+				return
+			}
+
+			const participant = await tx.participant.findUnique({
+				where: {
+					id: values.participantId,
+				},
+			})
+
+			await tx.transactions.create({
+				data: {
+					eventId: values.eventId,
+					amount:
+						values.paymentType === PaymentTypeAPI.CARD
+							? (values.paymentReceived as number)
+							: values.paymentValue,
+					participantPaymentId: payment.id,
+					date: new Date(),
+					description: `Pagamento ficha - ${participant?.name}`,
+					amountType:
+						values.paymentType === PaymentTypeAPI.CASH ? 'CASH' : 'ACCOUNT',
+					type: 'INCOME',
+				},
+			})
 		})
 	} catch (error) {
 		console.error('@createParticipantPayment error:', error)

@@ -12,6 +12,12 @@ export const useReturnVolunteerPayment = () => {
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.VOLUNTEERS_PAYMENTS],
 			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TRANSACTIONS],
+			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TRANSACTIONS_EXPORT_DATA],
+			})
 		},
 	})
 

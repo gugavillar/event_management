@@ -144,6 +144,11 @@ export const ParticipantsPayments = () => {
 									selectedParticipant.event.participantPrice,
 								),
 							),
+				...(values.paymentType === PaymentTypeAPI.CARD && {
+					paymentReceived: Number(
+						removeCurrencyFormat(values.paymentReceived as string),
+					),
+				}),
 			}
 			await create(
 				{ data: formatValues },

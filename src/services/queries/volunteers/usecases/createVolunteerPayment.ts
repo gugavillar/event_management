@@ -9,6 +9,7 @@ type CreateVolunteerPaymentArgs = {
 		'paymentType' | 'eventId' | 'volunteerId'
 	> & {
 		paymentValue: number
+		paymentReceived?: number
 	}
 }
 

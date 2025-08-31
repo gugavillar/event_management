@@ -10,6 +10,10 @@ export const useCreateDonation = () => {
 		mutationFn: createDonation,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DONATIONS] })
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TRANSACTIONS] })
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.TRANSACTIONS_EXPORT_DATA],
+			})
 		},
 	})
 
