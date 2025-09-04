@@ -1,5 +1,4 @@
 import { isFuture } from 'date-fns'
-import { cloneDeepWith } from 'lodash'
 
 import { IMAGES_CLOSED, IMAGES_FORMS } from './globals'
 import { MEMBERS, ROLES } from './status'
@@ -119,11 +118,20 @@ export const generateColumnWidths = (data: any[] | any[][]) => {
 	return colWidths
 }
 
-export const deepTrim = <T>(obj: T) => {
-	return cloneDeepWith(obj, (value) => {
-		if (typeof value === 'string') {
-			return value.trim()
-		}
-		return undefined
-	})
+export function deepTrim<T>(obj: T): T {
+	if (typeof obj === 'string') {
+		return obj.trim() as T
+	}
+
+	if (Array.isArray(obj)) {
+		return obj.map(deepTrim) as T
+	}
+
+	if (obj && typeof obj === 'object') {
+		return Object.fromEntries(
+			Object.entries(obj).map(([key, value]) => [key, deepTrim(value)]),
+		) as T
+	}
+
+	return obj
 }
