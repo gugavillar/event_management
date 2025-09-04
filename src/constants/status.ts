@@ -110,3 +110,13 @@ export const MembersTypesOptionsRadio = Object.values(MEMBERS).map((value) => ({
 			? 'Participando do evento'
 			: 'Servindo no evento',
 }))
+
+export enum TransactionsType {
+	INCOME = 'INCOME',
+	OUTCOME = 'OUTCOME',
+}
+
+export enum TransactionAmountType {
+	ACCOUNT = 'ACCOUNT',
+	CASH = 'CASH',
+}

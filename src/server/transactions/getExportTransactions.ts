@@ -7,7 +7,12 @@ import {
 	amountType,
 	transactionType,
 } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
-import { generateColumnWidths, prisma } from '@/constants'
+import {
+	generateColumnWidths,
+	prisma,
+	TransactionAmountType,
+	TransactionsType,
+} from '@/constants'
 import { currencyValue } from '@/formatters'
 
 export const getExportTransactions = async (eventId: string) => {
@@ -40,7 +45,7 @@ export const getExportTransactions = async (eventId: string) => {
 		const eventName = transactions[0].event.name
 
 		const incomeTransactions = transactions
-			.filter((transaction) => transaction.type === 'INCOME')
+			.filter((transaction) => transaction.type === TransactionsType.INCOME)
 			.map((transaction) => ({
 				Descrição: transaction.description,
 				Tipo: transactionType[transaction.type],
@@ -50,7 +55,7 @@ export const getExportTransactions = async (eventId: string) => {
 			}))
 
 		const outcomeTransactions = transactions
-			.filter((transaction) => transaction.type === 'OUTCOME')
+			.filter((transaction) => transaction.type === TransactionsType.OUTCOME)
 			.map((transaction) => ({
 				Descrição: transaction.description,
 				Tipo: transactionType[transaction.type],
@@ -85,13 +90,17 @@ export const getExportTransactions = async (eventId: string) => {
 		const totalOfAccountAndCash = transactions.reduce(
 			(total, transaction) => {
 				const isAccountIncome =
-					transaction.type === 'INCOME' && transaction.amountType === 'ACCOUNT'
+					transaction.type === TransactionsType.INCOME &&
+					transaction.amountType === TransactionAmountType.ACCOUNT
 				const isAccountOutcome =
-					transaction.type === 'OUTCOME' && transaction.amountType === 'ACCOUNT'
+					transaction.type === TransactionsType.OUTCOME &&
+					transaction.amountType === TransactionAmountType.ACCOUNT
 				const isCashIncome =
-					transaction.type === 'INCOME' && transaction.amountType === 'CASH'
+					transaction.type === TransactionsType.INCOME &&
+					transaction.amountType === TransactionAmountType.CASH
 				const isCashOutcome =
-					transaction.type === 'OUTCOME' && transaction.amountType === 'CASH'
+					transaction.type === TransactionsType.OUTCOME &&
+					transaction.amountType === TransactionAmountType.CASH
 				if (isAccountIncome) {
 					return {
 						...total,

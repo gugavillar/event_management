@@ -2,7 +2,7 @@ FROM node:20-alpine AS base
 
 FROM base AS deps
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 RUN corepack enable
 

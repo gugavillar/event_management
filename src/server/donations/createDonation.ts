@@ -1,5 +1,10 @@
 import { donationSchemaRoute } from '@/app/api/donations/donation.schema'
-import { PaymentTypeAPI, prisma } from '@/constants'
+import {
+	PaymentTypeAPI,
+	prisma,
+	TransactionAmountType,
+	TransactionsType,
+} from '@/constants'
 import { FormDonation } from '@/services/queries/donations/donations.types'
 
 export const createDonation = async (data: FormDonation) => {
@@ -17,8 +22,11 @@ export const createDonation = async (data: FormDonation) => {
 					donationId: donations.id,
 					date: new Date(),
 					description: `Doação - ${data.name}`,
-					amountType: data.type === PaymentTypeAPI.CASH ? 'CASH' : 'ACCOUNT',
-					type: 'INCOME',
+					amountType:
+						data.type === PaymentTypeAPI.CASH
+							? TransactionAmountType.CASH
+							: TransactionAmountType.ACCOUNT,
+					type: TransactionsType.INCOME,
 				},
 			})
 		})

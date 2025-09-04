@@ -5,6 +5,7 @@ import {
 	MIN_CURRENCY_VALUE,
 	PaymentTypeAPI,
 	prisma,
+	TransactionAmountType,
 } from '@/constants'
 
 export type CreateParticipantPaymentArgs = {
@@ -68,7 +69,9 @@ export const createParticipantPayment = async (
 					date: new Date(),
 					description: `Pagamento ficha - ${participant?.name}`,
 					amountType:
-						values.paymentType === PaymentTypeAPI.CASH ? 'CASH' : 'ACCOUNT',
+						values.paymentType === PaymentTypeAPI.CASH
+							? TransactionAmountType.CASH
+							: TransactionAmountType.ACCOUNT,
 					type: 'INCOME',
 				},
 			})

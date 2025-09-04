@@ -13,14 +13,19 @@ const TOAST_ID = 'download-transactions'
 type ExportTransactionsButtonProps = {
 	eventId: string
 	eventName: any
+	transactionLength?: number
 }
 
 export const ExportTransactionsButton = ({
 	eventId,
 	eventName,
+	transactionLength,
 }: ExportTransactionsButtonProps) => {
 	const [isDownload, setIsDownload] = useState(false)
-	const { data, isError, isFetching } = useGetExportTransactionsData(eventId)
+	const { data, isError, isFetching } = useGetExportTransactionsData(
+		eventId,
+		transactionLength,
+	)
 
 	useEffect(() => {
 		if (!eventId || !isDownload) return
@@ -49,6 +54,7 @@ export const ExportTransactionsButton = ({
 			isLoading={isFetching}
 			onClick={() => setIsDownload(true)}
 			leftIcon={<FileDown />}
+			disabled={!transactionLength}
 		>
 			Exportar
 		</Button>

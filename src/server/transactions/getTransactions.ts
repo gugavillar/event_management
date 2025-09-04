@@ -1,4 +1,9 @@
-import { LIMIT_PER_PAGE, prisma } from '@/constants'
+import {
+	LIMIT_PER_PAGE,
+	prisma,
+	TransactionAmountType,
+	TransactionsType,
+} from '@/constants'
 
 export const getTransactions = async (
 	eventId: string | null,
@@ -56,7 +61,7 @@ export const getTransactions = async (
 				...(eventId && {
 					where: {
 						eventId,
-						type: 'INCOME',
+						type: TransactionsType.INCOME,
 					},
 				}),
 			}),
@@ -67,7 +72,7 @@ export const getTransactions = async (
 				...(eventId && {
 					where: {
 						eventId,
-						type: 'OUTCOME',
+						type: TransactionsType.OUTCOME,
 					},
 				}),
 			}),
@@ -83,13 +88,17 @@ export const getTransactions = async (
 		const totalOfAccountAndCash = allTransactions.reduce(
 			(total, transaction) => {
 				const isAccountIncome =
-					transaction.type === 'INCOME' && transaction.amountType === 'ACCOUNT'
+					transaction.type === TransactionsType.INCOME &&
+					transaction.amountType === TransactionAmountType.ACCOUNT
 				const isAccountOutcome =
-					transaction.type === 'OUTCOME' && transaction.amountType === 'ACCOUNT'
+					transaction.type === TransactionsType.OUTCOME &&
+					transaction.amountType === TransactionAmountType.ACCOUNT
 				const isCashIncome =
-					transaction.type === 'INCOME' && transaction.amountType === 'CASH'
+					transaction.type === TransactionsType.INCOME &&
+					transaction.amountType === TransactionAmountType.CASH
 				const isCashOutcome =
-					transaction.type === 'OUTCOME' && transaction.amountType === 'CASH'
+					transaction.type === TransactionsType.OUTCOME &&
+					transaction.amountType === TransactionAmountType.CASH
 				if (isAccountIncome) {
 					return {
 						...total,

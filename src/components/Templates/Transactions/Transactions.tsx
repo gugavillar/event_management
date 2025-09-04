@@ -97,7 +97,11 @@ export const Transaction = () => {
 				/>
 				{eventId && (
 					<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">
-						<ExportTransactionsButton eventId={eventId} eventName={eventName} />
+						<ExportTransactionsButton
+							eventId={eventId}
+							eventName={eventName}
+							transactionLength={data?.data?.length}
+						/>
 						<CreateTransaction eventId={eventId} />
 					</div>
 				)}

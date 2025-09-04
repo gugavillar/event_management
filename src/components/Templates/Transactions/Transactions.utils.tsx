@@ -8,6 +8,7 @@ import {
 	amountType,
 	transactionType,
 } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
+import { TransactionsType } from '@/constants'
 import { currencyValue } from '@/formatters'
 import { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
 
@@ -85,10 +86,16 @@ export const formatTableData = (
 				<span
 					className={twMerge(
 						'flex items-center gap-2',
-						type === 'INCOME' ? 'text-green-500' : 'text-red-500',
+						type === TransactionsType.INCOME
+							? 'text-green-500'
+							: 'text-red-500',
 					)}
 				>
-					{type === 'INCOME' ? <BanknoteArrowDown /> : <BanknoteArrowUp />}
+					{type === TransactionsType.INCOME ? (
+						<BanknoteArrowDown />
+					) : (
+						<BanknoteArrowUp />
+					)}
 					{currencyValue(Number(transaction.amount))}
 				</span>
 			),
