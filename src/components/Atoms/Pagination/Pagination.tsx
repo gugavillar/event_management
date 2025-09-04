@@ -47,7 +47,7 @@ export const Pagination = memo(
 		})
 		return (
 			<nav
-				className="!mt-5 flex w-full items-center justify-center gap-3 -space-x-px"
+				className="flex w-full items-center justify-center gap-3 -space-x-px"
 				aria-label="Pagination"
 			>
 				<button

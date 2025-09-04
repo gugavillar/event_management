@@ -1,11 +1,13 @@
 'use client'
 import copy from 'copy-to-clipboard'
+import Link from 'next/link'
 import { useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import QRCode from 'react-qr-code'
 
 import { Button, Modal, Spinner } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
+import { formatPhone } from '@/formatters'
 
 import { type PaymentChoiceProps } from './PaymentChoice'
 
@@ -49,8 +51,15 @@ export const ModalPaymentPix = ({
 						código PIX.
 					</h2>
 					<p>
-						Após o pagamento, envie o comprovante para a secretaria da igreja ou
-						apresente-o no dia do evento.
+						Após o pagamento, envie o comprovante para a o número{' '}
+						<Link
+							target="_blank"
+							href={`https://wa.me/+55${process.env.NEXT_PUBLIC_PHONE}`}
+							className="text-blue-500 underline"
+						>
+							{formatPhone(process.env.NEXT_PUBLIC_PHONE ?? '')}
+						</Link>{' '}
+						ou apresente-o no dia do evento.
 					</p>
 				</div>
 				{pixValue ? (

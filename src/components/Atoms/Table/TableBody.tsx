@@ -63,7 +63,7 @@ export const TableBody = ({
 					<tr
 						key={data?.id}
 						className={twMerge(
-							'odd:bg-slate-50 even:bg-slate-800/5 hover:bg-slate-200',
+							'odd:bg-slate-50 even:bg-slate-100 hover:bg-slate-200',
 						)}
 						style={{ backgroundColor }}
 					>
@@ -74,9 +74,10 @@ export const TableBody = ({
 								<td
 									key={uuid()}
 									className={twMerge(
-										'px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800',
+										'px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800 md:first:sticky md:first:left-0 md:first:bg-inherit',
 										isToApplyClassOrFunction && 'cursor-pointer',
 									)}
+									style={{ backgroundColor }}
 									{...(isToApplyClassOrFunction && {
 										onClick: () => handleClickRow(data),
 									})}

@@ -1,9 +1,10 @@
 'use client'
+import Link from 'next/link'
 import PixBR from 'pixbrasil'
 import { Dispatch, SetStateAction, useEffect } from 'react'
 
 import { MODALS_IDS, PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
-import { currencyValue } from '@/formatters'
+import { currencyValue, formatPhone } from '@/formatters'
 
 import { ModalPaymentPix } from './ModalPaymentPix'
 
@@ -47,8 +48,15 @@ export const PaymentChoice = ({
 						PIX. Use a opção que preferir para pagar.
 					</h2>
 					<p>
-						Após o pagamento, envie o comprovante para a secretaria da igreja ou
-						apresente-o no dia do evento.
+						Após o pagamento, envie o comprovante para a o número{' '}
+						<Link
+							target="_blank"
+							href={`https://wa.me/+55${process.env.NEXT_PUBLIC_PHONE}`}
+							className="text-blue-500 underline"
+						>
+							{formatPhone(process.env.NEXT_PUBLIC_PHONE ?? '')}
+						</Link>{' '}
+						ou apresente-o no dia do evento.
 					</p>
 				</div>
 			) : (
