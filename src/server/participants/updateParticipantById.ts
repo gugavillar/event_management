@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { participantSchemaRoute } from '@/app/api/participants/participant.schema'
-import { prisma } from '@/constants'
+import { deepTrim, prisma } from '@/constants'
 import { FormParticipant } from '@/services/queries/participants/participants.type'
 
 export const updateParticipantById = async (
@@ -15,7 +15,9 @@ export const updateParticipantById = async (
 			})
 			.parse({ ...data, id })
 
-		const { address, ...participantData } = data
+		const trimData = deepTrim(data)
+
+		const { address, ...participantData } = trimData
 
 		return await prisma.$transaction(async (tx) => {
 			await tx.participant.update({

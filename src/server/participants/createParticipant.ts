@@ -5,7 +5,7 @@ import {
 	ParticipantSchemaRouteType,
 	participantSchemaRoute,
 } from '@/app/api/participants/participant.schema'
-import { prisma } from '@/constants'
+import { deepTrim, prisma } from '@/constants'
 
 export const createParticipant = async (
 	data: ParticipantSchemaRouteType & { eventId: string },
@@ -18,7 +18,9 @@ export const createParticipant = async (
 			})
 			.parse({ ...data })
 
-		const { address, ...restData } = data
+		const trimData = deepTrim(data)
+
+		const { address, ...restData } = trimData
 
 		const isAlreadyRegistered = await prisma.participant.findFirst({
 			where: {

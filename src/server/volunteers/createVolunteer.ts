@@ -5,7 +5,7 @@ import {
 	volunteerSchemaRoute,
 	VolunteerSchemaRouteType,
 } from '@/app/api/volunteers/volunteer.schema'
-import { prisma } from '@/constants'
+import { deepTrim, prisma } from '@/constants'
 
 export const createVolunteer = async (
 	data: VolunteerSchemaRouteType & { eventId: string },
@@ -18,7 +18,9 @@ export const createVolunteer = async (
 			})
 			.parse({ ...data })
 
-		const { address, ...restData } = data
+		const trimData = deepTrim(data)
+
+		const { address, ...restData } = trimData
 
 		const isAlreadyRegistered = await prisma.volunteer.findFirst({
 			where: {

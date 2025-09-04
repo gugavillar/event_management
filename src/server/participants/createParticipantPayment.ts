@@ -6,6 +6,7 @@ import {
 	PaymentTypeAPI,
 	prisma,
 	TransactionAmountType,
+	TransactionsType,
 } from '@/constants'
 
 export type CreateParticipantPaymentArgs = {
@@ -72,7 +73,7 @@ export const createParticipantPayment = async (
 						values.paymentType === PaymentTypeAPI.CASH
 							? TransactionAmountType.CASH
 							: TransactionAmountType.ACCOUNT,
-					type: 'INCOME',
+					type: TransactionsType.INCOME,
 				},
 			})
 		})
