@@ -17,8 +17,7 @@
 		"check-types": "tsc --noemit",
 		"pstudio": "pnpx prisma studio",
 		"migrate:dev": "pnpx prisma migrate dev",
-		"seed": "pnpx prisma db seed",
-		"postinstall": "prisma generate"
+		"seed": "pnpx prisma db seed"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.1",

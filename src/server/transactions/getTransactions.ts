@@ -24,13 +24,11 @@ export const getTransactions = async (
 				...(eventId && {
 					where: {
 						eventId,
-					},
-				}),
-				...(searchTransaction && {
-					where: {
-						description: {
-							contains: searchTransaction,
-						},
+						...(searchTransaction && {
+							description: {
+								contains: searchTransaction,
+							},
+						}),
 					},
 				}),
 				include: {
@@ -44,13 +42,11 @@ export const getTransactions = async (
 				...(eventId && {
 					where: {
 						eventId,
-					},
-				}),
-				...(searchTransaction && {
-					where: {
-						description: {
-							contains: searchTransaction,
-						},
+						...(searchTransaction && {
+							description: {
+								contains: searchTransaction,
+							},
+						}),
 					},
 				}),
 			}),
