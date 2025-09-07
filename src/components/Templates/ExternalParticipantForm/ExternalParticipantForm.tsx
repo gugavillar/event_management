@@ -73,7 +73,7 @@ export const ExternalParticipantForm = ({
 			},
 			paymentMethod: undefined,
 		},
-		resolver: zodResolver(fullSchema(minAge, maxAge)),
+		resolver: zodResolver(fullSchema(minAge, maxAge, isInterestedList)),
 	})
 
 	const handleNext = async () => {

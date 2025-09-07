@@ -133,32 +133,35 @@ export const ExternalParticipantFormSchemaStepTwo = () =>
 		}),
 	})
 
-export const ExternalParticipantFormSchemaStepThree = () =>
+export const ExternalParticipantFormSchemaStepThree = (
+	isInterestedList?: boolean,
+) =>
 	z.object({
-		paymentMethod: z
-			.union([
-				z.enum(['PIX', 'Cash/Card'], {
-					error: 'Campo obrigatório',
-				}),
-				z.string(),
-			])
-			.refine((value) => ['PIX', 'Cash/Card'].includes(value), {
-				error: 'Campo obrigatório',
-			}),
+		paymentMethod: isInterestedList
+			? z.enum(['PIX', 'Cash/Card']).optional()
+			: z.enum(['PIX', 'Cash/Card'], { error: 'Campo obrigatório' }),
 	})
 
-export const fullSchema = (minAge?: number | null, maxAge?: number | null) =>
+export const fullSchema = (
+	minAge?: number | null,
+	maxAge?: number | null,
+	isInterestedList?: boolean,
+) =>
 	z.intersection(
 		z.intersection(
 			ExternalParticipantFormSchemaStepOne(minAge, maxAge),
 			ExternalParticipantFormSchemaStepTwo(),
 		),
-		ExternalParticipantFormSchemaStepThree(),
+		ExternalParticipantFormSchemaStepThree(isInterestedList),
 	)
 
 export type FullSchemaType = z.infer<ReturnType<typeof fullSchema>>
 
-export const stepsFields = (minAge?: number | null, maxAge?: number | null) =>
+export const stepsFields = (
+	minAge?: number | null,
+	maxAge?: number | null,
+	isInterestedList?: boolean,
+) =>
 	[
 		{
 			schema: ExternalParticipantFormSchemaStepOne(minAge, maxAge),
@@ -190,7 +193,7 @@ export const stepsFields = (minAge?: number | null, maxAge?: number | null) =>
 			],
 		},
 		{
-			schema: ExternalParticipantFormSchemaStepThree(),
+			schema: ExternalParticipantFormSchemaStepThree(isInterestedList),
 			fields: ['paymentMethod'],
 		},
 	] as const

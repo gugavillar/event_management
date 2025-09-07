@@ -20,7 +20,7 @@ export const PaymentExternalForm = ({
 	const [pixValue, setPixValue] = useState<string | null>(null)
 	const { watch } = useFormContext<FullSchemaType>()
 
-	const paymentMethod = watch('paymentMethod')
+	const paymentMethod = watch('paymentMethod') ?? ''
 
 	return (
 		<div className="flex flex-col space-y-8">
