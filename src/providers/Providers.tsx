@@ -20,7 +20,16 @@ export const Providers = ({ children }: Readonly<{ children: ReactNode }>) => {
 			<NuqsAdapter>
 				<QueryProvider>{children}</QueryProvider>
 			</NuqsAdapter>
-			<Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+			<Toaster
+				position="top-right"
+				toastOptions={{
+					duration: 5000,
+					className: 'w-full !p-4 font-semibold',
+					style: {
+						maxWidth: '25rem',
+					},
+				}}
+			/>
 			<PrelineScriptWrapper />
 		</SidebarProvider>
 	)

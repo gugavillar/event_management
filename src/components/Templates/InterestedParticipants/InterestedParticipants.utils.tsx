@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { ArrowLeftRight, FileUser } from 'lucide-react'
+import { ArrowLeftRight, FileUser, UserRoundX } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
 import { formatBirthdate, formatPhone } from '@/formatters'
@@ -40,6 +40,7 @@ export const formatTableData = (
 	data: Array<ParticipantsAPI> | undefined,
 	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
 	handleInterestedModal: (id: ParticipantsAPI['id']) => void,
+	handleDeleteParticipant: (id: ParticipantsAPI['id']) => void,
 ) => {
 	if (!data) return []
 
@@ -72,6 +73,14 @@ export const formatTableData = (
 							onClick={() => handleInterestedModal(participant.id)}
 						/>
 						<Tooltip>Mover para o evento</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<UserRoundX
+							className="cursor-pointer"
+							size={20}
+							onClick={() => handleDeleteParticipant(participant.id)}
+						/>
+						<Tooltip>Excluir</Tooltip>
 					</div>
 				</div>
 			),

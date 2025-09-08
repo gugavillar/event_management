@@ -35,6 +35,10 @@ const InterestedModalToParticipant = dynamic(() =>
 	),
 )
 
+const ParticipantDeleteModal = dynamic(() =>
+	import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal),
+)
+
 export const InterestedParticipants = () => {
 	const [selectedParticipant, setSelectedParticipant] = useState<
 		null | ParticipantsAPI['id']
@@ -103,10 +107,19 @@ export const InterestedParticipants = () => {
 		[],
 	)
 
+	const handleOpenModalToDeleteParticipant = useCallback(
+		(id: ParticipantsAPI['id']) => {
+			setSelectedParticipant(id)
+			overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
+		},
+		[],
+	)
+
 	const formattedInterestedParticipants = formatTableData(
 		participants?.data,
 		handleOpenModalToShowParticipantData,
 		handleOpenModalInterestedParticipant,
+		handleOpenModalToDeleteParticipant,
 	)
 
 	const hasMoreThanOnePage =
@@ -166,6 +179,11 @@ export const InterestedParticipants = () => {
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 				interested={false}
+			/>
+			<ParticipantDeleteModal
+				modalId={MODALS_IDS.PARTICIPANT_REMOVE_MODAL}
+				selectedParticipant={selectedParticipant}
+				setSelectedParticipant={setSelectedParticipant}
 			/>
 		</PageContent>
 	)
