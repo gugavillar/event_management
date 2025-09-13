@@ -14,6 +14,7 @@ const handlerGet = async (_: NextRequest, { params }: Params) => {
 	const routeParams = await params.then((res) => res.event_id ?? '')
 	return await requestProcess({
 		functions: async () => await getEventById(routeParams),
+		isNecessarySession: false,
 	})
 }
 
