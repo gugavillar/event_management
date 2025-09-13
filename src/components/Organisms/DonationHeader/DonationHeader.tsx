@@ -41,7 +41,7 @@ export const DonationHeader = ({
 	return (
 		<section className="flex flex-col gap-6">
 			<CreateDonationButton />
-			<div className="flex flex-col items-center justify-between gap-x-12 gap-y-5 md:flex-row">
+			<div className="flex flex-col items-end justify-between gap-x-12 gap-y-5 md:flex-row">
 				<ComboBox
 					className="lg:max-w-lg"
 					keyOptionLabel="label"
@@ -49,7 +49,6 @@ export const DonationHeader = ({
 					options={formattedEvents}
 					selectedValue={eventId}
 					setSelectedValue={setEventId}
-					label="Selecione o evento"
 					lastItemRef={lastItemRef}
 				/>
 				<InformationCard headingText="Doações" className="w-full lg:max-w-lg">

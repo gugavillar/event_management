@@ -45,9 +45,9 @@ export const CreateEventButton = memo(
 					type="button"
 					onClick={handleCreateEvent}
 					leftIcon={<CalendarPlus />}
-					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					className="items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:min-w-60"
 				>
-					Criar evento
+					<span className="max-md:hidden">Criar evento</span>
 				</Button>
 				<FormProvider {...methods}>
 					<EventDrawer

@@ -116,7 +116,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 				</Button>
 			</div>
 			<ListPage
-				className="w-full lg:max-w-full"
+				className="w-full flex-col md:flex-row lg:max-w-full"
 				moreFilter={
 					<>
 						<ComboBox

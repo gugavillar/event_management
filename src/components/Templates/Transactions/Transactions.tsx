@@ -84,7 +84,7 @@ export const Transaction = () => {
 
 	return (
 		<>
-			<div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+			<div className="flex flex-col-reverse items-center justify-between gap-6 md:flex-row md:items-end">
 				<ComboBox
 					className="max-w-[25.875rem]"
 					keyOptionLabel="label"
@@ -93,7 +93,7 @@ export const Transaction = () => {
 					selectedValue={eventId}
 					setSelectedValue={setEventId}
 					lastItemRef={lastItemRef}
-					label="Evento"
+					label="Selecione o evento"
 				/>
 				{eventId && (
 					<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">

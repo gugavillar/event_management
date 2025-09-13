@@ -106,11 +106,11 @@ export const FilterDrawer = ({
 				type="button"
 				data-hs-overlay={`#${drawerId}`}
 				leftIcon={<Filter />}
-				className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+				className="relative items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:min-w-60"
 			>
-				Filtros
+				<span className="max-md:hidden">Filtros</span>
 				{filterCount > 0 && (
-					<span className="inline-flex items-center rounded-full bg-teal-800 px-1.5 py-0.5 text-xs font-medium text-white">
+					<span className="items-center rounded-full bg-teal-800 px-1.5 py-0.5 text-xs font-medium text-white max-sm:absolute max-sm:-top-2 max-sm:right-0 md:inline-flex">
 						{filterCount}
 					</span>
 				)}
