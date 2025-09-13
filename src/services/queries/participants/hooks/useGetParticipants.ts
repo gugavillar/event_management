@@ -1,7 +1,12 @@
 'use client'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
-import { parseAsInteger, useQueryState } from 'nuqs'
+import {
+	parseAsInteger,
+	parseAsString,
+	useQueryState,
+	useQueryStates,
+} from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
@@ -11,27 +16,24 @@ import { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
 export const useGetParticipants = (isInterested?: boolean) => {
-	const [eventId, setEventId] = useQueryState('eventId', {
-		defaultValue: '',
+	const [query, setQuery] = useQueryStates({
+		eventId: parseAsString.withDefault(''),
+		status: parseAsString.withDefault(''),
+		city: parseAsString.withDefault(''),
 	})
 	const [search, setSearch] = useQueryState('searchParticipant', {
 		defaultValue: '',
 	})
-	const [status, setStatus] = useQueryState('statusParticipant', {
-		defaultValue: '',
-	})
-	const [city, setCity] = useQueryState('cityParticipant', {
-		defaultValue: '',
-	})
+
 	const [page, setPage] = useQueryState(
 		'pageParticipant',
 		parseAsInteger.withDefault(1),
 	)
 
-	const debounceEventId = useDebounce(eventId, 500)
+	const debounceEventId = useDebounce(query.eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
-	const debounceStatus = useDebounce(status, 500)
-	const debounceCity = useDebounce(city, 500)
+	const debounceStatus = useDebounce(query.status, 500)
+	const debounceCity = useDebounce(query.city, 500)
 
 	const isFirstRender = useRef(true)
 
@@ -69,15 +71,11 @@ export const useGetParticipants = (isInterested?: boolean) => {
 	return {
 		data,
 		isLoading,
-		eventId,
-		setEventId,
 		setSearch,
 		search,
-		status,
-		setStatus,
 		page,
 		setPage,
-		city,
-		setCity,
+		query,
+		setQuery,
 	}
 }

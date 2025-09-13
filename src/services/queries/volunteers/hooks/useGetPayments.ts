@@ -1,7 +1,12 @@
 'use client'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
-import { parseAsInteger, useQueryState } from 'nuqs'
+import {
+	parseAsInteger,
+	parseAsString,
+	useQueryState,
+	useQueryStates,
+} from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
@@ -11,25 +16,23 @@ import { getPayments } from '../usecases'
 import { VolunteersFromAPI } from '../volunteers.type'
 
 export const useGetPayments = () => {
-	const [eventId, setEventId] = useQueryState('eventId', {
-		defaultValue: '',
+	const [query, setQuery] = useQueryStates({
+		eventId: parseAsString.withDefault(''),
+		paymentType: parseAsString.withDefault(''),
+		city: parseAsString.withDefault(''),
 	})
 	const [search, setSearch] = useQueryState('searchVolunteer', {
 		defaultValue: '',
 	})
-	const [paymentType, setPaymentType] = useQueryState('paymentType', {
-		defaultValue: '',
-	})
-	const [city, setCity] = useQueryState('cityVolunteer', { defaultValue: '' })
 	const [page, setPage] = useQueryState(
 		'pageVolunteerPayment',
 		parseAsInteger.withDefault(1),
 	)
 
-	const debounceEventId = useDebounce(eventId, 500)
+	const debounceEventId = useDebounce(query.eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
-	const debouncePaymentType = useDebounce(paymentType, 500)
-	const debounceCity = useDebounce(city, 500)
+	const debouncePaymentType = useDebounce(query.paymentType, 500)
+	const debounceCity = useDebounce(query.city, 500)
 	const isFirstRender = useRef(true)
 
 	useEffect(() => {
@@ -64,15 +67,11 @@ export const useGetPayments = () => {
 	return {
 		isLoading,
 		data,
-		eventId,
-		setEventId,
 		setSearch,
 		search,
-		paymentType,
-		setPaymentType,
 		page,
 		setPage,
-		city,
-		setCity,
+		query,
+		setQuery,
 	}
 }

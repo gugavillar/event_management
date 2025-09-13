@@ -5,14 +5,11 @@ import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Pagination, Select } from '@/components/Atoms'
-import {
-	ComboBox,
-	CreateParticipantButton,
-	ListManager,
-} from '@/components/Molecules'
+import { Pagination } from '@/components/Atoms'
+import { CreateParticipantButton, ListManager } from '@/components/Molecules'
 import {
 	ExportParticipantsButton,
+	FilterDrawer,
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
@@ -20,17 +17,8 @@ import {
 	ParticipantSchema,
 	ParticipantType,
 } from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
-import { MODALS_IDS, overlayOpen, StatusSelectOptions } from '@/constants'
-import {
-	formatterComboBoxValues,
-	formatterFieldSelectValues,
-} from '@/formatters'
-import { useInfiniteScrollObserver } from '@/hooks'
-import { useGetInfinityEvents } from '@/services/queries/events'
-import {
-	useGetParticipants,
-	useGetParticipantsCities,
-} from '@/services/queries/participants'
+import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
+import { useGetParticipants } from '@/services/queries/participants'
 import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
@@ -90,50 +78,15 @@ export const Participants = () => {
 		resolver: zodResolver(ParticipantSchema),
 	})
 	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
-	const {
 		data: participants,
 		isLoading,
 		search,
 		setSearch,
-		setEventId,
-		eventId,
-		status,
-		setStatus,
 		page,
 		setPage,
-		city,
-		setCity,
+		query,
+		setQuery,
 	} = useGetParticipants()
-	const { data: participantsCities } = useGetParticipantsCities({ eventId })
-
-	const formattedEvents = formatterComboBoxValues(
-		events?.pages?.flatMap((page) => page.data),
-		'name',
-		'id',
-		true,
-		'Todos os eventos',
-	)
-
-	const formattedCities = formatterFieldSelectValues(
-		participantsCities,
-		'city',
-		'city',
-	)
-	formattedCities.unshift({
-		label: 'Todos as cidades',
-		value: '',
-	})
-
-	const lastItemRef = useInfiniteScrollObserver({
-		hasNextPage: Boolean(hasNextPage),
-		isFetchingNextPage,
-		fetchNextPage,
-	})
 
 	const handleOpenModalToDeleteParticipant = useCallback(
 		(id: ParticipantsAPI['id']) => {
@@ -213,29 +166,14 @@ export const Participants = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
-					<ComboBox
-						keyOptionLabel="label"
-						keyOptionValue="value"
-						options={formattedEvents}
-						selectedValue={eventId}
-						setSelectedValue={setEventId}
-						lastItemRef={lastItemRef}
+					<FilterDrawer
+						drawerId={MODALS_IDS.PARTICIPANT_FILTER_DRAWER}
+						type={MEMBERS.PARTICIPANT}
+						query={query}
+						setQuery={setQuery}
 					/>
 				}
 			>
-				<div className="flex flex-col items-center gap-8 md:flex-row">
-					<Select
-						placeholder="Selecione o status"
-						options={StatusSelectOptions}
-						value={status}
-						onChange={(e) => setStatus(e.target.value)}
-					/>
-					<Select
-						options={formattedCities}
-						value={city}
-						onChange={(e) => setCity(e.target.value)}
-					/>
-				</div>
 				<ListManager
 					bodyData={formattedParticipants}
 					headerLabels={HEADER_LABELS}

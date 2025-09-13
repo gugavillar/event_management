@@ -5,14 +5,11 @@ import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Pagination, Select } from '@/components/Atoms'
-import {
-	ComboBox,
-	CreateVolunteerButton,
-	ListManager,
-} from '@/components/Molecules'
+import { Pagination } from '@/components/Atoms'
+import { CreateVolunteerButton, ListManager } from '@/components/Molecules'
 import {
 	ExportVolunteersButton,
+	FilterDrawer,
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
@@ -20,23 +17,8 @@ import {
 	VolunteerSchema,
 	VolunteerType,
 } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
-import {
-	MODALS_IDS,
-	NO_FUNCTION,
-	overlayOpen,
-	StatusSelectOptions,
-} from '@/constants'
-import {
-	formatterComboBoxValues,
-	formatterFieldSelectValues,
-} from '@/formatters'
-import { useInfiniteScrollObserver } from '@/hooks'
-import { useGetInfinityEvents } from '@/services/queries/events'
-import {
-	useGetFunctions,
-	useGetVolunteers,
-	useGetVolunteersCities,
-} from '@/services/queries/volunteers'
+import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
+import { useGetVolunteers } from '@/services/queries/volunteers'
 import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
@@ -69,29 +51,15 @@ export const Volunteers = () => {
 	>(null)
 
 	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
-	const {
 		data: volunteers,
 		isLoading,
 		search,
 		setSearch,
-		setEventId,
-		eventId,
-		status,
-		setStatus,
-		role,
-		setRole,
 		page,
 		setPage,
-		city,
-		setCity,
+		query,
+		setQuery,
 	} = useGetVolunteers()
-	const { data: volunteersCities } = useGetVolunteersCities({ eventId })
-	const { data: roles } = useGetFunctions(eventId)
 
 	const methods = useForm<VolunteerType>({
 		mode: 'onChange',
@@ -118,33 +86,6 @@ export const Volunteers = () => {
 			},
 		},
 		resolver: zodResolver(VolunteerSchema),
-	})
-
-	const formattedEvents = formatterComboBoxValues(
-		events?.pages?.flatMap((page) => page.data),
-		'name',
-		'id',
-		true,
-		'Todos os eventos',
-	)
-
-	const formattedRoles = roles?.map((role) => ({
-		label: role.volunteerRole.role,
-		value: role.volunteerRole.role,
-	}))
-	formattedRoles?.unshift(NO_FUNCTION)
-
-	const formattedCities = formatterFieldSelectValues(
-		volunteersCities,
-		'city',
-		'city',
-	)
-	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
-
-	const lastItemRef = useInfiniteScrollObserver({
-		hasNextPage: Boolean(hasNextPage),
-		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleOpenModalToCheckInVolunteer = useCallback(
@@ -220,36 +161,14 @@ export const Volunteers = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
-					<Select
-						placeholder="Selecione o status"
-						options={StatusSelectOptions}
-						value={status}
-						onChange={(e) => setStatus(e.target.value)}
+					<FilterDrawer
+						drawerId={MODALS_IDS.VOLUNTEER_FILTER_DRAWER}
+						query={query}
+						setQuery={setQuery}
+						type={MEMBERS.VOLUNTEER}
 					/>
 				}
 			>
-				<div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-					<ComboBox
-						keyOptionLabel="label"
-						keyOptionValue="value"
-						options={formattedEvents}
-						selectedValue={eventId}
-						setSelectedValue={setEventId}
-						lastItemRef={lastItemRef}
-					/>
-					<Select
-						disabled={!eventId}
-						placeholder="Selecione a função"
-						options={formattedRoles ?? []}
-						value={role}
-						onChange={(e) => setRole(e.target.value)}
-					/>
-					<Select
-						options={formattedCities}
-						value={city}
-						onChange={(e) => setCity(e.target.value)}
-					/>
-				</div>
 				<ListManager
 					bodyData={formattedVolunteers}
 					headerLabels={HEADER_LABELS}

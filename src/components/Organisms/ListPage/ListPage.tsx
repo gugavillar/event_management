@@ -26,7 +26,7 @@ export const ListPage = ({
 		<>
 			<div
 				className={twMerge(
-					'flex flex-col items-center gap-8 lg:max-w-xl lg:flex-row',
+					'flex flex-col items-center gap-8 md:flex-row lg:max-w-xl',
 					className,
 				)}
 				{...props}

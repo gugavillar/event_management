@@ -4,31 +4,25 @@ import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { Pagination, Select } from '@/components/Atoms'
-import { ComboBox, ListManager } from '@/components/Molecules'
+import { Pagination } from '@/components/Atoms'
+import { ListManager } from '@/components/Molecules'
 import {
+	FilterDrawer,
 	ListPage,
 	ModalReturnPayment,
 	PageContent,
 } from '@/components/Organisms'
 import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
+	MEMBERS,
 	MODALS_IDS,
 	overlayClose,
 	overlayOpen,
-	PaymentSelectOptions,
 	PaymentTypeAPI,
 } from '@/constants'
-import {
-	formatterComboBoxValues,
-	formatterFieldSelectValues,
-	removeCurrencyFormat,
-} from '@/formatters'
-import { useInfiniteScrollObserver } from '@/hooks'
-import { useGetInfinityEvents } from '@/services/queries/events'
+import { removeCurrencyFormat } from '@/formatters'
 import {
 	useGetPayments,
-	useGetVolunteersCities,
 	useCreateVolunteerPayment,
 	useReturnVolunteerPayment,
 } from '@/services/queries/volunteers'
@@ -51,50 +45,18 @@ export const VolunteersPayments = () => {
 		VolunteersAPI['id'] | null
 	>(null)
 	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
-	const {
 		data: volunteersPayments,
 		isLoading: isLoadingPayments,
 		search,
 		setSearch,
-		setEventId,
-		eventId,
-		setPaymentType,
-		paymentType,
 		page,
 		setPage,
-		city,
-		setCity,
+		query,
+		setQuery,
 	} = useGetPayments()
-	const { data: volunteersCities } = useGetVolunteersCities({ eventId })
 	const { create, isPending } = useCreateVolunteerPayment()
 	const { returnPayment, isPending: isPendingReturn } =
 		useReturnVolunteerPayment()
-
-	const formattedEvents = formatterComboBoxValues(
-		events?.pages?.flatMap((page) => page.data),
-		'name',
-		'id',
-		true,
-		'Todos os eventos',
-	)
-
-	const formattedCities = formatterFieldSelectValues(
-		volunteersCities,
-		'city',
-		'city',
-	)
-	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
-
-	const lastItemRef = useInfiniteScrollObserver({
-		hasNextPage: Boolean(hasNextPage),
-		isFetchingNextPage,
-		fetchNextPage,
-	})
 
 	const handleOpenModalToPaymentVolunteer = useCallback(
 		(payment: VolunteersAPI) => {
@@ -206,29 +168,15 @@ export const VolunteersPayments = () => {
 				search={search}
 				setSearch={setSearch}
 				moreFilter={
-					<ComboBox
-						keyOptionLabel="label"
-						keyOptionValue="value"
-						options={formattedEvents}
-						selectedValue={eventId}
-						setSelectedValue={setEventId}
-						lastItemRef={lastItemRef}
+					<FilterDrawer
+						query={query}
+						setQuery={setQuery}
+						drawerId={MODALS_IDS.VOLUNTEER_FILTER_PAYMENT_DRAWER}
+						type={MEMBERS.VOLUNTEER}
+						isPaymentType
 					/>
 				}
 			>
-				<div className="flex flex-col items-center justify-between gap-8 md:flex-row">
-					<Select
-						placeholder="Selecione o tipo de pagamento"
-						options={PaymentSelectOptions}
-						value={paymentType}
-						onChange={(e) => setPaymentType(e.target.value)}
-					/>
-					<Select
-						options={formattedCities}
-						value={city}
-						onChange={(e) => setCity(e.target.value)}
-					/>
-				</div>
 				<ListManager
 					bodyData={formattedData}
 					headerLabels={HEADER_LABELS}

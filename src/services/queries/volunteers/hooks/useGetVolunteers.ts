@@ -1,7 +1,12 @@
 'use client'
 import { UseQueryResult } from '@tanstack/react-query'
 import { useDebounce } from '@uidotdev/usehooks'
-import { parseAsInteger, useQueryState } from 'nuqs'
+import {
+	parseAsInteger,
+	parseAsString,
+	useQueryState,
+	useQueryStates,
+} from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
@@ -11,25 +16,25 @@ import { getVolunteers } from '../usecases'
 import { VolunteersFromAPI } from '../volunteers.type'
 
 export const useGetVolunteers = () => {
-	const [eventId, setEventId] = useQueryState('eventId', { defaultValue: '' })
+	const [query, setQuery] = useQueryStates({
+		eventId: parseAsString.withDefault(''),
+		status: parseAsString.withDefault(''),
+		city: parseAsString.withDefault(''),
+		role: parseAsString.withDefault(''),
+	})
 	const [search, setSearch] = useQueryState('searchVolunteer', {
 		defaultValue: '',
 	})
-	const [status, setStatus] = useQueryState('statusVolunteer', {
-		defaultValue: '',
-	})
-	const [city, setCity] = useQueryState('cityVolunteer', { defaultValue: '' })
-	const [role, setRole] = useQueryState('roleVolunteer', { defaultValue: '' })
 	const [page, setPage] = useQueryState(
 		'pageVolunteer',
 		parseAsInteger.withDefault(1),
 	)
 
-	const debounceEventId = useDebounce(eventId, 500)
+	const debounceEventId = useDebounce(query.eventId, 500)
 	const debounceSearch = useDebounce(search, 500)
-	const debounceStatus = useDebounce(status, 500)
-	const debounceRole = useDebounce(role, 500)
-	const debounceCity = useDebounce(city, 500)
+	const debounceStatus = useDebounce(query.status, 500)
+	const debounceRole = useDebounce(query.role, 500)
+	const debounceCity = useDebounce(query.city, 500)
 	const isFirstRender = useRef(true)
 
 	useEffect(() => {
@@ -47,10 +52,6 @@ export const useGetVolunteers = () => {
 		debounceRole,
 		debounceCity,
 	])
-
-	useEffect(() => {
-		if (!eventId) setRole('')
-	}, [eventId, setRole])
 
 	const { data, isLoading }: UseQueryResult<VolunteersFromAPI> = useQuery({
 		queryKey: [
@@ -76,17 +77,11 @@ export const useGetVolunteers = () => {
 	return {
 		data,
 		isLoading,
-		eventId,
-		setEventId,
 		setSearch,
 		search,
-		status,
-		setStatus,
-		role,
-		setRole,
 		page,
 		setPage,
-		city,
-		setCity,
+		query,
+		setQuery,
 	}
 }

@@ -15,6 +15,9 @@ export const MODALS_IDS = {
 	PARTICIPANT_EXPORT_MODAL: 'participant_export_modal',
 	PARTICIPANT_INTERESTED_MODAL: 'participant_interested_modal',
 	PARTICIPANT_RETURN_PAYMENT_MODAL: 'participant_return_payment_modal',
+	PARTICIPANT_FILTER_DRAWER: 'participant_filter_drawer',
+	PARTICIPANT_FILTER_PAYMENT_DRAWER: 'participant_filter_payment_drawer',
+	PARTICIPANT_FILTER_INTERESTED_DRAWER: 'participant_filter_interested_drawer',
 
 	// GROUP
 	GROUP_DRAWER: 'group_manager',
@@ -42,6 +45,8 @@ export const MODALS_IDS = {
 	VOLUNTEER_PAYMENT_MODAL: 'volunteer_payment_modal',
 	VOLUNTEER_MODAL_DATA: 'volunteer_modal_data',
 	VOLUNTEER_RETURN_PAYMENT_MODAL: 'volunteer_return_payment_modal',
+	VOLUNTEER_FILTER_DRAWER: 'volunteer_filter_drawer',
+	VOLUNTEER_FILTER_PAYMENT_DRAWER: 'volunteer_filter_payment_drawer',
 
 	// USERS
 	USER_CREATE_MODAL: 'user_create_modal',
