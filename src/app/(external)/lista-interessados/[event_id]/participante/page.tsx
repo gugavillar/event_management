@@ -5,17 +5,18 @@ import { z } from 'zod'
 import { ClosedInscriptions } from '@/components/Templates'
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
 import { image, interestedListPermitCreateRegistration } from '@/constants'
-import { getEventById } from '@/server'
+import { getEvent } from '@/services/queries/events'
+import { EventsAPI } from '@/services/queries/events/event.type'
 
 type Params = {
 	params: Promise<{
-		event_id?: string
+		event_id?: EventsAPI['id']
 	}>
 }
 
 export default async function InterestedPage({ params }: Params) {
 	const pageParams = await params.then((res) => ({
-		event_id: res.event_id ?? '',
+		event_id: res.event_id,
 	}))
 	const isValidEventId = z
 		.object({
@@ -23,11 +24,11 @@ export default async function InterestedPage({ params }: Params) {
 		})
 		.safeParse({ event_id: pageParams.event_id })
 
-	if (!isValidEventId.success) {
+	if (!isValidEventId.success || !pageParams.event_id) {
 		notFound()
 	}
 
-	const event = await getEventById(pageParams.event_id)
+	const event: EventsAPI = await getEvent(pageParams.event_id)
 
 	const isRegistrationPermitted = interestedListPermitCreateRegistration(event)
 
@@ -58,7 +59,7 @@ export default async function InterestedPage({ params }: Params) {
 						<h2 className="text-3xl">Lista de interessados</h2>
 					</header>
 					<ExternalParticipantForm
-						registrationValue={event?.participantPrice.toNumber()}
+						registrationValue={Number(event?.participantPrice)}
 						eventId={event?.id}
 						isInterestedList
 						isNotHappening={isNotHappening}
