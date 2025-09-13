@@ -88,7 +88,7 @@ export const FilterDrawer = ({
 	}
 
 	const handleClearFilters = () => {
-		setQuery(defaultFilters)
+		setQuery({ ...defaultFilters, eventId: '' })
 		setFilters(defaultFilters)
 		setFilterEventId('')
 		overlayClose(drawerId)
