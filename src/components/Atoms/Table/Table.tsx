@@ -17,21 +17,19 @@ export const Table = ({
 	...props
 }: TableProps) => {
 	return (
-		<div className="inline-block min-w-full align-middle">
-			<div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 shadow-md">
-				<table
-					className={twMerge('min-w-full divide-y divide-gray-200', className)}
-					{...props}
-				>
-					<TableHeader headerLabels={headerLabels} />
-					<TableBody
-						bodyData={bodyData}
-						headerLabels={headerLabels}
-						handleClickRow={handleClickRow}
-						isLoading={isLoading}
-					/>
-				</table>
-			</div>
+		<div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 shadow-md">
+			<table
+				className={twMerge('min-w-full divide-y divide-gray-200', className)}
+				{...props}
+			>
+				<TableHeader headerLabels={headerLabels} />
+				<TableBody
+					bodyData={bodyData}
+					headerLabels={headerLabels}
+					handleClickRow={handleClickRow}
+					isLoading={isLoading}
+				/>
+			</table>
 		</div>
 	)
 }
