@@ -31,7 +31,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 				<button
 					type="button"
 					className={twMerge(
-						'hs-tooltip inline-flex w-full shrink-0 items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 [--placement:auto] hover:bg-slate-900/80 focus:outline-hidden',
+						'hs-tooltip inline-flex w-full shrink-0 cursor-pointer items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 [--placement:auto] hover:bg-slate-900/80 focus:outline-hidden',
 						collapsed && 'justify-center',
 					)}
 				>
@@ -66,14 +66,14 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 					<div className="p-1">
 						{user?.role === ROLES.ADMIN && (
 							<button
-								className="flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+								className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 								onClick={() => push(PRINCIPAL_LINKS.USERS)}
 							>
 								Gerenciar usuários
 							</button>
 						)}
 						<button
-							className="flex w-full items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+							className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 							onClick={handleLogout}
 						>
 							Sair
