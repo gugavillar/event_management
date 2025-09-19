@@ -20,10 +20,9 @@ export default async function DonationPage({ searchParams }: SearchParams) {
 	const debounceValue = params.eventId
 	const page = generatePage(params.page)
 
-	const [getAllEvents, getAllDonations] = await Promise.all([
-		async () => await getEvents({ searchEvent: '', page: 1 }),
-		async () => getDonations({ eventId: debounceValue, page }),
-	])
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllDonations = async () =>
+		getDonations({ eventId: debounceValue, page })
 
 	return (
 		<HydrationInfinityProvider

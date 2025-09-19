@@ -4,7 +4,7 @@ import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider
 import { getEvents } from '@/services/queries/events'
 
 export default async function MeetingsPage() {
-	const getAllEvents = async () => getEvents({ searchEvent: '', page: 1 })
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
 	return (
 		<HydrationInfinityProvider
 			queryFn={getAllEvents}

@@ -18,8 +18,8 @@ export default async function EventsPage({ searchParams }: SearchParams) {
 	const debounceValue = params.searchEvent
 	const page = generatePage(params.pageEvent)
 
-	const getAllEvents = async () =>
-		getEvents({ searchEvent: debounceValue, page })
+	const getAllEvents = () => getEvents({ searchEvent: debounceValue, page })
+
 	return (
 		<HydrationProvider
 			queryFn={getAllEvents}

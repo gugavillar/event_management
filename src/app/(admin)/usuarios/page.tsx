@@ -22,7 +22,7 @@ export default async function UsersPage({ searchParams }: SearchParams) {
 	const debounceValue = params.searchUser
 	const page = generatePage(params.pageUser)
 
-	const getAllUsers = async () => getUsers({ searchUser: debounceValue, page })
+	const getAllUsers = () => getUsers({ searchUser: debounceValue, page })
 
 	return (
 		<HydrationProvider

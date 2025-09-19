@@ -5,9 +5,7 @@ import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider
 import { getEvents } from '@/services/queries/events'
 
 export default async function PaymentsPage() {
-	const [getAllEvents] = await Promise.all([
-		async () => getEvents({ searchEvent: '', page: 1 }),
-	])
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
 
 	return (
 		<HydrationInfinityProvider

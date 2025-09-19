@@ -22,10 +22,8 @@ export default async function RoomsPage({ searchParams }: SearchParams) {
 	const eventId = params.roomEventId
 	const searchMemberRoom = params.searchMemberRoom
 
-	const [getAllEvents, getRooms] = await Promise.all([
-		async () => getEvents({ searchEvent: '', page: 1 }),
-		async () => getRoomByEventId(eventId as UUID, searchMemberRoom),
-	])
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getRooms = () => getRoomByEventId(eventId as UUID, searchMemberRoom)
 
 	return (
 		<HydrationInfinityProvider

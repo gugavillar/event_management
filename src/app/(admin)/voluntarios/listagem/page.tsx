@@ -36,22 +36,19 @@ export default async function VolunteersPage({ searchParams }: SearchParams) {
 	const debounceCityValue = params.cityVolunteer
 	const page = generatePage(params.pageVolunteer)
 
-	const [getAllEvents, getAllVolunteers, getAllFunctions, getCities] =
-		await Promise.all([
-			async () => getEvents({ searchEvent: '', page: 1 }),
-			async () =>
-				getVolunteers({
-					searchVolunteer: debounceSearchValue,
-					eventId: debounceEventIdValue,
-					statusVolunteer: debounceStatusValue,
-					roleVolunteer: debounceRoleValue,
-					volunteerCity: debounceCityValue,
-					page,
-				}),
-			async () =>
-				getFunctions({ searchFunction: '', eventId: debounceEventIdValue }),
-			async () => getVolunteersCities(debounceEventIdValue),
-		])
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllVolunteers = () =>
+		getVolunteers({
+			searchVolunteer: debounceSearchValue,
+			eventId: debounceEventIdValue,
+			statusVolunteer: debounceStatusValue,
+			roleVolunteer: debounceRoleValue,
+			volunteerCity: debounceCityValue,
+			page,
+		})
+	const getAllFunctions = () =>
+		getFunctions({ searchFunction: '', eventId: debounceEventIdValue })
+	const getCities = () => getVolunteersCities(debounceEventIdValue)
 
 	return (
 		<HydrationInfinityProvider

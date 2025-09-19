@@ -22,11 +22,9 @@ export default async function VolunteersFunctionsPage({
 	const debounceValue = params.searchFunction
 	const debounceEventId = params.eventId
 
-	const [getAllFunctions, getAllEvents] = await Promise.all([
-		async () =>
-			getFunctions({ searchFunction: debounceValue, eventId: debounceEventId }),
-		async () => getEvents({ searchEvent: '', page: 1 }),
-	])
+	const getAllFunctions = () =>
+		getFunctions({ searchFunction: debounceValue, eventId: debounceEventId })
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
 
 	return (
 		<HydrationInfinityProvider

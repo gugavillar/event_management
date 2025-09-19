@@ -34,18 +34,17 @@ export default async function ParticipantsPaymentsPage({
 	const debounceCityValue = params.cityParticipant
 	const page = generatePage(params.pageParticipantPayment)
 
-	const [getAllEvents, getAllPayments, getCities] = await Promise.all([
-		async () => getEvents({ searchEvent: '', page: 1 }),
-		async () =>
-			getPayments({
-				searchParticipant: debounceSearchValue,
-				eventId: debounceEventIdValue,
-				paymentType: debouncePaymentType,
-				participantCity: debounceCityValue,
-				page,
-			}),
-		async () => getParticipantsCities(false, debounceEventIdValue),
-	])
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllPayments = () =>
+		getPayments({
+			searchParticipant: debounceSearchValue,
+			eventId: debounceEventIdValue,
+			paymentType: debouncePaymentType,
+			participantCity: debounceCityValue,
+			page,
+		})
+	const getCities = () => getParticipantsCities(false, debounceEventIdValue)
+
 	return (
 		<HydrationProvider
 			queryFn={getAllPayments}

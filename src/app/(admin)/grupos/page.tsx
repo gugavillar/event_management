@@ -22,10 +22,8 @@ export default async function GroupsPage({ searchParams }: SearchParams) {
 	const eventId = params.groupEventId
 	const searchMemberGroup = params.searchMemberGroup
 
-	const [getAllEvents, getGroups] = await Promise.all([
-		async () => getEvents({ searchEvent: '', page: 1 }),
-		async () => getGroupByEventId(eventId as UUID, searchMemberGroup),
-	])
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getGroups = () => getGroupByEventId(eventId as UUID, searchMemberGroup)
 
 	return (
 		<HydrationInfinityProvider

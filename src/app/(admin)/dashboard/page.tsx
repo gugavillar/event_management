@@ -14,10 +14,8 @@ type SearchParams = {
 export default async function DashboardPage({ searchParams }: SearchParams) {
 	const debounceEventId = await searchParams.then((res) => res.eventId ?? '')
 
-	const [dashboardData, getAllEvents] = await Promise.all([
-		async () => await getDashboardData({ eventId: debounceEventId }),
-		async () => getEvents({ searchEvent: '', page: 1 }),
-	])
+	const dashboardData = () => getDashboardData({ eventId: debounceEventId })
+	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
 
 	return (
 		<HydrationProvider
