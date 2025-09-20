@@ -34,8 +34,13 @@ export const GroupDeleteModal = ({
 		})
 	}
 
+	const handleCloseGroupDeleteModal = () => {
+		setSelectedGroup(null)
+		overlayClose(modalId)
+	}
+
 	return (
-		<Modal modalId={modalId} handleClose={() => setSelectedGroup(null)}>
+		<Modal modalId={modalId} handleClose={handleCloseGroupDeleteModal}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert size={64} className="text-amber-300" />
@@ -52,9 +57,8 @@ export const GroupDeleteModal = ({
 						<Button
 							type="button"
 							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-							data-hs-overlay={`#${modalId}`}
 							disabled={isPending}
-							onClick={() => setSelectedGroup(null)}
+							onClick={handleCloseGroupDeleteModal}
 						>
 							Cancelar
 						</Button>

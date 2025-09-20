@@ -1,8 +1,10 @@
 'use client'
 import { CircleX } from 'lucide-react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
+
+import { overlayClose } from '@/constants'
 
 type ModalProps = {
 	modalId: string
@@ -19,16 +21,10 @@ export const Modal = ({
 	isLarge,
 	isStatic,
 }: ModalProps) => {
-	const [isMounted, setIsMounted] = useState(false)
-
-	useEffect(() => {
-		setIsMounted(true)
-		return () => {
-			setIsMounted(false)
-		}
-	}, [])
-
-	if (!isMounted) return null
+	const handleCloseModal = () => {
+		overlayClose(modalId)
+		handleClose?.()
+	}
 
 	return createPortal(
 		<div
@@ -49,8 +45,7 @@ export const Modal = ({
 					<button
 						type="button"
 						className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-full border border-transparent text-sm font-semibold text-gray-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
-						data-hs-overlay={`#${modalId}`}
-						onClick={handleClose}
+						onClick={handleCloseModal}
 					>
 						<span className="sr-only">Close</span>
 						<CircleX size={20} />

@@ -37,8 +37,13 @@ export const ParticipantDeleteModal = memo(
 			})
 		}
 
+		const handleCloseParticipantDeleteModal = () => {
+			setSelectedParticipant(null)
+			overlayClose(modalId)
+		}
+
 		return (
-			<Modal modalId={modalId} handleClose={() => setSelectedParticipant(null)}>
+			<Modal modalId={modalId} handleClose={handleCloseParticipantDeleteModal}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert size={64} className="text-amber-300" />
@@ -55,9 +60,8 @@ export const ParticipantDeleteModal = memo(
 							<Button
 								type="button"
 								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-								data-hs-overlay={`#${modalId}`}
 								disabled={isPending}
-								onClick={() => setSelectedParticipant(null)}
+								onClick={handleCloseParticipantDeleteModal}
 							>
 								Cancelar
 							</Button>

@@ -22,14 +22,4 @@ describe('Modal component', () => {
 		const modal = getByTestId('modal')
 		expect(modal).toHaveTextContent('teste')
 	})
-
-	it('button have correctly close attribute', () => {
-		const { getByTestId } = render(
-			<Modal modalId="modal">
-				<p>teste</p>
-			</Modal>,
-		)
-		const buttonClose = getByTestId('modal').querySelector('button')
-		expect(buttonClose).toHaveAttribute('data-hs-overlay', '#modal')
-	})
 })

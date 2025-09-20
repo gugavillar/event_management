@@ -10,7 +10,7 @@ import {
 	Label,
 } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { MEMBERS, overlayClose } from '@/constants'
+import { MEMBERS, overlayClose, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -94,6 +94,10 @@ export const FilterDrawer = ({
 		overlayClose(drawerId)
 	}
 
+	const handleOpenDrawerFilters = () => {
+		overlayOpen(drawerId)
+	}
+
 	const filterCount = filterEventId
 		? Object.values(filters).filter((value) => !!value).length + 1
 		: Object.values(filters).filter((value) => !!value).length
@@ -104,9 +108,9 @@ export const FilterDrawer = ({
 		<>
 			<Button
 				type="button"
-				data-hs-overlay={`#${drawerId}`}
 				leftIcon={<Filter />}
 				className="relative items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:min-w-60"
+				onClick={handleOpenDrawerFilters}
 			>
 				<span className="max-md:hidden">Filtros</span>
 				{filterCount > 0 && (

@@ -10,7 +10,7 @@ import {
 	DonationSchema,
 	DonationType,
 } from '@/components/Organisms/DonationDrawer/DonationDrawer.schema'
-import { MODALS_IDS } from '@/constants'
+import { MODALS_IDS, overlayOpen } from '@/constants'
 
 export const CreateDonationButton = memo(() => {
 	const methods = useForm<DonationType>({
@@ -21,13 +21,18 @@ export const CreateDonationButton = memo(() => {
 		},
 		resolver: zodResolver(DonationSchema),
 	})
+
+	const handleOpenDonationDrawer = () => {
+		overlayOpen(MODALS_IDS.DONATION_CREATE_DRAWER)
+	}
+
 	return (
 		<>
 			<Button
 				type="button"
 				leftIcon={<HandHeart />}
-				data-hs-overlay={`#${MODALS_IDS.DONATION_CREATE_DRAWER}`}
 				className="max-w-60 items-center justify-center self-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:self-end"
+				onClick={handleOpenDonationDrawer}
 			>
 				Criar uma nova doação
 			</Button>

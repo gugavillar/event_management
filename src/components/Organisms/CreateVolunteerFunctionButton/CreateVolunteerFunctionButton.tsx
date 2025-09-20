@@ -2,6 +2,7 @@ import { Wrench } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
 import { Button } from '@/components/Atoms'
+import { overlayOpen } from '@/constants'
 import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { CreateVolunteerFunctionModal } from '../CreateVolunteerFunctionModal'
@@ -19,13 +20,17 @@ export const CreateVolunteerFunctionButton = ({
 	selectedFunction,
 	modalId,
 }: CreateVolunteerFunctionButtonProps) => {
+	const handleOpenCreateVolunteerFunctionModal = () => {
+		setSelectedFunction(null)
+		overlayOpen(modalId)
+	}
+
 	return (
 		<>
 			<Button
 				className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-				data-hs-overlay={`#${modalId}`}
 				leftIcon={<Wrench />}
-				onClick={() => setSelectedFunction(null)}
+				onClick={handleOpenCreateVolunteerFunctionModal}
 			>
 				Criar função
 			</Button>

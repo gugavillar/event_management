@@ -19,12 +19,12 @@ export const ModalReturnPayment = memo(
 		isPending,
 		handleReturnPayment,
 	}: ModalReturnPaymentProps) => {
-		const handleClose = () => {
+		const handleCloseModalReturnPayment = () => {
 			overlayClose(modalId)
 		}
 
 		return (
-			<Modal modalId={modalId} handleClose={handleClose}>
+			<Modal modalId={modalId} handleClose={handleCloseModalReturnPayment}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert size={64} className="text-amber-300" />
@@ -41,7 +41,7 @@ export const ModalReturnPayment = memo(
 							<Button
 								type="button"
 								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-								data-hs-overlay={`#${modalId}`}
+								onClick={handleCloseModalReturnPayment}
 								disabled={isPending}
 							>
 								Cancelar

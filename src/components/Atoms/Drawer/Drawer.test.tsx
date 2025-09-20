@@ -33,16 +33,6 @@ describe('Drawer component', () => {
 		expect(heading).toBeInTheDocument()
 	})
 
-	it('button have correctly close attribute', () => {
-		const { getByTestId } = render(
-			<Drawer headingTitle="Drawer test" drawerId="drawer" data-testid="drawer">
-				<p>teste</p>
-			</Drawer>,
-		)
-		const buttonClose = getByTestId('drawer').querySelector('button')
-		expect(buttonClose).toHaveAttribute('data-hs-overlay', '#drawer')
-	})
-
 	it('renders correct children', () => {
 		const { getByTestId } = render(
 			<Drawer headingTitle="Drawer test" drawerId="drawer" data-testid="drawer">

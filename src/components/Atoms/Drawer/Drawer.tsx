@@ -1,8 +1,10 @@
 'use client'
 import { CircleX } from 'lucide-react'
-import { ComponentProps, ReactNode, useEffect, useState } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
+
+import { overlayClose } from '@/constants'
 
 import { Header } from '../Header'
 
@@ -20,16 +22,10 @@ export const Drawer = ({
 	handleClose,
 	className,
 }: DrawerProps) => {
-	const [isMounted, setIsMounted] = useState(false)
-
-	useEffect(() => {
-		setIsMounted(true)
-		return () => {
-			setIsMounted(false)
-		}
-	}, [])
-
-	if (!isMounted) return null
+	const handleCloseDrawer = () => {
+		overlayClose(drawerId)
+		handleClose?.()
+	}
 
 	return createPortal(
 		<div
@@ -46,8 +42,7 @@ export const Drawer = ({
 				<button
 					type="button"
 					className="flex size-7 items-center justify-center rounded-full border border-transparent text-sm font-semibold text-slate-800 hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
-					data-hs-overlay={`#${drawerId}`}
-					onClick={handleClose}
+					onClick={handleCloseDrawer}
 				>
 					<span className="sr-only">Close modal</span>
 					<CircleX size={20} />

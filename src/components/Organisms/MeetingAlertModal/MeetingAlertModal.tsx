@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { MeetingSchemaType } from '@/components/Templates/Meetings/Meetings.schema'
+import { overlayClose } from '@/constants'
 import { useCreateMeetingPresence } from '@/services/queries/meetings'
 
 type MeetingAlertModalProps = {
@@ -69,6 +70,10 @@ export const MeetingAlertModal = memo(
 			clearState()
 		}
 
+		const handleCloseMeetingAlertModal = () => {
+			overlayClose(modalId)
+		}
+
 		const title =
 			type === 'draft'
 				? 'Salvar presenças temporariamente?'
@@ -92,7 +97,7 @@ export const MeetingAlertModal = memo(
 							<Button
 								type="button"
 								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-								data-hs-overlay={`#${modalId}`}
+								onClick={handleCloseMeetingAlertModal}
 								disabled={isPending}
 							>
 								Cancelar

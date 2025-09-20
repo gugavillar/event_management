@@ -35,8 +35,13 @@ export const TransactionDeleteModal = ({
 		})
 	}
 
+	const handleCloseTransactionDeleteModal = () => {
+		setSelectedTransaction(null)
+		overlayClose(modalId)
+	}
+
 	return (
-		<Modal modalId={modalId} handleClose={() => setSelectedTransaction(null)}>
+		<Modal modalId={modalId} handleClose={handleCloseTransactionDeleteModal}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert size={64} className="text-amber-300" />
@@ -52,9 +57,8 @@ export const TransactionDeleteModal = ({
 						<Button
 							type="button"
 							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-							data-hs-overlay={`#${modalId}`}
 							disabled={isPending}
-							onClick={() => setSelectedTransaction(null)}
+							onClick={handleCloseTransactionDeleteModal}
 						>
 							Cancelar
 						</Button>

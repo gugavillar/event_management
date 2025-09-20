@@ -5,20 +5,24 @@ import dynamic from 'next/dynamic'
 import { memo } from 'react'
 
 import { Button } from '@/components/Atoms'
-import { MODALS_IDS } from '@/constants'
+import { MODALS_IDS, overlayOpen } from '@/constants'
 
 const MeetingCreateModal = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.MeetingCreateModal),
 )
 
 export const CreateMeetingButton = memo(() => {
+	const handleOpenMeetingCreateModal = () => {
+		overlayOpen(MODALS_IDS.MEETING_CREATE_MODAL)
+	}
+
 	return (
 		<>
 			<Button
 				type="button"
 				leftIcon={<Speech />}
-				data-hs-overlay={`#${MODALS_IDS.MEETING_CREATE_MODAL}`}
 				className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+				onClick={handleOpenMeetingCreateModal}
 			>
 				Criar uma nova reunião
 			</Button>
