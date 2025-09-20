@@ -109,6 +109,7 @@ export const Transaction = () => {
 			<TransactionCardInfo
 				isFetching={isLoading}
 				selectedEvent={eventId}
+				search={searchTransaction}
 				content={
 					<>
 						<section className="grid grid-cols-1 gap-8 lg:grid-cols-3">

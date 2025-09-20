@@ -16,10 +16,12 @@ export const TransactionCardInfo = ({
 	isFetching,
 	selectedEvent,
 	content,
+	search,
 }: {
 	selectedEvent: string
 	isFetching: boolean
 	content: ReactNode
+	search: string
 }) => {
 	if (!selectedEvent) {
 		return (
@@ -33,7 +35,7 @@ export const TransactionCardInfo = ({
 		)
 	}
 
-	if (isFetching) {
+	if (isFetching && !search) {
 		return (
 			<div className="flex h-80 flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 md:p-5">
 				<Spinner />
