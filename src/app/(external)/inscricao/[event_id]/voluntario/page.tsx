@@ -38,22 +38,22 @@ export default async function RegistrationPage({ params }: Params) {
 	)
 
 	if (!isRegistrationPermitted) {
-		return <ClosedInscriptions eventName={event?.name} />
+		return <ClosedInscriptions />
 	}
 
 	const backgroundImage = image(event?.name)
 
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
-			<div className="size-full h-[50dvh] lg:h-dvh">
+			<div className="relative size-full h-[50dvh] lg:h-dvh">
 				<Image
 					src={backgroundImage}
-					width={0}
-					height={0}
+					fill
 					sizes="100vw"
-					className="size-full object-cover"
+					className="object-cover"
+					placeholder="blur"
+					blurDataURL="/placeholder.png"
 					alt="Background image"
-					priority
 				/>
 			</div>
 			<div className="size-full h-[50dvh] overflow-y-auto lg:h-full">

@@ -147,11 +147,6 @@ export const IMAGES_FORMS = {
 	'cursilho-feminino': '/cursilho_feminino.webp',
 }
 
-export const IMAGES_CLOSED = {
-	'cursilho-masculino': '/cursilho_masculino_closed.webp',
-	happening: '/happening_closed.webp',
-}
-
 export const PAGES_ROLES = {
 	'/dashboard': [ROLES.ADMIN, ROLES.USER],
 	'/eventos': [ROLES.ADMIN, ROLES.USER],
