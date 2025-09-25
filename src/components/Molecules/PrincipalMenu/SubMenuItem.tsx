@@ -1,3 +1,5 @@
+import { isServer } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Link, Tooltip } from '@/components/Atoms'
@@ -34,6 +36,16 @@ export const SubMenuItem = ({
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.toLowerCase()
+
+	useEffect(() => {
+		const load = async () => {
+			if (isServer) return
+
+			const { HSDropdown } = await import('preline/preline')
+			HSDropdown.autoInit()
+		}
+		load()
+	}, [])
 
 	if (!validateHasMenu(links, userRole as ROLES)) {
 		return null
