@@ -20,8 +20,8 @@ export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 			amount: '',
 			date: '',
 			description: '',
-			type: undefined,
-			amountType: undefined,
+			type: '',
+			amountType: '',
 		},
 	})
 	const handleCreateTransaction = () => {
