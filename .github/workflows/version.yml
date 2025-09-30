@@ -24,8 +24,8 @@ jobs:
 
       - name: Config git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "gugavillar"
+          git config user.email "grsv.21@gmail.com"
 
       - name: Get latest tag
         id: get_tag
