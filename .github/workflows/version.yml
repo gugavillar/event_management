@@ -65,6 +65,17 @@ jobs:
           echo "Nova tag: $new_tag"
           echo "new_tag=$new_tag" >> $GITHUB_OUTPUT
 
+      - name: Update package.json version
+        run: |
+          NEW_VERSION=${{ steps.bump.outputs.new_tag }}
+          NEW_VERSION=${NEW_VERSION#v} # remove o 'v' da frente
+          echo "Atualizando versão para $NEW_VERSION" # atualiza o campo 'version' no package.json
+          jq --arg v "$NEW_VERSION" '.version = $v' package.json > tmp.json && mv tmp.json package.json
+
+          git add package.json
+          git commit -m "chore: bump version to $NEW_VERSION"
+          git push origin HEAD:${{ github.ref_name }}
+
       - name: Create and push tag
         run: |
           git tag ${{ steps.bump.outputs.new_tag }}
