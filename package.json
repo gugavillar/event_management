@@ -112,7 +112,11 @@
       "brace-expansion": "^2.0.2"
     },
     "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
       "@tailwindcss/oxide",
+      "esbuild",
+      "prisma",
       "sharp",
       "unrs-resolver"
     ]
