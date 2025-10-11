@@ -4,6 +4,8 @@ import { withAuth } from 'next-auth/middleware'
 import { authOptions } from './app/api/auth/[...nextauth]/authOptions'
 import { PAGES_ROLES, ROLES } from './constants'
 
+export const runtime = 'nodejs'
+
 export default withAuth(
 	async function middleware(req) {
 		const { pathname } = req.nextUrl
