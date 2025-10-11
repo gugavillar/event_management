@@ -6,7 +6,7 @@ RUN apk add --no-cache g++ make py3-pip libc6-compat
 WORKDIR /app
 RUN corepack enable
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 ARG NEXT_PUBLIC_API_BASE_URL
