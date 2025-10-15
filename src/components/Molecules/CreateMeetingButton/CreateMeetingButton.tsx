@@ -7,9 +7,7 @@ import { memo } from 'react'
 import { Button } from '@/components/Atoms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 
-const MeetingCreateModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.MeetingCreateModal)
-)
+const MeetingCreateModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.MeetingCreateModal))
 
 export const CreateMeetingButton = memo(() => {
 	const handleOpenMeetingCreateModal = () => {

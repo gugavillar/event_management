@@ -1,25 +1,18 @@
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
 export const ExternalVolunteerFormSchemaStepOne = z
 	.object({
 		birthdate: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) =>
-					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-						? validateBirthdate(value)
-						: false,
-				{ error: 'Data inválida' }
-			),
-		called: z
-			.string({ error: 'Campo obrigatório' })
-			.trim()
-			.min(1, 'Campo obrigatório'),
+			.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateBirthdate(value) : false), {
+				error: 'Data inválida',
+			}),
+		called: z.string({ error: 'Campo obrigatório' }).trim().min(1, 'Campo obrigatório'),
 		cell: z.string().optional(),
 		community: z.string().trim().min(3, 'Campo obrigatório'),
 		email: z
@@ -51,18 +44,12 @@ export const ExternalVolunteerFormSchemaStepOne = z
 		phone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 		relative: z.string().trim().min(3, 'Campo obrigatório'),
 		relativePhone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
@@ -79,11 +66,7 @@ export const ExternalVolunteerFormSchemaStepOne = z
 				path: ['health'],
 			})
 		}
-		validatePhonesNotEquals(
-			data.phone,
-			[{ field: 'relativePhone', phone: data.relativePhone }],
-			ctx
-		)
+		validatePhonesNotEquals(data.phone, [{ field: 'relativePhone', phone: data.relativePhone }], ctx)
 	})
 
 export const ExternalVolunteerFormSchemaStepTwo = z.object({
@@ -118,10 +101,7 @@ export const ExternalVolunteerFormSchemaStepThree = z.object({
 })
 
 export const fullSchema = z.intersection(
-	z.intersection(
-		ExternalVolunteerFormSchemaStepOne,
-		ExternalVolunteerFormSchemaStepTwo
-	),
+	z.intersection(ExternalVolunteerFormSchemaStepOne, ExternalVolunteerFormSchemaStepTwo),
 	ExternalVolunteerFormSchemaStepThree
 )
 
@@ -146,14 +126,7 @@ export const stepsFields = [
 		schema: ExternalVolunteerFormSchemaStepOne,
 	},
 	{
-		fields: [
-			'terms',
-			'address.street',
-			'address.neighborhood',
-			'address.number',
-			'address.city',
-			'address.state',
-		],
+		fields: ['terms', 'address.street', 'address.neighborhood', 'address.number', 'address.city', 'address.state'],
 		schema: ExternalVolunteerFormSchemaStepTwo,
 	},
 	{

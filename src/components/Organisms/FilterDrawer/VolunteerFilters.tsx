@@ -3,16 +3,10 @@
 import { useEffect } from 'react'
 
 import { Label, Select } from '@/components/Atoms'
-import {
-	NO_FUNCTION,
-	PaymentSelectOptions,
-	StatusSelectOptions,
-} from '@/constants'
+import { NO_FUNCTION, PaymentSelectOptions, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
-import {
-	useGetFunctions,
-	useGetVolunteersCities,
-} from '@/services/queries/volunteers'
+import { useGetFunctions, useGetVolunteersCities } from '@/services/queries/volunteers'
+
 import type { FilterType } from './FilterDrawer'
 
 type VolunteerFiltersProps = {
@@ -22,12 +16,7 @@ type VolunteerFiltersProps = {
 	isPaymentType?: boolean
 }
 
-export const VolunteerFilters = ({
-	eventId,
-	handleFilter,
-	filters,
-	isPaymentType,
-}: VolunteerFiltersProps) => {
+export const VolunteerFilters = ({ eventId, handleFilter, filters, isPaymentType }: VolunteerFiltersProps) => {
 	const { data: volunteersCities } = useGetVolunteersCities({ eventId })
 	const { data: roles } = useGetFunctions(eventId)
 
@@ -37,11 +26,7 @@ export const VolunteerFilters = ({
 	}))
 	formattedRoles?.unshift(NO_FUNCTION)
 
-	const formattedCities = formatterFieldSelectValues(
-		volunteersCities,
-		'city',
-		'city'
-	)
+	const formattedCities = formatterFieldSelectValues(volunteersCities, 'city', 'city')
 	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
 
 	useEffect(() => {
@@ -76,11 +61,7 @@ export const VolunteerFilters = ({
 			)}
 			<div className="w-full">
 				<Label>Cidade</Label>
-				<Select
-					onChange={(e) => handleFilter('city', e.target.value)}
-					options={formattedCities}
-					value={filters.city}
-				/>
+				<Select onChange={(e) => handleFilter('city', e.target.value)} options={formattedCities} value={filters.city} />
 			</div>
 			{!isPaymentType && (
 				<div className="w-full">

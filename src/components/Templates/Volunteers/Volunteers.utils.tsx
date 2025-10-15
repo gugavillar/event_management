@@ -1,16 +1,10 @@
-import {
-	BriefcaseBusiness,
-	FileUser,
-	SquarePen,
-	TicketCheck,
-	UserRoundX,
-} from 'lucide-react'
+import { format } from 'date-fns'
+import { BriefcaseBusiness, FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
-import { format } from 'date-fns'
 
 export const HEADER_LABELS = [
 	{
@@ -75,19 +69,11 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FileUser
-							className="cursor-pointer"
-							onClick={() => handleShowVolunteer(volunteer.id)}
-							size={20}
-						/>
+						<FileUser className="cursor-pointer" onClick={() => handleShowVolunteer(volunteer.id)} size={20} />
 						<Tooltip>Informações</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<SquarePen
-							className="cursor-pointer"
-							onClick={() => handleEditVolunteer(volunteer.id)}
-							size={20}
-						/>
+						<SquarePen className="cursor-pointer" onClick={() => handleEditVolunteer(volunteer.id)} size={20} />
 						<Tooltip>Editar</Tooltip>
 					</div>
 					<div className="hs-tooltip">
@@ -99,27 +85,16 @@ export const formatTableData = (
 						<Tooltip>Atribuir função</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<TicketCheck
-							className="cursor-pointer"
-							onClick={() => handleCheckInVolunteer(volunteer.id)}
-							size={20}
-						/>
+						<TicketCheck className="cursor-pointer" onClick={() => handleCheckInVolunteer(volunteer.id)} size={20} />
 						<Tooltip>Check-In</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<UserRoundX
-							className="cursor-pointer"
-							onClick={() => handleDeleteVolunteer(volunteer.id)}
-							size={20}
-						/>
+						<UserRoundX className="cursor-pointer" onClick={() => handleDeleteVolunteer(volunteer.id)} size={20} />
 						<Tooltip>Excluir</Tooltip>
 					</div>
 				</div>
 			),
-			birthdate: formatBirthdate(
-				volunteer.birthdate,
-				volunteer.event.finalDate
-			),
+			birthdate: formatBirthdate(volunteer.birthdate, volunteer.event.finalDate),
 			called: volunteer.called,
 			city: volunteer.address.city,
 			createdAt: format(volunteer.createdAt, 'dd/MM/yyyy - HH:mm'),
@@ -142,15 +117,7 @@ export const formatTableData = (
 					)}
 				</div>
 			),
-			status: (
-				<StatusTag
-					status={
-						!volunteer.checkIn
-							? CHECK_IN_STATUS.NOT_ANSWERED
-							: volunteer.checkIn
-					}
-				/>
-			),
+			status: <StatusTag status={!volunteer.checkIn ? CHECK_IN_STATUS.NOT_ANSWERED : volunteer.checkIn} />,
 		}
 	})
 }

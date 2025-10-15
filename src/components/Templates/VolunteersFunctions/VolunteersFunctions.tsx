@@ -6,50 +6,32 @@ import { useCallback, useState } from 'react'
 
 import { Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import {
-	CreateVolunteerFunctionButton,
-	ListPage,
-	PageContent,
-} from '@/components/Organisms'
+import { CreateVolunteerFunctionButton, ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetFunctions } from '@/services/queries/volunteers'
 import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+
 import { Content, formatTableData } from './VolunteersFunctions.utils'
 
-const FunctionDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.FunctionDeleteModal)
-)
+const FunctionDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.FunctionDeleteModal))
 
 export const VolunteersFunctions = () => {
-	const [selectedFunction, setSelectedFunction] =
-		useState<null | VolunteersFunctionsFromAPI>(null)
-	const { data, isLoading, search, setSearch, eventId, setEventId } =
-		useGetFunctions()
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const [selectedFunction, setSelectedFunction] = useState<null | VolunteersFunctionsFromAPI>(null)
+	const { data, isLoading, search, setSearch, eventId, setEventId } = useGetFunctions()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
-	const handleOpenModalToDeleteFunction = useCallback(
-		(selected: VolunteersFunctionsFromAPI) => {
-			setSelectedFunction(selected)
-			overlayOpen(MODALS_IDS.FUNCTION_REMOVE_MODAL)
-		},
-		[]
-	)
+	const handleOpenModalToDeleteFunction = useCallback((selected: VolunteersFunctionsFromAPI) => {
+		setSelectedFunction(selected)
+		overlayOpen(MODALS_IDS.FUNCTION_REMOVE_MODAL)
+	}, [])
 
-	const handleOpenModalToEditFunction = useCallback(
-		(selected: VolunteersFunctionsFromAPI) => {
-			setSelectedFunction(selected)
-			overlayOpen(MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL)
-		},
-		[]
-	)
+	const handleOpenModalToEditFunction = useCallback((selected: VolunteersFunctionsFromAPI) => {
+		setSelectedFunction(selected)
+		overlayOpen(MODALS_IDS.FUNCTION_CREATE_OR_UPDATE_MODAL)
+	}, [])
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),

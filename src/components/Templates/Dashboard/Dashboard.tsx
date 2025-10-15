@@ -2,28 +2,18 @@
 
 import { Header, Table } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import {
-	AgesChart,
-	CitiesChart,
-	DashboardCards,
-	PageContent,
-	PaymentsChart,
-} from '@/components/Organisms'
+import { AgesChart, CitiesChart, DashboardCards, PageContent, PaymentsChart } from '@/components/Organisms'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetDashboardData } from '@/services/queries/dashboard'
 import { useGetInfinityEvents } from '@/services/queries/events'
+
 import { DownloadPDF } from './BirthdayPeoplePrint'
 import { CardInfo } from './CardInfo'
 import { formatTableData, HEADERS_LABELS } from './Dashboard.utils'
 
 export const Dashboard = () => {
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const { data, eventId, setEventId, isLoading } = useGetDashboardData()
 
 	const formattedEvents = formatterComboBoxValues(
@@ -67,21 +57,13 @@ export const Dashboard = () => {
 						isLoading={isLoading}
 						series={data?.paymentsTypes.data}
 					/>
-					<AgesChart
-						categories={data?.ageRanges?.labels}
-						isLoading={isLoading}
-						series={data?.ageRanges.data}
-					/>
+					<AgesChart categories={data?.ageRanges?.labels} isLoading={isLoading} series={data?.ageRanges.data} />
 					<div className="space-y-4">
 						<div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
 							<Header>Aniversariantes do evento</Header>
 							<DownloadPDF birthdayPeople={formattedBirthdayPeople} />
 						</div>
-						<Table
-							bodyData={formattedBirthdayPeople}
-							headerLabels={HEADERS_LABELS}
-							isLoading={isLoading}
-						/>
+						<Table bodyData={formattedBirthdayPeople} headerLabels={HEADERS_LABELS} isLoading={isLoading} />
 					</div>
 				</>
 			)}

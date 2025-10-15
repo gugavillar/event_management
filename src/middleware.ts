@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-
 import { withAuth } from 'next-auth/middleware'
+
 import { authOptions } from './app/api/auth/[...nextauth]/authOptions'
 import { PAGES_ROLES, type ROLES } from './constants'
 
@@ -10,9 +10,9 @@ export default withAuth(
 	async function middleware(req) {
 		const { pathname } = req.nextUrl
 		const nextToken = req.nextauth.token
-		const userHasPermissionToAccessPage = PAGES_ROLES[
-			pathname as keyof typeof PAGES_ROLES
-		].includes(nextToken?.role as ROLES)
+		const userHasPermissionToAccessPage = PAGES_ROLES[pathname as keyof typeof PAGES_ROLES].includes(
+			nextToken?.role as ROLES
+		)
 
 		if (!userHasPermissionToAccessPage) {
 			const dashboardURL = new URL('/dashboard', req.url)

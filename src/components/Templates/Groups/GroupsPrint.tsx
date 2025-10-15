@@ -1,18 +1,12 @@
 'use client'
 
+import { Document, Page, PDFDownloadLink, StyleSheet, Text, View } from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { Spinner } from '@/components/Atoms'
 import { generatePrintKey } from '@/constants'
-import {
-	Document,
-	Page,
-	PDFDownloadLink,
-	StyleSheet,
-	Text,
-	View,
-} from '@react-pdf/renderer'
+
 import type { formatTableData } from './Groups.utils'
 
 export type DownloadPDFProps = {
@@ -78,12 +72,7 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 	return (
 		<Document>
 			{groups.map((group) => (
-				<Page
-					key={group.id}
-					orientation="landscape"
-					size="A4"
-					style={styles.page}
-				>
+				<Page key={group.id} orientation="landscape" size="A4" style={styles.page}>
 					<View style={styles.section} wrap={false}>
 						<Text style={styles.title}>
 							{group.name} - Quantidade de membros: {group.members.length}
@@ -91,13 +80,9 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 						{group.members.map((member) => (
 							<View key={member.id} style={styles.tableRow}>
 								<Text style={styles.tableCell}>{member.member}</Text>
-								<Text style={styles.tableCellPhoneAndBirthdate}>
-									{member.birthdate}
-								</Text>
+								<Text style={styles.tableCellPhoneAndBirthdate}>{member.birthdate}</Text>
 								<Text style={styles.tableCell}>{member.address}</Text>
-								<Text style={styles.tableCellPhoneAndBirthdate}>
-									{member.phone}
-								</Text>
+								<Text style={styles.tableCellPhoneAndBirthdate}>{member.phone}</Text>
 							</View>
 						))}
 					</View>
@@ -108,26 +93,16 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 }
 
 export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
-	const renderKey = useMemo(
-		() => generatePrintKey(groups, listType),
-		[groups, listType]
-	)
+	const renderKey = useMemo(() => generatePrintKey(groups, listType), [groups, listType])
 
 	if (!groups.length) return null
 
-	const fileName =
-		listType === 'portrait' ? 'grupos-resumida.pdf' : 'grupos-detalhada.pdf'
+	const fileName = listType === 'portrait' ? 'grupos-resumida.pdf' : 'grupos-detalhada.pdf'
 
 	return (
 		<PDFDownloadLink
 			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 text-base font-semibold text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
-			document={
-				listType === 'portrait' ? (
-					<PortraitList groups={groups} />
-				) : (
-					<LandscapeList groups={groups} />
-				)
-			}
+			document={listType === 'portrait' ? <PortraitList groups={groups} /> : <LandscapeList groups={groups} />}
 			fileName={fileName}
 			key={renderKey}
 		>

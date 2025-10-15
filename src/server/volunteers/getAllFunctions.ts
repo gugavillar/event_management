@@ -1,9 +1,6 @@
 import { prisma } from '@/constants'
 
-export const getAllFunctions = async (
-	search: string | null,
-	eventId: string
-) => {
+export const getAllFunctions = async (search: string | null, eventId: string) => {
 	try {
 		return await prisma.eventVolunteerRole.findMany({
 			include: {

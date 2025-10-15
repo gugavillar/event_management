@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import { twMerge } from 'tailwind-merge'
 
 import { overlayClose } from '@/constants'
+
 import { Header } from '../Header'
 
 type DrawerProps = ComponentProps<'div'> & {
@@ -14,13 +15,7 @@ type DrawerProps = ComponentProps<'div'> & {
 	handleClose?: () => void
 }
 
-export const Drawer = ({
-	children,
-	drawerId,
-	headingTitle,
-	handleClose,
-	className,
-}: DrawerProps) => {
+export const Drawer = ({ children, drawerId, headingTitle, handleClose, className }: DrawerProps) => {
 	const handleCloseDrawer = () => {
 		overlayClose(drawerId)
 		handleClose?.()

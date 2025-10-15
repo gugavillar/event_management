@@ -12,9 +12,7 @@ type SearchParams = {
 	}>
 }
 
-export default async function VolunteersFunctionsPage({
-	searchParams,
-}: SearchParams) {
+export default async function VolunteersFunctionsPage({ searchParams }: SearchParams) {
 	const params = await searchParams.then((res) => ({
 		eventId: res.eventId ?? '',
 		searchFunction: res.searchFunction ?? '',
@@ -22,23 +20,14 @@ export default async function VolunteersFunctionsPage({
 	const debounceValue = params.searchFunction
 	const debounceEventId = params.eventId
 
-	const getAllFunctions = () =>
-		getFunctions({ eventId: debounceEventId, searchFunction: debounceValue })
+	const getAllFunctions = () => getFunctions({ eventId: debounceEventId, searchFunction: debounceValue })
 	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 
 	return (
-		<HydrationInfinityProvider
-			initialPageParam={1}
-			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-		>
+		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
 			<HydrationProvider
 				queryFn={getAllFunctions}
-				queryKey={[
-					QUERY_KEYS.VOLUNTEERS_FUNCTIONS,
-					debounceValue,
-					debounceEventId,
-				]}
+				queryKey={[QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceValue, debounceEventId]}
 			>
 				<VolunteersFunctions />
 			</HydrationProvider>

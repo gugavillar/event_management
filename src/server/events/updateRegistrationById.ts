@@ -2,11 +2,7 @@ import { z } from 'zod'
 
 import { MEMBERS, prisma } from '@/constants'
 
-export const updateRegistrationById = async (
-	id: string,
-	memberType: MEMBERS,
-	action: 'open' | 'close'
-) => {
+export const updateRegistrationById = async (id: string, memberType: MEMBERS, action: 'open' | 'close') => {
 	try {
 		z.object({
 			action: z.enum(['open', 'close']),

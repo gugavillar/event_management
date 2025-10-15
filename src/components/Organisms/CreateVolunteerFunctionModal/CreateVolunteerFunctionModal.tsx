@@ -1,51 +1,30 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { CirclePlus, Trash2 } from 'lucide-react'
 import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
+import { Controller, FormProvider, type SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal } from '@/components/Atoms'
-import {
-	ComboBox,
-	FieldArrayContainerWithAppendButton,
-	InputField,
-} from '@/components/Molecules'
+import { ComboBox, FieldArrayContainerWithAppendButton, InputField } from '@/components/Molecules'
 import { overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import {
-	useCreateFunction,
-	useUpdateFunction,
-} from '@/services/queries/volunteers'
+import { useCreateFunction, useUpdateFunction } from '@/services/queries/volunteers'
 import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {
-	Controller,
-	FormProvider,
-	type SubmitHandler,
-	useFieldArray,
-	useForm,
-} from 'react-hook-form'
-import {
-	FunctionSchema,
-	type FunctionSchemaType,
-} from './CreateVolunteerFunctionModal.schema'
+
+import { FunctionSchema, type FunctionSchemaType } from './CreateVolunteerFunctionModal.schema'
 
 type CreateVolunteerFunctionModalProps = {
 	modalId: string
 	selectedFunction: VolunteersFunctionsFromAPI | null
-	setSelectedFunction: Dispatch<
-		SetStateAction<VolunteersFunctionsFromAPI | null>
-	>
+	setSelectedFunction: Dispatch<SetStateAction<VolunteersFunctionsFromAPI | null>>
 }
 
 export const CreateVolunteerFunctionModal = memo(
-	({
-		modalId,
-		selectedFunction,
-		setSelectedFunction,
-	}: CreateVolunteerFunctionModalProps) => {
+	({ modalId, selectedFunction, setSelectedFunction }: CreateVolunteerFunctionModalProps) => {
 		const methods = useForm<FunctionSchemaType>({
 			defaultValues: {
 				events: [{ id: '' }],
@@ -58,12 +37,7 @@ export const CreateVolunteerFunctionModal = memo(
 			control: methods.control,
 			name: 'events',
 		})
-		const {
-			data: events,
-			hasNextPage,
-			isFetchingNextPage,
-			fetchNextPage,
-		} = useGetInfinityEvents()
+		const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 		const { create, isPending: isPendingCreate } = useCreateFunction()
 		const { update, isPending: isPendingUpdate } = useUpdateFunction()
 
@@ -84,8 +58,7 @@ export const CreateVolunteerFunctionModal = memo(
 				return await update(
 					{ id: selectedFunction.volunteerRoleId, ...values },
 					{
-						onError: (error) =>
-							generateToastError(error, 'Erro ao atualizar a função'),
+						onError: (error) => generateToastError(error, 'Erro ao atualizar a função'),
 						onSuccess: () => {
 							toast.success('Função atualizada com sucesso!')
 							methods.reset()
@@ -96,8 +69,7 @@ export const CreateVolunteerFunctionModal = memo(
 				)
 			}
 			await create(values, {
-				onError: (error) =>
-					generateToastError(error, 'Erro ao cadastrar a função'),
+				onError: (error) => generateToastError(error, 'Erro ao cadastrar a função'),
 				onSuccess: () => {
 					toast.success('Função cadastrada com sucesso!')
 					methods.reset()
@@ -142,10 +114,7 @@ export const CreateVolunteerFunctionModal = memo(
 													name={`events.${index}.id`}
 													render={({ field }) => (
 														<ComboBox
-															error={
-																methods.formState.errors.events?.[index]?.id
-																	?.message
-															}
+															error={methods.formState.errors.events?.[index]?.id?.message}
 															keyOptionLabel="label"
 															keyOptionValue="value"
 															label="Evento"
@@ -170,9 +139,7 @@ export const CreateVolunteerFunctionModal = memo(
 							</FieldArrayContainerWithAppendButton>
 							<Button
 								className="w-full max-w-40 items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-								disabled={
-									!methods.formState.isValid || !methods.formState.isDirty
-								}
+								disabled={!methods.formState.isValid || !methods.formState.isDirty}
 								isLoading={isPendingCreate || isPendingUpdate}
 								onClick={methods.handleSubmit(handleSubmit)}
 								type="submit"

@@ -46,38 +46,22 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<UserRoundPen
-							className="cursor-pointer"
-							onClick={() => handleChangeRole(user.id)}
-							size={20}
-						/>
+						<UserRoundPen className="cursor-pointer" onClick={() => handleChangeRole(user.id)} size={20} />
 						<Tooltip>Alterar permissão</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<UserRoundCog
-							className="cursor-pointer"
-							onClick={() => handleResetPassword(user.id)}
-							size={20}
-						/>
+						<UserRoundCog className="cursor-pointer" onClick={() => handleResetPassword(user.id)} size={20} />
 						<Tooltip>Redefinir senha</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<UserLock
-							className="cursor-pointer"
-							onClick={() => handleBlockUser(user.id)}
-							size={20}
-						/>
+						<UserLock className="cursor-pointer" onClick={() => handleBlockUser(user.id)} size={20} />
 						<Tooltip>Bloquear usuário</Tooltip>
 					</div>
 				</div>
 			),
 			firstAccess: user.firstAccess ? 'Sim' : 'Não',
 			role: RolesTypes[user.role].label,
-			status: (
-				<UserTag
-					status={!user.deletedAt ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE}
-				/>
-			),
+			status: <UserTag status={!user.deletedAt ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE} />,
 		}))
 		.filter((user) => user.id !== userId)
 }

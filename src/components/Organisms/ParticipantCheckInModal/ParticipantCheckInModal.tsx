@@ -16,11 +16,7 @@ type ParticipantCheckInModalProps = {
 }
 
 export const ParticipantCheckInModal = memo(
-	({
-		modalId,
-		selectedParticipant,
-		setSelectedParticipant,
-	}: ParticipantCheckInModalProps) => {
+	({ modalId, selectedParticipant, setSelectedParticipant }: ParticipantCheckInModalProps) => {
 		const { update, isPending } = useUpdateCheckInParticipant()
 
 		const handleCheckInParticipant = async (status: CHECK_IN_STATUS) => {
@@ -29,8 +25,7 @@ export const ParticipantCheckInModal = memo(
 			await update(
 				{ participantId: selectedParticipant, status },
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao marcar status do participante'),
+					onError: (error) => generateToastError(error, 'Erro ao marcar status do participante'),
 					onSuccess: () => {
 						setSelectedParticipant(null)
 						toast.success('Participante marcado com o status selecionado!')
@@ -49,19 +44,14 @@ export const ParticipantCheckInModal = memo(
 							<Header as="h3" className="text-2xl">
 								Está tudo certo com este participante?
 							</Header>
-							<Text>
-								Confirme a presença ou marque a desistência, conforme combinado
-								com ele(a)
-							</Text>
+							<Text>Confirme a presença ou marque a desistência, conforme combinado com ele(a)</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button
 								className="w-full items-center justify-center bg-red-500 text-gray-50 transition-colors duration-500 hover:bg-red-400 hover:text-slate-800"
 								disabled={isPending}
 								isLoading={isPending}
-								onClick={() =>
-									handleCheckInParticipant(CHECK_IN_STATUS.WITHDREW)
-								}
+								onClick={() => handleCheckInParticipant(CHECK_IN_STATUS.WITHDREW)}
 								type="button"
 							>
 								Desistir
@@ -70,9 +60,7 @@ export const ParticipantCheckInModal = memo(
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={isPending}
 								isLoading={isPending}
-								onClick={() =>
-									handleCheckInParticipant(CHECK_IN_STATUS.CONFIRMED)
-								}
+								onClick={() => handleCheckInParticipant(CHECK_IN_STATUS.CONFIRMED)}
 							>
 								Confirmar
 							</Button>

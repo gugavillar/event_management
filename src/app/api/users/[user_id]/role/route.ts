@@ -18,8 +18,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const routeParam = await params.then((res) => res.user_id ?? '')
 
 	return await requestProcess({
-		functions: async () =>
-			await updateUserRole(routeParam, body.role, session?.user?.id as string),
+		functions: async () => await updateUserRole(routeParam, body.role, session?.user?.id as string),
 		isProtectedRoute: true,
 	})
 }

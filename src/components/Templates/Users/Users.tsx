@@ -10,34 +10,22 @@ import { CreateUserButton, ListPage, PageContent } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetUsers } from '@/services/queries/users'
 import type { UserAPI } from '@/services/queries/users/users.type'
+
 import { formatTableData, HEADER_LABELS } from './Users.utils'
 
 type UsersProps = {
 	userId: User['id']
 }
 
-const BlockUserModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.BlockUserModal)
-)
+const BlockUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.BlockUserModal))
 
-const ChangeRoleUserModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.ChangeRoleUserModal)
-)
+const ChangeRoleUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.ChangeRoleUserModal))
 
-const UserResetPasswordModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.UserResetPasswordModal)
-)
+const UserResetPasswordModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.UserResetPasswordModal))
 
 export const Users = ({ userId }: UsersProps) => {
 	const [selectedUser, setSelectedUser] = useState<UserAPI['id'] | null>(null)
-	const {
-		data: users,
-		isLoading,
-		search,
-		setSearch,
-		page,
-		setPage,
-	} = useGetUsers()
+	const { data: users, isLoading, search, setSearch, page, setPage } = useGetUsers()
 
 	const handleOpenChangeRoleModal = useCallback((id: UserAPI['id']) => {
 		setSelectedUser(id)
@@ -67,26 +55,14 @@ export const Users = ({ userId }: UsersProps) => {
 	return (
 		<PageContent subheadingPage="Lista de usuários" title="Usuários">
 			<ListPage
-				actionButton={
-					<CreateUserButton drawerId={MODALS_IDS.USER_CREATE_MODAL} />
-				}
+				actionButton={<CreateUserButton drawerId={MODALS_IDS.USER_CREATE_MODAL} />}
 				className="w-full lg:max-w-full"
 				placeholderField="Digite o nome do usuário"
 				search={search}
 				setSearch={setSearch}
 			>
-				<ListManager
-					bodyData={formatData}
-					headerLabels={HEADER_LABELS}
-					isLoading={isLoading}
-				/>
-				{hasMoreThanOnePage && (
-					<Pagination
-						currentPage={page}
-						setPage={setPage}
-						totalPages={users?.totalPages}
-					/>
-				)}
+				<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
+				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={users?.totalPages} />}
 			</ListPage>
 			<ChangeRoleUserModal
 				modalId={MODALS_IDS.USER_CHANGE_ROLE_MODAL}

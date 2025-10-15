@@ -2,6 +2,7 @@ import { Label, Select } from '@/components/Atoms'
 import { PaymentSelectOptions, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetParticipantsCities } from '@/services/queries/participants'
+
 import type { FilterType } from './FilterDrawer'
 
 type ParticipantFiltersProps = {
@@ -23,11 +24,7 @@ export const ParticipantFilters = ({
 		eventId,
 		isInterested,
 	})
-	const formattedCities = formatterFieldSelectValues(
-		participantsCities,
-		'city',
-		'city'
-	)
+	const formattedCities = formatterFieldSelectValues(participantsCities, 'city', 'city')
 	formattedCities.unshift({
 		label: 'Todos as cidades',
 		value: '',
@@ -60,11 +57,7 @@ export const ParticipantFilters = ({
 			)}
 			<div className="w-full">
 				<Label>Cidade</Label>
-				<Select
-					onChange={(e) => handleFilter('city', e.target.value)}
-					options={formattedCities}
-					value={filters.city}
-				/>
+				<Select onChange={(e) => handleFilter('city', e.target.value)} options={formattedCities} value={filters.city} />
 			</div>
 		</>
 	)

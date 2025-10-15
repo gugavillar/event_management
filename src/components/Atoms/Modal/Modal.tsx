@@ -14,13 +14,7 @@ type ModalProps = {
 	isStatic?: boolean
 }
 
-export const Modal = ({
-	modalId,
-	children,
-	handleClose,
-	isLarge,
-	isStatic,
-}: ModalProps) => {
+export const Modal = ({ modalId, children, handleClose, isLarge, isStatic }: ModalProps) => {
 	const handleCloseModal = () => {
 		overlayClose(modalId)
 		handleClose?.()

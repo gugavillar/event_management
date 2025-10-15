@@ -1,15 +1,11 @@
 'use client'
+import { useWindowSize } from '@uidotdev/usehooks'
+import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import {
-	ApplicationAvatar,
-	PrincipalMenu,
-	UserAvatar,
-} from '@/components/Molecules'
+import { ApplicationAvatar, PrincipalMenu, UserAvatar } from '@/components/Molecules'
 import { useSidebarContext } from '@/contexts'
-import { useWindowSize } from '@uidotdev/usehooks'
-import { useSession } from 'next-auth/react'
 
 export const Sidebar = () => {
 	const { collapsed, setCollapsed } = useSidebarContext()

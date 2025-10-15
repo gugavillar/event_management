@@ -20,9 +20,7 @@ type TransactionCardWithoutAccounts = TransactionCardBase & {
 	amountCash?: never
 }
 
-type TransactionCardProps =
-	| TransactionCardWithAccounts
-	| TransactionCardWithoutAccounts
+type TransactionCardProps = TransactionCardWithAccounts | TransactionCardWithoutAccounts
 
 export const TransactionCard = ({
 	value,
@@ -43,12 +41,10 @@ export const TransactionCard = ({
 			{isShowAccounts && !isLoading && (
 				<div className="flex flex-col items-end px-4 pb-4">
 					<p className="font-semibold">
-						Conta:{' '}
-						<span className="font-normal">{currencyValue(amountAccount)}</span>
+						Conta: <span className="font-normal">{currencyValue(amountAccount)}</span>
 					</p>
 					<p className="font-semibold">
-						Dinheiro:{' '}
-						<span className="font-normal">{currencyValue(amountCash)}</span>
+						Dinheiro: <span className="font-normal">{currencyValue(amountCash)}</span>
 					</p>
 				</div>
 			)}

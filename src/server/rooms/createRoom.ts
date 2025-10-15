@@ -17,9 +17,7 @@ export const createRoom = async (data: FormRoom) => {
 				data: data.members.map((member) => ({
 					roomId: room.id,
 					type: member.type,
-					...(member.type === MEMBERS.PARTICIPANT
-						? { participantId: member.member }
-						: { volunteerId: member.member }),
+					...(member.type === MEMBERS.PARTICIPANT ? { participantId: member.member } : { volunteerId: member.member }),
 				})),
 			})
 		})

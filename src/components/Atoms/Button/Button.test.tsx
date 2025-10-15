@@ -24,9 +24,7 @@ describe('Button component', () => {
 	})
 
 	it('applies custom className', () => {
-		const { getByRole } = render(
-			<Button className="custom-class">Button</Button>
-		)
+		const { getByRole } = render(<Button className="custom-class">Button</Button>)
 		const button = getByRole('button', { name: 'Button' })
 		expect(button).toHaveClass('custom-class')
 	})
@@ -73,10 +71,7 @@ describe('Button component', () => {
 
 	it('show left icon when leftIcon is provided and isLoading is false', () => {
 		const { getByTestId } = render(
-			<Button
-				isLoading={false}
-				leftIcon={<span data-testid="left-icon">👈</span>}
-			>
+			<Button isLoading={false} leftIcon={<span data-testid="left-icon">👈</span>}>
 				Button
 			</Button>
 		)

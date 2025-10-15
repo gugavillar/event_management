@@ -4,10 +4,7 @@ type SearchBoxOption = ComponentProps<'option'> & {
 	customProps: Record<string, string>
 }
 
-export type SearchBoxProps<T = string> = Omit<
-	ComponentProps<'select'>,
-	'value' | 'onChange'
-> & {
+export type SearchBoxProps<T = string> = Omit<ComponentProps<'select'>, 'value' | 'onChange'> & {
 	search: string
 	setSearch: Dispatch<SetStateAction<string>>
 	label?: string

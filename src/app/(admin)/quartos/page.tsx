@@ -26,15 +26,8 @@ export default async function RoomsPage({ searchParams }: SearchParams) {
 	const getRooms = () => getRoomByEventId(eventId as UUID, searchMemberRoom)
 
 	return (
-		<HydrationInfinityProvider
-			initialPageParam={1}
-			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-		>
-			<HydrationProvider
-				queryFn={getRooms}
-				queryKey={[QUERY_KEYS.ROOMS, eventId]}
-			>
+		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
+			<HydrationProvider queryFn={getRooms} queryKey={[QUERY_KEYS.ROOMS, eventId]}>
 				<Rooms eventId={eventId} />
 			</HydrationProvider>
 		</HydrationInfinityProvider>

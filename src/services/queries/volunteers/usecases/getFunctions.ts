@@ -6,10 +6,7 @@ type GetVolunteersFunctionsParams = {
 	searchFunction?: string
 }
 
-export const getFunctions = async ({
-	eventId,
-	searchFunction,
-}: GetVolunteersFunctionsParams) => {
+export const getFunctions = async ({ eventId, searchFunction }: GetVolunteersFunctionsParams) => {
 	const response = await api.get(ENDPOINTS.GET_FUNCTIONS, {
 		params: {
 			eventId,

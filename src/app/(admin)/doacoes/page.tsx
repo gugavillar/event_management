@@ -21,19 +21,11 @@ export default async function DonationPage({ searchParams }: SearchParams) {
 	const page = generatePage(params.page)
 
 	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
-	const getAllDonations = async () =>
-		getDonations({ eventId: debounceValue, page })
+	const getAllDonations = async () => getDonations({ eventId: debounceValue, page })
 
 	return (
-		<HydrationInfinityProvider
-			initialPageParam={1}
-			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-		>
-			<HydrationProvider
-				queryFn={getAllDonations}
-				queryKey={[QUERY_KEYS.DONATIONS, debounceValue, page]}
-			>
+		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
+			<HydrationProvider queryFn={getAllDonations} queryKey={[QUERY_KEYS.DONATIONS, debounceValue, page]}>
 				<Donation />
 			</HydrationProvider>
 		</HydrationInfinityProvider>

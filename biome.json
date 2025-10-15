@@ -7,27 +7,13 @@
 					"level": "on",
 					"options": {
 						"groups": [
-							[
-								"next",
-								"next/**",
-								"react",
-								"react-dom",
-								"react-dom/**",
-								"react-hot-toast",
-								"@tanstack/react-query",
-								"preline/preline",
-								"tailwind-merge",
-								"@testing-library/react",
-								"lucide-react",
-								"@prisma/client",
-								"next-auth",
-								"zod"
-							],
+							":PACKAGE:",
 							":BLANK_LINE:",
 							[":NODE:", ":BUN:"],
 							":BLANK_LINE:",
 							":ALIAS:",
-							[":PACKAGE:", ":PATH:"]
+							":BLANK_LINE:",
+							":PATH:"
 						]
 					}
 				},
@@ -49,7 +35,7 @@
 		"indentStyle": "tab",
 		"indentWidth": 2,
 		"lineEnding": "lf",
-		"lineWidth": 80,
+		"lineWidth": 120,
 		"useEditorconfig": true
 	},
 	"html": { "formatter": { "selfCloseVoidElements": "always" } },

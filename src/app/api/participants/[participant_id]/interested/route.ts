@@ -14,8 +14,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const routeParam = await params.then((res) => res.participant_id ?? '')
 
 	return await requestProcess({
-		functions: async () =>
-			await updateInterestedParticipant(routeParam, body.interested),
+		functions: async () => await updateInterestedParticipant(routeParam, body.interested),
 		isProtectedRoute: true,
 	})
 }

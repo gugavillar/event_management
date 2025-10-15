@@ -14,17 +14,9 @@ type AddressInfoCardProps = ComponentProps<'div'> & {
 	}
 }
 
-export const AddressInfoCard = ({
-	className,
-	addressInfo,
-	...props
-}: AddressInfoCardProps) => {
+export const AddressInfoCard = ({ className, addressInfo, ...props }: AddressInfoCardProps) => {
 	return (
-		<InformationCard
-			className={twMerge('space-y-3 pb-6', className)}
-			headingText="Endereço"
-			{...props}
-		>
+		<InformationCard className={twMerge('space-y-3 pb-6', className)} headingText="Endereço" {...props}>
 			<InfoBox label="Endereço" value={addressInfo.street} />
 			<InfoBox label="Bairro" value={addressInfo.neighborhood} />
 			<InfoBox label="Número" value={addressInfo.number} />

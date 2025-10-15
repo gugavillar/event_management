@@ -7,10 +7,7 @@ export type UpdateCheckInParticipantArgs = {
 	status: (typeof CHECK_IN_STATUS)['CONFIRMED' | 'WITHDREW']
 }
 
-export const updateCheckInParticipant = async ({
-	participantId,
-	status,
-}: UpdateCheckInParticipantArgs) => {
+export const updateCheckInParticipant = async ({ participantId, status }: UpdateCheckInParticipantArgs) => {
 	try {
 		z.object({
 			participantId: z.uuid(),

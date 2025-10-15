@@ -8,10 +8,7 @@ export const Spinner = ({ className, ...props }: SpinnerProps) => {
 	return (
 		<>
 			<span className="sr-only">Loading...</span>
-			<LoaderCircle
-				className={twMerge('size-8 animate-spin', className)}
-				{...props}
-			/>
+			<LoaderCircle className={twMerge('size-8 animate-spin', className)} {...props} />
 		</>
 	)
 }

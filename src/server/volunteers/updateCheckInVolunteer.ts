@@ -7,10 +7,7 @@ export type UpdateCheckInVolunteerArgs = {
 	status: (typeof CHECK_IN_STATUS)['CONFIRMED' | 'WITHDREW']
 }
 
-export const updateCheckInVolunteer = async ({
-	volunteerId,
-	status,
-}: UpdateCheckInVolunteerArgs) => {
+export const updateCheckInVolunteer = async ({ volunteerId, status }: UpdateCheckInVolunteerArgs) => {
 	try {
 		z.object({
 			status: z.enum([CHECK_IN_STATUS.CONFIRMED, CHECK_IN_STATUS.WITHDREW]),

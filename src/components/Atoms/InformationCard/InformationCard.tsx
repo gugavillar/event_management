@@ -19,10 +19,7 @@ export const InformationCard = ({
 }: InformationCardProps) => {
 	return (
 		<div
-			className={twMerge(
-				'flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm',
-				className
-			)}
+			className={twMerge('flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm', className)}
 			{...props}
 		>
 			<div

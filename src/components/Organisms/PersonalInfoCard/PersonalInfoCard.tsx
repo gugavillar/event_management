@@ -19,18 +19,9 @@ type PersonalInfoCardProps = ComponentProps<'div'> & {
 	type: 'volunteer' | 'participant'
 }
 
-export const PersonalInfoCard = ({
-	className,
-	userInfo,
-	type,
-	...props
-}: PersonalInfoCardProps) => {
+export const PersonalInfoCard = ({ className, userInfo, type, ...props }: PersonalInfoCardProps) => {
 	return (
-		<InformationCard
-			className={twMerge('space-y-3 pb-6', className)}
-			headingText="Dados pessoais"
-			{...props}
-		>
+		<InformationCard className={twMerge('space-y-3 pb-6', className)} headingText="Dados pessoais" {...props}>
 			<InfoBox label="Nome" value={userInfo.name} />
 			<InfoBox label="Email" value={userInfo.email} />
 			<InfoBox label="Como quer ser chamado" value={userInfo.called} />
@@ -44,10 +35,7 @@ export const PersonalInfoCard = ({
 					<InfoBox label="Comunidade" value={userInfo?.community} />
 				</>
 			)}
-			<InfoBox
-				label="Restrição Saúde/Alimentar"
-				value={userInfo?.health ?? 'Não possui'}
-			/>
+			<InfoBox label="Restrição Saúde/Alimentar" value={userInfo?.health ?? 'Não possui'} />
 		</InformationCard>
 	)
 }

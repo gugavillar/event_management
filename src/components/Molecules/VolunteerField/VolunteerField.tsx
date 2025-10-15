@@ -1,13 +1,12 @@
 'use client'
 
+import { Controller, useFormContext } from 'react-hook-form'
+
 import { CHECK_IN_STATUS, LIMIT_PER_PAGE_EDITION, MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
-import {
-	type UseGetInfinityVolunteersArgs,
-	useGetInfinityVolunteers,
-} from '@/services/queries/volunteers'
-import { Controller, useFormContext } from 'react-hook-form'
+import { type UseGetInfinityVolunteersArgs, useGetInfinityVolunteers } from '@/services/queries/volunteers'
+
 import { SearchBox } from '../SearchBox'
 
 type VolunteerFieldProps = UseGetInfinityVolunteersArgs & {
@@ -42,11 +41,7 @@ export const VolunteerField = ({
 
 	const baseVolunteers = volunteers?.pages.flatMap((page) => page.data) ?? []
 
-	const formattedVolunteers = formatterComboBoxValues(
-		baseVolunteers,
-		'name',
-		'id'
-	)
+	const formattedVolunteers = formatterComboBoxValues(baseVolunteers, 'name', 'id')
 
 	const lastItemRefVolunteers = useInfiniteScrollObserver({
 		fetchNextPage: fetchNextPageVolunteers,

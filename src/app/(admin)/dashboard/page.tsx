@@ -18,10 +18,7 @@ export default async function DashboardPage({ searchParams }: SearchParams) {
 	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 
 	return (
-		<HydrationProvider
-			queryFn={dashboardData}
-			queryKey={[QUERY_KEYS.DASHBOARD, debounceEventId]}
-		>
+		<HydrationProvider queryFn={dashboardData} queryKey={[QUERY_KEYS.DASHBOARD, debounceEventId]}>
 			<HydrationInfinityProvider
 				initialPageParam={1}
 				queryFn={getAllEvents}

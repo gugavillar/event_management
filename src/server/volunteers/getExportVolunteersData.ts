@@ -1,16 +1,9 @@
 import { NextResponse } from 'next/server'
+import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { generateColumnWidths, prisma } from '@/constants'
-import {
-	currencyValue,
-	formatBirthdate,
-	formatCheckIn,
-	formatPhone,
-	paymentDate,
-	paymentStatus,
-} from '@/formatters'
-import { utils, write } from 'xlsx'
+import { currencyValue, formatBirthdate, formatCheckIn, formatPhone, paymentDate, paymentStatus } from '@/formatters'
 
 export const getExportVolunteersData = async (eventId: string) => {
 	try {
@@ -49,10 +42,7 @@ export const getExportVolunteersData = async (eventId: string) => {
 		})
 
 		if (!volunteers.length) {
-			return NextResponse.json(
-				{ error: 'Nenhum voluntário cadastrado' },
-				{ status: 400 }
-			)
+			return NextResponse.json({ error: 'Nenhum voluntário cadastrado' }, { status: 400 })
 		}
 
 		const volunteersData = volunteers.map((volunteer) => ({
@@ -61,54 +51,39 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Chamado: volunteer.called,
 			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
 			Célula: volunteer.cell || 'Nenhuma',
-			Data_Nascimento: formatBirthdate(
-				volunteer.birthdate,
-				volunteer.event.finalDate
-			),
+			Data_Nascimento: formatBirthdate(volunteer.birthdate, volunteer.event.finalDate),
 			Email: volunteer.email,
 			Endereço: `${volunteer.address?.street}, ${volunteer.address?.number}`,
 			Função: !volunteer.eventRoles?.length
 				? 'Sem Função'
 				: volunteer.eventRoles
 						.map((role) =>
-							role.eventId === eventId &&
-							role.leaders.some((leader) => leader.id === volunteer.id)
+							role.eventId === eventId && role.leaders.some((leader) => leader.id === volunteer.id)
 								? `${role.volunteerRole.role} - Líder`
 								: role.volunteerRole.role
 						)
 						.join(', '),
 			Grupo:
 				volunteer.groupMemberships?.find(
-					(group) =>
-						group.volunteerId === volunteer.id &&
-						group.group.eventId === eventId
+					(group) => group.volunteerId === volunteer.id && group.group.eventId === eventId
 				)?.group.name || 'Sem grupo',
 			Nome: volunteer.name,
 			Parente: volunteer.relative,
 			Quarto:
-				volunteer.roomMember?.find(
-					(room) =>
-						room.volunteerId === volunteer.id && room.room.eventId === eventId
-				)?.room.roomNumber || 'Sem quarto',
+				volunteer.roomMember?.find((room) => room.volunteerId === volunteer.id && room.room.eventId === eventId)?.room
+					.roomNumber || 'Sem quarto',
 			Status: formatCheckIn(volunteer.checkIn),
 			Telefone: formatPhone(volunteer.phone),
 			Telefone_Parente: formatPhone(volunteer.relativePhone),
 		}))
 
 		const paymentsData = volunteers.map((payment) => {
-			const paymentValue = payment.payments.reduce(
-				(acc, p) => (acc += p.paymentValue.toNumber()),
-				0
-			)
+			const paymentValue = payment.payments.reduce((acc, p) => (acc += p.paymentValue.toNumber()), 0)
 			const hasPayment = payment.payments.length > 0
 			const statusPayments = !hasPayment
 				? paymentStatus(payment.checkIn, null)
-				: payment.payments
-						.map((p) => paymentStatus(payment.checkIn, p.paymentType))
-						.join(', ')
-			const datesPayments = payment.payments
-				.map((p) => paymentDate(p.paymentType, p.updatedAt))
-				.join(', ')
+				: payment.payments.map((p) => paymentStatus(payment.checkIn, p.paymentType)).join(', ')
+			const datesPayments = payment.payments.map((p) => paymentDate(p.paymentType, p.updatedAt)).join(', ')
 			return {
 				Data_Pagamento: datesPayments,
 				Nome: payment.name,
@@ -135,8 +110,7 @@ export const getExportVolunteersData = async (eventId: string) => {
 		return new NextResponse(buffer, {
 			headers: {
 				'Content-Disposition': 'attachment; filename="voluntarios.xlsx"',
-				'Content-Type':
-					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			},
 			status: 200,
 		})

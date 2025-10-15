@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { Link, Tooltip } from '@/components/Atoms'
 import { PAGES_ROLES, type ROLES } from '@/constants'
+
 import type { MenuLinkWithSubMenu } from './PrincipalMenu.utils'
 
 type SubMenuItemProps = Omit<MenuLinkWithSubMenu, 'hasSubMenu'> & {
@@ -13,24 +14,11 @@ type SubMenuItemProps = Omit<MenuLinkWithSubMenu, 'hasSubMenu'> & {
 	width: number | null
 }
 
-const validateHasMenu = (
-	links: MenuLinkWithSubMenu['links'],
-	userRole: ROLES
-) => {
-	return links.some((link) =>
-		PAGES_ROLES[link.href as keyof typeof PAGES_ROLES].includes(userRole)
-	)
+const validateHasMenu = (links: MenuLinkWithSubMenu['links'], userRole: ROLES) => {
+	return links.some((link) => PAGES_ROLES[link.href as keyof typeof PAGES_ROLES].includes(userRole))
 }
 
-export const SubMenuItem = ({
-	buttonIcon,
-	buttonLabel,
-	collapsed,
-	links,
-	path,
-	userRole,
-	width,
-}: SubMenuItemProps) => {
+export const SubMenuItem = ({ buttonIcon, buttonLabel, collapsed, links, path, userRole, width }: SubMenuItemProps) => {
 	const validateLabelPath = buttonLabel
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
@@ -61,13 +49,7 @@ export const SubMenuItem = ({
 				)}
 				type="button"
 			>
-				<Tooltip
-					className={
-						collapsed ? 'hs-tooltip-shown:visible' : 'hs-tooltip-shown:hidden'
-					}
-				>
-					{buttonLabel}
-				</Tooltip>
+				<Tooltip className={collapsed ? 'hs-tooltip-shown:visible' : 'hs-tooltip-shown:hidden'}>{buttonLabel}</Tooltip>
 				{buttonIcon}
 				{!collapsed && buttonLabel}
 			</button>
@@ -79,11 +61,7 @@ export const SubMenuItem = ({
 			>
 				<div className="p-1">
 					{links.map(({ href, label }) => {
-						if (
-							!PAGES_ROLES[href as keyof typeof PAGES_ROLES].includes(
-								userRole as ROLES
-							)
-						) {
+						if (!PAGES_ROLES[href as keyof typeof PAGES_ROLES].includes(userRole as ROLES)) {
 							return null
 						}
 						return (

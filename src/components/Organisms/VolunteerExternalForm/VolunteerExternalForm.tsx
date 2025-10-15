@@ -1,13 +1,10 @@
 'use client'
 
-import {
-	InputField,
-	MaskedInputField,
-	SelectField,
-} from '@/components/Molecules'
+import { useFormContext } from 'react-hook-form'
+
+import { InputField, MaskedInputField, SelectField } from '@/components/Molecules'
 import type { FullSchemaType } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
 import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
-import { useFormContext } from 'react-hook-form'
 
 export const VolunteerExternalForm = () => {
 	const { watch } = useFormContext<FullSchemaType>()
@@ -17,9 +14,7 @@ export const VolunteerExternalForm = () => {
 		<div className="space-y-6">
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<InputField fieldName="name">Nome completo</InputField>
-				<InputField fieldName="called">
-					Como você gostaria de ser chamado(a)?
-				</InputField>
+				<InputField fieldName="called">Como você gostaria de ser chamado(a)?</InputField>
 				<InputField fieldName="email" type="email">
 					E-mail
 				</InputField>
@@ -32,26 +27,16 @@ export const VolunteerExternalForm = () => {
 				<InputField fieldName="community">Igreja que frequenta</InputField>
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-				<SelectField
-					fieldName="hasCell"
-					options={YES_OR_NO_SELECT_OPTIONS}
-					placeholder="Selecione uma opção"
-				>
+				<SelectField fieldName="hasCell" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
 					Participa de célula?
 				</SelectField>
 				{hasCell === 'Yes' && <InputField fieldName="cell">Qual?</InputField>}
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-				<SelectField
-					fieldName="hasHealth"
-					options={YES_OR_NO_SELECT_OPTIONS}
-					placeholder="Selecione uma opção"
-				>
+				<SelectField fieldName="hasHealth" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
 					Tem restrição saúde/alimentar?
 				</SelectField>
-				{hasHealth === 'Yes' && (
-					<InputField fieldName="health">Descreva?</InputField>
-				)}
+				{hasHealth === 'Yes' && <InputField fieldName="health">Descreva?</InputField>}
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<InputField fieldName="relative">Parente próximo</InputField>

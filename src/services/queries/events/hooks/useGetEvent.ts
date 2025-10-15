@@ -1,10 +1,11 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
+import { format } from 'date-fns'
 
 import { QUERY_KEYS } from '@/constants'
 import { currencyValue } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
-import { format } from 'date-fns'
+
 import type { EventsAPI } from '../event.type'
 import { getEvent } from '../usecases'
 

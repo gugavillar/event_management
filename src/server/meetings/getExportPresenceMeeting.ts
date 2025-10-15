@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
+import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { CHECK_IN_STATUS, prisma } from '@/constants'
-import { utils, write } from 'xlsx'
 
 export const getExportPresenceMeeting = async (eventId: string) => {
 	try {
@@ -28,28 +28,17 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 				meeting: {
 					eventId,
 				},
-				OR: [
-					{ volunteer: { checkIn: null } },
-					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
-				],
+				OR: [{ volunteer: { checkIn: null } }, { volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } }],
 			},
 		})
 
 		if (!presences.length) {
-			return NextResponse.json(
-				{ error: 'Nenhuma reunião encontrada' },
-				{ status: 400 }
-			)
+			return NextResponse.json({ error: 'Nenhuma reunião encontrada' }, { status: 400 })
 		}
 
-		const meetingTitles = Array.from(
-			new Set(presences.map((p) => p.meeting.title).filter(Boolean))
-		)
+		const meetingTitles = Array.from(new Set(presences.map((p) => p.meeting.title).filter(Boolean)))
 
-		const volunteerMap: Record<
-			string,
-			{ name: string; [meetingTitle: string]: string }
-		> = {}
+		const volunteerMap: Record<string, { name: string; [meetingTitle: string]: string }> = {}
 
 		for (const p of presences) {
 			const { volunteer, meeting, presence, justification } = p
@@ -91,8 +80,7 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 		return new NextResponse(buffer, {
 			headers: {
 				'Content-Disposition': 'attachment; filename="lista-presenca.xlsx"',
-				'Content-Type':
-					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			},
 			status: 200,
 		})

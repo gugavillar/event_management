@@ -7,9 +7,7 @@ type ReturnVolunteerPaymentArgs = {
 	id: UUID
 }
 
-export const returnVolunteerPayment = async ({
-	id,
-}: ReturnVolunteerPaymentArgs) => {
+export const returnVolunteerPayment = async ({ id }: ReturnVolunteerPaymentArgs) => {
 	const response = await api.delete(ENDPOINTS.RETURN_VOLUNTEER_PAYMENT(id))
 
 	return response.data

@@ -2,6 +2,7 @@
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
+
 import { getVolunteersCities } from '../usecases'
 
 export const useGetVolunteersCities = ({ eventId }: { eventId?: string }) => {

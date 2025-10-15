@@ -1,9 +1,8 @@
 'use client'
+import type { ApexOptions } from 'apexcharts'
 import dynamic from 'next/dynamic'
 import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
-
-import type { ApexOptions } from 'apexcharts'
 
 const ApexCharts = dynamic(() => import('react-apexcharts'), {
 	ssr: false,

@@ -1,12 +1,7 @@
 import type { $Enums } from '@prisma/client'
-
-import {
-	CHECK_IN_STATUS,
-	PaymentType,
-	PaymentTypeAPI,
-	StatusType,
-} from '@/constants'
 import { differenceInYears, format } from 'date-fns'
+
+import { CHECK_IN_STATUS, PaymentType, PaymentTypeAPI, StatusType } from '@/constants'
 
 export const paymentStatus = (
 	checkInStatus: $Enums.ParticipantOrVolunteerStatus | null,
@@ -21,28 +16,19 @@ export const paymentStatus = (
 	return PaymentType[hasPayment].label
 }
 
-export const paymentDate = (
-	hasPayment: $Enums.PaymentType | null,
-	date: Date
-) => {
+export const paymentDate = (hasPayment: $Enums.PaymentType | null, date: Date) => {
 	if (!hasPayment) return ''
 
 	return format(date, 'dd/MM/yyyy')
 }
 
-export const formatCheckIn = (
-	checkIn: $Enums.ParticipantOrVolunteerStatus | null
-) => {
+export const formatCheckIn = (checkIn: $Enums.ParticipantOrVolunteerStatus | null) => {
 	if (!checkIn) return StatusType[CHECK_IN_STATUS.NOT_ANSWERED].label
 
 	return StatusType[checkIn].label
 }
 
-export const formatBirthdate = (
-	birthdate: string | Date,
-	eventFinalDate: string | Date,
-	showAge = true
-) => {
+export const formatBirthdate = (birthdate: string | Date, eventFinalDate: string | Date, showAge = true) => {
 	if (!birthdate || !eventFinalDate) return ''
 
 	if (!showAge) {

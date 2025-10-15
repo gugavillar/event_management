@@ -30,10 +30,7 @@ export default async function RegistrationPage({ params }: Params) {
 
 	const event: EventsAPI = await getEvent(pageParams.event_id)
 
-	const isRegistrationPermitted = eventPermitCreateRegistration(
-		event,
-		MEMBERS.PARTICIPANT
-	)
+	const isRegistrationPermitted = eventPermitCreateRegistration(event, MEMBERS.PARTICIPANT)
 
 	if (!isRegistrationPermitted) {
 		return <ClosedInscriptions />

@@ -3,49 +3,22 @@
 import { useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
-import {
-	ComboBox,
-	ExportTransactionsButton,
-	ListManager,
-	TransactionCard,
-} from '@/components/Molecules'
-import {
-	CreateTransaction,
-	ListPage,
-	TransactionDeleteModal,
-} from '@/components/Organisms'
+import { ComboBox, ExportTransactionsButton, ListManager, TransactionCard } from '@/components/Molecules'
+import { CreateTransaction, ListPage, TransactionDeleteModal } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetTransactions } from '@/services/queries/transactions/hooks'
 import type { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
-import {
-	formatTableData,
-	HEADER_LABELS,
-	TransactionCardInfo,
-} from './Transactions.utils'
+
+import { formatTableData, HEADER_LABELS, TransactionCardInfo } from './Transactions.utils'
 
 export const Transaction = () => {
-	const [selectedTransaction, setSelectedTransaction] = useState<
-		TransactionsAPI['id'] | null
-	>(null)
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
-	const {
-		eventId,
-		isLoading,
-		setEventId,
-		data,
-		page,
-		setPage,
-		searchTransaction,
-		setSearchTransaction,
-	} = useGetTransactions()
+	const [selectedTransaction, setSelectedTransaction] = useState<TransactionsAPI['id'] | null>(null)
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
+	const { eventId, isLoading, setEventId, data, page, setPage, searchTransaction, setSearchTransaction } =
+		useGetTransactions()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -68,18 +41,13 @@ export const Transaction = () => {
 
 	const hasMoreThanOnePage = !!data?.totalPages && data.totalPages > 1
 
-	const balanceAmount =
-		(data?.sumOfAllIncome ?? 0) - (data?.sumOfAllOutcome ?? 0)
+	const balanceAmount = (data?.sumOfAllIncome ?? 0) - (data?.sumOfAllOutcome ?? 0)
 	const balanceAmountCash =
-		(data?.totalOfAccountAndCash?.totalCashIncome ?? 0) -
-		(data?.totalOfAccountAndCash?.totalCashOutcome ?? 0)
+		(data?.totalOfAccountAndCash?.totalCashIncome ?? 0) - (data?.totalOfAccountAndCash?.totalCashOutcome ?? 0)
 	const balanceAmountAccount =
-		(data?.totalOfAccountAndCash?.totalAccountIncome ?? 0) -
-		(data?.totalOfAccountAndCash?.totalAccountOutcome ?? 0)
+		(data?.totalOfAccountAndCash?.totalAccountIncome ?? 0) - (data?.totalOfAccountAndCash?.totalAccountOutcome ?? 0)
 
-	const eventName = formattedEvents.find(
-		(event) => event.customProps.value === eventId
-	)?.customProps.label
+	const eventName = formattedEvents.find((event) => event.customProps.value === eventId)?.customProps.label
 
 	return (
 		<>
@@ -96,11 +64,7 @@ export const Transaction = () => {
 				/>
 				{eventId && (
 					<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">
-						<ExportTransactionsButton
-							eventId={eventId}
-							eventName={eventName}
-							transactionLength={data?.data?.length}
-						/>
+						<ExportTransactionsButton eventId={eventId} eventName={eventName} transactionLength={data?.data?.length} />
 						<CreateTransaction eventId={eventId} />
 					</div>
 				)}
@@ -135,18 +99,8 @@ export const Transaction = () => {
 							search={searchTransaction}
 							setSearch={setSearchTransaction}
 						>
-							<ListManager
-								bodyData={formatData}
-								headerLabels={HEADER_LABELS}
-								isLoading={isLoading}
-							/>
-							{hasMoreThanOnePage && (
-								<Pagination
-									currentPage={page}
-									setPage={setPage}
-									totalPages={data?.totalPages}
-								/>
-							)}
+							<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
+							{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={data?.totalPages} />}
 						</ListPage>
 					</>
 				}

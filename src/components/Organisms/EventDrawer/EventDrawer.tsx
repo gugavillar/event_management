@@ -1,24 +1,16 @@
 'use client'
 import { type Dispatch, type SetStateAction, useEffect } from 'react'
+import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
-import {
-	CurrencyInputField,
-	InputField,
-	MaskedInputField,
-	SelectField,
-} from '@/components/Molecules'
+import { CurrencyInputField, InputField, MaskedInputField, SelectField } from '@/components/Molecules'
 import { GenderSelectOptions, overlayClose } from '@/constants'
 import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
-import {
-	useCreateEvent,
-	useGetEvent,
-	useUpdateEvent,
-} from '@/services/queries/events'
+import { useCreateEvent, useGetEvent, useUpdateEvent } from '@/services/queries/events'
 import type { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
-import { type SubmitHandler, useFormContext } from 'react-hook-form'
+
 import type { EventSchemaType } from './EventDrawer.schema'
 
 type EventDrawerProps = {
@@ -27,11 +19,7 @@ type EventDrawerProps = {
 	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
 }
 
-export const EventDrawer = ({
-	drawerId,
-	selectedEvent,
-	setSelectedEvent,
-}: EventDrawerProps) => {
+export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: EventDrawerProps) => {
 	const {
 		handleSubmit,
 		reset,
@@ -61,8 +49,7 @@ export const EventDrawer = ({
 					eventId: selectedEvent,
 				},
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar evento'),
+					onError: (error) => generateToastError(error, 'Erro ao atualizar evento'),
 					onSuccess: () => {
 						reset()
 						setSelectedEvent(null)
@@ -108,11 +95,7 @@ export const EventDrawer = ({
 		>
 			<DrawerBody isLoading={isLoading}>
 				<InputField fieldName="name">Nome do evento</InputField>
-				<SelectField
-					fieldName="gender"
-					options={GenderSelectOptions}
-					placeholder="Selecione o gênero do evento"
-				>
+				<SelectField fieldName="gender" options={GenderSelectOptions} placeholder="Selecione o gênero do evento">
 					Gênero do evento
 				</SelectField>
 				<div className="flex gap-3">
@@ -123,32 +106,16 @@ export const EventDrawer = ({
 						Idade máxima
 					</MaskedInputField>
 				</div>
-				<CurrencyInputField
-					fieldName="participantPrice"
-					type="tel"
-					value={data?.participantPrice}
-				>
+				<CurrencyInputField fieldName="participantPrice" type="tel" value={data?.participantPrice}>
 					Valor ficha participante
 				</CurrencyInputField>
-				<CurrencyInputField
-					fieldName="volunteerPrice"
-					type="tel"
-					value={data?.volunteerPrice}
-				>
+				<CurrencyInputField fieldName="volunteerPrice" type="tel" value={data?.volunteerPrice}>
 					Valor ficha voluntário
 				</CurrencyInputField>
-				<MaskedInputField
-					fieldName="initialDate"
-					format="##/##/####"
-					value={data?.initialDate}
-				>
+				<MaskedInputField fieldName="initialDate" format="##/##/####" value={data?.initialDate}>
 					Data de início do evento
 				</MaskedInputField>
-				<MaskedInputField
-					fieldName="finalDate"
-					format="##/##/####"
-					value={data?.finalDate}
-				>
+				<MaskedInputField fieldName="finalDate" format="##/##/####" value={data?.finalDate}>
 					Data de término do evento
 				</MaskedInputField>
 			</DrawerBody>

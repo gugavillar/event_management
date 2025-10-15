@@ -1,10 +1,11 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
+import { parseAsInteger, useQueryState } from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-import { parseAsInteger, useQueryState } from 'nuqs'
+
 import type { DonationsFromAPI } from '../donations.types'
 import { getDonations } from '../usecases'
 
@@ -12,10 +13,7 @@ export const useGetDonations = () => {
 	const [eventId, setEventId] = useQueryState('eventId', {
 		defaultValue: '',
 	})
-	const [page, setPage] = useQueryState(
-		'pageDonation',
-		parseAsInteger.withDefault(1)
-	)
+	const [page, setPage] = useQueryState('pageDonation', parseAsInteger.withDefault(1))
 
 	const isFirstRender = useRef(true)
 

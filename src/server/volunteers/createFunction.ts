@@ -3,10 +3,7 @@ import { z } from 'zod'
 import { MAX_FIELD_LENGTH, prisma } from '@/constants'
 import type { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
 
-export const createFunction = async ({
-	role,
-	events,
-}: VolunteersFunctionsForm) => {
+export const createFunction = async ({ role, events }: VolunteersFunctionsForm) => {
 	try {
 		z.object({
 			events: z.array(

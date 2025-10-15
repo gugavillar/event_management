@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import {
-	type ParticipantSchemaRouteType,
-	participantSchemaRoute,
-} from '@/app/api/participants/participant.schema'
+import { type ParticipantSchemaRouteType, participantSchemaRoute } from '@/app/api/participants/participant.schema'
 import { deepTrim, prisma } from '@/constants'
 
 export const createParticipant = async (
@@ -30,10 +27,7 @@ export const createParticipant = async (
 		})
 
 		if (isAlreadyRegistered) {
-			return NextResponse.json(
-				{ error: 'Participante já cadastrado' },
-				{ status: 400 }
-			)
+			return NextResponse.json({ error: 'Participante já cadastrado' }, { status: 400 })
 		}
 
 		const isRegistrationOpen = await prisma.event.findUnique({
@@ -42,14 +36,8 @@ export const createParticipant = async (
 			},
 		})
 
-		if (
-			!isRegistrationOpen?.isParticipantRegistrationOpen &&
-			!inscriptionType
-		) {
-			return NextResponse.json(
-				{ error: 'Inscrições encerradas' },
-				{ status: 400 }
-			)
+		if (!isRegistrationOpen?.isParticipantRegistrationOpen && !inscriptionType) {
+			return NextResponse.json({ error: 'Inscrições encerradas' }, { status: 400 })
 		}
 
 		return await prisma.$transaction(async (tx) => {

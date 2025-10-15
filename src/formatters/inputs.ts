@@ -1,8 +1,4 @@
-export const formatterFieldSelectValues = (
-	value?: Array<any>,
-	keyLabel?: string,
-	keyValue?: string
-) => {
+export const formatterFieldSelectValues = (value?: Array<any>, keyLabel?: string, keyValue?: string) => {
 	if (!value) return []
 
 	return value?.map((value) => ({

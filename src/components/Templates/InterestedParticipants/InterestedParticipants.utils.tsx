@@ -1,9 +1,9 @@
+import { format } from 'date-fns'
 import { ArrowLeftRight, FileUser, UserRoundX } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
-import { format } from 'date-fns'
 
 export const HEADER_LABELS = [
 	{
@@ -49,11 +49,7 @@ export const formatTableData = (
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FileUser
-							className="cursor-pointer"
-							onClick={() => handleShowParticipant(participant.id)}
-							size={20}
-						/>
+						<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(participant.id)} size={20} />
 						<Tooltip>Informações</Tooltip>
 					</div>
 					<div className="hs-tooltip">
@@ -65,19 +61,12 @@ export const formatTableData = (
 						<Tooltip>Mover para o evento</Tooltip>
 					</div>
 					<div className="hs-tooltip">
-						<UserRoundX
-							className="cursor-pointer"
-							onClick={() => handleDeleteParticipant(participant.id)}
-							size={20}
-						/>
+						<UserRoundX className="cursor-pointer" onClick={() => handleDeleteParticipant(participant.id)} size={20} />
 						<Tooltip>Excluir</Tooltip>
 					</div>
 				</div>
 			),
-			birthdate: formatBirthdate(
-				participant.birthdate,
-				participant.event.finalDate
-			),
+			birthdate: formatBirthdate(participant.birthdate, participant.event.finalDate),
 			city: participant.address.city,
 			contact: formatPhone(participant.phone),
 			createdAt: format(participant.createdAt, 'dd/MM/yyyy - HH:mm'),

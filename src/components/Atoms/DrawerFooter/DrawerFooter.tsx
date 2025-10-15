@@ -3,11 +3,7 @@ import { twMerge } from 'tailwind-merge'
 
 type DrawerFooterProps = ComponentProps<'footer'>
 
-export const DrawerFooter = ({
-	className,
-	children,
-	...props
-}: DrawerFooterProps) => {
+export const DrawerFooter = ({ className, children, ...props }: DrawerFooterProps) => {
 	return (
 		<footer
 			className={twMerge(

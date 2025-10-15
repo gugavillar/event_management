@@ -5,69 +5,39 @@ import { useCallback, useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import {
-	ExportParticipantsButton,
-	FilterDrawer,
-	ListPage,
-	PageContent,
-} from '@/components/Organisms'
+import { ExportParticipantsButton, FilterDrawer, ListPage, PageContent } from '@/components/Organisms'
 import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetParticipants } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+
 import { formatTableData, HEADER_LABELS } from './InterestedParticipants.utils'
 
-const ParticipantModalData = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.ParticipantModalData)
-)
+const ParticipantModalData = dynamic(() => import('@/components/Organisms').then((mod) => mod.ParticipantModalData))
 
 const InterestedModalToParticipant = dynamic(() =>
-	import('@/components/Organisms').then(
-		(mod) => mod.InterestedModalToParticipant
-	)
+	import('@/components/Organisms').then((mod) => mod.InterestedModalToParticipant)
 )
 
-const ParticipantDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal)
-)
+const ParticipantDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal))
 
 export const InterestedParticipants = () => {
-	const [selectedParticipant, setSelectedParticipant] = useState<
-		null | ParticipantsAPI['id']
-	>(null)
-	const {
-		data: participants,
-		isLoading,
-		search,
-		setSearch,
-		page,
-		setPage,
-		query,
-		setQuery,
-	} = useGetParticipants(true)
+	const [selectedParticipant, setSelectedParticipant] = useState<null | ParticipantsAPI['id']>(null)
+	const { data: participants, isLoading, search, setSearch, page, setPage, query, setQuery } = useGetParticipants(true)
 
-	const handleOpenModalToShowParticipantData = useCallback(
-		(id: ParticipantsAPI['id']) => {
-			setSelectedParticipant(id)
-			overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
-		},
-		[]
-	)
+	const handleOpenModalToShowParticipantData = useCallback((id: ParticipantsAPI['id']) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+	}, [])
 
-	const handleOpenModalInterestedParticipant = useCallback(
-		(id: ParticipantsAPI['id']) => {
-			setSelectedParticipant(id)
-			overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
-		},
-		[]
-	)
+	const handleOpenModalInterestedParticipant = useCallback((id: ParticipantsAPI['id']) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
+	}, [])
 
-	const handleOpenModalToDeleteParticipant = useCallback(
-		(id: ParticipantsAPI['id']) => {
-			setSelectedParticipant(id)
-			overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
-		},
-		[]
-	)
+	const handleOpenModalToDeleteParticipant = useCallback((id: ParticipantsAPI['id']) => {
+		setSelectedParticipant(id)
+		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
+	}, [])
 
 	const formattedInterestedParticipants = formatTableData(
 		participants?.data,
@@ -76,14 +46,10 @@ export const InterestedParticipants = () => {
 		handleOpenModalToDeleteParticipant
 	)
 
-	const hasMoreThanOnePage =
-		!!participants?.totalPages && participants.totalPages > 1
+	const hasMoreThanOnePage = !!participants?.totalPages && participants.totalPages > 1
 
 	return (
-		<PageContent
-			pageTitle="Participantes interessados"
-			subheadingPage="Lista de participantes interessados"
-		>
+		<PageContent pageTitle="Participantes interessados" subheadingPage="Lista de participantes interessados">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<ExportParticipantsButton isInterested />
 			</div>
@@ -102,17 +68,9 @@ export const InterestedParticipants = () => {
 				search={search}
 				setSearch={setSearch}
 			>
-				<ListManager
-					bodyData={formattedInterestedParticipants}
-					headerLabels={HEADER_LABELS}
-					isLoading={isLoading}
-				/>
+				<ListManager bodyData={formattedInterestedParticipants} headerLabels={HEADER_LABELS} isLoading={isLoading} />
 				{hasMoreThanOnePage && (
-					<Pagination
-						currentPage={page}
-						setPage={setPage}
-						totalPages={participants?.totalPages}
-					/>
+					<Pagination currentPage={page} setPage={setPage} totalPages={participants?.totalPages} />
 				)}
 			</ListPage>
 			<ParticipantModalData

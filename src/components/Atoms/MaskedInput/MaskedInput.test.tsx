@@ -5,16 +5,12 @@ import { MaskedInput } from './MaskedInput'
 
 describe('Field component', () => {
 	it('renders input correctly', () => {
-		const { getByTestId } = render(
-			<MaskedInput data-testid="mask-field" format="##/##/####" />
-		)
+		const { getByTestId } = render(<MaskedInput data-testid="mask-field" format="##/##/####" />)
 		expect(getByTestId('mask-field')).toBeInTheDocument()
 	})
 
 	it('displays warning when isInvalid true', () => {
-		const { getByTestId } = render(
-			<MaskedInput format="##/##/####" isInvalid />
-		)
+		const { getByTestId } = render(<MaskedInput format="##/##/####" isInvalid />)
 		expect(getByTestId('warning-icon')).toBeInTheDocument()
 	})
 
@@ -26,11 +22,7 @@ describe('Field component', () => {
 
 	it('applies custom class name', () => {
 		const { getByTestId } = render(
-			<MaskedInput
-				className="custom-class"
-				data-testid="input-field"
-				format="##/##/####"
-			/>
+			<MaskedInput className="custom-class" data-testid="input-field" format="##/##/####" />
 		)
 		const input = getByTestId('input-field')
 		expect(input).toHaveClass('custom-class')
@@ -40,11 +32,7 @@ describe('Field component', () => {
 		const onChangeMock = jest.fn()
 
 		const { getByTestId } = render(
-			<MaskedInput
-				data-testid="input-field"
-				format="##/##/####"
-				onChange={onChangeMock}
-			/>
+			<MaskedInput data-testid="input-field" format="##/##/####" onChange={onChangeMock} />
 		)
 
 		const inputElement = getByTestId('input-field')
@@ -67,12 +55,7 @@ describe('Field component', () => {
 		const ref = createRef<HTMLInputElement>()
 
 		const { getByTestId } = render(
-			<MaskedInput
-				data-testid="input-field"
-				format="##/##/####"
-				onChange={onChangeMock}
-				ref={ref}
-			/>
+			<MaskedInput data-testid="input-field" format="##/##/####" onChange={onChangeMock} ref={ref} />
 		)
 
 		const inputElement = getByTestId('input-field')
@@ -84,11 +67,7 @@ describe('Field component', () => {
 
 	it('renders rightIcon correctly when passed', () => {
 		const { getByTestId } = render(
-			<MaskedInput
-				data-testid="input-field"
-				format="##/##/####"
-				rightIcon={<p>teste</p>}
-			/>
+			<MaskedInput data-testid="input-field" format="##/##/####" rightIcon={<p>teste</p>} />
 		)
 		expect(getByTestId('right-icon')).toBeInTheDocument()
 	})

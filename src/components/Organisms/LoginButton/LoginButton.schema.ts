@@ -41,6 +41,4 @@ export const DefineNewPasswordSchema = z
 		}
 	})
 
-export type DefineNewPasswordSchemaType = z.infer<
-	typeof DefineNewPasswordSchema
->
+export type DefineNewPasswordSchemaType = z.infer<typeof DefineNewPasswordSchema>

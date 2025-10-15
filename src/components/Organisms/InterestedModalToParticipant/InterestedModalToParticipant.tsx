@@ -17,12 +17,7 @@ type InterestedModalToParticipantProps = {
 }
 
 export const InterestedModalToParticipant = memo(
-	({
-		modalId,
-		selectedParticipant,
-		setSelectedParticipant,
-		interested,
-	}: InterestedModalToParticipantProps) => {
+	({ modalId, selectedParticipant, setSelectedParticipant, interested }: InterestedModalToParticipantProps) => {
 		const { update, isPending } = useUpdateInterestedParticipant()
 
 		const handleMoveParticipant = async () => {
@@ -31,8 +26,7 @@ export const InterestedModalToParticipant = memo(
 			await update(
 				{ interested, participantId: selectedParticipant },
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar participante'),
+					onError: (error) => generateToastError(error, 'Erro ao atualizar participante'),
 					onSuccess: () => {
 						setSelectedParticipant(null)
 						toast.success('Participante movido com sucesso!')
@@ -48,18 +42,13 @@ export const InterestedModalToParticipant = memo(
 		}
 
 		return (
-			<Modal
-				handleClose={handleCloseInterestedModalToParticipant}
-				modalId={modalId}
-			>
+			<Modal handleClose={handleCloseInterestedModalToParticipant} modalId={modalId}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert className="text-amber-300" size={64} />
 						<div className="space-y-4 text-center">
 							<Header as="h3" className="text-2xl">
-								{interested
-									? 'Você deseja adicionar na lista de interessados?'
-									: 'Você deseja confirmar participação?'}
+								{interested ? 'Você deseja adicionar na lista de interessados?' : 'Você deseja confirmar participação?'}
 							</Header>
 							<Text>
 								{interested

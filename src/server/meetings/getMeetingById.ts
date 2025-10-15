@@ -17,10 +17,7 @@ export const getMeetingById = async (id: string) => {
 			})
 
 			if (!meeting) {
-				return NextResponse.json(
-					{ error: 'Reunião não encontrada' },
-					{ status: 400 }
-				)
+				return NextResponse.json({ error: 'Reunião não encontrada' }, { status: 400 })
 			}
 
 			const volunteers = await tx.volunteer.findMany({
@@ -33,10 +30,7 @@ export const getMeetingById = async (id: string) => {
 				},
 				where: {
 					eventId: meeting.eventId,
-					OR: [
-						{ checkIn: null },
-						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
-					],
+					OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 				},
 			})
 

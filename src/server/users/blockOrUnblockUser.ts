@@ -3,11 +3,7 @@ import { z } from 'zod'
 
 import { prisma } from '@/constants'
 
-export const blockOrUnblockUser = async (
-	userId: string,
-	userIdLogged: string,
-	isBlock: boolean
-) => {
+export const blockOrUnblockUser = async (userId: string, userIdLogged: string, isBlock: boolean) => {
 	try {
 		z.object({
 			userId: z.uuid(),

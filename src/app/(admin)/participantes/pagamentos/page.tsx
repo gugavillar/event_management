@@ -3,10 +3,7 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import {
-	getParticipantsCities,
-	getPayments,
-} from '@/services/queries/participants'
+import { getParticipantsCities, getPayments } from '@/services/queries/participants'
 
 type SearchParams = {
 	searchParams: Promise<{
@@ -18,9 +15,7 @@ type SearchParams = {
 	}>
 }
 
-export default async function ParticipantsPaymentsPage({
-	searchParams,
-}: SearchParams) {
+export default async function ParticipantsPaymentsPage({ searchParams }: SearchParams) {
 	const params = await searchParams.then((res) => ({
 		cityParticipant: res.cityParticipant ?? '',
 		eventId: res.eventId ?? '',
@@ -64,11 +59,7 @@ export default async function ParticipantsPaymentsPage({
 			>
 				<HydrationProvider
 					queryFn={getCities}
-					queryKey={[
-						QUERY_KEYS.PARTICIPANTS_CITIES,
-						undefined,
-						debounceEventIdValue,
-					]}
+					queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, undefined, debounceEventIdValue]}
 				>
 					<ParticipantsPayments />
 				</HydrationProvider>

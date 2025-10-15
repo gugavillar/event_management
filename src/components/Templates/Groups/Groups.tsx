@@ -1,44 +1,31 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, UsersRound } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import {
-	GenerateGroupList,
-	ListPage,
-	PageContent,
-} from '@/components/Organisms'
-import {
-	GroupSchema,
-	type GroupSchemaType,
-} from '@/components/Organisms/GroupDrawer/GroupDrawer.schema'
+import { GenerateGroupList, ListPage, PageContent } from '@/components/Organisms'
+import { GroupSchema, type GroupSchemaType } from '@/components/Organisms/GroupDrawer/GroupDrawer.schema'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetGroupByEventId } from '@/services/queries/groups'
 import type { GroupAPI } from '@/services/queries/groups/groups.types'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
+
 import { Content, formatTableData } from './Groups.utils'
 
-const GroupDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.GroupDeleteModal)
-)
+const GroupDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.GroupDeleteModal))
 
-const GroupDrawer = dynamic(
-	() => import('@/components/Organisms').then((mod) => mod.GroupDrawer),
-	{
-		ssr: false,
-	}
-)
+const GroupDrawer = dynamic(() => import('@/components/Organisms').then((mod) => mod.GroupDrawer), {
+	ssr: false,
+})
 
 export const Groups = ({ eventId }: { eventId: string }) => {
-	const [selectedGroup, setSelectedGroup] = useState<GroupAPI['id'] | null>(
-		null
-	)
+	const [selectedGroup, setSelectedGroup] = useState<GroupAPI['id'] | null>(null)
 
 	const {
 		data: groups,
@@ -48,12 +35,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 		searchMemberGroup,
 		setSearchMemberGroup,
 	} = useGetGroupByEventId(eventId)
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const methods = useForm<GroupSchemaType>({
 		defaultValues: {
@@ -82,17 +64,14 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 		overlayOpen(MODALS_IDS.GROUP_REMOVE_MODAL)
 	}, [])
 
-	const handleOpenDrawerToCreateOrEditGroup = useCallback(
-		(id?: GroupAPI['id']) => {
-			if (id) {
-				setSelectedGroup(id)
-			} else {
-				setSelectedGroup(null)
-			}
-			overlayOpen(MODALS_IDS.GROUP_DRAWER)
-		},
-		[]
-	)
+	const handleOpenDrawerToCreateOrEditGroup = useCallback((id?: GroupAPI['id']) => {
+		if (id) {
+			setSelectedGroup(id)
+		} else {
+			setSelectedGroup(null)
+		}
+		overlayOpen(MODALS_IDS.GROUP_DRAWER)
+	}, [])
 
 	const formattedGroups = formatTableData(groups)
 
@@ -100,10 +79,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				{!!formattedGroups.length && (
-					<GenerateGroupList
-						formattedGroups={formattedGroups}
-						modalId={MODALS_IDS.GENERATE_LIST_GROUP_MODAL}
-					/>
+					<GenerateGroupList formattedGroups={formattedGroups} modalId={MODALS_IDS.GENERATE_LIST_GROUP_MODAL} />
 				)}
 				<Button
 					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"

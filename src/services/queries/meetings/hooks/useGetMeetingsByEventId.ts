@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
+
 import type { EventsAPI } from '../../events/event.type'
 import type { MeetingsFromAPI } from '../meetings.types'
 import { getMeetingsByEventId } from '../usecases'

@@ -1,16 +1,14 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { UserRoundPlus } from 'lucide-react'
 import { memo } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/Atoms'
 import { overlayOpen } from '@/constants'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
+
 import { UserDrawer } from '../UserDrawer'
-import {
-	UserSchema,
-	type UserSchemaType,
-} from '../UserDrawer/UserDrawer.schema'
+import { UserSchema, type UserSchemaType } from '../UserDrawer/UserDrawer.schema'
 
 type CreateUserButtonProps = {
 	drawerId: string

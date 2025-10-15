@@ -9,12 +9,7 @@ type DrawerBodyProps = ComponentProps<'section'> & {
 
 const loadingClasses = 'flex flex-col h-full items-center justify-center'
 
-export const DrawerBody = ({
-	className,
-	children,
-	isLoading,
-	...props
-}: DrawerBodyProps) => {
+export const DrawerBody = ({ className, children, isLoading, ...props }: DrawerBodyProps) => {
 	return (
 		<section
 			className={twMerge(

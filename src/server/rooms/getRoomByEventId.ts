@@ -2,10 +2,7 @@ import { z } from 'zod'
 
 import { prisma } from '@/constants'
 
-export const getRoomByEventId = async (
-	id: string,
-	searchName: string | null
-) => {
+export const getRoomByEventId = async (id: string, searchName: string | null) => {
 	try {
 		z.object({
 			id: z.uuid(),

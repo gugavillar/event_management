@@ -24,13 +24,7 @@ export const ListPage = ({
 }: ListPageProps) => {
 	return (
 		<>
-			<div
-				className={twMerge(
-					'flex flex-row items-center gap-4 lg:max-w-xl',
-					className
-				)}
-				{...props}
-			>
+			<div className={twMerge('flex flex-row items-center gap-4 lg:max-w-xl', className)} {...props}>
 				{placeholderField && (
 					<Field
 						className="ps-11"

@@ -1,7 +1,9 @@
-import { CheckboxField } from '@/components/Molecules'
-import type { MeetingAPI } from '@/services/queries/meetings/meetings.types'
 import { format } from 'date-fns'
 import type { UseFormWatch } from 'react-hook-form'
+
+import { CheckboxField } from '@/components/Molecules'
+import type { MeetingAPI } from '@/services/queries/meetings/meetings.types'
+
 import type { MeetingSchemaType } from './Meetings.schema'
 
 export const HEADER_LABELS = [
@@ -25,10 +27,7 @@ export const HEADER_LABELS = [
 	},
 ]
 
-export const formatTableData = (
-	data: MeetingAPI | undefined,
-	watch: UseFormWatch<MeetingSchemaType>
-) => {
+export const formatTableData = (data: MeetingAPI | undefined, watch: UseFormWatch<MeetingSchemaType>) => {
 	if (!data) return []
 
 	return data?.volunteers?.map((volunteer, index) => ({

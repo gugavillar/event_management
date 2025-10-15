@@ -1,8 +1,8 @@
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
 export const VolunteerSchema = z
 	.object({
@@ -21,17 +21,10 @@ export const VolunteerSchema = z
 		birthdate: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) =>
-					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-						? validateBirthdate(value)
-						: false,
-				{ error: 'Data inválida' }
-			),
-		called: z
-			.string({ error: 'Campo obrigatório' })
-			.trim()
-			.min(1, 'Campo obrigatório'),
+			.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateBirthdate(value) : false), {
+				error: 'Data inválida',
+			}),
+		called: z.string({ error: 'Campo obrigatório' }).trim().min(1, 'Campo obrigatório'),
 		cell: z.string().nullable().optional(),
 		community: z.string().trim().min(1, 'Campo obrigatório'),
 		email: z
@@ -64,18 +57,12 @@ export const VolunteerSchema = z
 		phone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 		relative: z.string().trim().min(1, 'Campo obrigatório'),
 		relativePhone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
@@ -92,11 +79,7 @@ export const VolunteerSchema = z
 				path: ['health'],
 			})
 		}
-		validatePhonesNotEquals(
-			data.phone,
-			[{ field: 'relativePhone', phone: data.relativePhone }],
-			ctx
-		)
+		validatePhonesNotEquals(data.phone, [{ field: 'relativePhone', phone: data.relativePhone }], ctx)
 	})
 
 export type VolunteerType = z.infer<typeof VolunteerSchema>

@@ -3,11 +3,7 @@ import { z } from 'zod'
 
 import { prisma, ROLES } from '@/constants'
 
-export const updateUserRole = async (
-	userId: string,
-	role: ROLES,
-	userIdLogged: string
-) => {
+export const updateUserRole = async (userId: string, role: ROLES, userIdLogged: string) => {
 	try {
 		z.object({
 			role: z.enum([ROLES.ADMIN, ROLES.USER]),

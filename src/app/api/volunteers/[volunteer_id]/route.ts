@@ -1,10 +1,6 @@
 import type { NextRequest } from 'next/server'
 
-import {
-	getVolunteerById,
-	removeVolunteerById,
-	updateVolunteerById,
-} from '@/server'
+import { getVolunteerById, removeVolunteerById, updateVolunteerById } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 type Params = {

@@ -3,6 +3,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
 
 import { MEMBERS, QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
+
 import type { GroupAPI } from '../groups.types'
 import { getGroup } from '../usecases'
 
@@ -15,10 +16,7 @@ export const useGetGroup = (groupId: GroupAPI['id'] | null) => {
 			...data,
 			members: data.members.map((member) => ({
 				...member,
-				member:
-					member.type === MEMBERS.PARTICIPANT
-						? member.participantId
-						: member.volunteerId,
+				member: member.type === MEMBERS.PARTICIPANT ? member.participantId : member.volunteerId,
 			})),
 		}),
 	})

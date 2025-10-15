@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { EventsAPI } from '../event.type'
 
 export const deleteEvent = async (eventId: EventsAPI['id']) => {

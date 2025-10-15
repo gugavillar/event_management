@@ -4,9 +4,7 @@ import { usePagination } from './Pagination.utils'
 
 describe('Pagination utils', () => {
 	it('renders total pages numbers correctly', () => {
-		const { result } = renderHook(() =>
-			usePagination({ currentPage: 1, siblingCount: 1, totalPages: 5 })
-		)
+		const { result } = renderHook(() => usePagination({ currentPage: 1, siblingCount: 1, totalPages: 5 }))
 		expect(result.current).toEqual([1, 2, 3, 4, 5])
 	})
 

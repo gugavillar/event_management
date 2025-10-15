@@ -1,14 +1,9 @@
 'use client'
-import type { ComponentProps, ReactNode } from 'react'
-
-import {
-	HelperErrorText,
-	Label,
-	Select,
-	type SelectProps,
-} from '@/components/Atoms'
 import { get } from 'lodash'
+import type { ComponentProps, ReactNode } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
+
+import { HelperErrorText, Label, Select, type SelectProps } from '@/components/Atoms'
 
 type SelectFieldProps = ComponentProps<'div'> & {
 	children: ReactNode
@@ -17,12 +12,7 @@ type SelectFieldProps = ComponentProps<'div'> & {
 	placeholder?: SelectProps['placeholder']
 }
 
-export const SelectField = ({
-	children,
-	fieldName,
-	options,
-	placeholder,
-}: SelectFieldProps) => {
+export const SelectField = ({ children, fieldName, options, placeholder }: SelectFieldProps) => {
 	const { formState, control } = useFormContext()
 	const error = get(formState.errors, fieldName)
 
@@ -33,20 +23,10 @@ export const SelectField = ({
 				control={control}
 				name={fieldName}
 				render={({ field }) => (
-					<Select
-						id={fieldName}
-						isInvalid={!!error?.message}
-						options={options}
-						placeholder={placeholder}
-						{...field}
-					/>
+					<Select id={fieldName} isInvalid={!!error?.message} options={options} placeholder={placeholder} {...field} />
 				)}
 			/>
-			{error?.message ? (
-				<HelperErrorText className="text-red-500">
-					{error?.message as string}
-				</HelperErrorText>
-			) : null}
+			{error?.message ? <HelperErrorText className="text-red-500">{error?.message as string}</HelperErrorText> : null}
 		</div>
 	)
 }

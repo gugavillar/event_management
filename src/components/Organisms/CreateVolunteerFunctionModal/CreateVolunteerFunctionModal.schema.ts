@@ -6,10 +6,7 @@ export const FunctionSchema = z.object({
 			id: z.uuid(),
 		})
 	),
-	role: z
-		.string({ message: 'Campo obrigatório' })
-		.trim()
-		.min(1, { message: 'Campo obrigatório' }),
+	role: z.string({ message: 'Campo obrigatório' }).trim().min(1, { message: 'Campo obrigatório' }),
 })
 
 export type FunctionSchemaType = z.infer<typeof FunctionSchema>

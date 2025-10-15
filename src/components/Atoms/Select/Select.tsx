@@ -21,8 +21,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 					className={twMerge(
 						'block w-full rounded-lg px-4 py-3 pe-11 text-base disabled:pointer-events-none disabled:opacity-50',
 						className,
-						isInvalid &&
-							'border-red-500 focus:border-red-500 focus:ring-red-500'
+						isInvalid && 'border-red-500 focus:border-red-500 focus:ring-red-500'
 					)}
 					ref={ref}
 					{...props}

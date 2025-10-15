@@ -1,12 +1,12 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
-
 import type { UUID } from 'crypto'
+import { format } from 'date-fns'
 
 import { QUERY_KEYS } from '@/constants'
 import { formatPhone } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
-import { format } from 'date-fns'
+
 import { getVolunteer } from '../usecases'
 import type { VolunteersAPI } from '../volunteers.type'
 

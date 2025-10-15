@@ -13,12 +13,7 @@ type ModalReturnPaymentProps = {
 }
 
 export const ModalReturnPayment = memo(
-	({
-		modalId,
-		modalType,
-		isPending,
-		handleReturnPayment,
-	}: ModalReturnPaymentProps) => {
+	({ modalId, modalType, isPending, handleReturnPayment }: ModalReturnPaymentProps) => {
 		const handleCloseModalReturnPayment = () => {
 			overlayClose(modalId)
 		}
@@ -33,8 +28,8 @@ export const ModalReturnPayment = memo(
 								Você deseja confirmar a devolução do pagamento do {modalType}?
 							</Header>
 							<Text>
-								Ao confirmar a devolução do pagamento, todos os registros de
-								pagamentos serão removidos e não podem ser recuperados.
+								Ao confirmar a devolução do pagamento, todos os registros de pagamentos serão removidos e não podem ser
+								recuperados.
 							</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">

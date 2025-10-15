@@ -1,6 +1,7 @@
 'use client'
 import { UserRoundPlus, UserRoundX } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useEffect } from 'react'
+import { Controller, type SubmitHandler, useFieldArray, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
@@ -16,22 +17,10 @@ import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import type {
-	FormGroup,
-	GroupAPI,
-} from '@/services/queries/groups/groups.types'
-import {
-	useCreateGroup,
-	useGetGroup,
-	useUpdateGroup,
-} from '@/services/queries/groups/hooks'
+import type { FormGroup, GroupAPI } from '@/services/queries/groups/groups.types'
+import { useCreateGroup, useGetGroup, useUpdateGroup } from '@/services/queries/groups/hooks'
 import { generateToastError } from '@/utils/errors'
-import {
-	Controller,
-	type SubmitHandler,
-	useFieldArray,
-	useFormContext,
-} from 'react-hook-form'
+
 import type { GroupSchemaType } from './GroupDrawer.schema'
 
 type GroupDrawerProps = {
@@ -40,13 +29,8 @@ type GroupDrawerProps = {
 	setSelectedGroup: Dispatch<SetStateAction<GroupAPI['id'] | null>>
 }
 
-export const GroupDrawer = ({
-	drawerId,
-	selectedGroup,
-	setSelectedGroup,
-}: GroupDrawerProps) => {
-	const { handleSubmit, formState, control, watch, reset } =
-		useFormContext<GroupSchemaType>()
+export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: GroupDrawerProps) => {
+	const { handleSubmit, formState, control, watch, reset } = useFormContext<GroupSchemaType>()
 	const { fields, append, remove } = useFieldArray({
 		name: 'members',
 	})
@@ -55,12 +39,7 @@ export const GroupDrawer = ({
 	const { data, isLoading } = useGetGroup(selectedGroup)
 
 	const eventId = watch('eventId')
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const onSubmit: SubmitHandler<GroupSchemaType> = async (values) => {
 		if (!values) return
@@ -78,8 +57,7 @@ export const GroupDrawer = ({
 					groupId: selectedGroup,
 				},
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar grupo'),
+					onError: (error) => generateToastError(error, 'Erro ao atualizar grupo'),
 					onSuccess: () => {
 						reset()
 						setSelectedGroup(null)
@@ -174,32 +152,23 @@ export const GroupDrawer = ({
 									) : null}
 								</div>
 								<div className="mt-1 grid grid-cols-1 md:grid-cols-2">
-									<RadioField
-										fieldName={fieldTypeName}
-										options={MembersTypesOptionsRadio}
-										position="row"
-									>
+									<RadioField fieldName={fieldTypeName} options={MembersTypesOptionsRadio} position="row">
 										Qual tipo do membro
 									</RadioField>
-									{watch(fieldTypeName) === MEMBERS.PARTICIPANT &&
-										hasEventId && (
-											<ParticipantField
-												eventId={eventId}
-												fieldError={
-													formState.errors.members?.[index]?.member?.message
-												}
-												fieldMemberName={fieldMemberName}
-												hasNoGroup={selectedGroup === null}
-												isEdition={Boolean(selectedGroup)}
-												key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
-											/>
-										)}
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT && hasEventId && (
+										<ParticipantField
+											eventId={eventId}
+											fieldError={formState.errors.members?.[index]?.member?.message}
+											fieldMemberName={fieldMemberName}
+											hasNoGroup={selectedGroup === null}
+											isEdition={Boolean(selectedGroup)}
+											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
+										/>
+									)}
 									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && hasEventId && (
 										<VolunteerField
 											eventId={eventId}
-											fieldError={
-												formState.errors.members?.[index]?.member?.message
-											}
+											fieldError={formState.errors.members?.[index]?.member?.message}
 											fieldMemberName={fieldMemberName}
 											hasNoGroup={selectedGroup === null}
 											isEdition={Boolean(selectedGroup)}

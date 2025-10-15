@@ -1,20 +1,16 @@
 'use client'
+import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
-import {
-	CurrencyInputField,
-	InputField,
-	SearchBox,
-	SelectField,
-} from '@/components/Molecules'
+import { CurrencyInputField, InputField, SearchBox, SelectField } from '@/components/Molecules'
 import { overlayClose, PaymentSelectOptions, PaymentTypeAPI } from '@/constants'
 import { formatterComboBoxValues, removeCurrencyFormat } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useCreateDonation } from '@/services/queries/donations'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { generateToastError } from '@/utils/errors'
-import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+
 import type { DonationType } from './DonationDrawer.schema'
 
 type DonationDrawerProps = {
@@ -22,23 +18,11 @@ type DonationDrawerProps = {
 }
 
 const paymentMethods = PaymentSelectOptions.filter(
-	(item) =>
-		![
-			PaymentTypeAPI.DONATION,
-			PaymentTypeAPI.DONATION_ROMERO,
-			PaymentTypeAPI.OPEN,
-		].includes(item.value)
+	(item) => ![PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO, PaymentTypeAPI.OPEN].includes(item.value)
 )
 
 export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-		search,
-		setSearch,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage, search, setSearch } = useGetInfinityEvents()
 	const { create, isPending } = useCreateDonation()
 	const {
 		handleSubmit,
@@ -82,11 +66,7 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 	}
 
 	return (
-		<Drawer
-			drawerId={drawerId}
-			handleClose={handleClose}
-			headingTitle="Nova doação"
-		>
+		<Drawer drawerId={drawerId} handleClose={handleClose} headingTitle="Nova doação">
 			<DrawerBody>
 				<Controller
 					control={control}
@@ -107,11 +87,7 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 					)}
 				/>
 				<InputField fieldName="name">Nome do doador</InputField>
-				<SelectField
-					fieldName="type"
-					options={paymentMethods}
-					placeholder="Selecione o tipo"
-				>
+				<SelectField fieldName="type" options={paymentMethods} placeholder="Selecione o tipo">
 					Tipo
 				</SelectField>
 				<CurrencyInputField fieldName="value" type="tel">

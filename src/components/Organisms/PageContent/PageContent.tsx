@@ -9,27 +9,12 @@ type PageContentProps = ComponentProps<'div'> & {
 	pageTitle?: string
 }
 
-export const PageContent = ({
-	className,
-	children,
-	subheadingPage,
-	pageTitle,
-	...props
-}: PageContentProps) => {
-	const memoSubheadingPage = useMemo(
-		() => <Text className="opacity-50">{subheadingPage}</Text>,
-		[subheadingPage]
-	)
+export const PageContent = ({ className, children, subheadingPage, pageTitle, ...props }: PageContentProps) => {
+	const memoSubheadingPage = useMemo(() => <Text className="opacity-50">{subheadingPage}</Text>, [subheadingPage])
 	return (
 		<>
 			<HeaderPage pageTitle={pageTitle}>{memoSubheadingPage}</HeaderPage>
-			<div
-				className={twMerge(
-					'flex w-full flex-col space-y-8 px-6 py-12',
-					className
-				)}
-				{...props}
-			>
+			<div className={twMerge('flex w-full flex-col space-y-8 px-6 py-12', className)} {...props}>
 				{children}
 			</div>
 		</>

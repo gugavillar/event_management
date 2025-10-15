@@ -28,11 +28,7 @@ export const Button = ({
 			disabled={isLoading}
 			{...props}
 		>
-			{isLoading ? (
-				<Spinner data-testid="loading-spinner" {...spinnerProps} />
-			) : (
-				leftIcon
-			)}
+			{isLoading ? <Spinner data-testid="loading-spinner" {...spinnerProps} /> : leftIcon}
 			{children}
 			{rightIcon}
 		</button>

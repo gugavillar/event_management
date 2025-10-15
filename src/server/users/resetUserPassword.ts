@@ -1,13 +1,10 @@
+import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { prisma } from '@/constants'
-import bcrypt from 'bcryptjs'
 
-export const resetUserPassword = async (
-	userId: string,
-	userIdLogged: string
-) => {
+export const resetUserPassword = async (userId: string, userIdLogged: string) => {
 	try {
 		z.object({
 			userId: z.uuid(),

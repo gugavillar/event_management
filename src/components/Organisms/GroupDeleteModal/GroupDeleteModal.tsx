@@ -15,11 +15,7 @@ type GroupDeleteModalProps = {
 	setSelectedGroup: Dispatch<SetStateAction<GroupAPI['id'] | null>>
 }
 
-export const GroupDeleteModal = ({
-	modalId,
-	selectedGroup,
-	setSelectedGroup,
-}: GroupDeleteModalProps) => {
+export const GroupDeleteModal = ({ modalId, selectedGroup, setSelectedGroup }: GroupDeleteModalProps) => {
 	const { isPending, remove } = useDeleteGroup()
 
 	const handleDeleteGroup = async () => {
@@ -48,10 +44,7 @@ export const GroupDeleteModal = ({
 						<Header as="h3" className="text-2xl">
 							Você deseja excluir o grupo?
 						</Header>
-						<Text>
-							Ao excluir o grupo todos os membros vinculados a ele ficaram sem
-							nenhum grupo.
-						</Text>
+						<Text>Ao excluir o grupo todos os membros vinculados a ele ficaram sem nenhum grupo.</Text>
 					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button

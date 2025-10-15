@@ -5,14 +5,12 @@ import { twMerge } from 'tailwind-merge'
 
 import { Field, HelperErrorText, Label } from '@/components/Atoms'
 import { useClickAway } from '@/hooks'
+
 import type { SearchBoxOptionsProps, SearchBoxProps } from './SearchBox.types'
 
 const Warning = () => {
 	return (
-		<div
-			className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3"
-			data-testid="warning-icon"
-		>
+		<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3" data-testid="warning-icon">
 			<TriangleAlert className="size-4 shrink-0 text-red-500" />
 		</div>
 	)
@@ -40,8 +38,7 @@ const ComboBoxOptions = <T,>({
 					const valueOption = opt.customProps[keyOptionValue]
 					const labelOption = opt.customProps[keyOptionLabel]
 
-					const refProps =
-						index === options.length - 1 ? { ref: lastItemRef } : {}
+					const refProps = index === options.length - 1 ? { ref: lastItemRef } : {}
 
 					return (
 						<li
@@ -90,8 +87,7 @@ export const SearchBox = <T,>({
 	}, [isOpen])
 
 	const selectLabel =
-		options?.find((opt) => opt.customProps[keyOptionValue] === selectedValue)
-			?.customProps[keyOptionLabel] ?? ''
+		options?.find((opt) => opt.customProps[keyOptionValue] === selectedValue)?.customProps[keyOptionLabel] ?? ''
 
 	useClickAway(containerRef, () => setIsOpen(false))
 
@@ -121,13 +117,7 @@ export const SearchBox = <T,>({
 						{error ? (
 							<Warning />
 						) : (
-							<ChevronDown
-								className={twMerge(
-									'transition-transform duration-200',
-									isOpen && 'rotate-180'
-								)}
-								size={14}
-							/>
+							<ChevronDown className={twMerge('transition-transform duration-200', isOpen && 'rotate-180')} size={14} />
 						)}
 					</button>
 				)}
@@ -143,9 +133,7 @@ export const SearchBox = <T,>({
 					/>
 				)}
 			</div>
-			{error ? (
-				<HelperErrorText className="text-red-500">{error}</HelperErrorText>
-			) : null}
+			{error ? <HelperErrorText className="text-red-500">{error}</HelperErrorText> : null}
 		</div>
 	)
 }

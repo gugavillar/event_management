@@ -6,10 +6,7 @@ import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
-const generateTooltipText = (
-	participantWithdraw: boolean,
-	paymentTotal: boolean
-) => {
+const generateTooltipText = (participantWithdraw: boolean, paymentTotal: boolean) => {
 	if (participantWithdraw) {
 		return 'Participante desistiu'
 	}
@@ -71,53 +68,36 @@ export const formatTableData = (
 			return total
 		}, 0)
 
-		const isPaymentNotTotal =
-			totalPayment > 0 && totalPayment < Number(payment.event.participantPrice)
-		const isPaymentTotal =
-			totalPayment >= Number(payment.event.participantPrice)
-		const isParticipantPaidAndWithdraw =
-			isParticipantWithdraw && totalPayment > 0
+		const isPaymentNotTotal = totalPayment > 0 && totalPayment < Number(payment.event.participantPrice)
+		const isPaymentTotal = totalPayment >= Number(payment.event.participantPrice)
+		const isParticipantPaidAndWithdraw = isParticipantWithdraw && totalPayment > 0
 		const canInformPayment = !isPaymentTotal && !isParticipantWithdraw
 
 		return {
 			...((isPaymentNotTotal || isParticipantWithdraw) && {
-				backgroundColor: isParticipantWithdraw
-					? LINE_COLOR.withdrew
-					: LINE_COLOR.payment,
+				backgroundColor: isParticipantWithdraw ? LINE_COLOR.withdrew : LINE_COLOR.payment,
 			}),
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
-						<FileUser
-							className="cursor-pointer"
-							onClick={() => handleShowParticipant(payment.id)}
-							size={20}
-						/>
+						<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(payment.id)} size={20} />
 						<Tooltip>Informações</Tooltip>
 					</div>
 					<div className="hs-tooltip">
 						<HandCoins
 							className={twMerge(
-								isParticipantWithdraw || isPaymentTotal
-									? 'cursor-not-allowed opacity-50'
-									: 'cursor-pointer'
+								isParticipantWithdraw || isPaymentTotal ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
 							)}
 							size={20}
 							{...(canInformPayment && {
 								onClick: () => handlePaymentModal(payment),
 							})}
 						/>
-						<Tooltip>
-							{generateTooltipText(isParticipantWithdraw, isPaymentTotal)}
-						</Tooltip>
+						<Tooltip>{generateTooltipText(isParticipantWithdraw, isPaymentTotal)}</Tooltip>
 					</div>
 					{isParticipantPaidAndWithdraw && (
 						<div className="hs-tooltip">
-							<BanknoteArrowUp
-								className="cursor-pointer"
-								onClick={() => handleReturnPaymentModal(payment)}
-								size={20}
-							/>
+							<BanknoteArrowUp className="cursor-pointer" onClick={() => handleReturnPaymentModal(payment)} size={20} />
 							<Tooltip>Devolver pagamento</Tooltip>
 						</div>
 					)}
@@ -134,10 +114,7 @@ export const formatTableData = (
 						<PaymentTag status={PaymentTypeAPI.OPEN} />
 					) : (
 						payment.payments.map((p) => (
-							<PaymentTag
-								key={p.id}
-								status={!p.paymentType ? PaymentTypeAPI.OPEN : p.paymentType}
-							/>
+							<PaymentTag key={p.id} status={!p.paymentType ? PaymentTypeAPI.OPEN : p.paymentType} />
 						))
 					)}
 				</div>

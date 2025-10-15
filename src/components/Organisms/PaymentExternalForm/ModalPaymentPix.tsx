@@ -1,27 +1,21 @@
 'use client'
+import copy from 'copy-to-clipboard'
 import Link from 'next/link'
+import { useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import QRCode from 'react-qr-code'
 
 import { Button, Modal, Spinner } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { formatPhone } from '@/formatters'
-import copy from 'copy-to-clipboard'
-import { useFormContext } from 'react-hook-form'
-import QRCode from 'react-qr-code'
+
 import type { PaymentChoiceProps } from './PaymentChoice'
 
-type ModalPaymentPixProps = Pick<
-	PaymentChoiceProps,
-	'pixValue' | 'setCurrentStep'
-> & {
+type ModalPaymentPixProps = Pick<PaymentChoiceProps, 'pixValue' | 'setCurrentStep'> & {
 	modalId: string
 }
 
-export const ModalPaymentPix = ({
-	pixValue,
-	modalId,
-	setCurrentStep,
-}: ModalPaymentPixProps) => {
+export const ModalPaymentPix = ({ pixValue, modalId, setCurrentStep }: ModalPaymentPixProps) => {
 	const { reset } = useFormContext()
 	const handleCopyPixValue = async () => {
 		if (!pixValue) return
@@ -46,8 +40,7 @@ export const ModalPaymentPix = ({
 			<div className="flex flex-col items-center justify-center space-y-6">
 				<div className="space-y-2.5 text-center">
 					<h2 className="text-lg font-semibold">
-						Para realizar o pagamento, utilize o QR Code abaixo ou copie o
-						código PIX.
+						Para realizar o pagamento, utilize o QR Code abaixo ou copie o código PIX.
 					</h2>
 					<p>
 						Após o pagamento, envie o comprovante para a o número{' '}

@@ -5,14 +5,12 @@ import { twMerge } from 'tailwind-merge'
 
 import { HelperErrorText, Label } from '@/components/Atoms'
 import { useClickAway } from '@/hooks'
+
 import type { ComboBoxOptionsProps, ComboBoxProps } from './ComboBox.types'
 
 const Warning = () => {
 	return (
-		<div
-			className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3"
-			data-testid="warning-icon"
-		>
+		<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3" data-testid="warning-icon">
 			<TriangleAlert className="size-4 shrink-0 text-red-500" />
 		</div>
 	)
@@ -40,8 +38,7 @@ const ComboBoxOptions = <T,>({
 					const valueOption = opt.customProps[keyOptionValue]
 					const labelOption = opt.customProps[keyOptionLabel]
 
-					const refProps =
-						index === options?.length - 1 ? { ref: lastItemRef } : {}
+					const refProps = index === options?.length - 1 ? { ref: lastItemRef } : {}
 					return (
 						<li
 							className={twMerge(
@@ -81,8 +78,7 @@ export const ComboBox = <T,>({
 	useClickAway(containerRef, () => setIsOpen(false))
 
 	const selectLabel =
-		options?.find((opt) => opt.customProps[keyOptionValue] === selectedValue)
-			?.customProps[keyOptionLabel] ?? ''
+		options?.find((opt) => opt.customProps[keyOptionValue] === selectedValue)?.customProps[keyOptionLabel] ?? ''
 
 	const placeholderLabel = placeholder ?? 'Selecione uma opção'
 
@@ -102,13 +98,7 @@ export const ComboBox = <T,>({
 					{error ? (
 						<Warning />
 					) : (
-						<ChevronDown
-							className={twMerge(
-								'transition-transform duration-200',
-								isOpen && 'rotate-180'
-							)}
-							size={14}
-						/>
+						<ChevronDown className={twMerge('transition-transform duration-200', isOpen && 'rotate-180')} size={14} />
 					)}
 				</button>
 				{isOpen && (
@@ -123,9 +113,7 @@ export const ComboBox = <T,>({
 					/>
 				)}
 			</div>
-			{error ? (
-				<HelperErrorText className="text-red-500">{error}</HelperErrorText>
-			) : null}
+			{error ? <HelperErrorText className="text-red-500">{error}</HelperErrorText> : null}
 		</div>
 	)
 }

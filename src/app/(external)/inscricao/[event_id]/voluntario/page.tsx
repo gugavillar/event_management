@@ -2,10 +2,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
-import {
-	ClosedInscriptions,
-	ExternalVolunteerForm,
-} from '@/components/Templates'
+import { ClosedInscriptions, ExternalVolunteerForm } from '@/components/Templates'
 import { eventPermitCreateRegistration, image, MEMBERS } from '@/constants'
 import { getEvent } from '@/services/queries/events'
 import type { EventsAPI } from '@/services/queries/events/event.type'
@@ -32,10 +29,7 @@ export default async function RegistrationPage({ params }: Params) {
 
 	const event: EventsAPI = await getEvent(pageParams.event_id)
 
-	const isRegistrationPermitted = eventPermitCreateRegistration(
-		event,
-		MEMBERS.VOLUNTEER
-	)
+	const isRegistrationPermitted = eventPermitCreateRegistration(event, MEMBERS.VOLUNTEER)
 
 	if (!isRegistrationPermitted) {
 		return <ClosedInscriptions />
@@ -62,10 +56,7 @@ export default async function RegistrationPage({ params }: Params) {
 						<h1 className="text-4xl">{event?.name}</h1>
 						<h2 className="text-3xl">Voluntário</h2>
 					</header>
-					<ExternalVolunteerForm
-						eventId={event?.id}
-						registrationValue={Number(event?.volunteerPrice)}
-					/>
+					<ExternalVolunteerForm eventId={event?.id} registrationValue={Number(event?.volunteerPrice)} />
 				</div>
 			</div>
 		</div>

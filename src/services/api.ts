@@ -1,8 +1,9 @@
 import { isServer } from '@tanstack/react-query'
-
-import { PRINCIPAL_LINKS } from '@/constants'
 import axios from 'axios'
 import { signOut } from 'next-auth/react'
+
+import { PRINCIPAL_LINKS } from '@/constants'
+
 import { BASE_URL } from './endpoints'
 
 export const api = axios.create({

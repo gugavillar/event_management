@@ -16,19 +16,14 @@ type VolunteerDeleteModalProps = {
 }
 
 export const VolunteerDeleteModal = memo(
-	({
-		modalId,
-		selectedVolunteer,
-		setSelectedVolunteer,
-	}: VolunteerDeleteModalProps) => {
+	({ modalId, selectedVolunteer, setSelectedVolunteer }: VolunteerDeleteModalProps) => {
 		const { remove, isPending } = useDeleteVolunteer()
 
 		const handleDeleteVolunteer = async () => {
 			if (!selectedVolunteer) return
 
 			await remove(selectedVolunteer, {
-				onError: (error) =>
-					generateToastError(error, 'Erro ao excluir voluntário'),
+				onError: (error) => generateToastError(error, 'Erro ao excluir voluntário'),
 				onSuccess: () => {
 					setSelectedVolunteer(null)
 					toast.success('Voluntário excluído com sucesso!')
@@ -51,10 +46,7 @@ export const VolunteerDeleteModal = memo(
 							<Header as="h3" className="text-2xl">
 								Você deseja excluir o voluntário?
 							</Header>
-							<Text>
-								Ao excluir o voluntário todos os dados que vinculados a ele
-								serão excluídos.
-							</Text>
+							<Text>Ao excluir o voluntário todos os dados que vinculados a ele serão excluídos.</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button

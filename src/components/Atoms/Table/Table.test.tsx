@@ -1,8 +1,7 @@
+import { faker } from '@faker-js/faker'
 import { fireEvent, render } from '@testing-library/react'
-
 import type { UUID } from 'crypto'
 
-import { faker } from '@faker-js/faker'
 import { Table } from './Table'
 
 const generateTableData = (length: number) => {
@@ -29,12 +28,7 @@ describe('Table component', () => {
 	it('renders correctly', () => {
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
-			<Table
-				bodyData={tableData}
-				data-testid="table"
-				headerLabels={tableHeader}
-				isLoading={false}
-			/>
+			<Table bodyData={tableData} data-testid="table" headerLabels={tableHeader} isLoading={false} />
 		)
 
 		expect(getByTestId('table')).toBeInTheDocument()
@@ -57,13 +51,7 @@ describe('Table component', () => {
 	it('applies custom props', () => {
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
-			<Table
-				bodyData={tableData}
-				data-testid="table"
-				headerLabels={tableHeader}
-				isLoading={false}
-				width={150}
-			/>
+			<Table bodyData={tableData} data-testid="table" headerLabels={tableHeader} isLoading={false} width={150} />
 		)
 		expect(getByTestId('table')).toHaveAttribute('width', '150')
 	})
@@ -133,12 +121,7 @@ describe('Table component', () => {
 	it('render spinner when is loading true and table data is undefined', () => {
 		const { tableHeader } = generateTableData(15)
 		const { getByTestId } = render(
-			<Table
-				bodyData={undefined}
-				data-testid="table"
-				headerLabels={tableHeader}
-				isLoading
-			/>
+			<Table bodyData={undefined} data-testid="table" headerLabels={tableHeader} isLoading />
 		)
 		const spinner = getByTestId('spinner')
 
@@ -148,12 +131,7 @@ describe('Table component', () => {
 	it('render no data found when is loading false and body data is undefined', () => {
 		const { tableHeader } = generateTableData(15)
 		const { getByTestId } = render(
-			<Table
-				bodyData={undefined}
-				data-testid="table"
-				headerLabels={tableHeader}
-				isLoading={false}
-			/>
+			<Table bodyData={undefined} data-testid="table" headerLabels={tableHeader} isLoading={false} />
 		)
 
 		const noData = getByTestId('no-data')

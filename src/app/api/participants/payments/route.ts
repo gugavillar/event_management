@@ -9,8 +9,7 @@ const handlerGet = async (request: NextRequest) => {
 	const eventIdParams = request.nextUrl.searchParams.get('eventId')
 	const paymentTypeParams = request.nextUrl.searchParams.get('paymentType')
 	const cityParams = request.nextUrl.searchParams.get('participantCity')
-	const pageParams =
-		Number(request.nextUrl.searchParams.get('pageParticipantPayment')) || 1
+	const pageParams = Number(request.nextUrl.searchParams.get('pageParticipantPayment')) || 1
 
 	return await requestProcess({
 		functions: async () =>

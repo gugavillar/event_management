@@ -15,30 +15,13 @@ export const RoomSchema = z.object({
 						}),
 						z.string(),
 					])
-					.refine(
-						(value) =>
-							[MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER].includes(
-								value as MEMBERS
-							),
-						{
-							error: 'Campo obrigatório',
-						}
-					),
+					.refine((value) => [MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER].includes(value as MEMBERS), {
+						error: 'Campo obrigatório',
+					}),
 			})
 		)
-		.superRefine((data, ctx) =>
-			validateFieldsForNotEquals(
-				data,
-				ctx,
-				'member',
-				'Os membros devem ser diferentes'
-			)
-		),
-	roomNumber: z
-		.string()
-		.trim()
-		.min(1, { message: 'Campo obrigatório' })
-		.max(2, { message: 'Máximo 2 caracteres' }),
+		.superRefine((data, ctx) => validateFieldsForNotEquals(data, ctx, 'member', 'Os membros devem ser diferentes')),
+	roomNumber: z.string().trim().min(1, { message: 'Campo obrigatório' }).max(2, { message: 'Máximo 2 caracteres' }),
 })
 
 export type RoomSchemaType = z.infer<typeof RoomSchema>

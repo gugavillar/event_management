@@ -1,37 +1,21 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { CirclePlus, Trash2 } from 'lucide-react'
 import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
+import { Controller, FormProvider, type SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import {
-	CheckboxField,
-	ComboBox,
-	FieldArrayContainerWithAppendButton,
-	SelectField,
-} from '@/components/Molecules'
+import { CheckboxField, ComboBox, FieldArrayContainerWithAppendButton, SelectField } from '@/components/Molecules'
 import { overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import {
-	useGetFunctions,
-	useUpdateVolunteerFunction,
-} from '@/services/queries/volunteers'
+import { useGetFunctions, useUpdateVolunteerFunction } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {
-	Controller,
-	FormProvider,
-	type SubmitHandler,
-	useFieldArray,
-	useForm,
-} from 'react-hook-form'
-import {
-	AssignFunctionSchema,
-	type AssignFunctionType,
-} from './AssignFunctionVolunteerModal.schema'
+
+import { AssignFunctionSchema, type AssignFunctionType } from './AssignFunctionVolunteerModal.schema'
 
 type CreateVolunteerFunctionModalProps = {
 	modalId: string
@@ -40,17 +24,8 @@ type CreateVolunteerFunctionModalProps = {
 }
 
 export const AssignFunctionVolunteerModal = memo(
-	({
-		modalId,
-		selectedVolunteer,
-		setSelectedVolunteer,
-	}: CreateVolunteerFunctionModalProps) => {
-		const {
-			data: events,
-			hasNextPage,
-			isFetchingNextPage,
-			fetchNextPage,
-		} = useGetInfinityEvents()
+	({ modalId, selectedVolunteer, setSelectedVolunteer }: CreateVolunteerFunctionModalProps) => {
+		const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 		const { data: roles, setEventId } = useGetFunctions()
 		const { isPending, update } = useUpdateVolunteerFunction()
 
@@ -98,8 +73,7 @@ export const AssignFunctionVolunteerModal = memo(
 			await update(
 				{ data: values, volunteerId: selectedVolunteer },
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atribuir funções'),
+					onError: (error) => generateToastError(error, 'Erro ao atribuir funções'),
 					onSuccess: () => {
 						handleCloseModal()
 						toast.success('Funções atribuídas com sucesso!')
@@ -118,8 +92,7 @@ export const AssignFunctionVolunteerModal = memo(
 					volunteerId: selectedVolunteer,
 				},
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao remover funções'),
+					onError: (error) => generateToastError(error, 'Erro ao remover funções'),
 					onSuccess: () => {
 						handleCloseModal()
 						toast.success('Funções removidas com sucesso!')
@@ -143,14 +116,8 @@ export const AssignFunctionVolunteerModal = memo(
 								<Header as="h3" className="text-2xl">
 									Atribuir ou remover funções
 								</Header>
-								<Text>
-									Selecione o evento depois uma ou mais funções e clique em
-									Atribuir.
-								</Text>
-								<Text>
-									Para remover todas as funções, selecione o evento e clique em
-									Remover.
-								</Text>
+								<Text>Selecione o evento depois uma ou mais funções e clique em Atribuir.</Text>
+								<Text>Para remover todas as funções, selecione o evento e clique em Remover.</Text>
 							</div>
 							<Controller
 								control={methods.control}
@@ -170,9 +137,7 @@ export const AssignFunctionVolunteerModal = memo(
 							/>
 							<FieldArrayContainerWithAppendButton
 								className="w-full"
-								handleAppendField={() =>
-									append({ isLeader: false, roleId: '' })
-								}
+								handleAppendField={() => append({ isLeader: false, roleId: '' })}
 								label="Função"
 								leftIcon={<CirclePlus />}
 							>
@@ -199,10 +164,7 @@ export const AssignFunctionVolunteerModal = memo(
 														) : null}
 													</div>
 												</SelectField>
-												<CheckboxField
-													fieldName={checkFieldName}
-													label="Voluntário é o líder da função"
-												/>
+												<CheckboxField fieldName={checkFieldName} label="Voluntário é o líder da função" />
 											</div>
 										</div>
 									)

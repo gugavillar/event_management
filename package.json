@@ -82,8 +82,7 @@
 		"typescript": "^5.9.2"
 	},
 	"lint-staged": {
-		"*.{ts,tsx,js,jsx}": ["biome check --write --no-errors-on-unmatched"],
-		"*.test.{ts,tsx}": "jest --bail --findRelatedTests"
+		"*.{ts,tsx,js,jsx}": ["biome check --write --no-errors-on-unmatched"]
 	},
 	"pnpm": {
 		"overrides": {

@@ -1,13 +1,6 @@
 'use client'
 
-import {
-	createContext,
-	type Dispatch,
-	type ReactNode,
-	type SetStateAction,
-	useContext,
-	useState,
-} from 'react'
+import { createContext, type Dispatch, type ReactNode, type SetStateAction, useContext, useState } from 'react'
 
 type SidebarContextType = {
 	collapsed: boolean
@@ -18,9 +11,7 @@ export const SidebarContext = createContext({} as SidebarContextType)
 
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
 	const localCollapse = window.localStorage.getItem('collapsed')
-	const [collapsed, setCollapsed] = useState(
-		localCollapse ? JSON.parse(localCollapse) : false
-	)
+	const [collapsed, setCollapsed] = useState(localCollapse ? JSON.parse(localCollapse) : false)
 
 	const handleCollapse = () => {
 		window.localStorage.setItem('collapsed', String(!collapsed))
@@ -28,11 +19,7 @@ export const SidebarProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	return (
-		<SidebarContext.Provider
-			value={{ collapsed, setCollapsed: handleCollapse }}
-		>
-			{children}
-		</SidebarContext.Provider>
+		<SidebarContext.Provider value={{ collapsed, setCollapsed: handleCollapse }}>{children}</SidebarContext.Provider>
 	)
 }
 

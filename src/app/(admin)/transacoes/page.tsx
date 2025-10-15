@@ -8,11 +8,7 @@ export default async function PaymentsPage() {
 	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 
 	return (
-		<HydrationInfinityProvider
-			initialPageParam={1}
-			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-		>
+		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
 			<PageContent pageTitle="Transações" subheadingPage="Prestação de contas">
 				<Transaction />
 			</PageContent>

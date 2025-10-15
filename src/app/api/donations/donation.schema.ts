@@ -1,11 +1,6 @@
 import { z } from 'zod'
 
-import {
-	MAX_CURRENCY_VALUE,
-	MAX_FIELD_LENGTH,
-	MIN_CURRENCY_VALUE,
-	PaymentTypeAPI,
-} from '@/constants'
+import { MAX_CURRENCY_VALUE, MAX_FIELD_LENGTH, MIN_CURRENCY_VALUE, PaymentTypeAPI } from '@/constants'
 
 export const donationSchemaRoute = z.object({
 	eventId: z.uuid(),

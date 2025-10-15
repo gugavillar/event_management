@@ -1,9 +1,7 @@
-import {
-	UserSchema,
-	type UserSchemaType,
-} from '@/components/Organisms/UserDrawer/UserDrawer.schema'
-import { prisma, type ROLES } from '@/constants'
 import bcrypt from 'bcryptjs'
+
+import { UserSchema, type UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
+import { prisma, type ROLES } from '@/constants'
 
 export const createUser = (data: UserSchemaType) => {
 	try {

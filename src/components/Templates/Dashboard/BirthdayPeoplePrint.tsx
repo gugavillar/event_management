@@ -1,17 +1,11 @@
 'use client'
 
+import { Document, Page, PDFDownloadLink, StyleSheet, Text, View } from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { Spinner } from '@/components/Atoms'
-import {
-	Document,
-	Page,
-	PDFDownloadLink,
-	StyleSheet,
-	Text,
-	View,
-} from '@react-pdf/renderer'
+
 import type { formatTableData } from './Dashboard.utils'
 
 type DownloadPDFProps = {
@@ -58,10 +52,7 @@ const MyDocument = ({ birthdayPeople }: DownloadPDFProps) => {
 }
 
 export const DownloadPDF = ({ birthdayPeople }: DownloadPDFProps) => {
-	const renderKey = useMemo(
-		() => birthdayPeople.map((birth) => `${birth.id}`).join('|'),
-		[birthdayPeople]
-	)
+	const renderKey = useMemo(() => birthdayPeople.map((birth) => `${birth.id}`).join('|'), [birthdayPeople])
 
 	if (!birthdayPeople.length) return null
 

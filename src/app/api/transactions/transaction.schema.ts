@@ -1,14 +1,7 @@
 import { z } from 'zod'
 
-import {
-	AMOUNT_TYPE,
-	TRANSACTION_TYPE,
-} from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
-import {
-	MAX_CURRENCY_VALUE,
-	MAX_FIELD_LENGTH,
-	MIN_CURRENCY_VALUE,
-} from '@/constants'
+import { AMOUNT_TYPE, TRANSACTION_TYPE } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
+import { MAX_CURRENCY_VALUE, MAX_FIELD_LENGTH, MIN_CURRENCY_VALUE } from '@/constants'
 
 export const transactionSchemaRoute = z.object({
 	amount: z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE),

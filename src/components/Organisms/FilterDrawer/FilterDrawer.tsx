@@ -2,18 +2,13 @@
 import { Filter } from 'lucide-react'
 import { useState } from 'react'
 
-import {
-	Button,
-	Drawer,
-	DrawerBody,
-	DrawerFooter,
-	Label,
-} from '@/components/Atoms'
+import { Button, Drawer, DrawerBody, DrawerFooter, Label } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import { MEMBERS, overlayClose, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
+
 import { ParticipantFilters } from './ParticipantFilters'
 import { VolunteerFilters } from './VolunteerFilters'
 
@@ -55,12 +50,7 @@ export const FilterDrawer = ({
 		role: query.role,
 		status: query.status,
 	})
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',

@@ -24,7 +24,5 @@ export const HydrationInfinityProvider = async ({
 		queryKey,
 	})
 
-	return (
-		<HydrationBoundary state={dehydrate(query)}>{children}</HydrationBoundary>
-	)
+	return <HydrationBoundary state={dehydrate(query)}>{children}</HydrationBoundary>
 }

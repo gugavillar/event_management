@@ -1,11 +1,12 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
+import { useDebounce } from '@uidotdev/usehooks'
+import { parseAsInteger, useQueryState } from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-import { useDebounce } from '@uidotdev/usehooks'
-import { parseAsInteger, useQueryState } from 'nuqs'
+
 import type { TransactionsFromAPI } from '../transactions.types'
 import { getTransactions } from '../usecases'
 
@@ -13,14 +14,8 @@ export const useGetTransactions = () => {
 	const [eventId, setEventId] = useQueryState('eventId', {
 		defaultValue: '',
 	})
-	const [searchTransaction, setSearchTransaction] = useQueryState(
-		'searchTransaction',
-		{ defaultValue: '' }
-	)
-	const [page, setPage] = useQueryState(
-		'pageTransaction',
-		parseAsInteger.withDefault(1)
-	)
+	const [searchTransaction, setSearchTransaction] = useQueryState('searchTransaction', { defaultValue: '' })
+	const [page, setPage] = useQueryState('pageTransaction', parseAsInteger.withDefault(1))
 
 	const debounceSearch = useDebounce(searchTransaction, 500)
 	const isFirstRender = useRef(true)

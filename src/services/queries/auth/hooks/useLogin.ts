@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { getSession, type SignInResponse, signIn } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -7,12 +8,9 @@ import type { LoginButtonSchemaType } from '@/components/Organisms/LoginButton/L
 import { PRINCIPAL_LINKS } from '@/constants'
 import { convertToBoolean } from '@/formatters'
 import { useMutation } from '@/providers/QueryProvider'
-import { getSession, type SignInResponse, signIn } from 'next-auth/react'
 
 export const useLogin = () => {
-	const [hasToDefineNewPassword, setHasToDefineNewPassword] = useState(
-		convertToBoolean('')
-	)
+	const [hasToDefineNewPassword, setHasToDefineNewPassword] = useState(convertToBoolean(''))
 	const { push } = useRouter()
 
 	const { isPending, mutateAsync: login } = useMutation({

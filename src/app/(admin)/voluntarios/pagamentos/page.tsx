@@ -15,9 +15,7 @@ type SearchParams = {
 	}>
 }
 
-export default async function VolunteersPaymentsPage({
-	searchParams,
-}: SearchParams) {
+export default async function VolunteersPaymentsPage({ searchParams }: SearchParams) {
 	const params = await searchParams.then((res) => ({
 		cityVolunteer: res.cityVolunteer ?? '',
 		eventId: res.eventId ?? '',
@@ -59,10 +57,7 @@ export default async function VolunteersPaymentsPage({
 				queryFn={getAllEvents}
 				queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
 			>
-				<HydrationProvider
-					queryFn={getCities}
-					queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES, debounceEventIdValue]}
-				>
+				<HydrationProvider queryFn={getCities} queryKey={[QUERY_KEYS.VOLUNTEERS_CITIES, debounceEventIdValue]}>
 					<VolunteersPayments />
 				</HydrationProvider>
 			</HydrationInfinityProvider>

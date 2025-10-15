@@ -4,10 +4,7 @@ import { participantSchemaRoute } from '@/app/api/participants/participant.schem
 import { deepTrim, prisma } from '@/constants'
 import type { FormParticipant } from '@/services/queries/participants/participants.type'
 
-export const updateParticipantById = async (
-	data: FormParticipant,
-	id: string
-) => {
+export const updateParticipantById = async (data: FormParticipant, id: string) => {
 	try {
 		participantSchemaRoute
 			.extend({

@@ -1,6 +1,6 @@
+import { faker } from '@faker-js/faker'
 import { render } from '@testing-library/react'
 
-import { faker } from '@faker-js/faker'
 import { Avatar } from './Avatar'
 import { generateLettersAvatar } from './Avatar.utils'
 

@@ -1,40 +1,24 @@
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate, validateDateRange } from '@/formatters'
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
-export const ExternalParticipantFormSchemaStepOne = (
-	minAge?: number | null,
-	maxAge?: number | null
-) =>
+export const ExternalParticipantFormSchemaStepOne = (minAge?: number | null, maxAge?: number | null) =>
 	z
 		.object({
 			birthdate: z
 				.string({ error: 'Campo obrigatório' })
 				.trim()
-				.refine(
-					(value) =>
-						/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-							? validateBirthdate(value)
-							: false,
-					{ error: 'Data inválida' }
-				)
-				.refine(
-					(value) =>
-						/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-							? validateDateRange(value, minAge, maxAge)
-							: false,
-					{
-						error: maxAge
-							? `Idade tem que ser entre ${minAge} e ${maxAge} anos`
-							: `Idade tem que ser maior ou igual a ${minAge} anos`,
-					}
-				),
-			called: z
-				.string({ error: 'Campo obrigatório' })
-				.trim()
-				.min(1, 'Campo obrigatório'),
+				.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateBirthdate(value) : false), {
+					error: 'Data inválida',
+				})
+				.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateDateRange(value, minAge, maxAge) : false), {
+					error: maxAge
+						? `Idade tem que ser entre ${minAge} e ${maxAge} anos`
+						: `Idade tem que ser maior ou igual a ${minAge} anos`,
+				}),
+			called: z.string({ error: 'Campo obrigatório' }).trim().min(1, 'Campo obrigatório'),
 			email: z
 				.email({ error: 'Email inválido' })
 				.trim()
@@ -64,30 +48,24 @@ export const ExternalParticipantFormSchemaStepOne = (
 			hostPhone: z
 				.string({ error: 'Campo obrigatório' })
 				.trim()
-				.refine(
-					(value) =>
-						!value || value.length < 15 ? false : validatePhone(value),
-					{ error: 'Telefone inválido' }
-				),
+				.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), {
+					error: 'Telefone inválido',
+				}),
 			name: z.string().trim().min(3, 'Campo obrigatório'),
 			phone: z
 				.string({ error: 'Campo obrigatório' })
 				.trim()
-				.refine(
-					(value) =>
-						!value || value.length < 15 ? false : validatePhone(value),
-					{ error: 'Telefone inválido' }
-				),
+				.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), {
+					error: 'Telefone inválido',
+				}),
 			religion: z.string().optional(),
 			responsible: z.string().trim().min(3, 'Campo obrigatório'),
 			responsiblePhone: z
 				.string({ error: 'Campo obrigatório' })
 				.trim()
-				.refine(
-					(value) =>
-						!value || value.length < 15 ? false : validatePhone(value),
-					{ error: 'Telefone inválido' }
-				),
+				.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), {
+					error: 'Telefone inválido',
+				}),
 		})
 		.superRefine((data, ctx) => {
 			if (data.hasReligion === 'Yes' && !data.religion?.trim()) {
@@ -133,35 +111,22 @@ export const ExternalParticipantFormSchemaStepTwo = () =>
 		}),
 	})
 
-export const ExternalParticipantFormSchemaStepThree = (
-	isInterestedList?: boolean
-) =>
+export const ExternalParticipantFormSchemaStepThree = (isInterestedList?: boolean) =>
 	z.object({
 		paymentMethod: isInterestedList
 			? z.enum(['PIX', 'Cash/Card']).optional()
 			: z.enum(['PIX', 'Cash/Card'], { error: 'Campo obrigatório' }),
 	})
 
-export const fullSchema = (
-	minAge?: number | null,
-	maxAge?: number | null,
-	isInterestedList?: boolean
-) =>
+export const fullSchema = (minAge?: number | null, maxAge?: number | null, isInterestedList?: boolean) =>
 	z.intersection(
-		z.intersection(
-			ExternalParticipantFormSchemaStepOne(minAge, maxAge),
-			ExternalParticipantFormSchemaStepTwo()
-		),
+		z.intersection(ExternalParticipantFormSchemaStepOne(minAge, maxAge), ExternalParticipantFormSchemaStepTwo()),
 		ExternalParticipantFormSchemaStepThree(isInterestedList)
 	)
 
 export type FullSchemaType = z.infer<ReturnType<typeof fullSchema>>
 
-export const stepsFields = (
-	minAge?: number | null,
-	maxAge?: number | null,
-	isInterestedList?: boolean
-) =>
+export const stepsFields = (minAge?: number | null, maxAge?: number | null, isInterestedList?: boolean) =>
 	[
 		{
 			fields: [
@@ -182,14 +147,7 @@ export const stepsFields = (
 			schema: ExternalParticipantFormSchemaStepOne(minAge, maxAge),
 		},
 		{
-			fields: [
-				'terms',
-				'address.street',
-				'address.neighborhood',
-				'address.number',
-				'address.city',
-				'address.state',
-			],
+			fields: ['terms', 'address.street', 'address.neighborhood', 'address.number', 'address.city', 'address.state'],
 			schema: ExternalParticipantFormSchemaStepTwo(),
 		},
 		{

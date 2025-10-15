@@ -1,9 +1,6 @@
 import type { NextRequest } from 'next/server'
 
-import {
-	type UpdateCheckInVolunteerArgs,
-	updateCheckInVolunteer,
-} from '@/server'
+import { type UpdateCheckInVolunteerArgs, updateCheckInVolunteer } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 const handleUpdate = async (request: NextRequest) => {

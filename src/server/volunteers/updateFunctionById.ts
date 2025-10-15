@@ -2,10 +2,7 @@ import { z } from 'zod'
 
 import { MAX_FIELD_LENGTH, prisma } from '@/constants'
 
-export const updateFunctionById = async (
-	data: { role: string; events: Array<{ id: string }> },
-	roleId: string
-) => {
+export const updateFunctionById = async (data: { role: string; events: Array<{ id: string }> }, roleId: string) => {
 	try {
 		z.object({
 			events: z.array(z.object({ id: z.uuid() })),
@@ -29,12 +26,8 @@ export const updateFunctionById = async (
 
 			const existentEvents = currentLinks.map((e) => e.eventId)
 
-			const toRemove = currentLinks.filter(
-				(evr) => !updateEvents.includes(evr.eventId)
-			)
-			const toAdd = updateEvents.filter(
-				(eventId) => !existentEvents.includes(eventId)
-			)
+			const toRemove = currentLinks.filter((evr) => !updateEvents.includes(evr.eventId))
+			const toAdd = updateEvents.filter((eventId) => !existentEvents.includes(eventId))
 
 			await Promise.all(
 				toRemove.map(({ id }) =>

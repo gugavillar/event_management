@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { RoomAPI } from '../rooms.types'
 
 export const deleteRoom = async (roomId: RoomAPI['id']) => {

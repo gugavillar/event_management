@@ -13,14 +13,7 @@ export const AssignFunctionSchema = z.object({
 				}),
 			})
 		)
-		.superRefine((data, ctx) =>
-			validateFieldsForNotEquals(
-				data,
-				ctx,
-				'roleId',
-				'As funções devem ser diferentes'
-			)
-		),
+		.superRefine((data, ctx) => validateFieldsForNotEquals(data, ctx, 'roleId', 'As funções devem ser diferentes')),
 })
 
 export type AssignFunctionType = z.infer<typeof AssignFunctionSchema>

@@ -1,112 +1,92 @@
-import {
-	LIMIT_PER_PAGE,
-	prisma,
-	TransactionAmountType,
-	TransactionsType,
-} from '@/constants'
+import { LIMIT_PER_PAGE, prisma, TransactionAmountType, TransactionsType } from '@/constants'
 
-export const getTransactions = async (
-	eventId: string | null,
-	searchTransaction: string | null,
-	page = 1
-) => {
+export const getTransactions = async (eventId: string | null, searchTransaction: string | null, page = 1) => {
 	try {
 		const skip = (page - 1) * LIMIT_PER_PAGE
 
-		const [
-			transactions,
-			totalOfTransactions,
-			transactionsIncome,
-			transactionsOutcome,
-			allTransactions,
-		] = await Promise.all([
-			prisma.transactions.findMany({
-				...(eventId && {
-					where: {
-						eventId,
-						...(searchTransaction && {
-							description: {
-								contains: searchTransaction,
-							},
-						}),
+		const [transactions, totalOfTransactions, transactionsIncome, transactionsOutcome, allTransactions] =
+			await Promise.all([
+				prisma.transactions.findMany({
+					...(eventId && {
+						where: {
+							eventId,
+							...(searchTransaction && {
+								description: {
+									contains: searchTransaction,
+								},
+							}),
+						},
+					}),
+					include: {
+						event: true,
 					},
+					orderBy: { date: 'asc' },
+					skip,
+					take: LIMIT_PER_PAGE,
 				}),
-				include: {
-					event: true,
-				},
-				orderBy: { date: 'asc' },
-				skip,
-				take: LIMIT_PER_PAGE,
-			}),
-			prisma.transactions.count({
-				...(eventId && {
-					where: {
-						eventId,
-						...(searchTransaction && {
-							description: {
-								contains: searchTransaction,
-							},
-						}),
+				prisma.transactions.count({
+					...(eventId && {
+						where: {
+							eventId,
+							...(searchTransaction && {
+								description: {
+									contains: searchTransaction,
+								},
+							}),
+						},
+					}),
+				}),
+				prisma.transactions.aggregate({
+					_sum: {
+						amount: true,
 					},
+					...(eventId && {
+						where: {
+							eventId,
+							type: TransactionsType.INCOME,
+						},
+					}),
 				}),
-			}),
-			prisma.transactions.aggregate({
-				_sum: {
-					amount: true,
-				},
-				...(eventId && {
-					where: {
-						eventId,
-						type: TransactionsType.INCOME,
+				prisma.transactions.aggregate({
+					_sum: {
+						amount: true,
 					},
+					...(eventId && {
+						where: {
+							eventId,
+							type: TransactionsType.OUTCOME,
+						},
+					}),
 				}),
-			}),
-			prisma.transactions.aggregate({
-				_sum: {
-					amount: true,
-				},
-				...(eventId && {
-					where: {
-						eventId,
-						type: TransactionsType.OUTCOME,
-					},
+				prisma.transactions.findMany({
+					...(eventId && {
+						where: {
+							eventId,
+						},
+					}),
 				}),
-			}),
-			prisma.transactions.findMany({
-				...(eventId && {
-					where: {
-						eventId,
-					},
-				}),
-			}),
-		])
+			])
 
 		const totalOfAccountAndCash = allTransactions.reduce(
 			(total, transaction) => {
 				const isAccountIncome =
-					transaction.type === TransactionsType.INCOME &&
-					transaction.amountType === TransactionAmountType.ACCOUNT
+					transaction.type === TransactionsType.INCOME && transaction.amountType === TransactionAmountType.ACCOUNT
 				const isAccountOutcome =
-					transaction.type === TransactionsType.OUTCOME &&
-					transaction.amountType === TransactionAmountType.ACCOUNT
+					transaction.type === TransactionsType.OUTCOME && transaction.amountType === TransactionAmountType.ACCOUNT
 				const isCashIncome =
-					transaction.type === TransactionsType.INCOME &&
-					transaction.amountType === TransactionAmountType.CASH
+					transaction.type === TransactionsType.INCOME && transaction.amountType === TransactionAmountType.CASH
 				const isCashOutcome =
-					transaction.type === TransactionsType.OUTCOME &&
-					transaction.amountType === TransactionAmountType.CASH
+					transaction.type === TransactionsType.OUTCOME && transaction.amountType === TransactionAmountType.CASH
 				if (isAccountIncome) {
 					return {
 						...total,
-						totalAccountIncome:
-							total.totalAccountIncome + Number(transaction.amount),
+						totalAccountIncome: total.totalAccountIncome + Number(transaction.amount),
 					}
 				}
 				if (isAccountOutcome) {
 					return {
 						...total,
-						totalAccountOutcome:
-							total.totalAccountOutcome + Number(transaction.amount),
+						totalAccountOutcome: total.totalAccountOutcome + Number(transaction.amount),
 					}
 				}
 				if (isCashIncome) {
@@ -118,8 +98,7 @@ export const getTransactions = async (
 				if (isCashOutcome) {
 					return {
 						...total,
-						totalCashOutcome:
-							total.totalCashOutcome + Number(transaction.amount),
+						totalCashOutcome: total.totalCashOutcome + Number(transaction.amount),
 					}
 				}
 				return total

@@ -5,44 +5,21 @@ import toast from 'react-hot-toast'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import {
-	CreateEventButton,
-	ListPage,
-	PageContent,
-} from '@/components/Organisms'
-import {
-	type MEMBERS,
-	MembersTypes,
-	MODALS_IDS,
-	overlayOpen,
-} from '@/constants'
-import {
-	useGetEvents,
-	useUpdateInterested,
-	useUpdateRegistration,
-} from '@/services/queries/events'
+import { CreateEventButton, ListPage, PageContent } from '@/components/Organisms'
+import { type MEMBERS, MembersTypes, MODALS_IDS, overlayOpen } from '@/constants'
+import { useGetEvents, useUpdateInterested, useUpdateRegistration } from '@/services/queries/events'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
+
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
-const EventDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.EventDeleteModal)
-)
+const EventDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.EventDeleteModal))
 
 export const Events = () => {
-	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(
-		null
-	)
+	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(null)
 	const { update: updateRegistration } = useUpdateRegistration()
 	const { update: updateInterested } = useUpdateInterested()
-	const {
-		data: events,
-		isLoading,
-		search,
-		setSearch,
-		page,
-		setPage,
-	} = useGetEvents()
+	const { data: events, isLoading, search, setSearch, page, setPage } = useGetEvents()
 
 	const handleEditEvent = useCallback((id: EventsAPI['id']) => {
 		setSelectedEvent(id)
@@ -54,17 +31,12 @@ export const Events = () => {
 		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
 	}, [])
 
-	const handleOpenSelectedLink = useCallback(
-		(id: EventsAPI['id'], type: 'participante' | 'voluntario') => {
-			window.open(`${window.location.origin}/inscricao/${id}/${type}`)
-		},
-		[]
-	)
+	const handleOpenSelectedLink = useCallback((id: EventsAPI['id'], type: 'participante' | 'voluntario') => {
+		window.open(`${window.location.origin}/inscricao/${id}/${type}`)
+	}, [])
 
 	const handleOpenInterestedLink = useCallback((id: EventsAPI['id']) => {
-		window.open(
-			`${window.location.origin}/lista-interessados/${id}/participante`
-		)
+		window.open(`${window.location.origin}/lista-interessados/${id}/participante`)
 	}, [])
 
 	const handleActivatedOrDeactivatedInterestedList = useCallback(
@@ -73,15 +45,10 @@ export const Events = () => {
 				{ action, eventId: id },
 				{
 					onError: (error) => {
-						generateToastError(
-							error,
-							`Falha ao tentar ${action === 'open' ? 'abrir' : 'fechar'} lista de interessados`
-						)
+						generateToastError(error, `Falha ao tentar ${action === 'open' ? 'abrir' : 'fechar'} lista de interessados`)
 					},
 					onSuccess: () => {
-						toast.success(
-							`Lista de interessados ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`
-						)
+						toast.success(`Lista de interessados ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`)
 					},
 				}
 			)
@@ -90,19 +57,11 @@ export const Events = () => {
 	)
 
 	const handleBlockOrOpenRegistration = useCallback(
-		async (
-			id: EventsAPI['id'],
-			memberType: MEMBERS,
-			action: 'open' | 'close'
-		) => {
+		async (id: EventsAPI['id'], memberType: MEMBERS, action: 'open' | 'close') => {
 			await updateRegistration(
 				{ action, eventId: id, memberType },
 				{
-					onError: (error) =>
-						generateToastError(
-							error,
-							'Falha ao tentar bloquear ou abrir inscrição'
-						),
+					onError: (error) => generateToastError(error, 'Falha ao tentar bloquear ou abrir inscrição'),
 					onSuccess: () => {
 						toast.success(
 							`Inscrição de ${MembersTypes[memberType].label.toLowerCase()} ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`
@@ -141,18 +100,8 @@ export const Events = () => {
 				search={search}
 				setSearch={setSearch}
 			>
-				<ListManager
-					bodyData={formatData}
-					headerLabels={HEADER_LABELS}
-					isLoading={isLoading}
-				/>
-				{hasMoreThanOnePage && (
-					<Pagination
-						currentPage={page}
-						setPage={setPage}
-						totalPages={events?.totalPages}
-					/>
-				)}
+				<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
+				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={events?.totalPages} />}
 			</ListPage>
 			<EventDeleteModal
 				modalId={MODALS_IDS.EVENT_REMOVE_MODAL}

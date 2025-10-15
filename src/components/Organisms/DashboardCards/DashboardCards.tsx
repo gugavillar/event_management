@@ -34,10 +34,7 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 			</InformationCard>
 			<InformationCard headingText="Confirmadas">
 				<div
-					className={twMerge(
-						'flex h-full flex-col items-center justify-end p-4 md:p-5',
-						isLoading && 'justify-center'
-					)}
+					className={twMerge('flex h-full flex-col items-center justify-end p-4 md:p-5', isLoading && 'justify-center')}
 				>
 					{isLoading ? (
 						<Spinner />
@@ -61,10 +58,7 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 			</InformationCard>
 			<InformationCard headingText="Pagas">
 				<div
-					className={twMerge(
-						'flex h-full flex-col items-center justify-end p-4 md:p-5',
-						isLoading && 'justify-center'
-					)}
+					className={twMerge('flex h-full flex-col items-center justify-end p-4 md:p-5', isLoading && 'justify-center')}
 				>
 					{isLoading ? (
 						<Spinner />

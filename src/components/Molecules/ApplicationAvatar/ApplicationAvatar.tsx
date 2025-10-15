@@ -9,48 +9,33 @@ type ApplicationAvatarProps = {
 	handleCollapse: Dispatch<SetStateAction<boolean>>
 }
 
-export const ApplicationAvatar = memo(
-	({ collapsed, handleCollapse }: ApplicationAvatarProps) => {
-		return (
-			<section
+export const ApplicationAvatar = memo(({ collapsed, handleCollapse }: ApplicationAvatarProps) => {
+	return (
+		<section
+			className={twMerge('relative flex items-center gap-x-4', collapsed && 'justify-center')}
+			data-testid="application-avatar"
+		>
+			{!collapsed && (
+				<>
+					<Tickets className="text-slate-100" data-testid="ticket-icon" size={48} />
+					<div>
+						<Text className="text-xl font-bold text-gray-100">Hub de Eventos</Text>
+						<Text className="text-lg text-gray-100/40">Anglicana Vida</Text>
+					</div>
+				</>
+			)}
+			<Button
 				className={twMerge(
-					'relative flex items-center gap-x-4',
-					collapsed && 'justify-center'
+					'absolute -top-3 hidden items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500 md:inline-flex',
+					collapsed ? 'left-12' : 'left-64'
 				)}
-				data-testid="application-avatar"
+				onClick={() => handleCollapse(!collapsed)}
+				type="button"
 			>
-				{!collapsed && (
-					<>
-						<Tickets
-							className="text-slate-100"
-							data-testid="ticket-icon"
-							size={48}
-						/>
-						<div>
-							<Text className="text-xl font-bold text-gray-100">
-								Hub de Eventos
-							</Text>
-							<Text className="text-lg text-gray-100/40">Anglicana Vida</Text>
-						</div>
-					</>
-				)}
-				<Button
-					className={twMerge(
-						'absolute -top-3 hidden items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500 md:inline-flex',
-						collapsed ? 'left-12' : 'left-64'
-					)}
-					onClick={() => handleCollapse(!collapsed)}
-					type="button"
-				>
-					{collapsed ? (
-						<PanelRightClose size={28} />
-					) : (
-						<PanelRightOpen size={28} />
-					)}
-				</Button>
-			</section>
-		)
-	}
-)
+				{collapsed ? <PanelRightClose size={28} /> : <PanelRightOpen size={28} />}
+			</Button>
+		</section>
+	)
+})
 
 ApplicationAvatar.displayName = 'ApplicationAvatar'

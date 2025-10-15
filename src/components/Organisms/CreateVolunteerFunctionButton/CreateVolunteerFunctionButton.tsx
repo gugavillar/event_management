@@ -4,14 +4,13 @@ import type { Dispatch, SetStateAction } from 'react'
 import { Button } from '@/components/Atoms'
 import { overlayOpen } from '@/constants'
 import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+
 import { CreateVolunteerFunctionModal } from '../CreateVolunteerFunctionModal'
 
 type CreateVolunteerFunctionButtonProps = {
 	modalId: string
 	selectedFunction: VolunteersFunctionsFromAPI | null
-	setSelectedFunction: Dispatch<
-		SetStateAction<VolunteersFunctionsFromAPI | null>
-	>
+	setSelectedFunction: Dispatch<SetStateAction<VolunteersFunctionsFromAPI | null>>
 }
 
 export const CreateVolunteerFunctionButton = ({

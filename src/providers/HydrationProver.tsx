@@ -9,11 +9,7 @@ type HydrationProviderProps = {
 	queryKey: Array<unknown>
 }
 
-export const HydrationProvider = async ({
-	queryFn,
-	queryKey,
-	children,
-}: HydrationProviderProps) => {
+export const HydrationProvider = async ({ queryFn, queryKey, children }: HydrationProviderProps) => {
 	const query = getQueryClient()
 
 	await query.prefetchQuery({
@@ -21,7 +17,5 @@ export const HydrationProvider = async ({
 		queryKey,
 	})
 
-	return (
-		<HydrationBoundary state={dehydrate(query)}>{children}</HydrationBoundary>
-	)
+	return <HydrationBoundary state={dehydrate(query)}>{children}</HydrationBoundary>
 }

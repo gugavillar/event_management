@@ -1,23 +1,17 @@
 'use client'
 
-import { CurrencyInput, HelperErrorText, Label } from '@/components/Atoms'
 import { get } from 'lodash'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { NumberFormatBaseProps } from 'react-number-format'
 
-type CurrencyInputFieldProps = Omit<
-	NumberFormatBaseProps,
-	'customInput' | 'format'
-> & {
+import { CurrencyInput, HelperErrorText, Label } from '@/components/Atoms'
+
+type CurrencyInputFieldProps = Omit<NumberFormatBaseProps, 'customInput' | 'format'> & {
 	children: string
 	fieldName: string
 }
 
-export const CurrencyInputField = ({
-	children,
-	fieldName,
-	...props
-}: CurrencyInputFieldProps) => {
+export const CurrencyInputField = ({ children, fieldName, ...props }: CurrencyInputFieldProps) => {
 	const { control, formState } = useFormContext()
 	const error = get(formState.errors, fieldName)
 
@@ -27,20 +21,9 @@ export const CurrencyInputField = ({
 			<Controller
 				control={control}
 				name={fieldName}
-				render={({ field }) => (
-					<CurrencyInput
-						id={fieldName}
-						isInvalid={!!error?.message}
-						{...props}
-						{...field}
-					/>
-				)}
+				render={({ field }) => <CurrencyInput id={fieldName} isInvalid={!!error?.message} {...props} {...field} />}
 			/>
-			{error?.message ? (
-				<HelperErrorText className="text-red-500">
-					{error?.message as string}
-				</HelperErrorText>
-			) : null}
+			{error?.message ? <HelperErrorText className="text-red-500">{error?.message as string}</HelperErrorText> : null}
 		</div>
 	)
 }

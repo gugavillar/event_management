@@ -1,13 +1,4 @@
-import {
-	differenceInYears,
-	format,
-	isBefore,
-	isEqual,
-	isPast,
-	isValid,
-	parse,
-	startOfDay,
-} from 'date-fns'
+import { differenceInYears, format, isBefore, isEqual, isPast, isValid, parse, startOfDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
 const getNumberDate = (date: string, formatString = 'yyyy-MM-dd') => {
@@ -34,19 +25,13 @@ export const isValidateDate = (date: string) => {
 	return isValid(numberedDate)
 }
 
-export const isEqualOrIsBeforeFirstDate = (
-	firstDate: string,
-	finalDate: string
-) => {
+export const isEqualOrIsBeforeFirstDate = (firstDate: string, finalDate: string) => {
 	if (!firstDate || !finalDate) return false
 
 	const numberedFirstData = getNumberDate(firstDate, 'dd/MM/yyyy')
 	const numberedFinalDate = getNumberDate(finalDate, 'dd/MM/yyyy')
 
-	return (
-		isBefore(numberedFirstData, numberedFinalDate) ||
-		isEqual(numberedFirstData, numberedFinalDate)
-	)
+	return isBefore(numberedFirstData, numberedFinalDate) || isEqual(numberedFirstData, numberedFinalDate)
 }
 
 export const formatDateToSendToApi = (date: string) => {
@@ -65,11 +50,7 @@ export const validateBirthdate = (date: string) => {
 	return isValid(numberedDate) && isPast(numberedDate)
 }
 
-export const validateDateRange = (
-	date: string,
-	initialRange?: number | null,
-	finalRange?: number | null
-) => {
+export const validateDateRange = (date: string, initialRange?: number | null, finalRange?: number | null) => {
 	if (!initialRange) return true
 
 	if (!date) return false
@@ -77,7 +58,5 @@ export const validateDateRange = (
 	const numberedDate = getNumberDate(date, 'dd/MM/yyyy')
 	const age = differenceInYears(new Date(), new Date(numberedDate))
 
-	return finalRange
-		? age >= initialRange && age <= finalRange
-		: age >= initialRange
+	return finalRange ? age >= initialRange && age <= finalRange : age >= initialRange
 }

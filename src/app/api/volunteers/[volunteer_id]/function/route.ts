@@ -18,8 +18,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const onlyRemove = Boolean(request.nextUrl.searchParams.get('onlyRemove'))
 
 	return await requestProcess({
-		functions: async () =>
-			await updateVolunteerFunction(body, routeParams, onlyRemove),
+		functions: async () => await updateVolunteerFunction(body, routeParams, onlyRemove),
 		isProtectedRoute: true,
 	})
 }

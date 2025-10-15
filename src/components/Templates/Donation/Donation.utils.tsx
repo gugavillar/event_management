@@ -33,11 +33,7 @@ export const formatTableData = (
 		...donation,
 		action: (
 			<div className="hs-tooltip">
-				<Trash2
-					className="cursor-pointer"
-					onClick={() => handleRemoveDonation(donation.id)}
-					size={18}
-				/>
+				<Trash2 className="cursor-pointer" onClick={() => handleRemoveDonation(donation.id)} size={18} />
 				<Tooltip>Excluir</Tooltip>
 			</div>
 		),

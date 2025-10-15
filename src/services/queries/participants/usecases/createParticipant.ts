@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { FormParticipant } from '../participants.type'
 
 export const createParticipant = async (

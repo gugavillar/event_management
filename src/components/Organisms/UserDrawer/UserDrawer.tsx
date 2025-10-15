@@ -1,11 +1,12 @@
 'use client'
+import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, SelectField } from '@/components/Molecules'
 import { overlayClose, RolesTypesSelectOptions } from '@/constants'
 import { useCreateUser } from '@/services/queries/users'
-import { type SubmitHandler, useFormContext } from 'react-hook-form'
+
 import type { UserSchemaType } from './UserDrawer.schema'
 
 type UserDrawerProps = {
@@ -34,11 +35,7 @@ export const UserDrawer = ({ drawerId }: UserDrawerProps) => {
 			<DrawerBody>
 				<InputField fieldName="name">Nome do usuário</InputField>
 				<InputField fieldName="email">Email do usuário</InputField>
-				<SelectField
-					fieldName="role"
-					options={RolesTypesSelectOptions}
-					placeholder="Selecione a permissão do usuário"
-				>
+				<SelectField fieldName="role" options={RolesTypesSelectOptions} placeholder="Selecione a permissão do usuário">
 					Permissão
 				</SelectField>
 			</DrawerBody>

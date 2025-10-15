@@ -16,14 +16,7 @@ type StepProps = {
 	isPending: boolean
 }
 
-export const Step = ({
-	steps,
-	handleFinish,
-	currentStep,
-	handleNext,
-	handlePrev,
-	isPending,
-}: StepProps) => {
+export const Step = ({ steps, handleFinish, currentStep, handleNext, handlePrev, isPending }: StepProps) => {
 	const isLastStep = currentStep === steps.length - 1
 	return (
 		<>
@@ -53,15 +46,10 @@ export const Step = ({
 										<Check className="block size-3 shrink-0" />
 									)}
 								</span>
-								<span className="ms-2 text-sm font-medium text-gray-800">
-									{title}
-								</span>
+								<span className="ms-2 text-sm font-medium text-gray-800">{title}</span>
 							</span>
 							<div
-								className={twMerge(
-									'h-px w-full flex-1 bg-gray-200 group-last:hidden',
-									isSuccess && 'bg-blue-600'
-								)}
+								className={twMerge('h-px w-full flex-1 bg-gray-200 group-last:hidden', isSuccess && 'bg-blue-600')}
 							/>
 						</li>
 					)

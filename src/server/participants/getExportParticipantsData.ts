@@ -1,21 +1,11 @@
 import { NextResponse } from 'next/server'
+import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { generateColumnWidths, prisma } from '@/constants'
-import {
-	currencyValue,
-	formatBirthdate,
-	formatCheckIn,
-	formatPhone,
-	paymentDate,
-	paymentStatus,
-} from '@/formatters'
-import { utils, write } from 'xlsx'
+import { currencyValue, formatBirthdate, formatCheckIn, formatPhone, paymentDate, paymentStatus } from '@/formatters'
 
-export const getExportParticipantsData = async (
-	eventId: string,
-	isInterested: boolean
-) => {
+export const getExportParticipantsData = async (eventId: string, isInterested: boolean) => {
 	try {
 		z.object({
 			eventId: z.uuid(),
@@ -42,18 +32,14 @@ export const getExportParticipantsData = async (
 			},
 			where: {
 				eventId,
-				...(isInterested
-					? { interested: true }
-					: { OR: [{ interested: false }, { interested: null }] }),
+				...(isInterested ? { interested: true } : { OR: [{ interested: false }, { interested: null }] }),
 			},
 		})
 
 		if (!participants.length) {
 			return NextResponse.json(
 				{
-					error: isInterested
-						? 'Nenhuma pessoa interessada cadastrada'
-						: 'Nenhum participante cadastrado',
+					error: isInterested ? 'Nenhuma pessoa interessada cadastrada' : 'Nenhum participante cadastrado',
 				},
 				{ status: 400 }
 			)
@@ -66,10 +52,7 @@ export const getExportParticipantsData = async (
 				Chamado: participant.called,
 				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
 				Convidou: participant.host,
-				Data_Nascimento: formatBirthdate(
-					participant.birthdate,
-					participant.event.finalDate
-				),
+				Data_Nascimento: formatBirthdate(participant.birthdate, participant.event.finalDate),
 				Email: participant.email,
 				Endereço: `${participant.address?.street}, ${participant.address?.number}`,
 				Nome: participant.name,
@@ -91,8 +74,7 @@ export const getExportParticipantsData = async (
 			return new NextResponse(buffer, {
 				headers: {
 					'Content-Disposition': 'attachment; filename="interessados.xlsx"',
-					'Content-Type':
-						'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+					'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 				},
 				status: 200,
 			})
@@ -104,25 +86,17 @@ export const getExportParticipantsData = async (
 			Chamado: participant.called,
 			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
 			Convidou: participant.host,
-			Data_Nascimento: formatBirthdate(
-				participant.birthdate,
-				participant.event.finalDate
-			),
+			Data_Nascimento: formatBirthdate(participant.birthdate, participant.event.finalDate),
 			Email: participant.email,
 			Endereço: `${participant.address?.street}, ${participant.address?.number}`,
 			Grupo:
 				participant.groupMemberships?.find(
-					(group) =>
-						group.participantId === participant.id &&
-						group.group.eventId === eventId
+					(group) => group.participantId === participant.id && group.group.eventId === eventId
 				)?.group.name || 'Sem grupo',
 			Nome: participant.name,
 			Quarto:
-				participant.roomMember?.find(
-					(room) =>
-						room.participantId === participant.id &&
-						room.room.eventId === eventId
-				)?.room.roomNumber || 'Sem quarto',
+				participant.roomMember?.find((room) => room.participantId === participant.id && room.room.eventId === eventId)
+					?.room.roomNumber || 'Sem quarto',
 			Religião: participant.religion || 'Não possui',
 			Responsável: participant.responsible,
 			Status: formatCheckIn(participant.checkIn),
@@ -132,19 +106,12 @@ export const getExportParticipantsData = async (
 		}))
 
 		const paymentsData = participants.map((payment) => {
-			const paymentValue = payment.payments.reduce(
-				(acc, p) => (acc += p.paymentValue.toNumber()),
-				0
-			)
+			const paymentValue = payment.payments.reduce((acc, p) => (acc += p.paymentValue.toNumber()), 0)
 			const hasPayment = payment.payments.length > 0
 			const statusPayments = !hasPayment
 				? paymentStatus(payment.checkIn, null)
-				: payment.payments
-						.map((p) => paymentStatus(payment.checkIn, p.paymentType))
-						.join(', ')
-			const datesPayments = payment.payments
-				.map((p) => paymentDate(p.paymentType, p.updatedAt))
-				.join(', ')
+				: payment.payments.map((p) => paymentStatus(payment.checkIn, p.paymentType)).join(', ')
+			const datesPayments = payment.payments.map((p) => paymentDate(p.paymentType, p.updatedAt)).join(', ')
 			return {
 				Data_Pagamento: datesPayments,
 				Nome: payment.name,
@@ -171,8 +138,7 @@ export const getExportParticipantsData = async (
 		return new NextResponse(buffer, {
 			headers: {
 				'Content-Disposition': 'attachment; filename="participantes.xlsx"',
-				'Content-Type':
-					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			},
 			status: 200,
 		})

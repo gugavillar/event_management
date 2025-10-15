@@ -1,8 +1,8 @@
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
 export const ParticipantSchema = z
 	.object({
@@ -21,17 +21,10 @@ export const ParticipantSchema = z
 		birthdate: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) =>
-					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
-						? validateBirthdate(value)
-						: false,
-				{ message: 'Data inválida' }
-			),
-		called: z
-			.string({ error: 'Campo obrigatório' })
-			.trim()
-			.min(1, 'Campo obrigatório'),
+			.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateBirthdate(value) : false), {
+				message: 'Data inválida',
+			}),
+		called: z.string({ error: 'Campo obrigatório' }).trim().min(1, 'Campo obrigatório'),
 		email: z
 			.email({ message: 'Email inválido' })
 			.trim()
@@ -62,27 +55,18 @@ export const ParticipantSchema = z
 		hostPhone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 		name: z.string().trim().min(3, 'Campo obrigatório'),
 		phone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 		religion: z.string().nullable().optional(),
 		responsible: z.string().trim().min(3, 'Campo obrigatório'),
 		responsiblePhone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' }
-			),
+			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasReligion === 'Yes' && !data.religion?.trim()) {

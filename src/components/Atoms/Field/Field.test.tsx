@@ -21,9 +21,7 @@ describe('Field component', () => {
 	})
 
 	it('applies custom class name', () => {
-		const { getByTestId } = render(
-			<Field className="custom-class" data-testid="input-field" />
-		)
+		const { getByTestId } = render(<Field className="custom-class" data-testid="input-field" />)
 		const input = getByTestId('input-field')
 		expect(input).toHaveClass('custom-class')
 	})
@@ -31,9 +29,7 @@ describe('Field component', () => {
 	it('executa o onChange corretamente', () => {
 		const onChangeMock = jest.fn()
 
-		const { getByTestId } = render(
-			<Field data-testid="input-field" onChange={onChangeMock} />
-		)
+		const { getByTestId } = render(<Field data-testid="input-field" onChange={onChangeMock} />)
 
 		const inputElement = getByTestId('input-field')
 
@@ -54,9 +50,7 @@ describe('Field component', () => {
 		const onChangeMock = jest.fn()
 		const ref = createRef<HTMLInputElement>()
 
-		const { getByTestId } = render(
-			<Field data-testid="input-field" onChange={onChangeMock} ref={ref} />
-		)
+		const { getByTestId } = render(<Field data-testid="input-field" onChange={onChangeMock} ref={ref} />)
 
 		const inputElement = getByTestId('input-field')
 
@@ -66,9 +60,7 @@ describe('Field component', () => {
 	})
 
 	it('renders rightIcon correctly when passed', () => {
-		const { getByTestId } = render(
-			<Field data-testid="input-field" rightIcon={<p>teste</p>} />
-		)
+		const { getByTestId } = render(<Field data-testid="input-field" rightIcon={<p>teste</p>} />)
 		expect(getByTestId('right-icon')).toBeInTheDocument()
 	})
 

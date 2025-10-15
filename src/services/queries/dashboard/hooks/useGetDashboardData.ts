@@ -1,9 +1,10 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
+import { useQueryState } from 'nuqs'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-import { useQueryState } from 'nuqs'
+
 import type { DashboardFromAPI } from '../dashboard.types'
 import { getDashboardData } from '../usecases'
 

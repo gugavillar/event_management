@@ -1,21 +1,15 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import {
-	CurrencyInputField,
-	RadioField,
-	SelectField,
-} from '@/components/Molecules'
+import { CurrencyInputField, RadioField, SelectField } from '@/components/Molecules'
 import { overlayClose, PaymentSelectOptions, PaymentTypeAPI } from '@/constants'
 import { currencyValue } from '@/formatters'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
-import {
-	PaymentModalSchema,
-	type PaymentModalType,
-} from './PaymentModal.schema'
+
+import { PaymentModalSchema, type PaymentModalType } from './PaymentModal.schema'
 import { paymentOptionsRadio } from './PaymentModal.utils'
 
 type PaymentModalProps = {
@@ -29,15 +23,7 @@ type PaymentModalProps = {
 }
 
 export const PaymentModal = memo(
-	({
-		modalId,
-		modalType,
-		handleSubmit,
-		isPending,
-		isExistPayment,
-		paidValue,
-		eventValue,
-	}: PaymentModalProps) => {
+	({ modalId, modalType, handleSubmit, isPending, isExistPayment, paidValue, eventValue }: PaymentModalProps) => {
 		const methods = useForm<PaymentModalType>({
 			defaultValues: {
 				paid: undefined,
@@ -59,21 +45,15 @@ export const PaymentModal = memo(
 			handleClose()
 		}
 
-		const paymentOptions = PaymentSelectOptions.filter(
-			(item) => item.value !== PaymentTypeAPI.OPEN
-		)
+		const paymentOptions = PaymentSelectOptions.filter((item) => item.value !== PaymentTypeAPI.OPEN)
 
 		const isPartialPayment = methods.watch('paid') === 'partial'
-		const isCardPaymentType =
-			methods.watch('paymentType') === PaymentTypeAPI.CARD
+		const isCardPaymentType = methods.watch('paymentType') === PaymentTypeAPI.CARD
 
 		return (
 			<Modal handleClose={handleClose} modalId={modalId}>
 				<FormProvider {...methods}>
-					<form
-						className="flex flex-col items-center justify-center gap-y-6"
-						onSubmit={methods.handleSubmit(onSubmit)}
-					>
+					<form className="flex flex-col items-center justify-center gap-y-6" onSubmit={methods.handleSubmit(onSubmit)}>
 						<div className="flex flex-col items-center justify-between gap-2">
 							<OctagonAlert className="text-amber-300" size={64} />
 							<Header as="h3" className="text-center text-lg">
@@ -86,22 +66,13 @@ export const PaymentModal = memo(
 								{currencyValue(eventValue)}
 							</Text>
 							<Text>
-								<span className="font-semibold">Valor já pago:</span>{' '}
-								{currencyValue(paidValue)}
+								<span className="font-semibold">Valor já pago:</span> {currencyValue(paidValue)}
 							</Text>
 						</div>
-						<RadioField
-							fieldName="paid"
-							options={paymentOptionsRadio(isExistPayment)}
-							position="row"
-						>
+						<RadioField fieldName="paid" options={paymentOptionsRadio(isExistPayment)} position="row">
 							O pagamento é total ou parcial?
 						</RadioField>
-						<SelectField
-							fieldName="paymentType"
-							options={paymentOptions}
-							placeholder="Selecione o tipo do pagamento"
-						>
+						<SelectField fieldName="paymentType" options={paymentOptions} placeholder="Selecione o tipo do pagamento">
 							Tipo de pagamento
 						</SelectField>
 						{isPartialPayment && (

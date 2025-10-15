@@ -1,30 +1,18 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Step } from '@/components/Atoms'
-import {
-	AddressExternalForm,
-	ParticipantExternalForm,
-	PaymentExternalForm,
-} from '@/components/Organisms'
-import {
-	MEMBERS,
-	MODALS_IDS,
-	overlayOpen,
-	PAYMENT_METHOD_EXTERNAL_OPTIONS,
-} from '@/constants'
+import { AddressExternalForm, ParticipantExternalForm, PaymentExternalForm } from '@/components/Organisms'
+import { MEMBERS, MODALS_IDS, overlayOpen, PAYMENT_METHOD_EXTERNAL_OPTIONS } from '@/constants'
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateParticipant } from '@/services/queries/participants'
 import { generateToastError } from '@/utils/errors'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
-import {
-	type FullSchemaType,
-	fullSchema,
-	stepsFields,
-} from './ExternalParticipantForm.schema'
+
+import { type FullSchemaType, fullSchema, stepsFields } from './ExternalParticipantForm.schema'
 
 export type ExternalParticipantFormProps = {
 	registrationValue?: number
@@ -97,15 +85,7 @@ export const ExternalParticipantForm = ({
 	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
-		const {
-			hasReligion,
-			religion,
-			hasHealth,
-			health,
-			paymentMethod,
-			terms,
-			...data
-		} = methods.getValues()
+		const { hasReligion, religion, hasHealth, health, paymentMethod, terms, ...data } = methods.getValues()
 
 		const formattedData = {
 			...data,
@@ -125,8 +105,7 @@ export const ExternalParticipantForm = ({
 		await create(
 			{ ...formattedData },
 			{
-				onError: (error) =>
-					generateToastError(error, 'Erro ao realizar inscrição'),
+				onError: (error) => generateToastError(error, 'Erro ao realizar inscrição'),
 				onSuccess: () => {
 					if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
 						return overlayOpen(MODALS_IDS.PAYMENT_PIX_MODAL)
@@ -154,9 +133,7 @@ export const ExternalParticipantForm = ({
 					isPending={isPending}
 					steps={[
 						{
-							content: (
-								<ParticipantExternalForm isNotHappening={isNotHappening} />
-							),
+							content: <ParticipantExternalForm isNotHappening={isNotHappening} />,
 							title: 'Participante',
 						},
 						{
@@ -167,10 +144,7 @@ export const ExternalParticipantForm = ({
 							? [
 									{
 										content: (
-											<PaymentExternalForm
-												registrationValue={registrationValue}
-												setCurrentStep={setCurrentStep}
-											/>
+											<PaymentExternalForm registrationValue={registrationValue} setCurrentStep={setCurrentStep} />
 										),
 										title: 'Pagamento',
 									},

@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 
 import { Login } from '@/components/Templates'
 import { PRINCIPAL_LINKS } from '@/constants'
+
 import { authOptions } from './api/auth/[...nextauth]/authOptions'
 
 export default async function LoginPage() {

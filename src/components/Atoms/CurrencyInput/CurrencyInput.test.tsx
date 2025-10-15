@@ -5,9 +5,7 @@ import { CurrencyInput } from './CurrencyInput'
 
 describe('Field component', () => {
 	it('renders input correctly', () => {
-		const { getByTestId } = render(
-			<CurrencyInput data-testid="currency-field" />
-		)
+		const { getByTestId } = render(<CurrencyInput data-testid="currency-field" />)
 		expect(getByTestId('currency-field')).toBeInTheDocument()
 	})
 
@@ -23,17 +21,13 @@ describe('Field component', () => {
 	})
 
 	it('applies custom class name', () => {
-		const { getByTestId } = render(
-			<CurrencyInput className="custom-class" data-testid="currency-field" />
-		)
+		const { getByTestId } = render(<CurrencyInput className="custom-class" data-testid="currency-field" />)
 		const input = getByTestId('currency-field')
 		expect(input).toHaveClass('custom-class')
 	})
 
 	it('renders rightIcon correctly when passed', () => {
-		const { getByTestId } = render(
-			<CurrencyInput data-testid="currency-field" rightIcon={<p>teste</p>} />
-		)
+		const { getByTestId } = render(<CurrencyInput data-testid="currency-field" rightIcon={<p>teste</p>} />)
 		expect(getByTestId('right-icon')).toBeInTheDocument()
 	})
 })

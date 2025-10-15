@@ -4,10 +4,7 @@ type ComboBoxOption = ComponentProps<'option'> & {
 	customProps: Record<string, string>
 }
 
-export type ComboBoxProps<T = string> = Omit<
-	ComponentProps<'select'>,
-	'value' | 'onChange'
-> & {
+export type ComboBoxProps<T = string> = Omit<ComponentProps<'select'>, 'value' | 'onChange'> & {
 	setSelectedValue: (value: T) => void
 	keyOptionValue: string
 	keyOptionLabel: string

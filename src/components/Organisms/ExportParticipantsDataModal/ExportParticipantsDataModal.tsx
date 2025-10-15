@@ -1,5 +1,8 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import saveAs from 'file-saver'
 import { useEffect, useState } from 'react'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
@@ -9,9 +12,7 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportParticipantsData } from '@/services/queries/participants'
-import { zodResolver } from '@hookform/resolvers/zod'
-import saveAs from 'file-saver'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+
 import {
 	ExportParticipantsFileModalSchema,
 	type ExportParticipantsFileModalType,
@@ -24,10 +25,7 @@ type ExportParticipantsDataModalProps = {
 
 const TOAST_ID = 'download-template-participants'
 
-export const ExportParticipantsDataModal = ({
-	modalId,
-	isInterested,
-}: ExportParticipantsDataModalProps) => {
+export const ExportParticipantsDataModal = ({ modalId, isInterested }: ExportParticipantsDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportParticipantsFileModalType>({
 		defaultValues: {
@@ -35,16 +33,8 @@ export const ExportParticipantsDataModal = ({
 		},
 		resolver: zodResolver(ExportParticipantsFileModalSchema),
 	})
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
-	const { data, isError, isFetching } = useGetExportParticipantsData(
-		eventId,
-		isInterested
-	)
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
+	const { data, isError, isFetching } = useGetExportParticipantsData(eventId, isInterested)
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -77,15 +67,8 @@ export const ExportParticipantsDataModal = ({
 		const blob = new Blob([data], {
 			type: FILES_TYPES.xlsx,
 		})
-		const eventName =
-			formattedEvents.find((event) => event.customProps.value === eventId)
-				?.customProps?.label ?? ''
-		saveAs(
-			blob,
-			isInterested
-				? `Interessados-${eventName}.xlsx`
-				: `Participantes-${eventName}.xlsx`
-		)
+		const eventName = formattedEvents.find((event) => event.customProps.value === eventId)?.customProps?.label ?? ''
+		saveAs(blob, isInterested ? `Interessados-${eventName}.xlsx` : `Participantes-${eventName}.xlsx`)
 
 		setEventId('')
 		toast.dismiss(TOAST_ID)
@@ -107,9 +90,7 @@ export const ExportParticipantsDataModal = ({
 					<div className="flex flex-col items-center justify-between gap-6">
 						<div className="flex flex-col items-center gap-2">
 							<Header as="h3" className="text-2xl">
-								{isInterested
-									? 'Exportar interessados'
-									: 'Exportar participantes'}
+								{isInterested ? 'Exportar interessados' : 'Exportar participantes'}
 							</Header>
 							<Text>Selecione o evento que deseja exportar os dados</Text>
 						</div>

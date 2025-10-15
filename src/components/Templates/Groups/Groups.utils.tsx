@@ -29,8 +29,7 @@ export const formatTableData = (data: Array<GroupAPI> | undefined) => {
 		return {
 			id: group.id,
 			members: group.members.map((member) => {
-				const memberType =
-					member.type === MEMBERS.PARTICIPANT ? 'participant' : 'volunteer'
+				const memberType = member.type === MEMBERS.PARTICIPANT ? 'participant' : 'volunteer'
 
 				return {
 					address: `${member[memberType]?.address?.street?.trim()}, ${member[memberType]?.address?.number?.trim()}, ${member[memberType]?.address?.neighborhood?.trim()}, ${member[memberType]?.address?.city}-${member[memberType]?.address?.state}`,
@@ -40,10 +39,7 @@ export const formatTableData = (data: Array<GroupAPI> | undefined) => {
 					),
 					group: group.name,
 					id: member.id,
-					member:
-						member.type === MEMBERS.PARTICIPANT
-							? member.participant?.name
-							: member.volunteer?.name,
+					member: member.type === MEMBERS.PARTICIPANT ? member.participant?.name : member.volunteer?.name,
 					phone: formatPhone(member[memberType]?.phone ?? ''),
 					type: MembersTypes[member.type].label,
 				}
@@ -65,8 +61,7 @@ export const Content = (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
 				<h3 className="text-lg font-bold text-gray-800">Selecione um evento</h3>
 				<p className="mt-2 text-gray-500">
-					Os grupos são exibidos conforme o evento selecionado. Escolha um para
-					continuar.
+					Os grupos são exibidos conforme o evento selecionado. Escolha um para continuar.
 				</p>
 			</div>
 		)
@@ -75,12 +70,8 @@ export const Content = (
 	if (!isFetching && !groups?.length) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">
-					Nenhum grupo encontrado
-				</h3>
-				<p className="mt-2 text-gray-500">
-					Nenhum grupo foi criado para o evento selecionado.
-				</p>
+				<h3 className="text-lg font-bold text-gray-800">Nenhum grupo encontrado</h3>
+				<p className="mt-2 text-gray-500">Nenhum grupo foi criado para o evento selecionado.</p>
 			</div>
 		)
 	}
@@ -98,12 +89,9 @@ export const Content = (
 	if (!hasMembers) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">
-					Nenhum membro encontrado
-				</h3>
+				<h3 className="text-lg font-bold text-gray-800">Nenhum membro encontrado</h3>
 				<p className="mt-2 text-gray-500">
-					Verifique se digitou corretamente ou experimente usar apenas parte do
-					nome.
+					Verifique se digitou corretamente ou experimente usar apenas parte do nome.
 				</p>
 			</div>
 		)
@@ -112,9 +100,7 @@ export const Content = (
 	return groups?.map((data) => {
 		if (!data.members.length) return <></>
 
-		const sortedMembers = data?.members?.sort((memberA, memberB) =>
-			memberB.type?.localeCompare(memberA.type)
-		)
+		const sortedMembers = data?.members?.sort((memberA, memberB) => memberB.type?.localeCompare(memberA.type))
 
 		const totalOfParticipants = sortedMembers?.filter(
 			(member) => member.type === MembersTypes[MEMBERS.PARTICIPANT].label
@@ -144,28 +130,16 @@ export const Content = (
 					</div>
 					<div className="flex space-x-4">
 						<div className="hs-tooltip">
-							<SquarePen
-								className="cursor-pointer"
-								onClick={() => handleEditGroup(data.id)}
-								size={20}
-							/>
+							<SquarePen className="cursor-pointer" onClick={() => handleEditGroup(data.id)} size={20} />
 							<Tooltip>Editar</Tooltip>
 						</div>
 						<div className="hs-tooltip">
-							<Trash2
-								className="cursor-pointer"
-								onClick={() => handleRemoveGroup(data.id)}
-								size={20}
-							/>
+							<Trash2 className="cursor-pointer" onClick={() => handleRemoveGroup(data.id)} size={20} />
 							<Tooltip>Excluir</Tooltip>
 						</div>
 					</div>
 				</div>
-				<ListManager
-					bodyData={sortedMembers}
-					headerLabels={HEADER_LABELS}
-					isLoading={isFetching}
-				/>
+				<ListManager bodyData={sortedMembers} headerLabels={HEADER_LABELS} isLoading={isFetching} />
 			</div>
 		)
 	})

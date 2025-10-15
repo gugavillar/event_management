@@ -1,19 +1,11 @@
+import { format } from 'date-fns'
 import { NextResponse } from 'next/server'
+import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import {
-	amountType,
-	transactionType,
-} from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
-import {
-	generateColumnWidths,
-	prisma,
-	TransactionAmountType,
-	TransactionsType,
-} from '@/constants'
+import { amountType, transactionType } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
+import { generateColumnWidths, prisma, TransactionAmountType, TransactionsType } from '@/constants'
 import { currencyValue } from '@/formatters'
-import { format } from 'date-fns'
-import { utils, write } from 'xlsx'
 
 export const getExportTransactions = async (eventId: string) => {
 	try {
@@ -64,55 +56,39 @@ export const getExportTransactions = async (eventId: string) => {
 				Valor: currencyValue(Number(transaction.amount)),
 			}))
 
-		const incomeAndOutcomeTransactionsHeader = Object.keys(
-			incomeTransactions[0]
-		)
-		const worksheetIncomeTransactions = utils.json_to_sheet(
-			incomeTransactions,
-			{
-				header: incomeAndOutcomeTransactionsHeader,
-			}
-		)
-		const worksheetOutcomeTransactions = utils.json_to_sheet(
-			outcomeTransactions,
-			{
-				header: incomeAndOutcomeTransactionsHeader,
-			}
-		)
+		const incomeAndOutcomeTransactionsHeader = Object.keys(incomeTransactions[0])
+		const worksheetIncomeTransactions = utils.json_to_sheet(incomeTransactions, {
+			header: incomeAndOutcomeTransactionsHeader,
+		})
+		const worksheetOutcomeTransactions = utils.json_to_sheet(outcomeTransactions, {
+			header: incomeAndOutcomeTransactionsHeader,
+		})
 		const workbook = utils.book_new()
-		worksheetIncomeTransactions['!cols'] =
-			generateColumnWidths(incomeTransactions)
-		worksheetOutcomeTransactions['!cols'] =
-			generateColumnWidths(outcomeTransactions)
+		worksheetIncomeTransactions['!cols'] = generateColumnWidths(incomeTransactions)
+		worksheetOutcomeTransactions['!cols'] = generateColumnWidths(outcomeTransactions)
 		utils.book_append_sheet(workbook, worksheetIncomeTransactions, 'Entradas')
 		utils.book_append_sheet(workbook, worksheetOutcomeTransactions, 'Saídas')
 
 		const totalOfAccountAndCash = transactions.reduce(
 			(total, transaction) => {
 				const isAccountIncome =
-					transaction.type === TransactionsType.INCOME &&
-					transaction.amountType === TransactionAmountType.ACCOUNT
+					transaction.type === TransactionsType.INCOME && transaction.amountType === TransactionAmountType.ACCOUNT
 				const isAccountOutcome =
-					transaction.type === TransactionsType.OUTCOME &&
-					transaction.amountType === TransactionAmountType.ACCOUNT
+					transaction.type === TransactionsType.OUTCOME && transaction.amountType === TransactionAmountType.ACCOUNT
 				const isCashIncome =
-					transaction.type === TransactionsType.INCOME &&
-					transaction.amountType === TransactionAmountType.CASH
+					transaction.type === TransactionsType.INCOME && transaction.amountType === TransactionAmountType.CASH
 				const isCashOutcome =
-					transaction.type === TransactionsType.OUTCOME &&
-					transaction.amountType === TransactionAmountType.CASH
+					transaction.type === TransactionsType.OUTCOME && transaction.amountType === TransactionAmountType.CASH
 				if (isAccountIncome) {
 					return {
 						...total,
-						totalAccountIncome:
-							total.totalAccountIncome + Number(transaction.amount),
+						totalAccountIncome: total.totalAccountIncome + Number(transaction.amount),
 					}
 				}
 				if (isAccountOutcome) {
 					return {
 						...total,
-						totalAccountOutcome:
-							total.totalAccountOutcome + Number(transaction.amount),
+						totalAccountOutcome: total.totalAccountOutcome + Number(transaction.amount),
 					}
 				}
 				if (isCashIncome) {
@@ -124,8 +100,7 @@ export const getExportTransactions = async (eventId: string) => {
 				if (isCashOutcome) {
 					return {
 						...total,
-						totalCashOutcome:
-							total.totalCashOutcome + Number(transaction.amount),
+						totalCashOutcome: total.totalCashOutcome + Number(transaction.amount),
 					}
 				}
 				return total
@@ -141,27 +116,20 @@ export const getExportTransactions = async (eventId: string) => {
 		const geralBalance =
 			totalOfAccountAndCash.totalAccountIncome +
 			totalOfAccountAndCash.totalCashIncome -
-			(totalOfAccountAndCash.totalAccountOutcome +
-				totalOfAccountAndCash.totalCashOutcome)
+			(totalOfAccountAndCash.totalAccountOutcome + totalOfAccountAndCash.totalCashOutcome)
 		const data = [
 			['', 'Entradas', 'Saídas', 'Saldo'],
 			[
 				'Conta',
 				currencyValue(totalOfAccountAndCash.totalAccountIncome),
 				currencyValue(totalOfAccountAndCash.totalAccountOutcome),
-				currencyValue(
-					totalOfAccountAndCash.totalAccountIncome -
-						totalOfAccountAndCash.totalAccountOutcome
-				),
+				currencyValue(totalOfAccountAndCash.totalAccountIncome - totalOfAccountAndCash.totalAccountOutcome),
 			],
 			[
 				'Dinheiro',
 				currencyValue(totalOfAccountAndCash.totalCashIncome),
 				currencyValue(totalOfAccountAndCash.totalCashOutcome),
-				currencyValue(
-					totalOfAccountAndCash.totalCashIncome -
-						totalOfAccountAndCash.totalCashOutcome
-				),
+				currencyValue(totalOfAccountAndCash.totalCashIncome - totalOfAccountAndCash.totalCashOutcome),
 			],
 			['Saldo geral', '', '', currencyValue(geralBalance)],
 		]
@@ -174,8 +142,7 @@ export const getExportTransactions = async (eventId: string) => {
 		return new NextResponse(buffer, {
 			headers: {
 				'Content-Disposition': `attachment; filename="transações-${eventName}.xlsx"`,
-				'Content-Type':
-					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 			},
 			status: 200,
 		})

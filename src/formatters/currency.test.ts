@@ -1,8 +1,4 @@
-import {
-	currencyFieldValue,
-	currencyValue,
-	removeCurrencyFormat,
-} from './currency'
+import { currencyFieldValue, currencyValue, removeCurrencyFormat } from './currency'
 
 describe('currency formatters', () => {
 	it('currencyValue function format correctly', () => {

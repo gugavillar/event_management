@@ -1,12 +1,10 @@
 'use client'
-import {
-	type UseInfiniteQueryResult,
-	useInfiniteQuery,
-} from '@tanstack/react-query'
+import { type UseInfiniteQueryResult, useInfiniteQuery } from '@tanstack/react-query'
+import { useDebounce } from '@uidotdev/usehooks'
 import { useState } from 'react'
 
 import { type CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
-import { useDebounce } from '@uidotdev/usehooks'
+
 import type { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 

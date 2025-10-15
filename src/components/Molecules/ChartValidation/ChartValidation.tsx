@@ -6,11 +6,7 @@ export type ChartValidationProps = {
 	isLoading: boolean
 }
 
-export const ChartValidation = ({
-	categories,
-	series,
-	isLoading,
-}: ChartValidationProps) => {
+export const ChartValidation = ({ categories, series, isLoading }: ChartValidationProps) => {
 	if (isLoading) {
 		return (
 			<div className="flex h-32 items-center justify-center">
@@ -19,8 +15,7 @@ export const ChartValidation = ({
 		)
 	}
 
-	const hasNoData =
-		!series?.length || series?.some(({ data }) => data.length === 0)
+	const hasNoData = !series?.length || series?.some(({ data }) => data.length === 0)
 
 	if (hasNoData) {
 		return (

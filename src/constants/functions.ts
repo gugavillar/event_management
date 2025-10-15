@@ -1,4 +1,5 @@
 import { isFuture } from 'date-fns'
+
 import { IMAGES_FORMS } from './globals'
 import { MEMBERS, type ROLES } from './status'
 
@@ -65,10 +66,7 @@ export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
 	return pageRole.includes(userRole)
 }
 
-export const generatePrintKey = <T>(
-	data: Array<{ id: string; members: Array<T> }>,
-	listType?: string
-) => {
+export const generatePrintKey = <T>(data: Array<{ id: string; members: Array<T> }>, listType?: string) => {
 	if (listType) {
 		return data.map((d) => `${d.id}:${d.members.length}-${listType}`).join('|')
 	}
@@ -84,18 +82,11 @@ export const generateColumnWidths = (data: any[] | any[][]) => {
 		aoa = data as any[][]
 	} else {
 		const headers = Object.keys(data[0])
-		aoa = [
-			headers,
-			...(data as Record<string, any>[]).map((row) =>
-				headers.map((h) => row[h])
-			),
-		]
+		aoa = [headers, ...(data as Record<string, any>[]).map((row) => headers.map((h) => row[h]))]
 	}
 
 	const colWidths = aoa[0].map((_, colIndex) => {
-		const maxLength = aoa
-			.map((row) => row?.[colIndex]?.toString().length || 0)
-			.reduce((a, b) => Math.max(a, b), 0)
+		const maxLength = aoa.map((row) => row?.[colIndex]?.toString().length || 0).reduce((a, b) => Math.max(a, b), 0)
 
 		return { wch: maxLength + 1 }
 	})
@@ -113,9 +104,7 @@ export function deepTrim<T>(obj: T): T {
 	}
 
 	if (obj && typeof obj === 'object') {
-		return Object.fromEntries(
-			Object.entries(obj).map(([key, value]) => [key, deepTrim(value)])
-		) as T
+		return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, deepTrim(value)])) as T
 	}
 
 	return obj

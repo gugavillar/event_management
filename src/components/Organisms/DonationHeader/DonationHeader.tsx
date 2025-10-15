@@ -12,17 +12,8 @@ type DonationHeaderProps = {
 	sumOfAllDonations?: number
 }
 
-export const DonationHeader = ({
-	eventId,
-	setEventId,
-	sumOfAllDonations,
-}: DonationHeaderProps) => {
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+export const DonationHeader = ({ eventId, setEventId, sumOfAllDonations }: DonationHeaderProps) => {
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
@@ -54,9 +45,7 @@ export const DonationHeader = ({
 				<InformationCard className="w-full lg:max-w-lg" headingText="Doações">
 					<div className="flex h-full items-center justify-end p-4 md:p-5">
 						<Header as="h3" className="text-2xl">
-							{!sumOfAllDonations
-								? currencyValue(0)
-								: currencyValue(sumOfAllDonations)}
+							{!sumOfAllDonations ? currencyValue(0) : currencyValue(sumOfAllDonations)}
 						</Header>
 					</div>
 				</InformationCard>

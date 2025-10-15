@@ -1,7 +1,7 @@
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { MAX_FIELD_LENGTH } from '@/constants'
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
 export const volunteerSchemaRoute = z.object({
 	address: z.object({

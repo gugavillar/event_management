@@ -26,9 +26,7 @@ export const MeetingSchema = z
 		for (const uuid in presenceFlat) {
 			if (presenceFlat[uuid] && justificationFlat[uuid]) {
 				const presenceIndex = data.presence.findIndex((obj) => uuid in obj)
-				const justificationIndex = data.justification.findIndex(
-					(obj) => uuid in obj
-				)
+				const justificationIndex = data.justification.findIndex((obj) => uuid in obj)
 
 				if (presenceIndex !== -1) {
 					ctx.addIssue({

@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { ParticipantsAPI } from '../participants.type'
 
 export const getParticipant = async (participantId: ParticipantsAPI['id']) => {

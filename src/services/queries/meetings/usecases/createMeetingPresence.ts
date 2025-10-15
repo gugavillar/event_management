@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { FormMeetingPresence } from '../meetings.types'
 
 type CreateMeetingPresenceArgs = {
@@ -7,10 +8,7 @@ type CreateMeetingPresenceArgs = {
 	updatePresence?: boolean
 }
 
-export const createMeetingPresence = async ({
-	data,
-	updatePresence,
-}: CreateMeetingPresenceArgs) => {
+export const createMeetingPresence = async ({ data, updatePresence }: CreateMeetingPresenceArgs) => {
 	const response = await api.post(
 		ENDPOINTS.CREATE_MEETING_PRESENCE,
 		{

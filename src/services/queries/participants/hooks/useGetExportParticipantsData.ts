@@ -4,12 +4,10 @@ import type { UseQueryResult } from '@tanstack/react-query'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
+
 import { getExportParticipantsData } from '../usecases'
 
-export const useGetExportParticipantsData = (
-	event_id: string,
-	isInterested?: boolean
-) => {
+export const useGetExportParticipantsData = (event_id: string, isInterested?: boolean) => {
 	const { isError, isFetching, data }: UseQueryResult<BlobPart> = useQuery({
 		enabled: !!event_id,
 		queryFn: () => getExportParticipantsData(event_id, isInterested),

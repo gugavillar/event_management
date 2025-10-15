@@ -1,27 +1,19 @@
 'use client'
 import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
+import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
-import {
-	InputField,
-	MaskedInputField,
-	SearchBox,
-	SelectField,
-} from '@/components/Molecules'
+import { InputField, MaskedInputField, SearchBox, SelectField } from '@/components/Molecules'
 import { overlayClose, UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetCities } from '@/services/queries/cities'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import {
-	useCreateParticipant,
-	useGetParticipant,
-	useUpdateParticipant,
-} from '@/services/queries/participants'
+import { useCreateParticipant, useGetParticipant, useUpdateParticipant } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
-import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+
 import type { ParticipantType } from './ParticipantDrawer.schema'
 
 type ParticipantDrawerProps = {
@@ -31,11 +23,7 @@ type ParticipantDrawerProps = {
 }
 
 export const ParticipantDrawer = memo(
-	({
-		drawerId,
-		selectedParticipant,
-		setSelectedParticipant,
-	}: ParticipantDrawerProps) => {
+	({ drawerId, selectedParticipant, setSelectedParticipant }: ParticipantDrawerProps) => {
 		const { data, isLoading } = useGetParticipant(selectedParticipant)
 		const {
 			handleSubmit,
@@ -44,14 +32,7 @@ export const ParticipantDrawer = memo(
 			control,
 			formState: { isValid, isDirty, errors },
 		} = useFormContext<ParticipantType>()
-		const {
-			data: events,
-			hasNextPage,
-			isFetchingNextPage,
-			fetchNextPage,
-			search,
-			setSearch,
-		} = useGetInfinityEvents()
+		const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage, search, setSearch } = useGetInfinityEvents()
 		const { isPending: isUpdating, update } = useUpdateParticipant()
 		const { isPending: isCreating, create } = useCreateParticipant()
 
@@ -115,8 +96,7 @@ export const ParticipantDrawer = memo(
 					...formattedData,
 				},
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao criar participante'),
+					onError: (error) => generateToastError(error, 'Erro ao criar participante'),
 					onSuccess: () => {
 						reset()
 						setSelectedParticipant(null)
@@ -139,11 +119,7 @@ export const ParticipantDrawer = memo(
 		}, [data, reset])
 
 		return (
-			<Drawer
-				drawerId={drawerId}
-				handleClose={handleClose}
-				headingTitle="Dados do participante"
-			>
+			<Drawer drawerId={drawerId} handleClose={handleClose} headingTitle="Dados do participante">
 				<DrawerBody isLoading={isLoading}>
 					<Controller
 						control={control}
@@ -164,9 +140,7 @@ export const ParticipantDrawer = memo(
 						)}
 					/>
 					<InputField fieldName="name">Nome completo</InputField>
-					<InputField fieldName="called">
-						Como você gostaria de ser chamado(a)?
-					</InputField>
+					<InputField fieldName="called">Como você gostaria de ser chamado(a)?</InputField>
 					<InputField fieldName="email" type="email">
 						E-mail
 					</InputField>
@@ -176,31 +150,16 @@ export const ParticipantDrawer = memo(
 					<MaskedInputField fieldName="birthdate" format="##/##/####">
 						Data de nascimento
 					</MaskedInputField>
-					<SelectField
-						fieldName="hasReligion"
-						options={YES_OR_NO_SELECT_OPTIONS}
-						placeholder="Selecione uma opção"
-					>
+					<SelectField fieldName="hasReligion" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
 						Tem religião?
 					</SelectField>
-					{hasReligion === 'Yes' && (
-						<InputField fieldName="religion">Qual?</InputField>
-					)}
-					<SelectField
-						fieldName="hasHealth"
-						options={YES_OR_NO_SELECT_OPTIONS}
-						placeholder="Selecione uma opção"
-					>
+					{hasReligion === 'Yes' && <InputField fieldName="religion">Qual?</InputField>}
+					<SelectField fieldName="hasHealth" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
 						Tem restrição saúde/alimentar?
 					</SelectField>
-					{hasHealth === 'Yes' && (
-						<InputField fieldName="health">Descreva?</InputField>
-					)}
+					{hasHealth === 'Yes' && <InputField fieldName="health">Descreva?</InputField>}
 					<InputField fieldName="responsible">Responsável</InputField>
-					<MaskedInputField
-						fieldName="responsiblePhone"
-						format="(##) #####-####"
-					>
+					<MaskedInputField fieldName="responsiblePhone" format="(##) #####-####">
 						Telefone responsável
 					</MaskedInputField>
 
@@ -210,18 +169,10 @@ export const ParticipantDrawer = memo(
 					</MaskedInputField>
 					<InputField fieldName="address.street">Endereço</InputField>
 					<InputField fieldName="address.number">Número</InputField>
-					<SelectField
-						fieldName="address.state"
-						options={UF}
-						placeholder="Selecione o estado"
-					>
+					<SelectField fieldName="address.state" options={UF} placeholder="Selecione o estado">
 						Estado
 					</SelectField>
-					<SelectField
-						fieldName="address.city"
-						options={cities ?? []}
-						placeholder="Selecione a cidade"
-					>
+					<SelectField fieldName="address.city" options={cities ?? []} placeholder="Selecione a cidade">
 						Cidade
 					</SelectField>
 					<InputField fieldName="address.neighborhood">Bairro</InputField>

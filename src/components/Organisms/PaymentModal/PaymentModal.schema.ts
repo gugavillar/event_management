@@ -2,20 +2,15 @@ import { z } from 'zod'
 
 import { PaymentTypeAPI } from '@/constants'
 import { currencyValue, removeCurrencyFormat } from '@/formatters'
+
 import { paymentOptionsRadio } from './PaymentModal.utils'
 
 export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 	z
 		.object({
-			paid: z.enum(
-				[
-					paymentOptionsRadio(false)[0].value,
-					paymentOptionsRadio(false)[1].value,
-				],
-				{
-					error: 'Campo obrigatório',
-				}
-			),
+			paid: z.enum([paymentOptionsRadio(false)[0].value, paymentOptionsRadio(false)[1].value], {
+				error: 'Campo obrigatório',
+			}),
 			paymentReceived: z.string().optional(),
 			paymentType: z
 				.union([
@@ -50,8 +45,7 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 		})
 		.superRefine((data, ctx) => {
 			if (data.paymentValue) {
-				const totalPaid =
-					Number(removeCurrencyFormat(data.paymentValue)) + paidValue
+				const totalPaid = Number(removeCurrencyFormat(data.paymentValue)) + paidValue
 				const limitValue = maxPaidValue - paidValue
 				if (totalPaid > maxPaidValue) {
 					ctx.addIssue({
@@ -71,10 +65,7 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 					path: ['paymentValue'],
 				})
 			}
-			if (
-				data.paymentType === PaymentTypeAPI.CARD &&
-				(!data.paymentReceived || data?.paymentReceived.trim() === '')
-			) {
+			if (data.paymentType === PaymentTypeAPI.CARD && (!data.paymentReceived || data?.paymentReceived.trim() === '')) {
 				ctx.addIssue({
 					code: 'custom',
 					message: 'Campo obrigatório',

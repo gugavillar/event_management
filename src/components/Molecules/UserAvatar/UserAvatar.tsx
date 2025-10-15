@@ -2,12 +2,12 @@
 import { ChevronUp, UserRoundCog } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { User } from 'next-auth'
+import { signOut } from 'next-auth/react'
 import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar, Tooltip } from '@/components/Atoms'
 import { PRINCIPAL_LINKS, ROLES } from '@/constants'
-import { signOut } from 'next-auth/react'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -35,25 +35,13 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 					)}
 					type="button"
 				>
-					<div
-						className={twMerge(
-							!collapsed ? 'flex w-full items-center gap-2' : 'sr-only'
-						)}
-					>
+					<div className={twMerge(!collapsed ? 'flex w-full items-center gap-2' : 'sr-only')}>
 						<Avatar>{avatar}</Avatar>
 						{user?.name}
 						<ChevronUp className="ml-auto" size={20} />
 					</div>
 					<div className={twMerge(collapsed ? 'block' : 'sr-only')}>
-						<Tooltip
-							className={
-								collapsed
-									? 'hs-tooltip-shown:visible'
-									: 'hs-tooltip-shown:hidden'
-							}
-						>
-							Usuários
-						</Tooltip>
+						<Tooltip className={collapsed ? 'hs-tooltip-shown:visible' : 'hs-tooltip-shown:hidden'}>Usuários</Tooltip>
 						<UserRoundCog size={24} />
 					</div>
 				</button>

@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { FormVolunteer, VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerArgs = {
@@ -7,10 +8,7 @@ type UpdateVolunteerArgs = {
 	data: FormVolunteer
 }
 
-export const updateVolunteer = async ({
-	volunteerId,
-	data,
-}: UpdateVolunteerArgs) => {
+export const updateVolunteer = async ({ volunteerId, data }: UpdateVolunteerArgs) => {
 	const response = await api.put(ENDPOINTS.UPDATE_VOLUNTEER(volunteerId), {
 		...data,
 	})

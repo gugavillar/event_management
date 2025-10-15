@@ -1,16 +1,12 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
+import { useDebounce } from '@uidotdev/usehooks'
+import { parseAsInteger, parseAsString, useQueryState, useQueryStates } from 'nuqs'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-import { useDebounce } from '@uidotdev/usehooks'
-import {
-	parseAsInteger,
-	parseAsString,
-	useQueryState,
-	useQueryStates,
-} from 'nuqs'
+
 import { getPayments } from '../usecases'
 import type { VolunteersFromAPI } from '../volunteers.type'
 
@@ -23,10 +19,7 @@ export const useGetPayments = () => {
 	const [search, setSearch] = useQueryState('searchVolunteer', {
 		defaultValue: '',
 	})
-	const [page, setPage] = useQueryState(
-		'pageVolunteerPayment',
-		parseAsInteger.withDefault(1)
-	)
+	const [page, setPage] = useQueryState('pageVolunteerPayment', parseAsInteger.withDefault(1))
 
 	const debounceEventId = useDebounce(query.eventId, 500)
 	const debounceSearch = useDebounce(search, 500)

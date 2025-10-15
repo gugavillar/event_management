@@ -3,6 +3,7 @@ import { type Dispatch, memo, type SetStateAction } from 'react'
 import { Header, Modal, Spinner } from '@/components/Atoms'
 import { useGetParticipant } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+
 import { AddressInfoCard } from '../AddressInfoCard'
 import { FamilyContactInfo } from '../FamilyContactInfo'
 import { PersonalInfoCard } from '../PersonalInfoCard'
@@ -14,18 +15,10 @@ type ParticipantModalDataProps = {
 }
 
 export const ParticipantModalData = memo(
-	({
-		modalId,
-		setSelectedParticipant,
-		selectedParticipant,
-	}: ParticipantModalDataProps) => {
+	({ modalId, setSelectedParticipant, selectedParticipant }: ParticipantModalDataProps) => {
 		const { data, isLoading } = useGetParticipant(selectedParticipant)
 		return (
-			<Modal
-				handleClose={() => setSelectedParticipant(null)}
-				isLarge
-				modalId={modalId}
-			>
+			<Modal handleClose={() => setSelectedParticipant(null)} isLarge modalId={modalId}>
 				<div className="flex flex-col space-y-4 max-md:h-[85dvh] max-md:overflow-y-auto">
 					<Header as="h3" className="text-center">
 						Dados do participante
@@ -42,10 +35,7 @@ export const ParticipantModalData = memo(
 									...data.address,
 								}}
 							/>
-							<FamilyContactInfo
-								responsibleInfo={{ ...data }}
-								type="participant"
-							/>
+							<FamilyContactInfo responsibleInfo={{ ...data }} type="participant" />
 						</div>
 					)}
 				</div>

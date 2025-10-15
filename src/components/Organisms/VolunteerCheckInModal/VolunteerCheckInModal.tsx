@@ -16,11 +16,7 @@ type VolunteerCheckInModalProps = {
 }
 
 export const VolunteerCheckInModal = memo(
-	({
-		modalId,
-		selectedVolunteer,
-		setSelectedVolunteer,
-	}: VolunteerCheckInModalProps) => {
+	({ modalId, selectedVolunteer, setSelectedVolunteer }: VolunteerCheckInModalProps) => {
 		const { update, isPending } = useUpdateCheckInVolunteer()
 
 		const handleCheckInVolunteer = async (status: CHECK_IN_STATUS) => {
@@ -29,8 +25,7 @@ export const VolunteerCheckInModal = memo(
 			await update(
 				{ status, volunteerId: selectedVolunteer },
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao marcar status do voluntário'),
+					onError: (error) => generateToastError(error, 'Erro ao marcar status do voluntário'),
 					onSuccess: () => {
 						setSelectedVolunteer(null)
 						toast.success('Voluntário marcado com o status selecionado!')
@@ -49,10 +44,7 @@ export const VolunteerCheckInModal = memo(
 							<Header as="h3" className="text-2xl">
 								Está tudo certo com este voluntário?
 							</Header>
-							<Text>
-								Confirme a presença ou marque a desistência, conforme combinado
-								com ele(a)
-							</Text>
+							<Text>Confirme a presença ou marque a desistência, conforme combinado com ele(a)</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button
@@ -68,9 +60,7 @@ export const VolunteerCheckInModal = memo(
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={isPending}
 								isLoading={isPending}
-								onClick={() =>
-									handleCheckInVolunteer(CHECK_IN_STATUS.CONFIRMED)
-								}
+								onClick={() => handleCheckInVolunteer(CHECK_IN_STATUS.CONFIRMED)}
 							>
 								Confirmar
 							</Button>

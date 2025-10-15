@@ -48,8 +48,8 @@ export const UserResetPasswordModal = memo(
 								Você deseja redefinir a senha desse usuário?
 							</Header>
 							<Text>
-								Ao confirmar, a senha deste usuário será redefinida para o
-								padrão. Será necessário criar uma nova senha no próximo login.
+								Ao confirmar, a senha deste usuário será redefinida para o padrão. Será necessário criar uma nova senha
+								no próximo login.
 							</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">

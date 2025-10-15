@@ -17,9 +17,7 @@ export const createGroup = async (data: FormGroup) => {
 				data: data.members.map((member) => ({
 					groupId: group.id,
 					type: member.type,
-					...(member.type === MEMBERS.PARTICIPANT
-						? { participantId: member.member }
-						: { volunteerId: member.member }),
+					...(member.type === MEMBERS.PARTICIPANT ? { participantId: member.member } : { volunteerId: member.member }),
 				})),
 			})
 		})

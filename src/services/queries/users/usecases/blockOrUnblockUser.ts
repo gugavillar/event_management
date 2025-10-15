@@ -6,10 +6,7 @@ type BlockOrUnblockUser = {
 	blocked: boolean
 }
 
-export const blockOrUnblockUser = async ({
-	userId,
-	blocked,
-}: BlockOrUnblockUser) => {
+export const blockOrUnblockUser = async ({ userId, blocked }: BlockOrUnblockUser) => {
 	const response = await api.patch(ENDPOINTS.BLOCK_OR_UNBLOCK_USER(userId), {
 		blocked,
 	})

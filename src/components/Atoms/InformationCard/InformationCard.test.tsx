@@ -4,12 +4,7 @@ import { InformationCard } from './InformationCard'
 
 describe('InformationCard component', () => {
 	it('renders correctly', () => {
-		const { getByTestId } = render(
-			<InformationCard
-				data-testid="information-card"
-				headingText="Information"
-			/>
-		)
+		const { getByTestId } = render(<InformationCard data-testid="information-card" headingText="Information" />)
 
 		const informationCard = getByTestId('information-card')
 
@@ -32,11 +27,7 @@ describe('InformationCard component', () => {
 
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
-			<InformationCard
-				className="custom-class"
-				data-testid="information-card"
-				headingText="Information"
-			/>
+			<InformationCard className="custom-class" data-testid="information-card" headingText="Information" />
 		)
 
 		const informationCard = getByTestId('information-card')
@@ -46,11 +37,7 @@ describe('InformationCard component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<InformationCard
-				data-testid="information-card"
-				headingText="Information"
-				id="test"
-			/>
+			<InformationCard data-testid="information-card" headingText="Information" id="test" />
 		)
 
 		const informationCard = getByTestId('information-card')

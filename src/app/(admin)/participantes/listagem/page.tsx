@@ -3,10 +3,7 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import {
-	getParticipants,
-	getParticipantsCities,
-} from '@/services/queries/participants'
+import { getParticipants, getParticipantsCities } from '@/services/queries/participants'
 
 type SearchParams = {
 	searchParams: Promise<{
@@ -44,18 +41,10 @@ export default async function ParticipantsPage({ searchParams }: SearchParams) {
 	const getCities = () => getParticipantsCities(false, debounceEventIdValue)
 
 	return (
-		<HydrationInfinityProvider
-			initialPageParam={1}
-			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-		>
+		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
 			<HydrationProvider
 				queryFn={getCities}
-				queryKey={[
-					QUERY_KEYS.PARTICIPANTS_CITIES,
-					undefined,
-					debounceEventIdValue,
-				]}
+				queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, undefined, debounceEventIdValue]}
 			>
 				<HydrationProvider
 					queryFn={getAllParticipants}

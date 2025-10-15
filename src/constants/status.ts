@@ -25,9 +25,7 @@ export const PaymentType = {
 	},
 }
 
-export const PaymentSelectOptions = Object.values(PaymentTypeAPI).map(
-	(value) => ({ ...PaymentType[value] })
-)
+export const PaymentSelectOptions = Object.values(PaymentTypeAPI).map((value) => ({ ...PaymentType[value] }))
 
 export enum CHECK_IN_STATUS {
 	CONFIRMED = 'CONFIRMED',
@@ -50,9 +48,7 @@ export const StatusType = {
 	},
 }
 
-export const StatusSelectOptions = Object.values(CHECK_IN_STATUS).map(
-	(value) => ({ ...StatusType[value] })
-)
+export const StatusSelectOptions = Object.values(CHECK_IN_STATUS).map((value) => ({ ...StatusType[value] }))
 
 export enum GenderTypeAPI {
 	MALE = 'MALE',
@@ -66,9 +62,7 @@ export const GenderType = {
 	[GenderTypeAPI.BOTH]: { label: 'Ambos', value: GenderTypeAPI.BOTH },
 }
 
-export const GenderSelectOptions = Object.values(GenderTypeAPI).map(
-	(value) => ({ ...GenderType[value] })
-)
+export const GenderSelectOptions = Object.values(GenderTypeAPI).map((value) => ({ ...GenderType[value] }))
 
 export enum ROLES {
 	USER = 'USER',
@@ -105,10 +99,7 @@ export const MembersTypesOptions = Object.values(MEMBERS).map((value) => ({
 
 export const MembersTypesOptionsRadio = Object.values(MEMBERS).map((value) => ({
 	...MembersTypes[value],
-	description:
-		value === MEMBERS.PARTICIPANT
-			? 'Participando do evento'
-			: 'Servindo no evento',
+	description: value === MEMBERS.PARTICIPANT ? 'Participando do evento' : 'Servindo no evento',
 }))
 
 export enum TransactionsType {

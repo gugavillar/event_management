@@ -1,9 +1,6 @@
 import { faker } from '@faker-js/faker'
-import {
-	convertToBoolean,
-	formatterComboBoxValues,
-	formatterFieldSelectValues,
-} from './inputs'
+
+import { convertToBoolean, formatterComboBoxValues, formatterFieldSelectValues } from './inputs'
 
 const MOCKED_VALUES = (quantity: number) =>
 	Array.from({ length: quantity }, () => ({
@@ -18,9 +15,7 @@ describe('inputs formatters', () => {
 	it('formatterFieldSelectValues function format correctly', () => {
 		const values = MOCKED_VALUES(10)
 		const formattedValues = formatterFieldSelectValues(values, 'name', 'id')
-		expect(formattedValues).toEqual(
-			values.map((value) => ({ label: value.name, value: value.id }))
-		)
+		expect(formattedValues).toEqual(values.map((value) => ({ label: value.name, value: value.id })))
 	})
 
 	it('formatterFieldSelectValues function return empty array', () => {
@@ -58,13 +53,7 @@ describe('inputs formatters', () => {
 
 	it('formatterComboBoxValues function format correctly with all option and label', () => {
 		const values = MOCKED_VALUES(10)
-		const formattedValues = formatterComboBoxValues(
-			values,
-			'name',
-			'id',
-			true,
-			'All'
-		)
+		const formattedValues = formatterComboBoxValues(values, 'name', 'id', true, 'All')
 		expect(formattedValues).toEqual([
 			{
 				customProps: { label: 'All', value: '' },

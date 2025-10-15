@@ -4,12 +4,8 @@ import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-import type {
-	FormMeetingPresence,
-	MeetingAPI,
-	MeetingsFromAPI,
-	PresencesFromApi,
-} from '../meetings.types'
+
+import type { FormMeetingPresence, MeetingAPI, MeetingsFromAPI, PresencesFromApi } from '../meetings.types'
 import { getMeeting, getMeetingPresenceById } from '../usecases'
 
 export const useGetMeeting = () => {
@@ -25,9 +21,7 @@ export const useGetMeeting = () => {
 		enabled: !!meetingId,
 		queryFn: async () => {
 			const meeting = await getMeeting(meetingId as MeetingsFromAPI['id'])
-			const presences: Array<PresencesFromApi> = await getMeetingPresenceById(
-				meetingId as MeetingsFromAPI['id']
-			)
+			const presences: Array<PresencesFromApi> = await getMeetingPresenceById(meetingId as MeetingsFromAPI['id'])
 
 			if (!presences.length) {
 				return {
@@ -40,20 +34,12 @@ export const useGetMeeting = () => {
 			}
 
 			const presenceResponse = {
-				justification: meeting.volunteers.map(
-					(volunteer: MeetingAPI['volunteers'][number]) => ({
-						[volunteer.id]:
-							presences.find((p) => p.volunteerId === volunteer.id)
-								?.justification ?? false,
-					})
-				),
-				presence: meeting.volunteers.map(
-					(volunteer: MeetingAPI['volunteers'][number]) => ({
-						[volunteer.id]:
-							presences.find((p) => p.volunteerId === volunteer.id)?.presence ??
-							false,
-					})
-				),
+				justification: meeting.volunteers.map((volunteer: MeetingAPI['volunteers'][number]) => ({
+					[volunteer.id]: presences.find((p) => p.volunteerId === volunteer.id)?.justification ?? false,
+				})),
+				presence: meeting.volunteers.map((volunteer: MeetingAPI['volunteers'][number]) => ({
+					[volunteer.id]: presences.find((p) => p.volunteerId === volunteer.id)?.presence ?? false,
+				})),
 			}
 			return {
 				meeting,

@@ -16,21 +16,19 @@ const STATUS_COLORS = {
 	[PaymentTypeAPI.OPEN]: 'bg-gray-400/30',
 }
 
-export const PaymentTag = memo(
-	({ status, className, ...props }: PaymentTagProps) => {
-		return (
-			<mark
-				className={twMerge(
-					'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl px-4 py-1 text-slate-800',
-					className,
-					STATUS_COLORS[status]
-				)}
-				{...props}
-			>
-				{PaymentType[status].label}
-			</mark>
-		)
-	}
-)
+export const PaymentTag = memo(({ status, className, ...props }: PaymentTagProps) => {
+	return (
+		<mark
+			className={twMerge(
+				'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl px-4 py-1 text-slate-800',
+				className,
+				STATUS_COLORS[status]
+			)}
+			{...props}
+		>
+			{PaymentType[status].label}
+		</mark>
+	)
+})
 
 PaymentTag.displayName = 'PaymentTag'

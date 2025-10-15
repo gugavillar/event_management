@@ -6,43 +6,22 @@ import toast from 'react-hot-toast'
 
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import {
-	FilterDrawer,
-	ListPage,
-	ModalReturnPayment,
-	PageContent,
-} from '@/components/Organisms'
+import { FilterDrawer, ListPage, ModalReturnPayment, PageContent } from '@/components/Organisms'
 import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import {
-	MEMBERS,
-	MODALS_IDS,
-	overlayClose,
-	overlayOpen,
-	PaymentTypeAPI,
-} from '@/constants'
+import { MEMBERS, MODALS_IDS, overlayClose, overlayOpen, PaymentTypeAPI } from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
-import {
-	useCreateVolunteerPayment,
-	useGetPayments,
-	useReturnVolunteerPayment,
-} from '@/services/queries/volunteers'
+import { useCreateVolunteerPayment, useGetPayments, useReturnVolunteerPayment } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
+
 import { formatTableData, HEADER_LABELS } from './VolunteersPayments.utils'
 
-const PaymentModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.PaymentModal)
-)
+const PaymentModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.PaymentModal))
 
-const VolunteerModalData = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.VolunteerModalData)
-)
+const VolunteerModalData = dynamic(() => import('@/components/Organisms').then((mod) => mod.VolunteerModalData))
 export const VolunteersPayments = () => {
-	const [selectedVolunteer, setSelectedVolunteer] =
-		useState<VolunteersAPI | null>(null)
-	const [selectVolunteer, setSelectVolunteer] = useState<
-		VolunteersAPI['id'] | null
-	>(null)
+	const [selectedVolunteer, setSelectedVolunteer] = useState<VolunteersAPI | null>(null)
+	const [selectVolunteer, setSelectVolunteer] = useState<VolunteersAPI['id'] | null>(null)
 	const {
 		data: volunteersPayments,
 		isLoading: isLoadingPayments,
@@ -54,32 +33,22 @@ export const VolunteersPayments = () => {
 		setQuery,
 	} = useGetPayments()
 	const { create, isPending } = useCreateVolunteerPayment()
-	const { returnPayment, isPending: isPendingReturn } =
-		useReturnVolunteerPayment()
+	const { returnPayment, isPending: isPendingReturn } = useReturnVolunteerPayment()
 
-	const handleOpenModalToPaymentVolunteer = useCallback(
-		(payment: VolunteersAPI) => {
-			setSelectedVolunteer(payment)
-			overlayOpen(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
-		},
-		[]
-	)
+	const handleOpenModalToPaymentVolunteer = useCallback((payment: VolunteersAPI) => {
+		setSelectedVolunteer(payment)
+		overlayOpen(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
+	}, [])
 
-	const handleOpenModalToReturnPaymentVolunteer = useCallback(
-		(payment: VolunteersAPI) => {
-			setSelectedVolunteer(payment)
-			overlayOpen(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
-		},
-		[]
-	)
+	const handleOpenModalToReturnPaymentVolunteer = useCallback((payment: VolunteersAPI) => {
+		setSelectedVolunteer(payment)
+		overlayOpen(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
+	}, [])
 
-	const handleOpenModalToShowVolunteerData = useCallback(
-		(id: VolunteersAPI['id']) => {
-			setSelectVolunteer(id)
-			overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
-		},
-		[]
-	)
+	const handleOpenModalToShowVolunteerData = useCallback((id: VolunteersAPI['id']) => {
+		setSelectVolunteer(id)
+		overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
+	}, [])
 
 	const formattedData = formatTableData(
 		volunteersPayments?.data,
@@ -98,25 +67,17 @@ export const VolunteersPayments = () => {
 				paymentValue:
 					values.paid === 'partial' && values.paymentValue
 						? Number(removeCurrencyFormat(values.paymentValue))
-						: Number(
-								removeCurrencyFormat(selectedVolunteer.event.volunteerPrice)
-							),
+						: Number(removeCurrencyFormat(selectedVolunteer.event.volunteerPrice)),
 				volunteerId: selectedVolunteer.id,
 				...(values.paymentType === PaymentTypeAPI.CARD && {
-					paymentReceived: Number(
-						removeCurrencyFormat(values.paymentReceived as string)
-					),
+					paymentReceived: Number(removeCurrencyFormat(values.paymentReceived as string)),
 				}),
 			}
 
 			await create(
 				{ data: formatValues },
 				{
-					onError: (error) =>
-						generateToastError(
-							error,
-							'Erro ao registrar pagamento do voluntário'
-						),
+					onError: (error) => generateToastError(error, 'Erro ao registrar pagamento do voluntário'),
 					onSuccess: () => {
 						setSelectedVolunteer(null)
 						toast.success('Pagamento do voluntário registrado com sucesso!')
@@ -130,9 +91,7 @@ export const VolunteersPayments = () => {
 	const handleReturnPayment = useCallback(async () => {
 		if (!selectedVolunteer) return
 
-		const results = await Promise.allSettled(
-			selectedVolunteer.payments.map((p) => returnPayment({ id: p.id }))
-		)
+		const results = await Promise.allSettled(selectedVolunteer.payments.map((p) => returnPayment({ id: p.id })))
 		const hasError = results.some((res) => res.status === 'rejected')
 
 		if (hasError) {
@@ -145,22 +104,14 @@ export const VolunteersPayments = () => {
 		overlayClose(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
 	}, [returnPayment, selectedVolunteer])
 
-	const hasMoreThanOnePage =
-		!!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
+	const hasMoreThanOnePage = !!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
 
 	const isExistPayment = Boolean(selectedVolunteer?.payments?.length)
-	const paidValue =
-		selectedVolunteer?.payments?.reduce(
-			(total, p) => (total += Number(p.paymentValue)),
-			0
-		) ?? 0
+	const paidValue = selectedVolunteer?.payments?.reduce((total, p) => (total += Number(p.paymentValue)), 0) ?? 0
 	const eventValue = Number(selectedVolunteer?.event?.volunteerPrice) ?? 0
 
 	return (
-		<PageContent
-			pageTitle="Pagamentos dos voluntários"
-			subheadingPage="Lista de pagamentos"
-		>
+		<PageContent pageTitle="Pagamentos dos voluntários" subheadingPage="Lista de pagamentos">
 			<ListPage
 				className="lg:max-w-full"
 				moreFilter={
@@ -176,17 +127,9 @@ export const VolunteersPayments = () => {
 				search={search}
 				setSearch={setSearch}
 			>
-				<ListManager
-					bodyData={formattedData}
-					headerLabels={HEADER_LABELS}
-					isLoading={isLoadingPayments}
-				/>
+				<ListManager bodyData={formattedData} headerLabels={HEADER_LABELS} isLoading={isLoadingPayments} />
 				{hasMoreThanOnePage && (
-					<Pagination
-						currentPage={page}
-						setPage={setPage}
-						totalPages={volunteersPayments?.totalPages}
-					/>
+					<Pagination currentPage={page} setPage={setPage} totalPages={volunteersPayments?.totalPages} />
 				)}
 			</ListPage>
 			<PaymentModal

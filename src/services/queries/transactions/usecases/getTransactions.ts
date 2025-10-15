@@ -8,11 +8,7 @@ type GetTransactionsParams = {
 	page: number
 }
 
-export const getTransactions = async ({
-	page,
-	eventId,
-	searchTransaction,
-}: GetTransactionsParams) => {
+export const getTransactions = async ({ page, eventId, searchTransaction }: GetTransactionsParams) => {
 	const response = await api.get(ENDPOINTS.GET_TRANSACTIONS, {
 		params: {
 			...(eventId && { eventId }),

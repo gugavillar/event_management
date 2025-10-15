@@ -1,5 +1,8 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import saveAs from 'file-saver'
 import { useEffect, useState } from 'react'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
@@ -9,13 +12,8 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportMeetingPresence } from '@/services/queries/meetings'
-import { zodResolver } from '@hookform/resolvers/zod'
-import saveAs from 'file-saver'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
-import {
-	ExportMeetingFileModalSchema,
-	type ExportMeetingFileModalType,
-} from './ExportMeetingDataModal.schema'
+
+import { ExportMeetingFileModalSchema, type ExportMeetingFileModalType } from './ExportMeetingDataModal.schema'
 
 type ExportMeetingDataModalProps = {
 	modalId: string
@@ -23,9 +21,7 @@ type ExportMeetingDataModalProps = {
 
 const TOAST_ID = 'download-export-meeting'
 
-export const ExportMeetingDataModal = ({
-	modalId,
-}: ExportMeetingDataModalProps) => {
+export const ExportMeetingDataModal = ({ modalId }: ExportMeetingDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportMeetingFileModalType>({
 		defaultValues: {
@@ -33,12 +29,7 @@ export const ExportMeetingDataModal = ({
 		},
 		resolver: zodResolver(ExportMeetingFileModalSchema),
 	})
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const { data, isError, isFetching } = useGetExportMeetingPresence(eventId)
 
 	const formattedEvents = formatterComboBoxValues(
@@ -72,9 +63,7 @@ export const ExportMeetingDataModal = ({
 		const blob = new Blob([data], {
 			type: FILES_TYPES.xlsx,
 		})
-		const eventName =
-			formattedEvents.find((event) => event.customProps.value === eventId)
-				?.customProps?.label ?? ''
+		const eventName = formattedEvents.find((event) => event.customProps.value === eventId)?.customProps?.label ?? ''
 		saveAs(blob, `Reuniões-${eventName}.xlsx`)
 
 		setEventId('')

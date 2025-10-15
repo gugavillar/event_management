@@ -25,8 +25,7 @@ export const TransactionDeleteModal = ({
 	const handleDeleteTransaction = async () => {
 		if (!selectedTransaction) return
 		await remove(selectedTransaction, {
-			onError: (error) =>
-				generateToastError(error, 'Erro ao excluir transação'),
+			onError: (error) => generateToastError(error, 'Erro ao excluir transação'),
 			onSuccess: () => {
 				toast.success('Transação excluída com sucesso!')
 				setSelectedTransaction(null)
@@ -49,9 +48,7 @@ export const TransactionDeleteModal = ({
 						<Header as="h3" className="text-2xl">
 							Você deseja excluir a transação?
 						</Header>
-						<Text>
-							Ao excluir a transação os dados não poderão ser recuperados.
-						</Text>
+						<Text>Ao excluir a transação os dados não poderão ser recuperados.</Text>
 					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button

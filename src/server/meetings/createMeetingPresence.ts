@@ -1,7 +1,4 @@
-import {
-	type MeetingPresenceRouteType,
-	meetingPresenceRoute,
-} from '@/app/api/meetings/meeting.schema'
+import { type MeetingPresenceRouteType, meetingPresenceRoute } from '@/app/api/meetings/meeting.schema'
 import { prisma } from '@/constants'
 
 type AttendanceInput = {
@@ -17,9 +14,7 @@ type NormalizedAttendance = {
 	justification: boolean
 }
 
-export const normalizeAttendanceData = (
-	input: AttendanceInput
-): NormalizedAttendance[] => {
+export const normalizeAttendanceData = (input: AttendanceInput): NormalizedAttendance[] => {
 	const { presence, justification, meetingId } = input
 
 	const result: Record<string, NormalizedAttendance> = {}
@@ -51,10 +46,7 @@ export const normalizeAttendanceData = (
 	return Object.values(result)
 }
 
-export const createMeetingPresence = async (
-	data: MeetingPresenceRouteType,
-	updatePresence: boolean
-) => {
+export const createMeetingPresence = async (data: MeetingPresenceRouteType, updatePresence: boolean) => {
 	try {
 		meetingPresenceRoute.parse({ ...data })
 

@@ -1,6 +1,7 @@
 'use client'
 import { UserRoundPlus, UserRoundX } from 'lucide-react'
 import { type Dispatch, type SetStateAction, useEffect } from 'react'
+import { Controller, type SubmitHandler, useFieldArray, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
@@ -16,19 +17,10 @@ import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import {
-	useCreateRoom,
-	useGetRoom,
-	useUpdateRoom,
-} from '@/services/queries/rooms'
+import { useCreateRoom, useGetRoom, useUpdateRoom } from '@/services/queries/rooms'
 import type { FormRoom, RoomAPI } from '@/services/queries/rooms/rooms.types'
 import { generateToastError } from '@/utils/errors'
-import {
-	Controller,
-	type SubmitHandler,
-	useFieldArray,
-	useFormContext,
-} from 'react-hook-form'
+
 import type { RoomSchemaType } from './RoomDrawer.schema'
 
 type RoomDrawerProps = {
@@ -37,13 +29,8 @@ type RoomDrawerProps = {
 	setSelectedRoom: Dispatch<SetStateAction<RoomAPI['id'] | null>>
 }
 
-export const RoomDrawer = ({
-	drawerId,
-	selectedRoom,
-	setSelectedRoom,
-}: RoomDrawerProps) => {
-	const { handleSubmit, formState, control, watch, reset } =
-		useFormContext<RoomSchemaType>()
+export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDrawerProps) => {
+	const { handleSubmit, formState, control, watch, reset } = useFormContext<RoomSchemaType>()
 	const { fields, append, remove } = useFieldArray({
 		name: 'members',
 	})
@@ -53,12 +40,7 @@ export const RoomDrawer = ({
 
 	const eventId = watch('eventId')
 
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const onSubmit: SubmitHandler<RoomSchemaType> = async (values) => {
 		if (!values) return
@@ -77,8 +59,7 @@ export const RoomDrawer = ({
 					roomId: selectedRoom,
 				},
 				{
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar quarto'),
+					onError: (error) => generateToastError(error, 'Erro ao atualizar quarto'),
 					onSuccess: () => {
 						reset()
 						setSelectedRoom(null)
@@ -175,32 +156,23 @@ export const RoomDrawer = ({
 									) : null}
 								</div>
 								<div className="mt-1 grid grid-cols-1 md:grid-cols-2">
-									<RadioField
-										fieldName={fieldTypeName}
-										options={MembersTypesOptionsRadio}
-										position="row"
-									>
+									<RadioField fieldName={fieldTypeName} options={MembersTypesOptionsRadio} position="row">
 										Qual tipo do membro
 									</RadioField>
-									{watch(fieldTypeName) === MEMBERS.PARTICIPANT &&
-										hasEventId && (
-											<ParticipantField
-												eventId={eventId}
-												fieldError={
-													formState.errors.members?.[index]?.member?.message
-												}
-												fieldMemberName={fieldMemberName}
-												hasNoRoom={selectedRoom === null}
-												isEdition={Boolean(selectedRoom)}
-												key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
-											/>
-										)}
+									{watch(fieldTypeName) === MEMBERS.PARTICIPANT && hasEventId && (
+										<ParticipantField
+											eventId={eventId}
+											fieldError={formState.errors.members?.[index]?.member?.message}
+											fieldMemberName={fieldMemberName}
+											hasNoRoom={selectedRoom === null}
+											isEdition={Boolean(selectedRoom)}
+											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
+										/>
+									)}
 									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && hasEventId && (
 										<VolunteerField
 											eventId={eventId}
-											fieldError={
-												formState.errors.members?.[index]?.member?.message
-											}
+											fieldError={formState.errors.members?.[index]?.member?.message}
 											fieldMemberName={fieldMemberName}
 											hasNoRoom={selectedRoom === null}
 											isEdition={Boolean(selectedRoom)}

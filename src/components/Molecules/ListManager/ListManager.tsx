@@ -9,18 +9,6 @@ type ParticipantManagerProps = {
 	handleClickRow?: TableProps['handleClickRow']
 }
 
-export const ListManager = ({
-	bodyData,
-	headerLabels,
-	handleClickRow,
-	isLoading,
-}: ParticipantManagerProps) => {
-	return (
-		<Table
-			bodyData={bodyData}
-			handleClickRow={handleClickRow}
-			headerLabels={headerLabels}
-			isLoading={isLoading}
-		/>
-	)
+export const ListManager = ({ bodyData, headerLabels, handleClickRow, isLoading }: ParticipantManagerProps) => {
+	return <Table bodyData={bodyData} handleClickRow={handleClickRow} headerLabels={headerLabels} isLoading={isLoading} />
 }

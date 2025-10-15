@@ -1,13 +1,13 @@
 'use client'
 import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
+import { useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import type { MeetingSchemaType } from '@/components/Templates/Meetings/Meetings.schema'
 import { overlayClose } from '@/constants'
 import { useCreateMeetingPresence } from '@/services/queries/meetings'
-import { useFormContext } from 'react-hook-form'
 
 type MeetingAlertModalProps = {
 	modalId: string
@@ -19,16 +19,8 @@ type MeetingAlertModalProps = {
 }
 
 export const MeetingAlertModal = memo(
-	({
-		modalId,
-		type,
-		meetingId,
-		clearState,
-		isUpdate,
-		hasPreviousRecord,
-	}: MeetingAlertModalProps) => {
-		const { reset, getValues, handleSubmit } =
-			useFormContext<MeetingSchemaType>()
+	({ modalId, type, meetingId, clearState, isUpdate, hasPreviousRecord }: MeetingAlertModalProps) => {
+		const { reset, getValues, handleSubmit } = useFormContext<MeetingSchemaType>()
 		const { create, isPending } = useCreateMeetingPresence()
 
 		const onSubmit = async (values: MeetingSchemaType) => {
@@ -55,9 +47,7 @@ export const MeetingAlertModal = memo(
 
 		const handleSaveList = () => {
 			if (hasPreviousRecord) {
-				return toast.error(
-					'Não é possível criar um rascunho. Já existem presenças salvas para esta reunião.'
-				)
+				return toast.error('Não é possível criar um rascunho. Já existem presenças salvas para esta reunião.')
 			}
 
 			const values = {
@@ -74,10 +64,7 @@ export const MeetingAlertModal = memo(
 			overlayClose(modalId)
 		}
 
-		const title =
-			type === 'draft'
-				? 'Salvar presenças temporariamente?'
-				: 'Confirmar envio das presenças?'
+		const title = type === 'draft' ? 'Salvar presenças temporariamente?' : 'Confirmar envio das presenças?'
 		const description =
 			type === 'draft'
 				? 'Esta opção só pode ser usada se ainda não houver presenças salvas no sistema. As presenças serão armazenadas localmente no seu dispositivo e poderão ser enviadas depois.'
@@ -106,9 +93,7 @@ export const MeetingAlertModal = memo(
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={isPending}
 								isLoading={isPending}
-								onClick={
-									type === 'draft' ? handleSaveList : handleSubmit(onSubmit)
-								}
+								onClick={type === 'draft' ? handleSaveList : handleSubmit(onSubmit)}
 							>
 								Confirmar
 							</Button>

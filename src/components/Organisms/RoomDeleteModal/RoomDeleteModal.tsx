@@ -15,11 +15,7 @@ type RoomDeleteModalProps = {
 	setSelectedRoom: Dispatch<SetStateAction<RoomAPI['id'] | null>>
 }
 
-export const RoomDeleteModal = ({
-	modalId,
-	selectedRoom,
-	setSelectedRoom,
-}: RoomDeleteModalProps) => {
+export const RoomDeleteModal = ({ modalId, selectedRoom, setSelectedRoom }: RoomDeleteModalProps) => {
 	const { isPending, remove } = useDeleteRoom()
 
 	const handleDeleteRoom = async () => {
@@ -48,10 +44,7 @@ export const RoomDeleteModal = ({
 						<Header as="h3" className="text-2xl">
 							Você deseja excluir o quarto?
 						</Header>
-						<Text>
-							Ao excluir o quarto todos os membros vinculados a ele ficaram sem
-							nenhum quarto.
-						</Text>
+						<Text>Ao excluir o quarto todos os membros vinculados a ele ficaram sem nenhum quarto.</Text>
 					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button

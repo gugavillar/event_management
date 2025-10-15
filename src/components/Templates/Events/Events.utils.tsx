@@ -1,11 +1,11 @@
 'use client'
+import { format } from 'date-fns'
 import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
 
 import { Dropdown, Tooltip } from '@/components/Atoms'
 import { GenderType, MEMBERS } from '@/constants'
 import { currencyValue } from '@/formatters'
 import type { EventsAPI } from '@/services/queries/events/event.type'
-import { format } from 'date-fns'
 
 export const HEADER_LABELS = [
 	{
@@ -42,19 +42,9 @@ export const formatTableData = (
 	data: Array<EventsAPI> | undefined,
 	handleOpenDrawer: (id: EventsAPI['id']) => void,
 	handleDeleteEvent: (id: EventsAPI['id']) => void,
-	handleOpenLink: (
-		id: EventsAPI['id'],
-		type: 'participante' | 'voluntario'
-	) => void,
-	handleBlockOrOpenRegistration: (
-		id: EventsAPI['id'],
-		memberType: MEMBERS,
-		action: 'open' | 'close'
-	) => void,
-	handleActivatedOrDeactivatedInterestedList: (
-		id: EventsAPI['id'],
-		action: 'open' | 'close'
-	) => void,
+	handleOpenLink: (id: EventsAPI['id'], type: 'participante' | 'voluntario') => void,
+	handleBlockOrOpenRegistration: (id: EventsAPI['id'], memberType: MEMBERS, action: 'open' | 'close') => void,
+	handleActivatedOrDeactivatedInterestedList: (id: EventsAPI['id'], action: 'open' | 'close') => void,
 	handleOpenInterestedLink: (id: EventsAPI['id']) => void
 ) => {
 	if (!data) return []
@@ -102,9 +92,7 @@ export const formatTableData = (
 									)
 								}
 							>
-								{event.isVolunteerRegistrationOpen
-									? 'Fechar inscrição voluntários'
-									: 'Abrir inscrição voluntários'}
+								{event.isVolunteerRegistrationOpen ? 'Fechar inscrição voluntários' : 'Abrir inscrição voluntários'}
 							</p>
 							<p
 								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
@@ -115,34 +103,21 @@ export const formatTableData = (
 							<p
 								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
 								onClick={() =>
-									handleActivatedOrDeactivatedInterestedList(
-										event.id,
-										event.isInterestedListOpen ? 'close' : 'open'
-									)
+									handleActivatedOrDeactivatedInterestedList(event.id, event.isInterestedListOpen ? 'close' : 'open')
 								}
 							>
-								{event.isInterestedListOpen
-									? 'Fechar lista de interessados'
-									: 'Abrir lista de interessados'}
+								{event.isInterestedListOpen ? 'Fechar lista de interessados' : 'Abrir lista de interessados'}
 							</p>
 						</>
 					</Dropdown>
 					<Tooltip>Ações de links</Tooltip>
 				</div>
 				<div className="hs-tooltip">
-					<SquarePen
-						className="cursor-pointer"
-						onClick={() => handleOpenDrawer(event.id)}
-						size={18}
-					/>
+					<SquarePen className="cursor-pointer" onClick={() => handleOpenDrawer(event.id)} size={18} />
 					<Tooltip>Editar</Tooltip>
 				</div>
 				<div className="hs-tooltip">
-					<CalendarMinus
-						className="cursor-pointer"
-						onClick={() => handleDeleteEvent(event.id)}
-						size={18}
-					/>
+					<CalendarMinus className="cursor-pointer" onClick={() => handleDeleteEvent(event.id)} size={18} />
 					<Tooltip>Excluir</Tooltip>
 				</div>
 			</div>

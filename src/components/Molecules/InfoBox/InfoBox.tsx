@@ -11,13 +11,7 @@ type InfoBoxProps = ComponentProps<'div'> & {
 	isPhone?: boolean
 }
 
-export const InfoBox = ({
-	label,
-	value,
-	className,
-	isPhone,
-	...props
-}: InfoBoxProps) => {
+export const InfoBox = ({ label, value, className, isPhone, ...props }: InfoBoxProps) => {
 	if (!value) return null
 
 	const phoneNumber = isPhone ? value.replace(/\D/g, '') : value

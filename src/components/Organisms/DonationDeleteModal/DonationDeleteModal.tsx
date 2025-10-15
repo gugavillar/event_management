@@ -16,11 +16,7 @@ type DonationDeleteModalProps = {
 }
 
 export const DonationDeleteModal = memo(
-	({
-		modalId,
-		selectedDonation,
-		setSelectedDonation,
-	}: DonationDeleteModalProps) => {
+	({ modalId, selectedDonation, setSelectedDonation }: DonationDeleteModalProps) => {
 		const { remove, isPending } = useDeleteDonation()
 
 		const handleDeleteDonation = async () => {
@@ -50,10 +46,7 @@ export const DonationDeleteModal = memo(
 							<Header as="h3" className="text-2xl">
 								Você deseja excluir a doação?
 							</Header>
-							<Text>
-								Ao excluir a doação todos as informações serão excluídas e não
-								podem ser recuperadas.
-							</Text>
+							<Text>Ao excluir a doação todos as informações serão excluídas e não podem ser recuperadas.</Text>
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button

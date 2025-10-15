@@ -1,15 +1,13 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleDollarSign } from 'lucide-react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/Atoms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
+
 import { TransactionDrawer } from '../TransactionDrawer'
-import {
-	TransactionSchema,
-	type TransactionType,
-} from '../TransactionDrawer/TransactionDrawer.schema'
+import { TransactionSchema, type TransactionType } from '../TransactionDrawer/TransactionDrawer.schema'
 
 export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 	const methods = useForm<TransactionType>({
@@ -37,10 +35,7 @@ export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 				Criar transação
 			</Button>
 			<FormProvider {...methods}>
-				<TransactionDrawer
-					drawerId={MODALS_IDS.TRANSACTION_CREATE_DRAWER}
-					eventId={eventId}
-				/>
+				<TransactionDrawer drawerId={MODALS_IDS.TRANSACTION_CREATE_DRAWER} eventId={eventId} />
 			</FormProvider>
 		</>
 	)

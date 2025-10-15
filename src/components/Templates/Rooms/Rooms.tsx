@@ -1,36 +1,28 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { BedSingle, Search } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
-import {
-	RoomSchema,
-	type RoomSchemaType,
-} from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
+import { RoomSchema, type RoomSchemaType } from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetRoomByEventId } from '@/services/queries/rooms'
 import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
+
 import { Content, formatTableData } from './Rooms.utils'
 
-const RoomDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.RoomDeleteModal)
-)
+const RoomDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDeleteModal))
 
-const RoomDrawer = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.RoomDrawer)
-)
+const RoomDrawer = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDrawer))
 
-const DownloadPDF = dynamic(() =>
-	import('./RoomsPrint').then((mod) => mod.DownloadPDF)
-)
+const DownloadPDF = dynamic(() => import('./RoomsPrint').then((mod) => mod.DownloadPDF))
 
 export const Rooms = ({ eventId }: { eventId: string }) => {
 	const [selectedRoom, setSelectedRoom] = useState<RoomAPI['id'] | null>(null)
@@ -43,12 +35,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 		searchMemberRoom,
 		setSearchMemberRoom,
 	} = useGetRoomByEventId(eventId)
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const methods = useForm<RoomSchemaType>({
 		defaultValues: {
@@ -77,17 +64,14 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 		overlayOpen(MODALS_IDS.ROOM_REMOVE_MODAL)
 	}, [])
 
-	const handleOpenDrawerToCreateOrEditRoom = useCallback(
-		(id?: RoomAPI['id']) => {
-			if (id) {
-				setSelectedRoom(id)
-			} else {
-				setSelectedRoom(null)
-			}
-			overlayOpen(MODALS_IDS.ROOM_DRAWER)
-		},
-		[]
-	)
+	const handleOpenDrawerToCreateOrEditRoom = useCallback((id?: RoomAPI['id']) => {
+		if (id) {
+			setSelectedRoom(id)
+		} else {
+			setSelectedRoom(null)
+		}
+		overlayOpen(MODALS_IDS.ROOM_DRAWER)
+	}, [])
 
 	const formattedRooms = formatTableData(rooms)
 
@@ -137,11 +121,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 				)}
 			</ListPage>
 			<FormProvider {...methods}>
-				<RoomDrawer
-					drawerId={MODALS_IDS.ROOM_DRAWER}
-					selectedRoom={selectedRoom}
-					setSelectedRoom={setSelectedRoom}
-				/>
+				<RoomDrawer drawerId={MODALS_IDS.ROOM_DRAWER} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
 			</FormProvider>
 			<RoomDeleteModal
 				modalId={MODALS_IDS.ROOM_REMOVE_MODAL}

@@ -7,10 +7,7 @@ export type UpdateInterestedParticipantArgs = {
 	interested: boolean
 }
 
-export const updateInterestedParticipant = async (
-	participantId: string,
-	interested: boolean
-) => {
+export const updateInterestedParticipant = async (participantId: string, interested: boolean) => {
 	try {
 		z.object({
 			interested: z.boolean(),

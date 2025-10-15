@@ -1,5 +1,8 @@
 'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import saveAs from 'file-saver'
 import { useEffect, useState } from 'react'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
@@ -9,13 +12,8 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportVolunteerData } from '@/services/queries/volunteers'
-import { zodResolver } from '@hookform/resolvers/zod'
-import saveAs from 'file-saver'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
-import {
-	ExportVolunteersDataModalSchema,
-	type ExportVolunteersDataModalType,
-} from './ExportVolunteersDataModal.schema'
+
+import { ExportVolunteersDataModalSchema, type ExportVolunteersDataModalType } from './ExportVolunteersDataModal.schema'
 
 type ExportVolunteersDataModalProps = {
 	modalId: string
@@ -23,9 +21,7 @@ type ExportVolunteersDataModalProps = {
 
 const TOAST_ID = 'download-template-volunteers'
 
-export const ExportVolunteersDataModal = ({
-	modalId,
-}: ExportVolunteersDataModalProps) => {
+export const ExportVolunteersDataModal = ({ modalId }: ExportVolunteersDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportVolunteersDataModalType>({
 		defaultValues: {
@@ -33,12 +29,7 @@ export const ExportVolunteersDataModal = ({
 		},
 		resolver: zodResolver(ExportVolunteersDataModalSchema),
 	})
-	const {
-		data: events,
-		hasNextPage,
-		isFetchingNextPage,
-		fetchNextPage,
-	} = useGetInfinityEvents()
+	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const { data, isError, isFetching } = useGetExportVolunteerData(eventId)
 
 	const formattedEvents = formatterComboBoxValues(
@@ -72,9 +63,7 @@ export const ExportVolunteersDataModal = ({
 		const blob = new Blob([data], {
 			type: FILES_TYPES.xlsx,
 		})
-		const eventName =
-			formattedEvents.find((event) => event.customProps.value === eventId)
-				?.customProps?.label ?? ''
+		const eventName = formattedEvents.find((event) => event.customProps.value === eventId)?.customProps?.label ?? ''
 		saveAs(blob, `Voluntários-${eventName}.xlsx`)
 
 		setEventId('')

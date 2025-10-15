@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { createEvent, getAllEvents } from '@/server'
 import type { FormEvent } from '@/services/queries/events/event.type'
 import { requestProcess } from '@/utils/prisma'
+
 import { authOptions } from '../auth/[...nextauth]/authOptions'
 
 const handlerPost = async (request: NextRequest) => {

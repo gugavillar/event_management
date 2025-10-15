@@ -28,9 +28,7 @@ export const updateRoomById = async (data: FormRoom, id: string) => {
 				data: data.members.map((member: any) => ({
 					roomId: room.id,
 					type: member.type,
-					...(member.type === MEMBERS.PARTICIPANT
-						? { participantId: member.member }
-						: { volunteerId: member.member }),
+					...(member.type === MEMBERS.PARTICIPANT ? { participantId: member.member } : { volunteerId: member.member }),
 				})),
 			})
 		})

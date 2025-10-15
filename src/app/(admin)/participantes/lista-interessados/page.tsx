@@ -3,10 +3,7 @@ import { generatePage, QUERY_KEYS } from '@/constants'
 import { HydrationInfinityProvider } from '@/providers/HydrationInfinityProvider'
 import { HydrationProvider } from '@/providers/HydrationProver'
 import { getEvents } from '@/services/queries/events'
-import {
-	getParticipants,
-	getParticipantsCities,
-} from '@/services/queries/participants'
+import { getParticipants, getParticipantsCities } from '@/services/queries/participants'
 
 type SearchParams = {
 	searchParams: Promise<{
@@ -18,9 +15,7 @@ type SearchParams = {
 	}>
 }
 
-export default async function InterestedParticipantsPage({
-	searchParams,
-}: SearchParams) {
+export default async function InterestedParticipantsPage({ searchParams }: SearchParams) {
 	const params = await searchParams.then((res) => ({
 		cityParticipant: res.cityParticipant ?? '',
 		eventId: res.eventId ?? '',
@@ -47,15 +42,8 @@ export default async function InterestedParticipantsPage({
 	const getCities = () => getParticipantsCities(true, debounceEventIdValue)
 
 	return (
-		<HydrationInfinityProvider
-			initialPageParam={1}
-			queryFn={getAllEvents}
-			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-		>
-			<HydrationProvider
-				queryFn={getCities}
-				queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, true, debounceEventIdValue]}
-			>
+		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
+			<HydrationProvider queryFn={getCities} queryKey={[QUERY_KEYS.PARTICIPANTS_CITIES, true, debounceEventIdValue]}>
 				<HydrationProvider
 					queryFn={getAllParticipants}
 					queryKey={[

@@ -1,10 +1,10 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { signOut, useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 
 import { PRINCIPAL_LINKS } from '@/constants'
-import { signOut, useSession } from 'next-auth/react'
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
 	const { status } = useSession()

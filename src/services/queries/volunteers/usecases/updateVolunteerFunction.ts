@@ -1,5 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
+
 import type { VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerFunctionArgs = {
@@ -11,11 +12,7 @@ type UpdateVolunteerFunctionArgs = {
 	onlyRemove?: boolean
 }
 
-export const updateVolunteerFunction = async ({
-	volunteerId,
-	data,
-	onlyRemove,
-}: UpdateVolunteerFunctionArgs) => {
+export const updateVolunteerFunction = async ({ volunteerId, data, onlyRemove }: UpdateVolunteerFunctionArgs) => {
 	const response = await api.patch(
 		ENDPOINTS.UPDATE_VOLUNTEER_FUNCTION(volunteerId),
 		{ ...data },

@@ -1,6 +1,7 @@
 import type { UUID } from 'crypto'
 
 import type { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
+
 import type { EventsAPI } from '../events/event.type'
 
 type VolunteerRole = {

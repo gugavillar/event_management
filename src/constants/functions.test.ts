@@ -13,10 +13,7 @@ describe('functions', () => {
 	})
 
 	test('eventPermitCreateRegistration return false when event is undefined', () => {
-		const isRegistrationOpen = eventPermitCreateRegistration(
-			undefined,
-			MEMBERS.PARTICIPANT
-		)
+		const isRegistrationOpen = eventPermitCreateRegistration(undefined, MEMBERS.PARTICIPANT)
 		expect(isRegistrationOpen).toBe(false)
 	})
 

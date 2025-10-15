@@ -1,9 +1,10 @@
 'use client'
 
-import { HelperErrorText, Label, MaskedInput } from '@/components/Atoms'
 import { get } from 'lodash'
 import { Controller, useFormContext } from 'react-hook-form'
 import type { PatternFormatProps } from 'react-number-format'
+
+import { HelperErrorText, Label, MaskedInput } from '@/components/Atoms'
 
 type MaskedInputFieldProps = Omit<PatternFormatProps, 'customInput'> & {
 	children: string
@@ -11,12 +12,7 @@ type MaskedInputFieldProps = Omit<PatternFormatProps, 'customInput'> & {
 	format: string
 }
 
-export const MaskedInputField = ({
-	children,
-	fieldName,
-	format,
-	...props
-}: MaskedInputFieldProps) => {
+export const MaskedInputField = ({ children, fieldName, format, ...props }: MaskedInputFieldProps) => {
 	const { control, formState } = useFormContext()
 	const error = get(formState.errors, fieldName)
 
@@ -27,20 +23,10 @@ export const MaskedInputField = ({
 				control={control}
 				name={fieldName}
 				render={({ field }) => (
-					<MaskedInput
-						format={format}
-						id={fieldName}
-						isInvalid={!!error?.message}
-						{...props}
-						{...field}
-					/>
+					<MaskedInput format={format} id={fieldName} isInvalid={!!error?.message} {...props} {...field} />
 				)}
 			/>
-			{error?.message ? (
-				<HelperErrorText className="text-red-500">
-					{error?.message as string}
-				</HelperErrorText>
-			) : null}
+			{error?.message ? <HelperErrorText className="text-red-500">{error?.message as string}</HelperErrorText> : null}
 		</div>
 	)
 }

@@ -1,6 +1,7 @@
 import type { UUID } from 'crypto'
 
 import type { MEMBERS } from '@/constants'
+
 import type { EventsAPI } from '../events/event.type'
 import type { ParticipantsAPI } from '../participants/participants.type'
 import type { VolunteersAPI } from '../volunteers/volunteers.type'

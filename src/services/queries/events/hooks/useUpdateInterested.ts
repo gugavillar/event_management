@@ -1,5 +1,6 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
+
 import { updateInterested } from '../usecases'
 
 export const useUpdateInterested = () => {

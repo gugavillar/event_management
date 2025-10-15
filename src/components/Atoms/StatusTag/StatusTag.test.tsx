@@ -1,15 +1,14 @@
 import { render } from '@testing-library/react'
 
 import { CHECK_IN_STATUS, StatusType } from '@/constants'
+
 import { StatusTag } from './StatusTag'
 
 const StatusTagArray = Object.values(CHECK_IN_STATUS)
 
 describe('PaymentTag component', () => {
 	it('renders correclty', () => {
-		const { getByTestId } = render(
-			<StatusTag data-testid="status-tag" status={CHECK_IN_STATUS.CONFIRMED} />
-		)
+		const { getByTestId } = render(<StatusTag data-testid="status-tag" status={CHECK_IN_STATUS.CONFIRMED} />)
 
 		const statusTag = getByTestId('status-tag')
 
@@ -18,11 +17,7 @@ describe('PaymentTag component', () => {
 
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
-			<StatusTag
-				className="custom-class"
-				data-testid="status-tag"
-				status={CHECK_IN_STATUS.CONFIRMED}
-			/>
+			<StatusTag className="custom-class" data-testid="status-tag" status={CHECK_IN_STATUS.CONFIRMED} />
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -31,13 +26,7 @@ describe('PaymentTag component', () => {
 	})
 
 	it('applies custom props', () => {
-		const { getByTestId } = render(
-			<StatusTag
-				data-testid="status-tag"
-				id="test"
-				status={CHECK_IN_STATUS.CONFIRMED}
-			/>
-		)
+		const { getByTestId } = render(<StatusTag data-testid="status-tag" id="test" status={CHECK_IN_STATUS.CONFIRMED} />)
 
 		const statusTag = getByTestId('status-tag')
 
@@ -47,9 +36,7 @@ describe('PaymentTag component', () => {
 	it('renders correctly custom label based on status', () => {
 		const status = Math.floor(Math.random() * StatusTagArray.length)
 
-		const { getByTestId } = render(
-			<StatusTag data-testid="status-tag" status={StatusTagArray[status]} />
-		)
+		const { getByTestId } = render(<StatusTag data-testid="status-tag" status={StatusTagArray[status]} />)
 
 		const statusTag = getByTestId('status-tag')
 

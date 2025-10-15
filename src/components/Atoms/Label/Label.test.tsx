@@ -10,9 +10,7 @@ describe('Label component', () => {
 	})
 
 	it('applies custom classes', () => {
-		const { getByTestId } = render(
-			<Label className="custom-class" data-testid="label" />
-		)
+		const { getByTestId } = render(<Label className="custom-class" data-testid="label" />)
 		const label = getByTestId('label')
 		expect(label).toHaveClass('custom-class')
 	})

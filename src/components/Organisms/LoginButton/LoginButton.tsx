@@ -1,18 +1,16 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useLayoutEffect } from 'react'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button, Header } from '@/components/Atoms'
 import { InputField } from '@/components/Molecules'
 import { convertToBoolean } from '@/formatters'
 import { useLogin } from '@/services/queries/auth'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
+
 import { DefinedNewPassword } from './DefinedNewPassword'
-import {
-	LoginButtonSchema,
-	type LoginButtonSchemaType,
-} from './LoginButton.schema'
+import { LoginButtonSchema, type LoginButtonSchemaType } from './LoginButton.schema'
 
 export const LoginButton = () => {
 	const methods = useForm({
@@ -23,16 +21,9 @@ export const LoginButton = () => {
 		mode: 'onChange',
 		resolver: zodResolver(LoginButtonSchema),
 	})
-	const {
-		login,
-		isPending,
-		hasToDefineNewPassword,
-		setHasToDefineNewPassword,
-	} = useLogin()
+	const { login, isPending, hasToDefineNewPassword, setHasToDefineNewPassword } = useLogin()
 
-	const handleSubmitLogin: SubmitHandler<LoginButtonSchemaType> = async (
-		values
-	) => {
+	const handleSubmitLogin: SubmitHandler<LoginButtonSchemaType> = async (values) => {
 		await login({
 			email: values.email,
 			password: values.password,
@@ -40,9 +31,7 @@ export const LoginButton = () => {
 	}
 
 	useLayoutEffect(() => {
-		setHasToDefineNewPassword(
-			convertToBoolean(sessionStorage.getItem('hasToDefineNewPassword'))
-		)
+		setHasToDefineNewPassword(convertToBoolean(sessionStorage.getItem('hasToDefineNewPassword')))
 	}, [setHasToDefineNewPassword])
 
 	if (hasToDefineNewPassword) {
@@ -53,10 +42,7 @@ export const LoginButton = () => {
 		<aside className="flex h-screen w-full flex-col items-center justify-center space-y-6 p-6 md:p-8 lg:p-12">
 			<Header>Acesse sua conta</Header>
 			<FormProvider {...methods}>
-				<form
-					className="flex w-full flex-col gap-6"
-					onSubmit={methods.handleSubmit(handleSubmitLogin)}
-				>
+				<form className="flex w-full flex-col gap-6" onSubmit={methods.handleSubmit(handleSubmitLogin)}>
 					<InputField fieldName="email" type="email">
 						Email
 					</InputField>

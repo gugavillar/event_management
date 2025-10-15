@@ -25,10 +25,7 @@ export default async function UsersPage({ searchParams }: SearchParams) {
 	const getAllUsers = () => getUsers({ page, searchUser: debounceValue })
 
 	return (
-		<HydrationProvider
-			queryFn={getAllUsers}
-			queryKey={[QUERY_KEYS.USERS, debounceValue, page]}
-		>
+		<HydrationProvider queryFn={getAllUsers} queryKey={[QUERY_KEYS.USERS, debounceValue, page]}>
 			<Users userId={session?.user?.id as string} />
 		</HydrationProvider>
 	)

@@ -7,13 +7,8 @@ type UpdateCheckInVolunteerArgs = {
 	status: CHECK_IN_STATUS
 }
 
-export const updateCheckInVolunteer = async (
-	data: UpdateCheckInVolunteerArgs
-) => {
-	const response = await api.patch(
-		ENDPOINTS.UPDATE_CHECK_IN_VOLUNTEER(data.volunteerId),
-		{ ...data }
-	)
+export const updateCheckInVolunteer = async (data: UpdateCheckInVolunteerArgs) => {
+	const response = await api.patch(ENDPOINTS.UPDATE_CHECK_IN_VOLUNTEER(data.volunteerId), { ...data })
 
 	return response.data
 }

@@ -3,10 +3,7 @@ import { z } from 'zod'
 
 import { prisma } from '@/constants'
 
-export const updateInterestedListById = async (
-	id: string,
-	action: 'open' | 'close'
-) => {
+export const updateInterestedListById = async (id: string, action: 'open' | 'close') => {
 	try {
 		z.object({
 			action: z.enum(['open', 'close']),
@@ -22,8 +19,7 @@ export const updateInterestedListById = async (
 		if (event?.isParticipantRegistrationOpen && action === 'open') {
 			return NextResponse.json(
 				{
-					error:
-						'Para abrir a lista de interessados, primeiro feche a inscrição de participantes',
+					error: 'Para abrir a lista de interessados, primeiro feche a inscrição de participantes',
 				},
 				{ status: 400 }
 			)

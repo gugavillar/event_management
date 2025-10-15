@@ -1,9 +1,9 @@
 'use client'
+import { useWindowSize } from '@uidotdev/usehooks'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { memo } from 'react'
 
-import { useWindowSize } from '@uidotdev/usehooks'
-import { useSession } from 'next-auth/react'
 import { MenuItem } from './MenuItem'
 import { MENU_LINKS } from './PrincipalMenu.utils'
 import { SubMenuItem } from './SubMenuItem'
@@ -17,10 +17,7 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 	const { data } = useSession()
 	const { width } = useWindowSize()
 	return (
-		<nav
-			className="flex w-full flex-row justify-evenly md:mt-8 md:flex-col md:space-y-4"
-			data-testid="principal-menu"
-		>
+		<nav className="flex w-full flex-row justify-evenly md:mt-8 md:flex-col md:space-y-4" data-testid="principal-menu">
 			{MENU_LINKS.map((item) =>
 				item.hasSubMenu ? (
 					<SubMenuItem

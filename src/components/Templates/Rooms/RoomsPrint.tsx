@@ -1,18 +1,12 @@
 'use client'
 
+import { Document, Page, PDFDownloadLink, StyleSheet, Text, View } from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { Spinner } from '@/components/Atoms'
 import { generatePrintKey } from '@/constants'
-import {
-	Document,
-	Page,
-	PDFDownloadLink,
-	StyleSheet,
-	Text,
-	View,
-} from '@react-pdf/renderer'
+
 import type { formatTableData } from './Rooms.utils'
 
 type DownloadPDFProps = {

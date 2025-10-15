@@ -17,9 +17,7 @@ export type CreateVolunteerPaymentArgs = {
 	paymentReceived?: number
 }
 
-export const createVolunteerPayment = async (
-	values: CreateVolunteerPaymentArgs
-) => {
+export const createVolunteerPayment = async (values: CreateVolunteerPaymentArgs) => {
 	try {
 		z.object({
 			eventId: z.uuid(),
@@ -31,10 +29,7 @@ export const createVolunteerPayment = async (
 				PaymentTypeAPI.DONATION,
 				PaymentTypeAPI.DONATION_ROMERO,
 			]),
-			paymentValue: z.coerce
-				.number()
-				.min(MIN_CURRENCY_VALUE)
-				.max(MAX_CURRENCY_VALUE),
+			paymentValue: z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE),
 			volunteerId: z.uuid(),
 		}).parse({ ...values })
 
@@ -45,11 +40,7 @@ export const createVolunteerPayment = async (
 				},
 			})
 
-			if (
-				[PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO].includes(
-					values.paymentType
-				)
-			) {
+			if ([PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO].includes(values.paymentType)) {
 				return
 			}
 
@@ -61,14 +52,9 @@ export const createVolunteerPayment = async (
 
 			await tx.transactions.create({
 				data: {
-					amount:
-						values.paymentType === PaymentTypeAPI.CARD
-							? (values.paymentReceived as number)
-							: values.paymentValue,
+					amount: values.paymentType === PaymentTypeAPI.CARD ? (values.paymentReceived as number) : values.paymentValue,
 					amountType:
-						values.paymentType === PaymentTypeAPI.CASH
-							? TransactionAmountType.CASH
-							: TransactionAmountType.ACCOUNT,
+						values.paymentType === PaymentTypeAPI.CASH ? TransactionAmountType.CASH : TransactionAmountType.ACCOUNT,
 					date: new Date(),
 					description: `Pagamento ficha - ${volunteer?.name}`,
 					eventId: values.eventId,
