@@ -1,8 +1,9 @@
 'use client'
-import { type ApexOptions } from 'apexcharts'
 import dynamic from 'next/dynamic'
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
+
+import type { ApexOptions } from 'apexcharts'
 
 const ApexCharts = dynamic(() => import('react-apexcharts'), {
 	ssr: false,
@@ -18,56 +19,32 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 		},
 	},
 	colors: ['#14b8a6', '#0ea5e9'],
-	grid: {
-		strokeDashArray: 0,
-		borderColor: '#e5e7eb',
-	},
-	plotOptions: {
-		bar: {
-			horizontal: false,
-			columnWidth: '18px',
-			borderRadius: 4,
-			borderRadiusApplication: 'end',
-			dataLabels: {
-				position: 'top',
-			},
+	dataLabels: {
+		enabled: true,
+		offsetY: -20,
+		style: {
+			colors: ['#304758'],
+			fontSize: '14px',
 		},
+		textAnchor: 'middle',
+	},
+	grid: {
+		borderColor: '#e5e7eb',
+		strokeDashArray: 0,
 	},
 	legend: {
 		show: true,
 	},
-	dataLabels: {
-		enabled: true,
-		textAnchor: 'middle',
-		offsetY: -20,
-		style: {
-			fontSize: '14px',
-			colors: ['#304758'],
+	plotOptions: {
+		bar: {
+			borderRadius: 4,
+			borderRadiusApplication: 'end',
+			columnWidth: '18px',
+			dataLabels: {
+				position: 'top',
+			},
+			horizontal: false,
 		},
-	},
-	stroke: {
-		show: true,
-		width: 2,
-		colors: ['transparent'],
-	},
-	xaxis: {
-		type: 'category',
-		labels: {
-			show: true,
-			trim: true,
-		},
-		axisBorder: {
-			show: false,
-		},
-		axisTicks: {
-			show: false,
-		},
-		crosshairs: {
-			show: false,
-		},
-	},
-	yaxis: {
-		forceNiceScale: true,
 	},
 	states: {
 		hover: {
@@ -76,8 +53,12 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 			},
 		},
 	},
+	stroke: {
+		colors: ['transparent'],
+		show: true,
+		width: 2,
+	},
 	tooltip: {
-		followCursor: false,
 		custom: ({ series, seriesIndex, dataPointIndex, w }) => {
 			const hasSeriesMoreThanOne = w.globals.seriesNames.length > 1
 			const label = hasSeriesMoreThanOne
@@ -90,6 +71,26 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 				<p>Total: ${value}</p>
 			</div>`
 		},
+		followCursor: false,
+	},
+	xaxis: {
+		axisBorder: {
+			show: false,
+		},
+		axisTicks: {
+			show: false,
+		},
+		crosshairs: {
+			show: false,
+		},
+		labels: {
+			show: true,
+			trim: true,
+		},
+		type: 'category',
+	},
+	yaxis: {
+		forceNiceScale: true,
 	},
 }
 
@@ -101,12 +102,9 @@ type BarChartProps = ComponentProps<'div'> & {
 export const BarChart = ({ className, categories, series }: BarChartProps) => {
 	return (
 		<ApexCharts
-			data-testid="bar-chart"
 			className={twMerge('h-full w-full cursor-pointer', className)}
-			type="bar"
+			data-testid="bar-chart"
 			height="100%"
-			width="100%"
-			series={series}
 			options={{
 				...OPTIONS_CHART_BAR,
 				xaxis: {
@@ -114,6 +112,9 @@ export const BarChart = ({ className, categories, series }: BarChartProps) => {
 					categories,
 				},
 			}}
+			series={series}
+			type="bar"
+			width="100%"
 		/>
 	)
 }

@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Header, Text } from '@/components/Atoms'
@@ -19,7 +19,7 @@ export const ChartContainer = ({
 		<section
 			className={twMerge(
 				'flex w-full flex-col space-y-4 rounded-lg bg-slate-800/5 p-8 shadow-lg',
-				className,
+				className
 			)}
 			{...props}
 		>

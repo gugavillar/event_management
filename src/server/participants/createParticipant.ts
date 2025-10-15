@@ -2,14 +2,14 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import {
-	ParticipantSchemaRouteType,
+	type ParticipantSchemaRouteType,
 	participantSchemaRoute,
 } from '@/app/api/participants/participant.schema'
 import { deepTrim, prisma } from '@/constants'
 
 export const createParticipant = async (
 	data: ParticipantSchemaRouteType & { eventId: string },
-	inscriptionType: string | null,
+	inscriptionType: string | null
 ) => {
 	try {
 		participantSchemaRoute
@@ -32,7 +32,7 @@ export const createParticipant = async (
 		if (isAlreadyRegistered) {
 			return NextResponse.json(
 				{ error: 'Participante já cadastrado' },
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 
@@ -48,7 +48,7 @@ export const createParticipant = async (
 		) {
 			return NextResponse.json(
 				{ error: 'Inscrições encerradas' },
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 

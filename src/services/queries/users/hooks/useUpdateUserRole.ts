@@ -1,6 +1,5 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
-
 import { updateUserRole } from '../usecases'
 
 export const useUpdateUserRole = () => {

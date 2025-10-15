@@ -4,7 +4,6 @@ import { memo } from 'react'
 
 import { Button } from '@/components/Atoms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
-
 import { ExportParticipantsDataModal } from '../ExportParticipantsDataModal'
 
 type ExportParticipantsButtonProps = {
@@ -27,12 +26,12 @@ export const ExportParticipantsButton = memo(
 					{isInterested ? 'Export interessados' : 'Export participantes'}
 				</Button>
 				<ExportParticipantsDataModal
-					modalId={MODALS_IDS.PARTICIPANT_EXPORT_MODAL}
 					isInterested={isInterested}
+					modalId={MODALS_IDS.PARTICIPANT_EXPORT_MODAL}
 				/>
 			</>
 		)
-	},
+	}
 )
 
 ExportParticipantsButton.displayName = 'ExportParticipantsButton'

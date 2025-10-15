@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react'
 
 import { PaymentType, PaymentTypeAPI } from '@/constants'
-
 import { PaymentTag } from './PaymentTag'
 
 const PaymentTagStatusArray = Object.values(PaymentTypeAPI)
@@ -9,7 +8,7 @@ const PaymentTagStatusArray = Object.values(PaymentTypeAPI)
 describe('PaymentTag component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<PaymentTag status={PaymentTypeAPI.CARD} data-testid="payment-tag" />,
+			<PaymentTag data-testid="payment-tag" status={PaymentTypeAPI.CARD} />
 		)
 
 		const paymentTag = getByTestId('payment-tag')
@@ -20,10 +19,10 @@ describe('PaymentTag component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<PaymentTag
-				status={PaymentTypeAPI.CARD}
-				data-testid="payment-tag"
 				className="custom-class"
-			/>,
+				data-testid="payment-tag"
+				status={PaymentTypeAPI.CARD}
+			/>
 		)
 
 		const paymentTag = getByTestId('payment-tag')
@@ -34,10 +33,10 @@ describe('PaymentTag component', () => {
 	it('applies custom props', () => {
 		const { getByTestId } = render(
 			<PaymentTag
-				status={PaymentTypeAPI.CARD}
 				data-testid="payment-tag"
 				id="test"
-			/>,
+				status={PaymentTypeAPI.CARD}
+			/>
 		)
 
 		const paymentTag = getByTestId('payment-tag')
@@ -50,9 +49,9 @@ describe('PaymentTag component', () => {
 
 		const { getByTestId } = render(
 			<PaymentTag
-				status={PaymentTagStatusArray[status]}
 				data-testid="payment-tag"
-			/>,
+				status={PaymentTagStatusArray[status]}
+			/>
 		)
 
 		const paymentTag = getByTestId('payment-tag')

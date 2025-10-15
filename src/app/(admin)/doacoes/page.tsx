@@ -20,15 +20,15 @@ export default async function DonationPage({ searchParams }: SearchParams) {
 	const debounceValue = params.eventId
 	const page = generatePage(params.page)
 
-	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 	const getAllDonations = async () =>
 		getDonations({ eventId: debounceValue, page })
 
 	return (
 		<HydrationInfinityProvider
+			initialPageParam={1}
 			queryFn={getAllEvents}
 			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-			initialPageParam={1}
 		>
 			<HydrationProvider
 				queryFn={getAllDonations}

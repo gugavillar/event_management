@@ -9,13 +9,13 @@ export const getMeetingPresenceById = async (meetingId: string) => {
 		}).parse({ meetingId })
 
 		return await prisma.meetingPresence.findMany({
-			where: {
-				meetingId,
-			},
 			orderBy: {
 				volunteer: {
 					name: 'asc',
 				},
+			},
+			where: {
+				meetingId,
 			},
 		})
 	} catch (error) {

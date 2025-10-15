@@ -1,8 +1,5 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import saveAs from 'file-saver'
 import { useEffect, useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
@@ -12,10 +9,12 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportParticipantsData } from '@/services/queries/participants'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import saveAs from 'file-saver'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import {
 	ExportParticipantsFileModalSchema,
-	ExportParticipantsFileModalType,
+	type ExportParticipantsFileModalType,
 } from './ExportParticipantsDataModal.schema'
 
 type ExportParticipantsDataModalProps = {
@@ -44,19 +43,19 @@ export const ExportParticipantsDataModal = ({
 	} = useGetInfinityEvents()
 	const { data, isError, isFetching } = useGetExportParticipantsData(
 		eventId,
-		isInterested,
+		isInterested
 	)
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleClose = () => {
@@ -85,7 +84,7 @@ export const ExportParticipantsDataModal = ({
 			blob,
 			isInterested
 				? `Interessados-${eventName}.xlsx`
-				: `Participantes-${eventName}.xlsx`,
+				: `Participantes-${eventName}.xlsx`
 		)
 
 		setEventId('')
@@ -102,7 +101,7 @@ export const ExportParticipantsDataModal = ({
 	}
 
 	return (
-		<Modal modalId={modalId} handleClose={handleClose}>
+		<Modal handleClose={handleClose} modalId={modalId}>
 			<FormProvider {...methods}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
@@ -115,27 +114,27 @@ export const ExportParticipantsDataModal = ({
 							<Text>Selecione o evento que deseja exportar os dados</Text>
 						</div>
 						<Controller
-							name="eventId"
 							control={methods.control}
+							name="eventId"
 							render={({ field }) => (
 								<ComboBox
+									error={methods.formState.errors.eventId?.message}
 									keyOptionLabel="label"
 									keyOptionValue="value"
+									label="Evento"
+									lastItemRef={lastItemRef}
 									options={formattedEvents}
 									selectedValue={field.value}
 									setSelectedValue={field.onChange}
-									lastItemRef={lastItemRef}
-									label="Evento"
-									error={methods.formState.errors.eventId?.message}
 								/>
 							)}
 						/>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-							type="submit"
-							onClick={methods.handleSubmit(handleSubmit)}
 							disabled={!methods.formState.isValid}
 							isLoading={isFetching}
+							onClick={methods.handleSubmit(handleSubmit)}
+							type="submit"
 						>
 							Exportar
 						</Button>

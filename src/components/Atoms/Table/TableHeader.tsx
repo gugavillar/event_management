@@ -1,5 +1,6 @@
-import { ComponentProps, memo } from 'react'
+import { type ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
+
 import { v4 as uuid } from 'uuid'
 
 export type TableHeaderProps = ComponentProps<'thead'> & {
@@ -17,12 +18,12 @@ export const TableHeader = memo(
 				<tr>
 					{headerLabels?.map(({ label, className }) => (
 						<th
-							key={uuid()}
-							scope="col"
 							className={twMerge(
 								'bg-slate-800 px-6 py-3 text-start text-xs font-medium text-nowrap text-gray-100 uppercase md:first:sticky md:first:left-0',
-								className,
+								className
 							)}
+							key={uuid()}
+							scope="col"
 						>
 							{label}
 						</th>
@@ -30,7 +31,7 @@ export const TableHeader = memo(
 				</tr>
 			</thead>
 		)
-	},
+	}
 )
 
 TableHeader.displayName = 'TableHeader'

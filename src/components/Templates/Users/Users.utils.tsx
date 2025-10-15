@@ -2,32 +2,32 @@ import { UserLock, UserRoundCog, UserRoundPen } from 'lucide-react'
 
 import { Tooltip, UserTag } from '@/components/Atoms'
 import { RolesTypes, USER_STATUS } from '@/constants'
-import { UserAPI } from '@/services/queries/users/users.type'
+import type { UserAPI } from '@/services/queries/users/users.type'
 
 export const HEADER_LABELS = [
 	{
-		label: 'Nome',
 		accessor: 'name',
+		label: 'Nome',
 	},
 	{
-		label: 'Email',
 		accessor: 'email',
+		label: 'Email',
 	},
 	{
-		label: 'Tipo de acesso',
 		accessor: 'role',
+		label: 'Tipo de acesso',
 	},
 	{
-		label: 'Primeiro acesso',
 		accessor: 'firstAccess',
+		label: 'Primeiro acesso',
 	},
 	{
-		label: 'Status',
 		accessor: 'status',
+		label: 'Status',
 	},
 	{
-		label: '',
 		accessor: 'actions',
+		label: '',
 	},
 ]
 
@@ -36,47 +36,47 @@ export const formatTableData = (
 	userId: string,
 	handleChangeRole: (id: UserAPI['id']) => void,
 	handleResetPassword: (id: UserAPI['id']) => void,
-	handleBlockUser: (id: UserAPI['id']) => void,
+	handleBlockUser: (id: UserAPI['id']) => void
 ) => {
 	if (!data) return []
 
 	return data
 		?.map((user) => ({
 			...user,
-			firstAccess: user.firstAccess ? 'Sim' : 'Não',
-			role: RolesTypes[user.role].label,
-			status: (
-				<UserTag
-					status={!user.deletedAt ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE}
-				/>
-			),
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
 						<UserRoundPen
 							className="cursor-pointer"
-							size={20}
 							onClick={() => handleChangeRole(user.id)}
+							size={20}
 						/>
 						<Tooltip>Alterar permissão</Tooltip>
 					</div>
 					<div className="hs-tooltip">
 						<UserRoundCog
 							className="cursor-pointer"
-							size={20}
 							onClick={() => handleResetPassword(user.id)}
+							size={20}
 						/>
 						<Tooltip>Redefinir senha</Tooltip>
 					</div>
 					<div className="hs-tooltip">
 						<UserLock
 							className="cursor-pointer"
-							size={20}
 							onClick={() => handleBlockUser(user.id)}
+							size={20}
 						/>
 						<Tooltip>Bloquear usuário</Tooltip>
 					</div>
 				</div>
+			),
+			firstAccess: user.firstAccess ? 'Sim' : 'Não',
+			role: RolesTypes[user.role].label,
+			status: (
+				<UserTag
+					status={!user.deletedAt ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE}
+				/>
 			),
 		}))
 		.filter((user) => user.id !== userId)

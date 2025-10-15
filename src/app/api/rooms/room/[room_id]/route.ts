@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { getRoomById, removeRoomById, updateRoomById } from '@/server'
-import { FormRoom } from '@/services/queries/rooms/rooms.types'
+import type { FormRoom } from '@/services/queries/rooms/rooms.types'
 import { requestProcess } from '@/utils/prisma'
 
 type Params = {

@@ -2,68 +2,68 @@ import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 export const HEADER_LABELS = [
 	{
-		label: 'Função',
 		accessor: 'role',
+		label: 'Função',
 	},
 	{
-		label: 'Líder',
 		accessor: 'leader',
+		label: 'Líder',
 	},
 	{
-		label: 'Qtd. voluntários',
 		accessor: 'total',
+		label: 'Qtd. voluntários',
 	},
 	{
-		label: '',
 		accessor: 'actions',
+		label: '',
 	},
 ]
 
 export const formatTableData = (
 	data: Array<VolunteersFunctionsFromAPI> | undefined,
 	handleDeleteFunction: (selected: VolunteersFunctionsFromAPI) => void,
-	handleEditFunction: (selected: VolunteersFunctionsFromAPI) => void,
+	handleEditFunction: (selected: VolunteersFunctionsFromAPI) => void
 ) => {
 	if (!data) return []
 
 	return data?.map((role) => ({
-		id: role.id,
-		leader: !role.leaders.length
-			? 'Sem líder'
-			: role.leaders.map(({ name }) => name).join(', '),
-		total: role.volunteers.length,
-		role: role.volunteerRole.role,
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
 					<SquarePen
 						className="cursor-pointer"
-						size={20}
 						onClick={() => handleEditFunction(role)}
+						size={20}
 					/>
 					<Tooltip>Editar</Tooltip>
 				</div>
 				<div className="hs-tooltip">
 					<Trash2
 						className="cursor-pointer"
-						size={20}
 						onClick={() => handleDeleteFunction(role)}
+						size={20}
 					/>
 					<Tooltip>Excluir</Tooltip>
 				</div>
 			</div>
 		),
+		id: role.id,
+		leader: !role.leaders.length
+			? 'Sem líder'
+			: role.leaders.map(({ name }) => name).join(', '),
+		role: role.volunteerRole.role,
+		total: role.volunteers.length,
 	}))
 }
 
 export const Content = (
 	eventId: string,
 	isFetching: boolean,
-	data: ReturnType<typeof formatTableData>,
+	data: ReturnType<typeof formatTableData>
 ) => {
 	if (!eventId) {
 		return (

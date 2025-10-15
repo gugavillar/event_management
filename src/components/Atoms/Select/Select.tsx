@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef } from 'react'
+import { type ComponentPropsWithoutRef, forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 export type SelectProps = ComponentPropsWithoutRef<'select'> & {
@@ -22,7 +22,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 						'block w-full rounded-lg px-4 py-3 pe-11 text-base disabled:pointer-events-none disabled:opacity-50',
 						className,
 						isInvalid &&
-							'border-red-500 focus:border-red-500 focus:ring-red-500',
+							'border-red-500 focus:border-red-500 focus:ring-red-500'
 					)}
 					ref={ref}
 					{...props}
@@ -30,14 +30,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 					{placeholder ? <option value="">{placeholder}</option> : null}
 					{hasOptions &&
 						options.map(({ label, value, isDisabled }) => (
-							<option key={value} value={value} disabled={isDisabled}>
+							<option disabled={isDisabled} key={value} value={value}>
 								{label}
 							</option>
 						))}
 				</select>
 			</div>
 		)
-	},
+	}
 )
 
 Select.displayName = 'Select'

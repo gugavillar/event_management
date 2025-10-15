@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 
 import { Header, InformationCard, Spinner, Text } from '@/components/Atoms'
-import { DashboardFromAPI } from '@/services/queries/dashboard/dashboard.types'
+import type { DashboardFromAPI } from '@/services/queries/dashboard/dashboard.types'
 
 type DashboardCardsProps = {
 	data?: DashboardFromAPI
@@ -36,7 +36,7 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 				<div
 					className={twMerge(
 						'flex h-full flex-col items-center justify-end p-4 md:p-5',
-						isLoading && 'justify-center',
+						isLoading && 'justify-center'
 					)}
 				>
 					{isLoading ? (
@@ -63,7 +63,7 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 				<div
 					className={twMerge(
 						'flex h-full flex-col items-center justify-end p-4 md:p-5',
-						isLoading && 'justify-center',
+						isLoading && 'justify-center'
 					)}
 				>
 					{isLoading ? (

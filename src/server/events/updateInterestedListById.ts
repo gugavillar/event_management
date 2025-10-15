@@ -5,13 +5,13 @@ import { prisma } from '@/constants'
 
 export const updateInterestedListById = async (
 	id: string,
-	action: 'open' | 'close',
+	action: 'open' | 'close'
 ) => {
 	try {
 		z.object({
-			id: z.uuid(),
 			action: z.enum(['open', 'close']),
-		}).parse({ id, action })
+			id: z.uuid(),
+		}).parse({ action, id })
 
 		const event = await prisma.event.findUnique({
 			where: {
@@ -25,7 +25,7 @@ export const updateInterestedListById = async (
 					error:
 						'Para abrir a lista de interessados, primeiro feche a inscrição de participantes',
 				},
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 

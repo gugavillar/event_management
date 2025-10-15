@@ -14,8 +14,8 @@ export const getDonations = async ({
 	const response = await api.get(ENDPOINTS.GET_DONATIONS, {
 		params: {
 			...(eventId && { eventId }),
-			page,
 			limit: LIMIT_PER_PAGE,
+			page,
 		},
 	})
 

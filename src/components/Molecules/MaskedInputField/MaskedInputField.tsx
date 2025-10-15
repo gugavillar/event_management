@@ -1,9 +1,8 @@
 'use client'
-import { get } from 'lodash'
-import { Controller, useFormContext } from 'react-hook-form'
 
 import { HelperErrorText, Label, MaskedInput } from '@/components/Atoms'
-
+import { get } from 'lodash'
+import { Controller, useFormContext } from 'react-hook-form'
 import type { PatternFormatProps } from 'react-number-format'
 
 type MaskedInputFieldProps = Omit<PatternFormatProps, 'customInput'> & {
@@ -25,8 +24,8 @@ export const MaskedInputField = ({
 		<div className="w-full">
 			<Label htmlFor={fieldName}>{children}</Label>
 			<Controller
-				name={fieldName}
 				control={control}
+				name={fieldName}
 				render={({ field }) => (
 					<MaskedInput
 						format={format}

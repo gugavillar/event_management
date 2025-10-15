@@ -1,10 +1,9 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
-import { MEMBERS } from '@/constants'
-
-import { EventsAPI } from '../events/event.type'
-import { ParticipantsAPI } from '../participants/participants.type'
-import { VolunteersAPI } from '../volunteers/volunteers.type'
+import type { MEMBERS } from '@/constants'
+import type { EventsAPI } from '../events/event.type'
+import type { ParticipantsAPI } from '../participants/participants.type'
+import type { VolunteersAPI } from '../volunteers/volunteers.type'
 
 export type FormRoom = {
 	roomNumber: string

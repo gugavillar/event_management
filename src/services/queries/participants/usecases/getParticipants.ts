@@ -33,8 +33,8 @@ export const getParticipants = async ({
 			...(hasNoGroup && { hasNoGroup }),
 			...(hasNoRoom && { hasNoRoom }),
 			...(isInterested && { isInterested }),
-			pageParticipant: page,
 			limit: limitPerPage,
+			pageParticipant: page,
 		},
 	})
 	return response.data

@@ -1,11 +1,10 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useQueryState } from 'nuqs'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { DashboardFromAPI } from '../dashboard.types'
+import { useQueryState } from 'nuqs'
+import type { DashboardFromAPI } from '../dashboard.types'
 import { getDashboardData } from '../usecases'
 
 export const useGetDashboardData = () => {
@@ -14,13 +13,13 @@ export const useGetDashboardData = () => {
 	})
 
 	const { data, isLoading }: UseQueryResult<DashboardFromAPI> = useQuery({
-		queryKey: [QUERY_KEYS.DASHBOARD, eventId],
+		enabled: !!eventId,
 		queryFn: () =>
 			getDashboardData({
 				eventId,
 			}),
-		enabled: !!eventId,
+		queryKey: [QUERY_KEYS.DASHBOARD, eventId],
 	})
 
-	return { data, isLoading, eventId, setEventId }
+	return { data, eventId, isLoading, setEventId }
 }

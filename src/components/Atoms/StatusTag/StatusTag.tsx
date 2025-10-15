@@ -1,4 +1,4 @@
-import { ComponentProps, memo } from 'react'
+import { type ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { CHECK_IN_STATUS, StatusType } from '@/constants'
@@ -19,7 +19,7 @@ export const StatusTag = memo(({ status, className, ...props }: StatusTag) => {
 			className={twMerge(
 				'flex w-fit min-w-36 items-center justify-center rounded-3xl px-4 py-1 text-slate-800',
 				className,
-				STATUS_COLORS[status],
+				STATUS_COLORS[status]
 			)}
 			{...props}
 		>

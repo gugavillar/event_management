@@ -1,6 +1,4 @@
 'use client'
-import { useWindowSize } from '@uidotdev/usehooks'
-import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -10,6 +8,8 @@ import {
 	UserAvatar,
 } from '@/components/Molecules'
 import { useSidebarContext } from '@/contexts'
+import { useWindowSize } from '@uidotdev/usehooks'
+import { useSession } from 'next-auth/react'
 
 export const Sidebar = () => {
 	const { collapsed, setCollapsed } = useSidebarContext()
@@ -27,7 +27,7 @@ export const Sidebar = () => {
 			className={twMerge(
 				'flex flex-row bg-slate-800 px-4 py-6 transition-[width] duration-500 md:flex-col',
 				collapsed ? 'w-20' : 'w-72',
-				'max-md:w-full',
+				'max-md:w-full'
 			)}
 		>
 			<ApplicationAvatar collapsed={collapsed} handleCollapse={setCollapsed} />

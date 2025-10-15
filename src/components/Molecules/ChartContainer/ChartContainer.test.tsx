@@ -5,7 +5,7 @@ import { ChartContainer } from './ChartContainer'
 describe('ChartContainer component', () => {
 	it('renders correctly', () => {
 		const { getByText } = render(
-			<ChartContainer headingText="Test component" />,
+			<ChartContainer headingText="Test component" />
 		)
 		expect(getByText('Test component')).toBeInTheDocument()
 	})
@@ -15,7 +15,7 @@ describe('ChartContainer component', () => {
 			<ChartContainer
 				headingText="Test component"
 				subheadingText="Subheading"
-			/>,
+			/>
 		)
 		expect(getByText('Subheading')).toBeInTheDocument()
 	})
@@ -23,10 +23,10 @@ describe('ChartContainer component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<ChartContainer
-				headingText="Test component"
 				className="custom-class"
 				data-testid="chart-container"
-			/>,
+				headingText="Test component"
+			/>
 		)
 		expect(getByTestId('chart-container')).toHaveClass('custom-class')
 	})
@@ -35,7 +35,7 @@ describe('ChartContainer component', () => {
 		const { getByText } = render(
 			<ChartContainer headingText="Test component">
 				<div>Children</div>
-			</ChartContainer>,
+			</ChartContainer>
 		)
 		expect(getByText('Children')).toBeInTheDocument()
 	})

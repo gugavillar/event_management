@@ -1,7 +1,6 @@
 import { isFuture } from 'date-fns'
-
 import { IMAGES_FORMS } from './globals'
-import { MEMBERS, ROLES } from './status'
+import { MEMBERS, type ROLES } from './status'
 
 export const overlayClose = async (elementId: string) => {
 	const overlay = await import('preline/preline')
@@ -68,7 +67,7 @@ export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
 
 export const generatePrintKey = <T>(
 	data: Array<{ id: string; members: Array<T> }>,
-	listType?: string,
+	listType?: string
 ) => {
 	if (listType) {
 		return data.map((d) => `${d.id}:${d.members.length}-${listType}`).join('|')
@@ -88,7 +87,7 @@ export const generateColumnWidths = (data: any[] | any[][]) => {
 		aoa = [
 			headers,
 			...(data as Record<string, any>[]).map((row) =>
-				headers.map((h) => row[h]),
+				headers.map((h) => row[h])
 			),
 		]
 	}
@@ -115,7 +114,7 @@ export function deepTrim<T>(obj: T): T {
 
 	if (obj && typeof obj === 'object') {
 		return Object.fromEntries(
-			Object.entries(obj).map(([key, value]) => [key, deepTrim(value)]),
+			Object.entries(obj).map(([key, value]) => [key, deepTrim(value)])
 		) as T
 	}
 

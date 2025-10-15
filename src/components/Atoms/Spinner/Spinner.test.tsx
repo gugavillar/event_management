@@ -11,7 +11,7 @@ describe('Spinner component', () => {
 
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
-			<Spinner data-testid="spinner" className="custom-class" />,
+			<Spinner className="custom-class" data-testid="spinner" />
 		)
 		const spinner = getByTestId('spinner')
 		expect(spinner).toHaveClass('custom-class')
@@ -19,7 +19,7 @@ describe('Spinner component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<Spinner data-testid="spinner" aria-label="loading" />,
+			<Spinner aria-label="loading" data-testid="spinner" />
 		)
 		const spinner = getByTestId('spinner')
 		expect(spinner).toHaveAttribute('aria-label', 'loading')

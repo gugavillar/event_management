@@ -1,14 +1,6 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { CirclePlus, Trash2 } from 'lucide-react'
-import { Dispatch, memo, SetStateAction, useEffect } from 'react'
-import {
-	Controller,
-	FormProvider,
-	type SubmitHandler,
-	useFieldArray,
-	useForm,
-} from 'react-hook-form'
+import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
@@ -26,12 +18,19 @@ import {
 	useGetFunctions,
 	useUpdateVolunteerFunction,
 } from '@/services/queries/volunteers'
-import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+	Controller,
+	FormProvider,
+	type SubmitHandler,
+	useFieldArray,
+	useForm,
+} from 'react-hook-form'
 import {
 	AssignFunctionSchema,
-	AssignFunctionType,
+	type AssignFunctionType,
 } from './AssignFunctionVolunteerModal.schema'
 
 type CreateVolunteerFunctionModalProps = {
@@ -56,11 +55,11 @@ export const AssignFunctionVolunteerModal = memo(
 		const { isPending, update } = useUpdateVolunteerFunction()
 
 		const methods = useForm<AssignFunctionType>({
-			mode: 'onChange',
 			defaultValues: {
 				eventId: '',
-				roles: [{ roleId: '', isLeader: false }],
+				roles: [{ isLeader: false, roleId: '' }],
 			},
+			mode: 'onChange',
 			resolver: zodResolver(AssignFunctionSchema),
 		})
 		const { fields, append, remove } = useFieldArray({
@@ -71,13 +70,13 @@ export const AssignFunctionVolunteerModal = memo(
 		const formattedEvents = formatterComboBoxValues(
 			events?.pages?.flatMap((page) => page.data),
 			'name',
-			'id',
+			'id'
 		)
 
 		const lastItemRef = useInfiniteScrollObserver({
+			fetchNextPage,
 			hasNextPage: Boolean(hasNextPage),
 			isFetchingNextPage,
-			fetchNextPage,
 		})
 
 		const formattedRoles = roles?.map((role) => ({
@@ -97,15 +96,15 @@ export const AssignFunctionVolunteerModal = memo(
 			if (!selectedVolunteer) return
 
 			await update(
-				{ volunteerId: selectedVolunteer, data: values },
+				{ data: values, volunteerId: selectedVolunteer },
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atribuir funções'),
 					onSuccess: () => {
 						handleCloseModal()
 						toast.success('Funções atribuídas com sucesso!')
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atribuir funções'),
-				},
+				}
 			)
 		}
 
@@ -114,18 +113,18 @@ export const AssignFunctionVolunteerModal = memo(
 
 			await update(
 				{
-					volunteerId: selectedVolunteer,
 					data: { eventId: selectedEventId, roles: [] },
 					onlyRemove: true,
+					volunteerId: selectedVolunteer,
 				},
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao remover funções'),
 					onSuccess: () => {
 						handleCloseModal()
 						toast.success('Funções removidas com sucesso!')
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao remover funções'),
-				},
+				}
 			)
 		}
 
@@ -136,7 +135,7 @@ export const AssignFunctionVolunteerModal = memo(
 		}, [selectedEventId, setEventId])
 
 		return (
-			<Modal modalId={modalId} handleClose={handleCloseModal}>
+			<Modal handleClose={handleCloseModal} modalId={modalId}>
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
@@ -154,55 +153,55 @@ export const AssignFunctionVolunteerModal = memo(
 								</Text>
 							</div>
 							<Controller
-								name="eventId"
 								control={methods.control}
+								name="eventId"
 								render={({ field }) => (
 									<ComboBox
+										error={methods.formState.errors.eventId?.message}
 										keyOptionLabel="label"
 										keyOptionValue="value"
+										label="Evento"
+										lastItemRef={lastItemRef}
 										options={formattedEvents}
 										selectedValue={field.value}
 										setSelectedValue={field.onChange}
-										lastItemRef={lastItemRef}
-										label="Evento"
-										error={methods.formState.errors.eventId?.message}
 									/>
 								)}
 							/>
 							<FieldArrayContainerWithAppendButton
 								className="w-full"
+								handleAppendField={() =>
+									append({ isLeader: false, roleId: '' })
+								}
 								label="Função"
 								leftIcon={<CirclePlus />}
-								handleAppendField={() =>
-									append({ roleId: '', isLeader: false })
-								}
 							>
 								{fields.map((field, index) => {
 									const fieldName = `roles.${index}.roleId`
 									const checkFieldName = `roles.${index}.isLeader`
 									const hasMoreThanOneFunction = fields.length > 1
 									return (
-										<div key={field.id} className="w-full">
+										<div className="w-full" key={field.id}>
 											<div className="flex flex-col gap-4">
 												<SelectField
 													fieldName={fieldName}
-													placeholder="Selecione a função"
 													options={formattedRoles ?? []}
+													placeholder="Selecione a função"
 												>
 													<div className="flex items-center justify-between">
 														Função
 														{hasMoreThanOneFunction ? (
 															<Button
 																className="mb-1 rounded-full border-none p-1 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
-																onClick={() => remove(index)}
 																leftIcon={<Trash2 size={18} />}
+																onClick={() => remove(index)}
 															/>
 														) : null}
 													</div>
 												</SelectField>
 												<CheckboxField
-													label="Voluntário é o líder da função"
 													fieldName={checkFieldName}
+													label="Voluntário é o líder da função"
 												/>
 											</div>
 										</div>
@@ -211,20 +210,20 @@ export const AssignFunctionVolunteerModal = memo(
 							</FieldArrayContainerWithAppendButton>
 							<div className="flex w-full items-center justify-between gap-x-8">
 								<Button
-									type="button"
 									className="w-full items-center justify-center bg-red-500 text-gray-50 transition-colors duration-500 hover:bg-red-400 hover:text-slate-800"
 									disabled={isPending || !selectedEventId}
 									isLoading={isPending}
 									onClick={handleRemoveFunctions}
+									type="button"
 								>
 									Remover
 								</Button>
 								<Button
 									className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-									type="submit"
-									onClick={methods.handleSubmit(handleSubmit)}
 									disabled={!methods.formState.isValid}
 									isLoading={isPending}
+									onClick={methods.handleSubmit(handleSubmit)}
+									type="submit"
 								>
 									Atribuir
 								</Button>
@@ -234,7 +233,7 @@ export const AssignFunctionVolunteerModal = memo(
 				</FormProvider>
 			</Modal>
 		)
-	},
+	}
 )
 
 AssignFunctionVolunteerModal.displayName = 'AssignFunctionVolunteerModal'

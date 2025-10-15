@@ -1,11 +1,13 @@
 'use client'
-import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
+import {
+	type UseInfiniteQueryResult,
+	useInfiniteQuery,
+} from '@tanstack/react-query'
 import { useState } from 'react'
 
-import { CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
-
-import { ParticipantsFromAPI } from '../participants.type'
+import { type CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
+import { useDebounce } from '@uidotdev/usehooks'
+import type { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
 export type UseGetInfinityParticipantsArgs = {
@@ -35,7 +37,22 @@ export const useGetInfinityParticipants = ({
 		pages: Array<ParticipantsFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
+		enabled: !!eventId,
+		getNextPageParam: (lastPage: ParticipantsFromAPI) => {
+			const { currentPage, totalPages } = lastPage
+			return currentPage < totalPages ? currentPage + 1 : undefined
+		},
 		initialPageParam: 1,
+		queryFn: async ({ pageParam }) =>
+			await getParticipants({
+				eventId,
+				searchParticipant: debounceParticipant,
+				...(statusParticipant && { statusParticipant }),
+				...(hasNoGroup && { hasNoGroup }),
+				...(hasNoRoom && { hasNoRoom }),
+				limitPerPage: limit,
+				page: pageParam,
+			}),
 		queryKey: [
 			QUERY_KEYS.PARTICIPANTS_INFINITY,
 			eventId,
@@ -45,28 +62,13 @@ export const useGetInfinityParticipants = ({
 			statusParticipant,
 			limit,
 		],
-		queryFn: async ({ pageParam }) =>
-			await getParticipants({
-				searchParticipant: debounceParticipant,
-				eventId,
-				...(statusParticipant && { statusParticipant }),
-				...(hasNoGroup && { hasNoGroup }),
-				...(hasNoRoom && { hasNoRoom }),
-				page: pageParam,
-				limitPerPage: limit,
-			}),
-		getNextPageParam: (lastPage: ParticipantsFromAPI) => {
-			const { currentPage, totalPages } = lastPage
-			return currentPage < totalPages ? currentPage + 1 : undefined
-		},
-		enabled: !!eventId,
 	})
 
 	return {
 		data,
+		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-		fetchNextPage,
 		searchParticipant,
 		setSearchParticipant,
 	}

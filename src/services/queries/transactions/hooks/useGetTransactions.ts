@@ -1,13 +1,12 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
-import { useQueryState, parseAsInteger } from 'nuqs'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { TransactionsFromAPI } from '../transactions.types'
+import { useDebounce } from '@uidotdev/usehooks'
+import { parseAsInteger, useQueryState } from 'nuqs'
+import type { TransactionsFromAPI } from '../transactions.types'
 import { getTransactions } from '../usecases'
 
 export const useGetTransactions = () => {
@@ -16,11 +15,11 @@ export const useGetTransactions = () => {
 	})
 	const [searchTransaction, setSearchTransaction] = useQueryState(
 		'searchTransaction',
-		{ defaultValue: '' },
+		{ defaultValue: '' }
 	)
 	const [page, setPage] = useQueryState(
 		'pageTransaction',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debounceSearch = useDebounce(searchTransaction, 500)
@@ -37,24 +36,24 @@ export const useGetTransactions = () => {
 	}, [debounceSearch])
 
 	const { data, isLoading }: UseQueryResult<TransactionsFromAPI> = useQuery({
-		queryKey: [QUERY_KEYS.TRANSACTIONS, eventId, page, debounceSearch],
+		enabled: !!eventId,
 		queryFn: () =>
 			getTransactions({
 				eventId,
-				searchTransaction: debounceSearch,
 				page,
+				searchTransaction: debounceSearch,
 			}),
-		enabled: !!eventId,
+		queryKey: [QUERY_KEYS.TRANSACTIONS, eventId, page, debounceSearch],
 	})
 
 	return {
 		data,
-		isLoading,
 		eventId,
-		setEventId,
+		isLoading,
 		page,
-		setPage,
 		searchTransaction,
+		setEventId,
+		setPage,
 		setSearchTransaction,
 	}
 }

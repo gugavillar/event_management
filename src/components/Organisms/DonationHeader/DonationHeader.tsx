@@ -29,13 +29,13 @@ export const DonationHeader = ({
 		'name',
 		'id',
 		true,
-		'Todos os eventos',
+		'Todos os eventos'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	return (
@@ -46,12 +46,12 @@ export const DonationHeader = ({
 					className="lg:max-w-lg"
 					keyOptionLabel="label"
 					keyOptionValue="value"
+					lastItemRef={lastItemRef}
 					options={formattedEvents}
 					selectedValue={eventId}
 					setSelectedValue={setEventId}
-					lastItemRef={lastItemRef}
 				/>
-				<InformationCard headingText="Doações" className="w-full lg:max-w-lg">
+				<InformationCard className="w-full lg:max-w-lg" headingText="Doações">
 					<div className="flex h-full items-center justify-end p-4 md:p-5">
 						<Header as="h3" className="text-2xl">
 							{!sumOfAllDonations

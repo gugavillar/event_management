@@ -6,9 +6,9 @@ describe('InformationCard component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
 			<InformationCard
-				headingText="Information"
 				data-testid="information-card"
-			/>,
+				headingText="Information"
+			/>
 		)
 
 		const informationCard = getByTestId('information-card')
@@ -19,10 +19,10 @@ describe('InformationCard component', () => {
 	it('renders correctly with action button', () => {
 		const { getByTestId } = render(
 			<InformationCard
-				headingText="Information"
-				data-testid="information-card"
 				actionButton={<button data-testid="action-button">Action</button>}
-			/>,
+				data-testid="information-card"
+				headingText="Information"
+			/>
 		)
 
 		const actionButton = getByTestId('action-button')
@@ -33,10 +33,10 @@ describe('InformationCard component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<InformationCard
-				headingText="Information"
-				data-testid="information-card"
 				className="custom-class"
-			/>,
+				data-testid="information-card"
+				headingText="Information"
+			/>
 		)
 
 		const informationCard = getByTestId('information-card')
@@ -47,10 +47,10 @@ describe('InformationCard component', () => {
 	it('applies custom props', () => {
 		const { getByTestId } = render(
 			<InformationCard
-				headingText="Information"
 				data-testid="information-card"
+				headingText="Information"
 				id="test"
-			/>,
+			/>
 		)
 
 		const informationCard = getByTestId('information-card')
@@ -60,9 +60,9 @@ describe('InformationCard component', () => {
 
 	it('renders correclty children', () => {
 		const { getByTestId } = render(
-			<InformationCard headingText="Information" data-testid="information-card">
+			<InformationCard data-testid="information-card" headingText="Information">
 				<p>children</p>
-			</InformationCard>,
+			</InformationCard>
 		)
 
 		const informationCard = getByTestId('information-card')

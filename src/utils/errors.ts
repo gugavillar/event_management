@@ -1,5 +1,6 @@
-import { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
+
+import { AxiosError } from 'axios'
 
 export const generateToastError = (error: Error, message: string) => {
 	if (error instanceof AxiosError) {

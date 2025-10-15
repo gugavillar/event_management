@@ -11,7 +11,7 @@ describe('DrawerFooter component', () => {
 
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
-			<DrawerFooter data-testid="drawer-footer" className="custom-class" />,
+			<DrawerFooter className="custom-class" data-testid="drawer-footer" />
 		)
 		const drawerFooter = getByTestId('drawer-footer')
 		expect(drawerFooter).toHaveClass('custom-class')
@@ -19,7 +19,7 @@ describe('DrawerFooter component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<DrawerFooter data-testid="drawer-footer" id="test" />,
+			<DrawerFooter data-testid="drawer-footer" id="test" />
 		)
 		const drawerFooter = getByTestId('drawer-footer')
 		expect(drawerFooter).toHaveAttribute('id', 'test')
@@ -29,7 +29,7 @@ describe('DrawerFooter component', () => {
 		const { getByTestId } = render(
 			<DrawerFooter data-testid="drawer-footer">
 				<p>teste</p>
-			</DrawerFooter>,
+			</DrawerFooter>
 		)
 
 		const drawerFooter = getByTestId('drawer-footer')

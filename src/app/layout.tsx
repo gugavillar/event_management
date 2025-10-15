@@ -6,15 +6,15 @@ import { roboto } from '@/theme'
 import './globals.css'
 
 export const metadata: Metadata = {
-	title: 'Gerenciador de eventos - Anglicana Vida',
 	description: 'Gerenciador de eventos da igreja anglicana vida',
+	title: 'Gerenciador de eventos - Anglicana Vida',
 }
 
 export const viewport: Viewport = {
-	width: 'device-width',
 	initialScale: 1,
 	maximumScale: 1,
 	userScalable: false,
+	width: 'device-width',
 }
 
 export default function RootLayout({

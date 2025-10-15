@@ -1,11 +1,10 @@
 'use client'
-import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
-	InputField,
 	CurrencyInputField,
+	InputField,
 	SearchBox,
 	SelectField,
 } from '@/components/Molecules'
@@ -15,8 +14,8 @@ import { useInfiniteScrollObserver } from '@/hooks'
 import { useCreateDonation } from '@/services/queries/donations'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { generateToastError } from '@/utils/errors'
-
-import { DonationType } from './DonationDrawer.schema'
+import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import type { DonationType } from './DonationDrawer.schema'
 
 type DonationDrawerProps = {
 	drawerId: string
@@ -28,7 +27,7 @@ const paymentMethods = PaymentSelectOptions.filter(
 			PaymentTypeAPI.DONATION,
 			PaymentTypeAPI.DONATION_ROMERO,
 			PaymentTypeAPI.OPEN,
-		].includes(item.value),
+		].includes(item.value)
 )
 
 export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
@@ -51,13 +50,13 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const onSubmit: SubmitHandler<DonationType> = async (values) => {
@@ -69,12 +68,12 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 		}
 
 		await create(formattedValues, {
+			onError: (error) => generateToastError(error, 'Erro ao criar doação'),
 			onSuccess: () => {
 				reset()
 				toast.success('Doação criada com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: (error) => generateToastError(error, 'Erro ao criar doação'),
 		})
 	}
 
@@ -85,25 +84,25 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 	return (
 		<Drawer
 			drawerId={drawerId}
-			headingTitle="Nova doação"
 			handleClose={handleClose}
+			headingTitle="Nova doação"
 		>
 			<DrawerBody>
 				<Controller
-					name="eventId"
 					control={control}
+					name="eventId"
 					render={({ field }) => (
 						<SearchBox
-							search={search}
-							setSearch={setSearch}
+							error={errors.eventId?.message}
 							keyOptionLabel="label"
 							keyOptionValue="value"
-							options={formattedEvents}
-							selectedValue={field.value}
-							setSelectedValue={field.onChange}
-							lastItemRef={lastItemRef}
 							label="Evento"
-							error={errors.eventId?.message}
+							lastItemRef={lastItemRef}
+							options={formattedEvents}
+							search={search}
+							selectedValue={field.value}
+							setSearch={setSearch}
+							setSelectedValue={field.onChange}
 						/>
 					)}
 				/>
@@ -115,17 +114,17 @@ export const DonationDrawer = ({ drawerId }: DonationDrawerProps) => {
 				>
 					Tipo
 				</SelectField>
-				<CurrencyInputField type="tel" fieldName="value">
+				<CurrencyInputField fieldName="value" type="tel">
 					Valor
 				</CurrencyInputField>
 			</DrawerBody>
 			<DrawerFooter>
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-					onClick={handleSubmit(onSubmit)}
-					type="submit"
 					disabled={!isValid || !isDirty}
 					isLoading={isPending}
+					onClick={handleSubmit(onSubmit)}
+					type="submit"
 				>
 					Criar doação
 				</Button>

@@ -1,8 +1,6 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import {
@@ -12,8 +10,12 @@ import {
 } from '@/components/Molecules'
 import { overlayClose, PaymentSelectOptions, PaymentTypeAPI } from '@/constants'
 import { currencyValue } from '@/formatters'
-
-import { PaymentModalSchema, PaymentModalType } from './PaymentModal.schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
+import {
+	PaymentModalSchema,
+	type PaymentModalType,
+} from './PaymentModal.schema'
 import { paymentOptionsRadio } from './PaymentModal.utils'
 
 type PaymentModalProps = {
@@ -37,13 +39,13 @@ export const PaymentModal = memo(
 		eventValue,
 	}: PaymentModalProps) => {
 		const methods = useForm<PaymentModalType>({
-			mode: 'onChange',
 			defaultValues: {
 				paid: undefined,
+				paymentReceived: '',
 				paymentType: '',
 				paymentValue: '',
-				paymentReceived: '',
 			},
+			mode: 'onChange',
 			resolver: zodResolver(PaymentModalSchema(eventValue, paidValue)),
 		})
 
@@ -58,7 +60,7 @@ export const PaymentModal = memo(
 		}
 
 		const paymentOptions = PaymentSelectOptions.filter(
-			(item) => item.value !== PaymentTypeAPI.OPEN,
+			(item) => item.value !== PaymentTypeAPI.OPEN
 		)
 
 		const isPartialPayment = methods.watch('paid') === 'partial'
@@ -66,14 +68,14 @@ export const PaymentModal = memo(
 			methods.watch('paymentType') === PaymentTypeAPI.CARD
 
 		return (
-			<Modal modalId={modalId} handleClose={handleClose}>
+			<Modal handleClose={handleClose} modalId={modalId}>
 				<FormProvider {...methods}>
 					<form
 						className="flex flex-col items-center justify-center gap-y-6"
 						onSubmit={methods.handleSubmit(onSubmit)}
 					>
 						<div className="flex flex-col items-center justify-between gap-2">
-							<OctagonAlert size={64} className="text-amber-300" />
+							<OctagonAlert className="text-amber-300" size={64} />
 							<Header as="h3" className="text-center text-lg">
 								Você deseja confirmar o pagamento do {modalType}?
 							</Header>
@@ -103,29 +105,29 @@ export const PaymentModal = memo(
 							Tipo de pagamento
 						</SelectField>
 						{isPartialPayment && (
-							<CurrencyInputField type="tel" fieldName="paymentValue">
+							<CurrencyInputField fieldName="paymentValue" type="tel">
 								Informe o valor pago
 							</CurrencyInputField>
 						)}
 						{isCardPaymentType && (
-							<CurrencyInputField type="tel" fieldName="paymentReceived">
+							<CurrencyInputField fieldName="paymentReceived" type="tel">
 								Informe o valor recebido
 							</CurrencyInputField>
 						)}
 						<div className="flex w-full flex-col justify-end gap-y-4 md:flex-row md:gap-x-5">
 							<Button
-								type="button"
 								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200 md:w-32"
-								onClick={handleClose}
 								disabled={isPending}
+								onClick={handleClose}
+								type="button"
 							>
 								Cancelar
 							</Button>
 							<Button
-								type="submit"
+								className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:w-32"
 								disabled={!methods.formState.isValid || isPending}
 								isLoading={isPending}
-								className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:w-32"
+								type="submit"
 							>
 								Confirmar
 							</Button>
@@ -134,7 +136,7 @@ export const PaymentModal = memo(
 				</FormProvider>
 			</Modal>
 		)
-	},
+	}
 )
 
 PaymentModal.displayName = 'PaymentModal'

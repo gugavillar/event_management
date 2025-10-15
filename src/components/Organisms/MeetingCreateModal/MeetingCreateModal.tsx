@@ -1,12 +1,5 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { memo } from 'react'
-import {
-	Controller,
-	FormProvider,
-	type SubmitHandler,
-	useForm,
-} from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
@@ -17,10 +10,16 @@ import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useCreateMeeting } from '@/services/queries/meetings'
 import { generateToastError } from '@/utils/errors'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+	Controller,
+	FormProvider,
+	type SubmitHandler,
+	useForm,
+} from 'react-hook-form'
 import {
 	MeetingCreateModalSchema,
-	MeetingCreateModalType,
+	type MeetingCreateModalType,
 } from './MeetingCreateModal.schema'
 
 type MeetingCreateModalProps = {
@@ -38,25 +37,25 @@ export const MeetingCreateModal = memo(
 		const { create, isPending } = useCreateMeeting()
 
 		const methods = useForm<MeetingCreateModalType>({
-			mode: 'onChange',
 			defaultValues: {
-				eventId: '',
 				date: '',
+				eventId: '',
 				title: '',
 			},
+			mode: 'onChange',
 			resolver: zodResolver(MeetingCreateModalSchema),
 		})
 
 		const formattedEvents = formatterComboBoxValues(
 			events?.pages?.flatMap((page) => page.data),
 			'name',
-			'id',
+			'id'
 		)
 
 		const lastItemRef = useInfiniteScrollObserver({
+			fetchNextPage,
 			hasNextPage: Boolean(hasNextPage),
 			isFetchingNextPage,
-			fetchNextPage,
 		})
 
 		const handleCloseModal = () => {
@@ -73,16 +72,16 @@ export const MeetingCreateModal = memo(
 			}
 
 			await create(formattedValues, {
+				onError: (error) => generateToastError(error, 'Erro ao criar reunião'),
 				onSuccess: () => {
 					handleCloseModal()
 					toast.success('Reunião criada com sucesso!')
 				},
-				onError: (error) => generateToastError(error, 'Erro ao criar reunião'),
 			})
 		}
 
 		return (
-			<Modal modalId={modalId} handleClose={handleCloseModal}>
+			<Modal handleClose={handleCloseModal} modalId={modalId}>
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
@@ -96,32 +95,32 @@ export const MeetingCreateModal = memo(
 								</Text>
 							</div>
 							<Controller
-								name="eventId"
 								control={methods.control}
+								name="eventId"
 								render={({ field }) => (
 									<ComboBox
+										error={methods.formState.errors.eventId?.message}
 										keyOptionLabel="label"
 										keyOptionValue="value"
+										label="Evento"
+										lastItemRef={lastItemRef}
 										options={formattedEvents}
 										selectedValue={field.value}
 										setSelectedValue={field.onChange}
-										lastItemRef={lastItemRef}
-										label="Evento"
-										error={methods.formState.errors.eventId?.message}
 									/>
 								)}
 							/>
 							<InputField fieldName="title">Título da reunião</InputField>
-							<MaskedInputField format="##/##/####" fieldName="date">
+							<MaskedInputField fieldName="date" format="##/##/####">
 								Data da reunião
 							</MaskedInputField>
 							<div className="flex w-full items-center justify-between gap-x-8">
 								<Button
 									className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-									type="submit"
-									onClick={methods.handleSubmit(onSubmit)}
 									disabled={!methods.formState.isValid}
 									isLoading={isPending}
+									onClick={methods.handleSubmit(onSubmit)}
+									type="submit"
 								>
 									Criar
 								</Button>
@@ -131,7 +130,7 @@ export const MeetingCreateModal = memo(
 				</FormProvider>
 			</Modal>
 		)
-	},
+	}
 )
 
 MeetingCreateModal.displayName = 'MeetingCreateModal'

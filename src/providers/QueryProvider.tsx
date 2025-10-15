@@ -1,10 +1,10 @@
 'use client'
 import {
 	QueryClientProvider,
-	useQuery,
-	useMutation,
-	useQueryClient,
 	useInfiniteQuery,
+	useMutation,
+	useQuery,
+	useQueryClient,
 } from '@tanstack/react-query'
 
 import { getQueryClient } from '@/constants'

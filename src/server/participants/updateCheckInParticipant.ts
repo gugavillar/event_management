@@ -19,11 +19,11 @@ export const updateCheckInParticipant = async ({
 
 		if (status === CHECK_IN_STATUS.CONFIRMED) {
 			return await prisma.participant.update({
-				where: {
-					id: participantId,
-				},
 				data: {
 					checkIn: CHECK_IN_STATUS.CONFIRMED,
+				},
+				where: {
+					id: participantId,
 				},
 			})
 		}
@@ -58,11 +58,11 @@ export const updateCheckInParticipant = async ({
 			}
 
 			return await tx.participant.update({
-				where: {
-					id: participantId,
-				},
 				data: {
 					checkIn: CHECK_IN_STATUS.WITHDREW,
+				},
+				where: {
+					id: participantId,
 				},
 			})
 		})

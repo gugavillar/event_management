@@ -1,13 +1,12 @@
 import { render } from '@testing-library/react'
 
 import { USER_STATUS } from '@/constants'
-
 import { UserTag } from './UserTag'
 
 describe('UserTag component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<UserTag status={USER_STATUS.ACTIVE} data-testid="status-tag" />,
+			<UserTag data-testid="status-tag" status={USER_STATUS.ACTIVE} />
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -18,10 +17,10 @@ describe('UserTag component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<UserTag
-				status={USER_STATUS.ACTIVE}
-				data-testid="status-tag"
 				className="custom-class"
-			/>,
+				data-testid="status-tag"
+				status={USER_STATUS.ACTIVE}
+			/>
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -31,11 +30,7 @@ describe('UserTag component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<UserTag
-				status={USER_STATUS.ACTIVE}
-				data-testid="status-tag"
-				id="test"
-			/>,
+			<UserTag data-testid="status-tag" id="test" status={USER_STATUS.ACTIVE} />
 		)
 
 		const statusTag = getByTestId('status-tag')
@@ -45,7 +40,7 @@ describe('UserTag component', () => {
 
 	it('render correctly custom label', () => {
 		const { getByText } = render(
-			<UserTag status={USER_STATUS.ACTIVE} data-testid="status-tag" />,
+			<UserTag data-testid="status-tag" status={USER_STATUS.ACTIVE} />
 		)
 		expect(getByText(USER_STATUS.ACTIVE)).toBeInTheDocument()
 	})

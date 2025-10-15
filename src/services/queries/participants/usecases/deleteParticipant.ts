@@ -1,10 +1,9 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { ParticipantsAPI } from '../participants.type'
+import type { ParticipantsAPI } from '../participants.type'
 
 export const deleteParticipant = async (
-	participantId: ParticipantsAPI['id'],
+	participantId: ParticipantsAPI['id']
 ) => {
 	const response = await api.delete(ENDPOINTS.DELETE_PARTICIPANT(participantId))
 

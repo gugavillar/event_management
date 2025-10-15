@@ -12,13 +12,13 @@ type SearchParams = {
 
 export default async function EventsPage({ searchParams }: SearchParams) {
 	const params = await searchParams.then((res) => ({
-		searchEvent: res.searchEvent ?? '',
 		pageEvent: res.pageEvent ?? '',
+		searchEvent: res.searchEvent ?? '',
 	}))
 	const debounceValue = params.searchEvent
 	const page = generatePage(params.pageEvent)
 
-	const getAllEvents = () => getEvents({ searchEvent: debounceValue, page })
+	const getAllEvents = () => getEvents({ page, searchEvent: debounceValue })
 
 	return (
 		<HydrationProvider

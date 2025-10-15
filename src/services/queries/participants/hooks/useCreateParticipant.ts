@@ -1,6 +1,5 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
-
 import { createParticipant } from '../usecases'
 
 export const useCreateParticipant = () => {
@@ -20,7 +19,7 @@ export const useCreateParticipant = () => {
 	})
 
 	return {
-		isPending,
 		create,
+		isPending,
 	}
 }

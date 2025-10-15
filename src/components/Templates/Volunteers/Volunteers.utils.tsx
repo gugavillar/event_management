@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import {
 	BriefcaseBusiness,
 	FileUser,
@@ -10,49 +9,50 @@ import {
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
-import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import { format } from 'date-fns'
 
 export const HEADER_LABELS = [
 	{
-		label: 'Nome',
 		accessor: 'name',
+		label: 'Nome',
 	},
 	{
-		label: 'Chamado',
 		accessor: 'called',
+		label: 'Chamado',
 	},
 	{
-		label: 'Cidade',
 		accessor: 'city',
+		label: 'Cidade',
 	},
 	{
-		label: 'Função',
 		accessor: 'role',
+		label: 'Função',
 	},
 	{
-		label: 'Telefone',
 		accessor: 'phone',
+		label: 'Telefone',
 	},
 	{
-		label: 'Data de nascimento',
 		accessor: 'birthdate',
+		label: 'Data de nascimento',
 	},
 
 	{
-		label: 'Evento',
 		accessor: 'event',
+		label: 'Evento',
 	},
 	{
-		label: 'Status',
 		accessor: 'status',
+		label: 'Status',
 	},
 	{
-		label: 'Data de inscrição',
 		accessor: 'createdAt',
+		label: 'Data de inscrição',
 	},
 	{
-		label: '',
 		accessor: 'actions',
+		label: '',
 	},
 ]
 
@@ -62,7 +62,7 @@ export const formatTableData = (
 	handleDeleteVolunteer: (id: VolunteersAPI['id']) => void,
 	handleEditVolunteer: (id: VolunteersAPI['id']) => void,
 	handleAssignFunctionVolunteer: (id: VolunteersAPI['id']) => void,
-	handleShowVolunteer: (id: VolunteersAPI['id']) => void,
+	handleShowVolunteer: (id: VolunteersAPI['id']) => void
 ) => {
 	if (!data) return []
 
@@ -72,9 +72,61 @@ export const formatTableData = (
 			...(isWithdrew && {
 				backgroundColor: LINE_COLOR.withdrew,
 			}),
+			actions: (
+				<div className="flex space-x-4">
+					<div className="hs-tooltip">
+						<FileUser
+							className="cursor-pointer"
+							onClick={() => handleShowVolunteer(volunteer.id)}
+							size={20}
+						/>
+						<Tooltip>Informações</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<SquarePen
+							className="cursor-pointer"
+							onClick={() => handleEditVolunteer(volunteer.id)}
+							size={20}
+						/>
+						<Tooltip>Editar</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<BriefcaseBusiness
+							className="cursor-pointer"
+							onClick={() => handleAssignFunctionVolunteer(volunteer.id)}
+							size={20}
+						/>
+						<Tooltip>Atribuir função</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<TicketCheck
+							className="cursor-pointer"
+							onClick={() => handleCheckInVolunteer(volunteer.id)}
+							size={20}
+						/>
+						<Tooltip>Check-In</Tooltip>
+					</div>
+					<div className="hs-tooltip">
+						<UserRoundX
+							className="cursor-pointer"
+							onClick={() => handleDeleteVolunteer(volunteer.id)}
+							size={20}
+						/>
+						<Tooltip>Excluir</Tooltip>
+					</div>
+				</div>
+			),
+			birthdate: formatBirthdate(
+				volunteer.birthdate,
+				volunteer.event.finalDate
+			),
+			called: volunteer.called,
+			city: volunteer.address.city,
+			createdAt: format(volunteer.createdAt, 'dd/MM/yyyy - HH:mm'),
+			event: volunteer.event.name,
 			id: volunteer.id,
 			name: volunteer.name,
-			called: volunteer.called,
+			phone: formatPhone(volunteer.phone),
 			role: (
 				<div className="flex gap-2">
 					{!volunteer.eventRoles?.length ? (
@@ -82,21 +134,14 @@ export const formatTableData = (
 					) : (
 						volunteer.eventRoles.map((role) => (
 							<FunctionTag
+								isLeader={role.leaders.some(({ id }) => id === volunteer.id)}
 								key={role.id}
 								status={role.volunteerRole.role}
-								isLeader={role.leaders.some(({ id }) => id === volunteer.id)}
 							/>
 						))
 					)}
 				</div>
 			),
-			phone: formatPhone(volunteer.phone),
-			birthdate: formatBirthdate(
-				volunteer.birthdate,
-				volunteer.event.finalDate,
-			),
-			city: volunteer.address.city,
-			event: volunteer.event.name,
 			status: (
 				<StatusTag
 					status={
@@ -105,51 +150,6 @@ export const formatTableData = (
 							: volunteer.checkIn
 					}
 				/>
-			),
-			createdAt: format(volunteer.createdAt, 'dd/MM/yyyy - HH:mm'),
-			actions: (
-				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<FileUser
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleShowVolunteer(volunteer.id)}
-						/>
-						<Tooltip>Informações</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<SquarePen
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleEditVolunteer(volunteer.id)}
-						/>
-						<Tooltip>Editar</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<BriefcaseBusiness
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleAssignFunctionVolunteer(volunteer.id)}
-						/>
-						<Tooltip>Atribuir função</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<TicketCheck
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleCheckInVolunteer(volunteer.id)}
-						/>
-						<Tooltip>Check-In</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserRoundX
-							className="cursor-pointer"
-							size={20}
-							onClick={() => handleDeleteVolunteer(volunteer.id)}
-						/>
-						<Tooltip>Excluir</Tooltip>
-					</div>
-				</div>
 			),
 		}
 	})

@@ -1,6 +1,5 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
-
 import { blockOrUnblockUser } from '../usecases'
 
 export const useBlockOrUnblockUser = () => {

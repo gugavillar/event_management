@@ -9,11 +9,11 @@ export const getVolunteerById = async (id: string) => {
 		}).parse({ id })
 
 		return await prisma.volunteer.findUnique({
-			where: {
-				id,
-			},
 			include: {
 				address: true,
+			},
+			where: {
+				id,
 			},
 		})
 	} catch (error) {

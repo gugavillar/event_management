@@ -6,7 +6,7 @@ export const getExportMeetingPresence = async (event_id: string) => {
 		ENDPOINTS.EXPORT_MEETING_PRESENCE(event_id),
 		{
 			responseType: 'arraybuffer',
-		},
+		}
 	)
 
 	return response

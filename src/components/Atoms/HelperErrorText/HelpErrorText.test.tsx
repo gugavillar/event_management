@@ -5,7 +5,7 @@ import { HelperErrorText } from './HelperErrorText'
 describe('HelperErrorText component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<HelperErrorText data-testid="helper-text" />,
+			<HelperErrorText data-testid="helper-text" />
 		)
 		const helperText = getByTestId('helper-text')
 		expect(helperText).toBeInTheDocument()
@@ -13,7 +13,7 @@ describe('HelperErrorText component', () => {
 
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
-			<HelperErrorText data-testid="helper-text" className="custom-class" />,
+			<HelperErrorText className="custom-class" data-testid="helper-text" />
 		)
 		const helperText = getByTestId('helper-text')
 		expect(helperText).toHaveClass('custom-class')
@@ -21,7 +21,7 @@ describe('HelperErrorText component', () => {
 
 	it('applies custom props', () => {
 		const { getByTestId } = render(
-			<HelperErrorText data-testid="helper-text" id="test" />,
+			<HelperErrorText data-testid="helper-text" id="test" />
 		)
 		const helperText = getByTestId('helper-text')
 		expect(helperText).toHaveAttribute('id', 'test')

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { generateColumnWidths, prisma } from '@/constants'
@@ -11,10 +10,11 @@ import {
 	paymentDate,
 	paymentStatus,
 } from '@/formatters'
+import { utils, write } from 'xlsx'
 
 export const getExportParticipantsData = async (
 	eventId: string,
-	isInterested: boolean,
+	isInterested: boolean
 ) => {
 	try {
 		z.object({
@@ -22,29 +22,29 @@ export const getExportParticipantsData = async (
 		}).parse({ eventId })
 
 		const participants = await prisma.participant.findMany({
-			where: {
-				eventId,
-				...(isInterested
-					? { interested: true }
-					: { OR: [{ interested: false }, { interested: null }] }),
-			},
 			include: {
 				address: true,
 				event: true,
+				groupMemberships: {
+					include: {
+						group: true,
+					},
+				},
 				payments: true,
 				roomMember: {
 					include: {
 						room: true,
 					},
 				},
-				groupMemberships: {
-					include: {
-						group: true,
-					},
-				},
 			},
 			orderBy: {
 				...(isInterested ? { createdAt: 'asc' } : { name: 'asc' }),
+			},
+			where: {
+				eventId,
+				...(isInterested
+					? { interested: true }
+					: { OR: [{ interested: false }, { interested: null }] }),
 			},
 		})
 
@@ -55,29 +55,29 @@ export const getExportParticipantsData = async (
 						? 'Nenhuma pessoa interessada cadastrada'
 						: 'Nenhum participante cadastrado',
 				},
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 
 		if (isInterested) {
 			const interestedData = participants.map((participant) => ({
-				Nome: participant.name,
+				Alimentação_Saúde: participant.health || 'Não possui',
+				Bairro: participant.address?.neighborhood,
 				Chamado: participant.called,
-				Email: participant.email,
+				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
+				Convidou: participant.host,
 				Data_Nascimento: formatBirthdate(
 					participant.birthdate,
-					participant.event.finalDate,
+					participant.event.finalDate
 				),
-				Telefone: formatPhone(participant.phone),
-				Responsável: participant.responsible,
-				Telefone_Responsável: formatPhone(participant.responsiblePhone),
+				Email: participant.email,
 				Endereço: `${participant.address?.street}, ${participant.address?.number}`,
-				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
-				Bairro: participant.address?.neighborhood,
-				Convidou: participant.host,
-				Telefone_Convidou: formatPhone(participant.hostPhone),
+				Nome: participant.name,
 				Religião: participant.religion || 'Não possui',
-				Alimentação_Saúde: participant.health || 'Não possui',
+				Responsável: participant.responsible,
+				Telefone: formatPhone(participant.phone),
+				Telefone_Convidou: formatPhone(participant.hostPhone),
+				Telefone_Responsável: formatPhone(participant.responsiblePhone),
 			}))
 			const tableHeaderParticipants = Object.keys(interestedData[0])
 			const worksheetParticipants = utils.json_to_sheet(interestedData, {
@@ -86,55 +86,55 @@ export const getExportParticipantsData = async (
 			const workbook = utils.book_new()
 			utils.book_append_sheet(workbook, worksheetParticipants, 'Interessados')
 			worksheetParticipants['!cols'] = generateColumnWidths(interestedData)
-			const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
+			const buffer = write(workbook, { bookType: 'xlsx', type: 'buffer' })
 
 			return new NextResponse(buffer, {
-				status: 200,
 				headers: {
+					'Content-Disposition': 'attachment; filename="interessados.xlsx"',
 					'Content-Type':
 						'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-					'Content-Disposition': 'attachment; filename="interessados.xlsx"',
 				},
+				status: 200,
 			})
 		}
 
 		const participantsData = participants.map((participant) => ({
-			Nome: participant.name,
+			Alimentação_Saúde: participant.health || 'Não possui',
+			Bairro: participant.address?.neighborhood,
 			Chamado: participant.called,
-			Email: participant.email,
+			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
+			Convidou: participant.host,
 			Data_Nascimento: formatBirthdate(
 				participant.birthdate,
-				participant.event.finalDate,
+				participant.event.finalDate
 			),
-			Telefone: formatPhone(participant.phone),
-			Responsável: participant.responsible,
-			Telefone_Responsável: formatPhone(participant.responsiblePhone),
+			Email: participant.email,
 			Endereço: `${participant.address?.street}, ${participant.address?.number}`,
-			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
-			Bairro: participant.address?.neighborhood,
-			Convidou: participant.host,
-			Telefone_Convidou: formatPhone(participant.hostPhone),
-			Religião: participant.religion || 'Não possui',
-			Alimentação_Saúde: participant.health || 'Não possui',
-			Quarto:
-				participant.roomMember?.find(
-					(room) =>
-						room.participantId === participant.id &&
-						room.room.eventId === eventId,
-				)?.room.roomNumber || 'Sem quarto',
 			Grupo:
 				participant.groupMemberships?.find(
 					(group) =>
 						group.participantId === participant.id &&
-						group.group.eventId === eventId,
+						group.group.eventId === eventId
 				)?.group.name || 'Sem grupo',
+			Nome: participant.name,
+			Quarto:
+				participant.roomMember?.find(
+					(room) =>
+						room.participantId === participant.id &&
+						room.room.eventId === eventId
+				)?.room.roomNumber || 'Sem quarto',
+			Religião: participant.religion || 'Não possui',
+			Responsável: participant.responsible,
 			Status: formatCheckIn(participant.checkIn),
+			Telefone: formatPhone(participant.phone),
+			Telefone_Convidou: formatPhone(participant.hostPhone),
+			Telefone_Responsável: formatPhone(participant.responsiblePhone),
 		}))
 
 		const paymentsData = participants.map((payment) => {
 			const paymentValue = payment.payments.reduce(
 				(acc, p) => (acc += p.paymentValue.toNumber()),
-				0,
+				0
 			)
 			const hasPayment = payment.payments.length > 0
 			const statusPayments = !hasPayment
@@ -146,10 +146,10 @@ export const getExportParticipantsData = async (
 				.map((p) => paymentDate(p.paymentType, p.updatedAt))
 				.join(', ')
 			return {
-				Nome: payment.name,
-				Valor_Pago: currencyValue(paymentValue),
-				Status: statusPayments,
 				Data_Pagamento: datesPayments,
+				Nome: payment.name,
+				Status: statusPayments,
+				Valor_Pago: currencyValue(paymentValue),
 			}
 		})
 
@@ -166,15 +166,15 @@ export const getExportParticipantsData = async (
 		const workbook = utils.book_new()
 		utils.book_append_sheet(workbook, worksheetParticipants, 'Participantes')
 		utils.book_append_sheet(workbook, worksheetPayments, 'Pagamentos')
-		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
+		const buffer = write(workbook, { bookType: 'xlsx', type: 'buffer' })
 
 		return new NextResponse(buffer, {
-			status: 200,
 			headers: {
+				'Content-Disposition': 'attachment; filename="participantes.xlsx"',
 				'Content-Type':
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-				'Content-Disposition': 'attachment; filename="participantes.xlsx"',
 			},
+			status: 200,
 		})
 	} catch (error) {
 		console.error('@getExportParticipantsData error:', error)

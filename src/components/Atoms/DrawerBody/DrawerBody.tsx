@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Spinner } from '../Spinner'
@@ -20,7 +20,7 @@ export const DrawerBody = ({
 			className={twMerge(
 				'h-full max-h-[calc(88dvh-4rem)] space-y-6 overflow-y-auto p-6',
 				isLoading && loadingClasses,
-				className,
+				className
 			)}
 			{...props}
 		>

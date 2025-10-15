@@ -9,11 +9,11 @@ export const getRoomById = async (id: string) => {
 		}).parse({ id })
 
 		return await prisma.room.findUnique({
-			where: {
-				id,
-			},
 			include: {
 				members: true,
+			},
+			where: {
+				id,
 			},
 		})
 	} catch (error) {

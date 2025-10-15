@@ -1,13 +1,13 @@
 export const formatterFieldSelectValues = (
 	value?: Array<any>,
 	keyLabel?: string,
-	keyValue?: string,
+	keyValue?: string
 ) => {
 	if (!value) return []
 
 	return value?.map((value) => ({
-		value: keyValue ? value[keyValue] : value,
 		label: keyLabel ? value[keyLabel] : value,
+		value: keyValue ? value[keyValue] : value,
 	}))
 }
 
@@ -16,21 +16,21 @@ export const formatterComboBoxValues = (
 	keyLabel?: string,
 	keyValue?: string,
 	hasAllOption?: boolean,
-	allOptionsLabel?: string,
+	allOptionsLabel?: string
 ) => {
 	if (!value) return []
 
 	const formattedValues = value?.map((value) => ({
 		customProps: {
-			value: keyValue ? value[keyValue] : value,
 			label: keyLabel ? value[keyLabel] : value,
+			value: keyValue ? value[keyValue] : value,
 		},
 	}))
 
 	if (hasAllOption) {
 		const label = allOptionsLabel ?? 'Todos'
 		formattedValues.unshift({
-			customProps: { value: '', label },
+			customProps: { label, value: '' },
 		})
 	}
 	return formattedValues

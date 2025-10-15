@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
@@ -21,7 +21,7 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 			await blockOrUnblockUser(
 				routeParam,
 				session?.user?.id as string,
-				body.blocked,
+				body.blocked
 			),
 		isProtectedRoute: true,
 	})

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { generateColumnWidths, prisma } from '@/constants'
@@ -11,6 +10,7 @@ import {
 	paymentDate,
 	paymentStatus,
 } from '@/formatters'
+import { utils, write } from 'xlsx'
 
 export const getExportVolunteersData = async (eventId: string) => {
 	try {
@@ -19,13 +19,9 @@ export const getExportVolunteersData = async (eventId: string) => {
 		}).parse({ eventId })
 
 		const volunteers = await prisma.volunteer.findMany({
-			where: {
-				eventId,
-			},
 			include: {
 				address: true,
 				event: true,
-				payments: true,
 				eventRoles: {
 					include: {
 						leaders: true,
@@ -37,6 +33,7 @@ export const getExportVolunteersData = async (eventId: string) => {
 						group: true,
 					},
 				},
+				payments: true,
 				roomMember: {
 					include: {
 						room: true,
@@ -46,29 +43,30 @@ export const getExportVolunteersData = async (eventId: string) => {
 			orderBy: {
 				name: 'asc',
 			},
+			where: {
+				eventId,
+			},
 		})
 
 		if (!volunteers.length) {
 			return NextResponse.json(
 				{ error: 'Nenhum voluntário cadastrado' },
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 
 		const volunteersData = volunteers.map((volunteer) => ({
-			Nome: volunteer.name,
+			Alimentação_Saúde: volunteer.health || 'Não possui',
+			Bairro: volunteer.address?.neighborhood,
 			Chamado: volunteer.called,
-			Email: volunteer.email,
+			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
+			Célula: volunteer.cell || 'Nenhuma',
 			Data_Nascimento: formatBirthdate(
 				volunteer.birthdate,
-				volunteer.event.finalDate,
+				volunteer.event.finalDate
 			),
-			Telefone: formatPhone(volunteer.phone),
-			Parente: volunteer.relative,
-			Telefone_Parente: formatPhone(volunteer.relativePhone),
+			Email: volunteer.email,
 			Endereço: `${volunteer.address?.street}, ${volunteer.address?.number}`,
-			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
-			Bairro: volunteer.address?.neighborhood,
 			Função: !volunteer.eventRoles?.length
 				? 'Sem Função'
 				: volunteer.eventRoles
@@ -76,29 +74,31 @@ export const getExportVolunteersData = async (eventId: string) => {
 							role.eventId === eventId &&
 							role.leaders.some((leader) => leader.id === volunteer.id)
 								? `${role.volunteerRole.role} - Líder`
-								: role.volunteerRole.role,
+								: role.volunteerRole.role
 						)
 						.join(', '),
-			Célula: volunteer.cell || 'Nenhuma',
-			Alimentação_Saúde: volunteer.health || 'Não possui',
-			Quarto:
-				volunteer.roomMember?.find(
-					(room) =>
-						room.volunteerId === volunteer.id && room.room.eventId === eventId,
-				)?.room.roomNumber || 'Sem quarto',
 			Grupo:
 				volunteer.groupMemberships?.find(
 					(group) =>
 						group.volunteerId === volunteer.id &&
-						group.group.eventId === eventId,
+						group.group.eventId === eventId
 				)?.group.name || 'Sem grupo',
+			Nome: volunteer.name,
+			Parente: volunteer.relative,
+			Quarto:
+				volunteer.roomMember?.find(
+					(room) =>
+						room.volunteerId === volunteer.id && room.room.eventId === eventId
+				)?.room.roomNumber || 'Sem quarto',
 			Status: formatCheckIn(volunteer.checkIn),
+			Telefone: formatPhone(volunteer.phone),
+			Telefone_Parente: formatPhone(volunteer.relativePhone),
 		}))
 
 		const paymentsData = volunteers.map((payment) => {
 			const paymentValue = payment.payments.reduce(
 				(acc, p) => (acc += p.paymentValue.toNumber()),
-				0,
+				0
 			)
 			const hasPayment = payment.payments.length > 0
 			const statusPayments = !hasPayment
@@ -110,10 +110,10 @@ export const getExportVolunteersData = async (eventId: string) => {
 				.map((p) => paymentDate(p.paymentType, p.updatedAt))
 				.join(', ')
 			return {
-				Nome: payment.name,
-				Valor_Pago: currencyValue(paymentValue),
-				Status: statusPayments,
 				Data_Pagamento: datesPayments,
+				Nome: payment.name,
+				Status: statusPayments,
+				Valor_Pago: currencyValue(paymentValue),
 			}
 		})
 
@@ -130,15 +130,15 @@ export const getExportVolunteersData = async (eventId: string) => {
 		worksheetVolunteers['!cols'] = generateColumnWidths(volunteersData)
 		utils.book_append_sheet(workbook, worksheetPayments, 'Pagamentos')
 		worksheetPayments['!cols'] = generateColumnWidths(paymentsData)
-		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
+		const buffer = write(workbook, { bookType: 'xlsx', type: 'buffer' })
 
 		return new NextResponse(buffer, {
-			status: 200,
 			headers: {
+				'Content-Disposition': 'attachment; filename="voluntarios.xlsx"',
 				'Content-Type':
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-				'Content-Disposition': 'attachment; filename="voluntarios.xlsx"',
 			},
+			status: 200,
 		})
 	} catch (error) {
 		console.error('@getExportVolunteersData error:', error)

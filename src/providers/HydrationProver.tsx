@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { getQueryClient } from '@/constants'
 
@@ -17,8 +17,8 @@ export const HydrationProvider = async ({
 	const query = getQueryClient()
 
 	await query.prefetchQuery({
-		queryKey,
 		queryFn,
+		queryKey,
 	})
 
 	return (

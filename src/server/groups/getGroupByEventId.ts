@@ -4,7 +4,7 @@ import { prisma } from '@/constants'
 
 export const getGroupByEventId = async (
 	id: string,
-	searchName: string | null,
+	searchName: string | null
 ) => {
 	try {
 		z.object({
@@ -13,20 +13,20 @@ export const getGroupByEventId = async (
 		}).parse({ id, searchName })
 
 		const groups = await prisma.group.findMany({
-			where: {
-				eventId: id,
-			},
 			include: {
+				event: true,
 				members: {
 					include: {
 						participant: { include: { address: true, event: true } },
 						volunteer: { include: { address: true, event: true } },
 					},
 				},
-				event: true,
 			},
 			orderBy: {
 				name: 'asc',
+			},
+			where: {
+				eventId: id,
 			},
 		})
 

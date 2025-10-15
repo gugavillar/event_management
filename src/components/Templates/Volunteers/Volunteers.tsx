@@ -1,9 +1,7 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import { Pagination } from '@/components/Atoms'
 import { CreateVolunteerButton, ListManager } from '@/components/Molecules'
@@ -15,34 +13,35 @@ import {
 } from '@/components/Organisms'
 import {
 	VolunteerSchema,
-	VolunteerType,
+	type VolunteerType,
 } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
 import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetVolunteers } from '@/services/queries/volunteers'
-import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
-
+import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
 
 const AssignFunctionVolunteerModal = dynamic(() =>
 	import('@/components/Organisms').then(
-		(mod) => mod.AssignFunctionVolunteerModal,
-	),
+		(mod) => mod.AssignFunctionVolunteerModal
+	)
 )
 
 const VolunteerCheckInModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.VolunteerCheckInModal),
+	import('@/components/Organisms').then((mod) => mod.VolunteerCheckInModal)
 )
 
 const VolunteerDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.VolunteerDeleteModal),
+	import('@/components/Organisms').then((mod) => mod.VolunteerDeleteModal)
 )
 
 const VolunteerDrawer = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.VolunteerDrawer),
+	import('@/components/Organisms').then((mod) => mod.VolunteerDrawer)
 )
 
 const VolunteerModalData = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.VolunteerModalData),
+	import('@/components/Organisms').then((mod) => mod.VolunteerModalData)
 )
 
 export const Volunteers = () => {
@@ -62,29 +61,29 @@ export const Volunteers = () => {
 	} = useGetVolunteers()
 
 	const methods = useForm<VolunteerType>({
-		mode: 'onChange',
 		defaultValues: {
-			eventId: '',
-			name: '',
-			email: '',
-			called: '',
-			birthdate: '',
-			community: '',
-			phone: '',
-			relative: '',
-			relativePhone: '',
-			hasCell: '',
-			cell: '',
-			hasHealth: '',
-			health: '',
 			address: {
 				city: '',
 				neighborhood: '',
 				number: '',
-				street: '',
 				state: '',
+				street: '',
 			},
+			birthdate: '',
+			called: '',
+			cell: '',
+			community: '',
+			email: '',
+			eventId: '',
+			hasCell: '',
+			hasHealth: '',
+			health: '',
+			name: '',
+			phone: '',
+			relative: '',
+			relativePhone: '',
 		},
+		mode: 'onChange',
 		resolver: zodResolver(VolunteerSchema),
 	})
 
@@ -93,7 +92,7 @@ export const Volunteers = () => {
 			setSelectedVolunteer(id)
 			overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenModalToDeleteVolunteer = useCallback(
@@ -101,7 +100,7 @@ export const Volunteers = () => {
 			setSelectedVolunteer(id)
 			overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenModalToShowVolunteerData = useCallback(
@@ -109,7 +108,7 @@ export const Volunteers = () => {
 			setSelectedVolunteer(id)
 			overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenDrawerToCreateOrEditVolunteer = useCallback(
@@ -121,7 +120,7 @@ export const Volunteers = () => {
 			}
 			overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenAssignFunctionVolunteerModal = useCallback(
@@ -129,7 +128,7 @@ export const Volunteers = () => {
 			setSelectedVolunteer(id)
 			overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const formattedVolunteers = formatTableData(
@@ -138,7 +137,7 @@ export const Volunteers = () => {
 		handleOpenModalToDeleteVolunteer,
 		handleOpenDrawerToCreateOrEditVolunteer,
 		handleOpenAssignFunctionVolunteerModal,
-		handleOpenModalToShowVolunteerData,
+		handleOpenModalToShowVolunteerData
 	)
 
 	const hasMoreThanOnePage =
@@ -146,7 +145,7 @@ export const Volunteers = () => {
 
 	const handleCreateVolunteer = useCallback(
 		() => handleOpenDrawerToCreateOrEditVolunteer(),
-		[handleOpenDrawerToCreateOrEditVolunteer],
+		[handleOpenDrawerToCreateOrEditVolunteer]
 	)
 
 	return (
@@ -156,10 +155,7 @@ export const Volunteers = () => {
 				<CreateVolunteerButton handleCreateVolunteer={handleCreateVolunteer} />
 			</div>
 			<ListPage
-				placeholderField="Encontrar um voluntário"
 				className="lg:max-w-full"
-				search={search}
-				setSearch={setSearch}
 				moreFilter={
 					<FilterDrawer
 						drawerId={MODALS_IDS.VOLUNTEER_FILTER_DRAWER}
@@ -168,6 +164,9 @@ export const Volunteers = () => {
 						type={MEMBERS.VOLUNTEER}
 					/>
 				}
+				placeholderField="Encontrar um voluntário"
+				search={search}
+				setSearch={setSearch}
 			>
 				<ListManager
 					bodyData={formattedVolunteers}

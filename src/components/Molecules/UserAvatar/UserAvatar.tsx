@@ -1,13 +1,13 @@
 'use client'
 import { ChevronUp, UserRoundCog } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { User } from 'next-auth'
-import { signOut } from 'next-auth/react'
+import type { User } from 'next-auth'
 import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar, Tooltip } from '@/components/Atoms'
 import { PRINCIPAL_LINKS, ROLES } from '@/constants'
+import { signOut } from 'next-auth/react'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -29,15 +29,15 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 		<footer className="border-gray-200 max-md:border-l max-md:pl-4 md:mt-auto md:border-t md:pt-4">
 			<div className="hs-dropdown relative inline-flex w-full">
 				<button
-					type="button"
 					className={twMerge(
 						'hs-tooltip inline-flex w-full shrink-0 cursor-pointer items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 [--placement:auto] hover:bg-slate-900/80 focus:outline-hidden',
-						collapsed && 'justify-center',
+						collapsed && 'justify-center'
 					)}
+					type="button"
 				>
 					<div
 						className={twMerge(
-							!collapsed ? 'flex w-full items-center gap-2' : 'sr-only',
+							!collapsed ? 'flex w-full items-center gap-2' : 'sr-only'
 						)}
 					>
 						<Avatar>{avatar}</Avatar>
@@ -59,9 +59,9 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 				</button>
 
 				<div
+					aria-orientation="vertical"
 					className="hs-dropdown-menu duration hs-dropdown-open:opacity-100 z-20 hidden w-60 rounded-lg border border-gray-200 bg-white opacity-0 shadow-lg transition-[opacity,margin]"
 					role="menu"
-					aria-orientation="vertical"
 				>
 					<div className="p-1">
 						{user?.role === ROLES.ADMIN && (

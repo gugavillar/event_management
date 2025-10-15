@@ -1,7 +1,7 @@
 export const currencyValue = (value: number) => {
 	return new Intl.NumberFormat('pt-BR', {
-		style: 'currency',
 		currency: 'BRL',
+		style: 'currency',
 	}).format(value)
 }
 
@@ -9,10 +9,10 @@ export const currencyFieldValue = (value: string) => {
 	if (!value || value === '000' || value === '00') return ''
 
 	return new Intl.NumberFormat('pt-BR', {
-		style: 'currency',
 		currency: 'BRL',
 		maximumFractionDigits: 2,
 		minimumFractionDigits: 2,
+		style: 'currency',
 	}).format(Number(value) / 100)
 }
 

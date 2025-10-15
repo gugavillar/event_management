@@ -9,11 +9,11 @@ export const getGroupById = async (id: string) => {
 		}).parse({ id })
 
 		return await prisma.group.findUnique({
-			where: {
-				id,
-			},
 			include: {
 				members: true,
+			},
+			where: {
+				id,
 			},
 		})
 	} catch (error) {

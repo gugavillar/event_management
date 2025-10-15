@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { VolunteersAPI } from '../volunteers.type'
+import type { VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerFunctionArgs = {
 	volunteerId: VolunteersAPI['id']
@@ -24,7 +23,7 @@ export const updateVolunteerFunction = async ({
 			params: {
 				...(onlyRemove && { onlyRemove }),
 			},
-		},
+		}
 	)
 
 	return response.data

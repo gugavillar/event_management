@@ -25,8 +25,8 @@ export const getAllEvents = async (search: string | null, page = 1) => {
 		])
 
 		return {
-			data: events,
 			currentPage: page,
+			data: events,
 			perPage: LIMIT_PER_PAGE,
 			totalCount: totalOfEvents,
 			totalPages: Math.ceil(totalOfEvents / LIMIT_PER_PAGE),

@@ -1,14 +1,6 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { CirclePlus, Trash2 } from 'lucide-react'
-import { Dispatch, memo, SetStateAction, useEffect } from 'react'
-import {
-	Controller,
-	FormProvider,
-	type SubmitHandler,
-	useFieldArray,
-	useForm,
-} from 'react-hook-form'
+import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal } from '@/components/Atoms'
@@ -25,12 +17,19 @@ import {
 	useCreateFunction,
 	useUpdateFunction,
 } from '@/services/queries/volunteers'
-import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+	Controller,
+	FormProvider,
+	type SubmitHandler,
+	useFieldArray,
+	useForm,
+} from 'react-hook-form'
 import {
 	FunctionSchema,
-	FunctionSchemaType,
+	type FunctionSchemaType,
 } from './CreateVolunteerFunctionModal.schema'
 
 type CreateVolunteerFunctionModalProps = {
@@ -48,11 +47,11 @@ export const CreateVolunteerFunctionModal = memo(
 		setSelectedFunction,
 	}: CreateVolunteerFunctionModalProps) => {
 		const methods = useForm<FunctionSchemaType>({
-			mode: 'onChange',
 			defaultValues: {
-				role: '',
 				events: [{ id: '' }],
+				role: '',
 			},
+			mode: 'onChange',
 			resolver: zodResolver(FunctionSchema),
 		})
 		const { append, fields, remove } = useFieldArray({
@@ -71,13 +70,13 @@ export const CreateVolunteerFunctionModal = memo(
 		const formattedEvents = formatterComboBoxValues(
 			events?.pages?.flatMap((page) => page.data),
 			'name',
-			'id',
+			'id'
 		)
 
 		const lastItemRef = useInfiniteScrollObserver({
+			fetchNextPage,
 			hasNextPage: Boolean(hasNextPage),
 			isFetchingNextPage,
-			fetchNextPage,
 		})
 
 		const handleSubmit: SubmitHandler<FunctionSchemaType> = async (values) => {
@@ -85,25 +84,25 @@ export const CreateVolunteerFunctionModal = memo(
 				return await update(
 					{ id: selectedFunction.volunteerRoleId, ...values },
 					{
+						onError: (error) =>
+							generateToastError(error, 'Erro ao atualizar a função'),
 						onSuccess: () => {
 							toast.success('Função atualizada com sucesso!')
 							methods.reset()
 							setSelectedFunction(null)
 							overlayClose(modalId)
 						},
-						onError: (error) =>
-							generateToastError(error, 'Erro ao atualizar a função'),
-					},
+					}
 				)
 			}
 			await create(values, {
+				onError: (error) =>
+					generateToastError(error, 'Erro ao cadastrar a função'),
 				onSuccess: () => {
 					toast.success('Função cadastrada com sucesso!')
 					methods.reset()
 					overlayClose(modalId)
 				},
-				onError: (error) =>
-					generateToastError(error, 'Erro ao cadastrar a função'),
 			})
 		}
 
@@ -111,15 +110,15 @@ export const CreateVolunteerFunctionModal = memo(
 			if (!selectedFunction) return methods.reset()
 			methods.reset(
 				{
-					role: selectedFunction.volunteerRole?.role,
 					events: [{ id: selectedFunction.eventId }],
+					role: selectedFunction.volunteerRole?.role,
 				},
-				{ keepDefaultValues: true },
+				{ keepDefaultValues: true }
 			)
 		}, [methods, selectedFunction])
 
 		return (
-			<Modal modalId={modalId} handleClose={() => setSelectedFunction(null)}>
+			<Modal handleClose={() => setSelectedFunction(null)} modalId={modalId}>
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
@@ -129,39 +128,39 @@ export const CreateVolunteerFunctionModal = memo(
 							<InputField fieldName="role">Função</InputField>
 							<FieldArrayContainerWithAppendButton
 								className="w-full"
+								handleAppendField={() => append({ id: '' })}
 								label="Evento"
 								leftIcon={<CirclePlus />}
-								handleAppendField={() => append({ id: '' })}
 							>
 								{fields.map((input, index) => {
 									const hasMoreThanOneEvent = fields.length > 1
 									return (
-										<div key={input.id} className="w-full">
+										<div className="w-full" key={input.id}>
 											<div className="flex flex-row gap-4">
 												<Controller
-													name={`events.${index}.id`}
 													control={methods.control}
+													name={`events.${index}.id`}
 													render={({ field }) => (
 														<ComboBox
-															keyOptionLabel="label"
-															keyOptionValue="value"
-															options={formattedEvents}
-															selectedValue={field.value}
-															setSelectedValue={field.onChange}
-															lastItemRef={lastItemRef}
-															label="Evento"
 															error={
 																methods.formState.errors.events?.[index]?.id
 																	?.message
 															}
+															keyOptionLabel="label"
+															keyOptionValue="value"
+															label="Evento"
+															lastItemRef={lastItemRef}
+															options={formattedEvents}
+															selectedValue={field.value}
+															setSelectedValue={field.onChange}
 														/>
 													)}
 												/>
 												{hasMoreThanOneEvent ? (
 													<Button
 														className="h-fit rounded-full border-none p-1 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
-														onClick={() => remove(index)}
 														leftIcon={<Trash2 size={18} />}
+														onClick={() => remove(index)}
 													/>
 												) : null}
 											</div>
@@ -171,12 +170,12 @@ export const CreateVolunteerFunctionModal = memo(
 							</FieldArrayContainerWithAppendButton>
 							<Button
 								className="w-full max-w-40 items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-								type="submit"
-								onClick={methods.handleSubmit(handleSubmit)}
 								disabled={
 									!methods.formState.isValid || !methods.formState.isDirty
 								}
 								isLoading={isPendingCreate || isPendingUpdate}
+								onClick={methods.handleSubmit(handleSubmit)}
+								type="submit"
 							>
 								Salvar
 							</Button>
@@ -185,7 +184,7 @@ export const CreateVolunteerFunctionModal = memo(
 				</FormProvider>
 			</Modal>
 		)
-	},
+	}
 )
 
 CreateVolunteerFunctionModal.displayName = 'CreateVolunteerFunctionModal'

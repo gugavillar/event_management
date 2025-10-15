@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Text } from '@/components/Atoms'
@@ -21,14 +21,14 @@ export const InformationCard = ({
 		<div
 			className={twMerge(
 				'flex flex-col rounded-xl border border-gray-200 bg-white shadow-sm',
-				className,
+				className
 			)}
 			{...props}
 		>
 			<div
 				className={twMerge(
 					'flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-100 px-4 py-2',
-					headerClassName,
+					headerClassName
 				)}
 			>
 				<Text className="opacity-50">{headingText}</Text>

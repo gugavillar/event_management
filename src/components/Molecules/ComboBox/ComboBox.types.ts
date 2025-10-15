@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 type ComboBoxOption = ComponentProps<'option'> & {
 	customProps: Record<string, string>

@@ -1,14 +1,13 @@
 'use client'
-import { Controller, useFormContext } from 'react-hook-form'
 
 import { CHECK_IN_STATUS, LIMIT_PER_PAGE_EDITION, MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import {
+	type UseGetInfinityVolunteersArgs,
 	useGetInfinityVolunteers,
-	UseGetInfinityVolunteersArgs,
 } from '@/services/queries/volunteers'
-
+import { Controller, useFormContext } from 'react-hook-form'
 import { SearchBox } from '../SearchBox'
 
 type VolunteerFieldProps = UseGetInfinityVolunteersArgs & {
@@ -46,32 +45,32 @@ export const VolunteerField = ({
 	const formattedVolunteers = formatterComboBoxValues(
 		baseVolunteers,
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRefVolunteers = useInfiniteScrollObserver({
+		fetchNextPage: fetchNextPageVolunteers,
 		hasNextPage: Boolean(hasNextPageVolunteers),
 		isFetchingNextPage: isFetchingNextPageVolunteers,
-		fetchNextPage: fetchNextPageVolunteers,
 	})
 
 	return (
 		<Controller
+			control={control}
 			key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 			name={fieldMemberName}
-			control={control}
 			render={({ field }) => (
 				<SearchBox
-					search={searchVolunteer}
-					setSearch={setSearchVolunteer}
-					label="Membro"
+					error={fieldError}
 					keyOptionLabel="label"
 					keyOptionValue="value"
-					options={formattedVolunteers}
-					selectedValue={field.value}
-					setSelectedValue={field.onChange}
+					label="Membro"
 					lastItemRef={lastItemRefVolunteers}
-					error={fieldError}
+					options={formattedVolunteers}
+					search={searchVolunteer}
+					selectedValue={field.value}
+					setSearch={setSearchVolunteer}
+					setSelectedValue={field.onChange}
 				/>
 			)}
 		/>

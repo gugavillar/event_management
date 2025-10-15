@@ -1,7 +1,7 @@
 'use client'
 import { isServer } from '@tanstack/react-query'
 import { ChevronDown } from 'lucide-react'
-import { ReactNode, useEffect } from 'react'
+import { type ReactNode, useEffect } from 'react'
 
 type DropdownProps = {
 	label: ReactNode
@@ -22,9 +22,9 @@ export const Dropdown = ({ children, label }: DropdownProps) => {
 	return (
 		<div className="hs-dropdown relative inline-flex">
 			<button
+				className="hs-dropdown-toggle inline-flex items-center gap-x-2 text-sm font-medium text-gray-800 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 				id="hs-dropdown-default"
 				type="button"
-				className="hs-dropdown-toggle inline-flex items-center gap-x-2 text-sm font-medium text-gray-800 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 			>
 				{label}
 				<ChevronDown className="hs-dropdown-open:rotate-180 size-4" />

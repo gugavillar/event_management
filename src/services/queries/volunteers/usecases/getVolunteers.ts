@@ -33,8 +33,8 @@ export const getVolunteers = async ({
 			...(hasNoGroup && { hasNoGroup }),
 			...(hasNoRoom && { hasNoRoom }),
 			...(volunteerCity && { volunteerCity }),
-			pageVolunteer: page,
 			limit,
+			pageVolunteer: page,
 		},
 	})
 	return response.data

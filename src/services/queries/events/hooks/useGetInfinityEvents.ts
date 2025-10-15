@@ -1,11 +1,13 @@
 'use client'
-import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
+import {
+	type UseInfiniteQueryResult,
+	useInfiniteQuery,
+} from '@tanstack/react-query'
 import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
-
-import { EventsFromAPI } from '../event.type'
+import { useDebounce } from '@uidotdev/usehooks'
+import type { EventsFromAPI } from '../event.type'
 import { getEvents } from '../usecases'
 
 export const useGetInfinityEvents = () => {
@@ -21,21 +23,21 @@ export const useGetInfinityEvents = () => {
 		pages: Array<EventsFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
-		initialPageParam: 1,
-		queryKey: [QUERY_KEYS.EVENTS_INFINITY, debouceValue],
-		queryFn: async ({ pageParam }) =>
-			await getEvents({ searchEvent: debouceValue, page: pageParam }),
 		getNextPageParam: (lastPage: EventsFromAPI) => {
 			const { currentPage, totalPages } = lastPage
 			return currentPage < totalPages ? currentPage + 1 : undefined
 		},
+		initialPageParam: 1,
+		queryFn: async ({ pageParam }) =>
+			await getEvents({ page: pageParam, searchEvent: debouceValue }),
+		queryKey: [QUERY_KEYS.EVENTS_INFINITY, debouceValue],
 	})
 
 	return {
 		data,
+		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-		fetchNextPage,
 		search,
 		setSearch,
 	}

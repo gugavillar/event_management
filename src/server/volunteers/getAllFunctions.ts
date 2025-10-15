@@ -2,20 +2,20 @@ import { prisma } from '@/constants'
 
 export const getAllFunctions = async (
 	search: string | null,
-	eventId: string,
+	eventId: string
 ) => {
 	try {
 		return await prisma.eventVolunteerRole.findMany({
+			include: {
+				leaders: true,
+				volunteerRole: true,
+				volunteers: true,
+			},
+			orderBy: { volunteerRole: { role: 'asc' } },
 			where: {
 				eventId,
 				...(search && { volunteerRole: { role: { contains: search } } }),
 			},
-			include: {
-				volunteers: true,
-				leaders: true,
-				volunteerRole: true,
-			},
-			orderBy: { volunteerRole: { role: 'asc' } },
 		})
 	} catch (error) {
 		console.error('@getAllFunctions error:', error)

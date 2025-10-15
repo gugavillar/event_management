@@ -3,15 +3,15 @@ import { z } from 'zod'
 import { formatZodValidationErrors } from './errors'
 
 const schema = z.object({
-	name: z.string().min(3),
-	initialDate: z.iso.datetime(),
 	finalDate: z.iso.datetime(),
+	initialDate: z.iso.datetime(),
+	name: z.string().min(3),
 })
 
 const MOCKED_ERROR = schema.safeParse({
-	name: '',
-	initialDate: '',
 	finalDate: '',
+	initialDate: '',
+	name: '',
 })
 
 describe('errors formatters', () => {

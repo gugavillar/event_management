@@ -5,7 +5,6 @@ import { Sidebar } from '@/components/Organisms'
 import { PRINCIPAL_LINKS } from '@/constants'
 import { AuthGuard } from '@/providers/AuthGuard'
 import { SessionProvider } from '@/providers/SessionProvider'
-
 import { authOptions } from '../api/auth/[...nextauth]/authOptions'
 
 export default async function AdminLayout({

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { Pagination } from './Pagination'
 import { usePagination } from './Pagination.utils'
@@ -18,7 +18,7 @@ describe('Pagination component', () => {
 
 	it('is prev button disabled on first page', () => {
 		mockedUsePagination.mockReturnValue([1, 2, 3])
-		render(<Pagination currentPage={1} totalPages={3} setPage={setPage} />)
+		render(<Pagination currentPage={1} setPage={setPage} totalPages={3} />)
 
 		const prevButton = screen.getByRole('button', { name: /previous/i })
 		expect(prevButton).toBeDisabled()
@@ -29,7 +29,7 @@ describe('Pagination component', () => {
 
 	it('is next button disabled on last page', () => {
 		mockedUsePagination.mockReturnValue([1, 2, 3])
-		render(<Pagination currentPage={3} totalPages={3} setPage={setPage} />)
+		render(<Pagination currentPage={3} setPage={setPage} totalPages={3} />)
 
 		const nextButton = screen.getByRole('button', { name: /next/i })
 		expect(nextButton).toBeDisabled()
@@ -40,7 +40,7 @@ describe('Pagination component', () => {
 
 	it('is renders pages buttons', () => {
 		mockedUsePagination.mockReturnValue([1, 2, 3, 4])
-		render(<Pagination currentPage={2} totalPages={4} setPage={setPage} />)
+		render(<Pagination currentPage={2} setPage={setPage} totalPages={4} />)
 
 		expect(screen.getByRole('button', { name: '1' })).toBeInTheDocument()
 		expect(screen.getByRole('button', { name: '2' })).toBeInTheDocument()
@@ -50,7 +50,7 @@ describe('Pagination component', () => {
 
 	it('current page is active', () => {
 		mockedUsePagination.mockReturnValue([1, 2, 3])
-		render(<Pagination currentPage={2} totalPages={3} setPage={setPage} />)
+		render(<Pagination currentPage={2} setPage={setPage} totalPages={3} />)
 
 		const activeButton = screen.getByRole('button', { name: '2' })
 		expect(activeButton).toHaveClass('bg-teal-500 text-white')
@@ -58,7 +58,7 @@ describe('Pagination component', () => {
 
 	it('call setPage when click page button', () => {
 		mockedUsePagination.mockReturnValue([1, 2, 3])
-		render(<Pagination currentPage={1} totalPages={3} setPage={setPage} />)
+		render(<Pagination currentPage={1} setPage={setPage} totalPages={3} />)
 
 		fireEvent.click(screen.getByRole('button', { name: '2' }))
 		expect(setPage).toHaveBeenCalledWith(2)
@@ -66,7 +66,7 @@ describe('Pagination component', () => {
 
 	it('call setPage when click prev or next button', async () => {
 		mockedUsePagination.mockReturnValue([1, 2, 3])
-		render(<Pagination currentPage={2} totalPages={3} setPage={setPage} />)
+		render(<Pagination currentPage={2} setPage={setPage} totalPages={3} />)
 
 		fireEvent.click(screen.getByRole('button', { name: /previous/i }))
 		fireEvent.click(screen.getByRole('button', { name: /next/i }))

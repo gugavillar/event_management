@@ -1,20 +1,11 @@
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
 export const ExternalVolunteerFormSchemaStepOne = z
 	.object({
-		name: z.string().trim().min(3, 'Campo obrigatório'),
-		email: z
-			.email({ error: 'Email inválido' })
-			.trim()
-			.refine((value) => validateEmail(value), { error: 'Email inválido' }),
-		called: z
-			.string({ error: 'Campo obrigatório' })
-			.trim()
-			.min(1, 'Campo obrigatório'),
 		birthdate: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
@@ -23,24 +14,18 @@ export const ExternalVolunteerFormSchemaStepOne = z
 					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
 						? validateBirthdate(value)
 						: false,
-				{ error: 'Data inválida' },
+				{ error: 'Data inválida' }
 			),
-		phone: z
-			.string({ error: 'Campo obrigatório' })
+		called: z
+			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' },
-			),
+			.min(1, 'Campo obrigatório'),
+		cell: z.string().optional(),
 		community: z.string().trim().min(3, 'Campo obrigatório'),
-		relative: z.string().trim().min(3, 'Campo obrigatório'),
-		relativePhone: z
-			.string({ error: 'Campo obrigatório' })
+		email: z
+			.email({ error: 'Email inválido' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' },
-			),
+			.refine((value) => validateEmail(value), { error: 'Email inválido' }),
 		hasCell: z
 			.union([
 				z.enum(['Yes', 'No'], {
@@ -51,7 +36,6 @@ export const ExternalVolunteerFormSchemaStepOne = z
 			.refine((value) => ['Yes', 'No'].includes(value), {
 				error: 'Campo obrigatório',
 			}),
-		cell: z.string().optional(),
 		hasHealth: z
 			.union([
 				z.enum(['Yes', 'No'], {
@@ -63,6 +47,22 @@ export const ExternalVolunteerFormSchemaStepOne = z
 				error: 'Campo obrigatório',
 			}),
 		health: z.string().optional(),
+		name: z.string().trim().min(3, 'Campo obrigatório'),
+		phone: z
+			.string({ error: 'Campo obrigatório' })
+			.trim()
+			.refine(
+				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
+				{ error: 'Telefone inválido' }
+			),
+		relative: z.string().trim().min(3, 'Campo obrigatório'),
+		relativePhone: z
+			.string({ error: 'Campo obrigatório' })
+			.trim()
+			.refine(
+				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
+				{ error: 'Telefone inválido' }
+			),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
@@ -82,25 +82,25 @@ export const ExternalVolunteerFormSchemaStepOne = z
 		validatePhonesNotEquals(
 			data.phone,
 			[{ field: 'relativePhone', phone: data.relativePhone }],
-			ctx,
+			ctx
 		)
 	})
 
 export const ExternalVolunteerFormSchemaStepTwo = z.object({
-	terms: z.boolean({ error: 'Campo obrigatório' }).refine((value) => value, {
-		error: 'Campo obrigatório',
-	}),
 	address: z.object({
-		street: z.string().trim().min(3, 'Campo obrigatório'),
+		city: z.string().trim().min(3, 'Campo obrigatório'),
 		neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
 		number: z.string().trim().min(1, 'Campo obrigatório'),
-		city: z.string().trim().min(3, 'Campo obrigatório'),
 		state: z
 			.string({ error: 'Campo obrigatório' })
 			.max(2)
 			.refine((value) => validateUF(value), {
 				error: 'Campo obrigatório',
 			}),
+		street: z.string().trim().min(3, 'Campo obrigatório'),
+	}),
+	terms: z.boolean({ error: 'Campo obrigatório' }).refine((value) => value, {
+		error: 'Campo obrigatório',
 	}),
 })
 
@@ -120,16 +120,15 @@ export const ExternalVolunteerFormSchemaStepThree = z.object({
 export const fullSchema = z.intersection(
 	z.intersection(
 		ExternalVolunteerFormSchemaStepOne,
-		ExternalVolunteerFormSchemaStepTwo,
+		ExternalVolunteerFormSchemaStepTwo
 	),
-	ExternalVolunteerFormSchemaStepThree,
+	ExternalVolunteerFormSchemaStepThree
 )
 
 export type FullSchemaType = z.infer<typeof fullSchema>
 
 export const stepsFields = [
 	{
-		schema: ExternalVolunteerFormSchemaStepOne,
 		fields: [
 			'name',
 			'email',
@@ -144,9 +143,9 @@ export const stepsFields = [
 			'health',
 			'community',
 		],
+		schema: ExternalVolunteerFormSchemaStepOne,
 	},
 	{
-		schema: ExternalVolunteerFormSchemaStepTwo,
 		fields: [
 			'terms',
 			'address.street',
@@ -155,9 +154,10 @@ export const stepsFields = [
 			'address.city',
 			'address.state',
 		],
+		schema: ExternalVolunteerFormSchemaStepTwo,
 	},
 	{
-		schema: ExternalVolunteerFormSchemaStepThree,
 		fields: ['paymentMethod'],
+		schema: ExternalVolunteerFormSchemaStepThree,
 	},
 ] as const

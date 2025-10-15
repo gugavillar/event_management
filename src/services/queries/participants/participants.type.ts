@@ -1,8 +1,7 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
-import { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
-
-import { EventsAPI } from '../events/event.type'
+import type { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
+import type { EventsAPI } from '../events/event.type'
 
 export type ParticipantsAPI = {
 	id: UUID

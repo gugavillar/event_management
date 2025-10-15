@@ -1,15 +1,17 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { CalendarPlus } from 'lucide-react'
-import { Dispatch, memo, SetStateAction } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 
 import { Button } from '@/components/Atoms'
 import { overlayOpen } from '@/constants'
-import { EventsAPI } from '@/services/queries/events/event.type'
-
+import type { EventsAPI } from '@/services/queries/events/event.type'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
 import { EventDrawer } from '../EventDrawer'
-import { EventSchema, EventSchemaType } from '../EventDrawer/EventDrawer.schema'
+import {
+	EventSchema,
+	type EventSchemaType,
+} from '../EventDrawer/EventDrawer.schema'
 
 type CreateEventButtonProps = {
 	drawerId: string
@@ -21,12 +23,12 @@ export const CreateEventButton = memo(
 	({ drawerId, selectedEvent, setSelectedEvent }: CreateEventButtonProps) => {
 		const methods = useForm<EventSchemaType>({
 			defaultValues: {
-				name: '',
-				gender: '',
-				minAge: '',
-				maxAge: '',
-				initialDate: '',
 				finalDate: '',
+				gender: '',
+				initialDate: '',
+				maxAge: '',
+				minAge: '',
+				name: '',
 				participantPrice: '',
 				volunteerPrice: '',
 			},
@@ -42,10 +44,10 @@ export const CreateEventButton = memo(
 		return (
 			<>
 				<Button
-					type="button"
-					onClick={handleCreateEvent}
-					leftIcon={<CalendarPlus />}
 					className="items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:min-w-60"
+					leftIcon={<CalendarPlus />}
+					onClick={handleCreateEvent}
+					type="button"
 				>
 					<span className="max-md:hidden">Criar evento</span>
 				</Button>
@@ -58,7 +60,7 @@ export const CreateEventButton = memo(
 				</FormProvider>
 			</>
 		)
-	},
+	}
 )
 
 CreateEventButton.displayName = 'CreateEventButton'

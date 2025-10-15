@@ -1,28 +1,27 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleDollarSign } from 'lucide-react'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/Atoms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
 import { TransactionDrawer } from '../TransactionDrawer'
 import {
 	TransactionSchema,
-	TransactionType,
+	type TransactionType,
 } from '../TransactionDrawer/TransactionDrawer.schema'
 
 export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 	const methods = useForm<TransactionType>({
-		mode: 'onChange',
-		resolver: zodResolver(TransactionSchema),
 		defaultValues: {
 			amount: '',
+			amountType: '',
 			date: '',
 			description: '',
 			type: '',
-			amountType: '',
 		},
+		mode: 'onChange',
+		resolver: zodResolver(TransactionSchema),
 	})
 	const handleCreateTransaction = () => {
 		overlayOpen(MODALS_IDS.TRANSACTION_CREATE_DRAWER)
@@ -30,10 +29,10 @@ export const CreateTransaction = ({ eventId }: { eventId: string }) => {
 	return (
 		<>
 			<Button
-				type="button"
-				onClick={handleCreateTransaction}
-				leftIcon={<CircleDollarSign />}
 				className="max-w-sm min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+				leftIcon={<CircleDollarSign />}
+				onClick={handleCreateTransaction}
+				type="button"
 			>
 				Criar transação
 			</Button>

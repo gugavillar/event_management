@@ -16,7 +16,7 @@ const getNumberDate = (date: string, formatString = 'yyyy-MM-dd') => {
 	return startOfDay(
 		parse(date, formatString, new Date(), {
 			locale: ptBR,
-		}).getTime(),
+		}).getTime()
 	)
 }
 
@@ -36,7 +36,7 @@ export const isValidateDate = (date: string) => {
 
 export const isEqualOrIsBeforeFirstDate = (
 	firstDate: string,
-	finalDate: string,
+	finalDate: string
 ) => {
 	if (!firstDate || !finalDate) return false
 
@@ -68,7 +68,7 @@ export const validateBirthdate = (date: string) => {
 export const validateDateRange = (
 	date: string,
 	initialRange?: number | null,
-	finalRange?: number | null,
+	finalRange?: number | null
 ) => {
 	if (!initialRange) return true
 

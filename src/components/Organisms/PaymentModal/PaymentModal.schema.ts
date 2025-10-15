@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import { PaymentTypeAPI } from '@/constants'
 import { currencyValue, removeCurrencyFormat } from '@/formatters'
-
 import { paymentOptionsRadio } from './PaymentModal.utils'
 
 export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
@@ -15,8 +14,9 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 				],
 				{
 					error: 'Campo obrigatório',
-				},
+				}
 			),
+			paymentReceived: z.string().optional(),
 			paymentType: z
 				.union([
 					z.enum(
@@ -29,7 +29,7 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 						],
 						{
 							error: 'Campo obrigatório',
-						},
+						}
 					),
 					z.string(),
 				])
@@ -44,10 +44,9 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 						].includes(val as PaymentTypeAPI),
 					{
 						error: 'Campo obrigatório',
-					},
+					}
 				),
 			paymentValue: z.string().optional(),
-			paymentReceived: z.string().optional(),
 		})
 		.superRefine((data, ctx) => {
 			if (data.paymentValue) {
@@ -56,9 +55,9 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 				const limitValue = maxPaidValue - paidValue
 				if (totalPaid > maxPaidValue) {
 					ctx.addIssue({
-						path: ['paymentValue'],
 						code: 'custom',
 						message: `O valor inserido excede o valor restante de ${currencyValue(limitValue)}`,
+						path: ['paymentValue'],
 					})
 				}
 			}
@@ -67,9 +66,9 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 				(!data.paymentValue || data.paymentValue.trim() === '')
 			) {
 				ctx.addIssue({
-					path: ['paymentValue'],
 					code: 'custom',
 					message: 'Campo obrigatório',
+					path: ['paymentValue'],
 				})
 			}
 			if (
@@ -77,9 +76,9 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 				(!data.paymentReceived || data?.paymentReceived.trim() === '')
 			) {
 				ctx.addIssue({
-					path: ['paymentReceived'],
 					code: 'custom',
 					message: 'Campo obrigatório',
+					path: ['paymentReceived'],
 				})
 			}
 		})

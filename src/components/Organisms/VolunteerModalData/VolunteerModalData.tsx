@@ -1,9 +1,8 @@
-import { Dispatch, memo, SetStateAction } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 
 import { Header, Modal, Spinner } from '@/components/Atoms'
 import { useGetVolunteer } from '@/services/queries/volunteers'
-import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
-
+import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { AddressInfoCard } from '../AddressInfoCard'
 import { FamilyContactInfo } from '../FamilyContactInfo'
 import { PersonalInfoCard } from '../PersonalInfoCard'
@@ -23,9 +22,9 @@ export const VolunteerModalData = memo(
 		const { data, isLoading } = useGetVolunteer(selectedVolunteer)
 		return (
 			<Modal
-				modalId={modalId}
 				handleClose={() => setSelectedVolunteer(null)}
 				isLarge
+				modalId={modalId}
 			>
 				<div className="flex flex-col space-y-4 max-md:h-[85dvh] max-md:overflow-y-auto">
 					<Header as="h3" className="text-center">
@@ -37,7 +36,7 @@ export const VolunteerModalData = memo(
 						</div>
 					) : (
 						<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-							<PersonalInfoCard userInfo={{ ...data }} type="volunteer" />
+							<PersonalInfoCard type="volunteer" userInfo={{ ...data }} />
 							<AddressInfoCard
 								addressInfo={{
 									...data.address,
@@ -52,7 +51,7 @@ export const VolunteerModalData = memo(
 				</div>
 			</Modal>
 		)
-	},
+	}
 )
 
 VolunteerModalData.displayName = 'VolunteerModalData'

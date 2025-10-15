@@ -1,9 +1,8 @@
 import { isServer } from '@tanstack/react-query'
-import axios from 'axios'
-import { signOut } from 'next-auth/react'
 
 import { PRINCIPAL_LINKS } from '@/constants'
-
+import axios from 'axios'
+import { signOut } from 'next-auth/react'
 import { BASE_URL } from './endpoints'
 
 export const api = axios.create({
@@ -27,5 +26,5 @@ api.interceptors.response.use(
 		}
 
 		return Promise.reject(error)
-	},
+	}
 )

@@ -1,10 +1,9 @@
-import bcrypt from 'bcryptjs'
-
 import {
 	UserSchema,
-	UserSchemaType,
+	type UserSchemaType,
 } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
-import { prisma, ROLES } from '@/constants'
+import { prisma, type ROLES } from '@/constants'
+import bcrypt from 'bcryptjs'
 
 export const createUser = (data: UserSchemaType) => {
 	try {
@@ -12,10 +11,10 @@ export const createUser = (data: UserSchemaType) => {
 
 		return prisma.user.create({
 			data: {
-				name: data.name,
 				email: data.email,
-				role: data.role as ROLES,
+				name: data.name,
 				passwordHash: bcrypt.hashSync('123456', 10),
+				role: data.role as ROLES,
 			},
 		})
 	} catch (error) {

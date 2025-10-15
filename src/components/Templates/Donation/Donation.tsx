@@ -12,8 +12,7 @@ import {
 } from '@/components/Organisms'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetDonations } from '@/services/queries/donations'
-import { DonationAPI } from '@/services/queries/donations/donations.types'
-
+import type { DonationAPI } from '@/services/queries/donations/donations.types'
 import { formatTableData, HEADER_LABELS } from './Donation.utils'
 
 export const Donation = () => {
@@ -33,7 +32,7 @@ export const Donation = () => {
 	const hasMoreThanOnePage = !!data?.totalPages && data.totalPages > 1
 
 	return (
-		<PageContent subheadingPage="Lista das doações" pageTitle="Doações">
+		<PageContent pageTitle="Doações" subheadingPage="Lista das doações">
 			<DonationHeader
 				eventId={eventId}
 				setEventId={setEventId}
@@ -48,8 +47,8 @@ export const Donation = () => {
 				{hasMoreThanOnePage && (
 					<Pagination
 						currentPage={page}
-						totalPages={data?.totalPages}
 						setPage={setPage}
+						totalPages={data?.totalPages}
 					/>
 				)}
 			</ListPage>

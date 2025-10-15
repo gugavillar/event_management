@@ -1,5 +1,5 @@
 'use client'
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Button } from '@/components/Atoms'

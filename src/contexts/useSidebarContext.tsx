@@ -2,9 +2,9 @@
 
 import {
 	createContext,
-	Dispatch,
-	ReactNode,
-	SetStateAction,
+	type Dispatch,
+	type ReactNode,
+	type SetStateAction,
 	useContext,
 	useState,
 } from 'react'
@@ -19,7 +19,7 @@ export const SidebarContext = createContext({} as SidebarContextType)
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
 	const localCollapse = window.localStorage.getItem('collapsed')
 	const [collapsed, setCollapsed] = useState(
-		localCollapse ? JSON.parse(localCollapse) : false,
+		localCollapse ? JSON.parse(localCollapse) : false
 	)
 
 	const handleCollapse = () => {

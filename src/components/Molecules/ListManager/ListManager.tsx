@@ -1,6 +1,6 @@
 'use client'
 
-import { Table, TableProps } from '@/components/Atoms'
+import { Table, type TableProps } from '@/components/Atoms'
 
 type ParticipantManagerProps = {
 	bodyData: TableProps['bodyData']
@@ -17,9 +17,9 @@ export const ListManager = ({
 }: ParticipantManagerProps) => {
 	return (
 		<Table
-			headerLabels={headerLabels}
 			bodyData={bodyData}
 			handleClickRow={handleClickRow}
+			headerLabels={headerLabels}
 			isLoading={isLoading}
 		/>
 	)

@@ -14,7 +14,6 @@ import { MEMBERS, overlayClose, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-
 import { ParticipantFilters } from './ParticipantFilters'
 import { VolunteerFilters } from './VolunteerFilters'
 
@@ -35,10 +34,10 @@ export type FilterType = {
 }
 
 const defaultFilters: FilterType = {
-	status: '',
 	city: '',
-	role: '',
 	paymentType: '',
+	role: '',
+	status: '',
 }
 
 export const FilterDrawer = ({
@@ -51,10 +50,10 @@ export const FilterDrawer = ({
 }: FilterDrawerProps) => {
 	const [filterEventId, setFilterEventId] = useState(query.eventId)
 	const [filters, setFilters] = useState<FilterType>({
-		status: query.status,
 		city: query.city,
-		role: query.role,
 		paymentType: query.paymentType,
+		role: query.role,
+		status: query.status,
 	})
 	const {
 		data: events,
@@ -67,12 +66,12 @@ export const FilterDrawer = ({
 		'name',
 		'id',
 		true,
-		'Todos os eventos',
+		'Todos os eventos'
 	)
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleFilter = (name: keyof FilterType, value: string) => {
@@ -107,10 +106,10 @@ export const FilterDrawer = ({
 	return (
 		<>
 			<Button
-				type="button"
-				leftIcon={<Filter />}
 				className="relative items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:min-w-60"
+				leftIcon={<Filter />}
 				onClick={handleOpenDrawerFilters}
+				type="button"
 			>
 				<span className="max-md:hidden">Filtros</span>
 				{filterCount > 0 && (
@@ -126,10 +125,10 @@ export const FilterDrawer = ({
 						<ComboBox
 							keyOptionLabel="label"
 							keyOptionValue="value"
+							lastItemRef={lastItemRef}
 							options={formattedEvents}
 							selectedValue={filterEventId}
 							setSelectedValue={setFilterEventId}
-							lastItemRef={lastItemRef}
 						/>
 					</div>
 					{type === MEMBERS.PARTICIPANT ? (
@@ -137,14 +136,14 @@ export const FilterDrawer = ({
 							eventId={filterEventId}
 							filters={filters}
 							handleFilter={handleFilter}
-							isPaymentType={isPaymentType}
 							isInterested={isInterested}
+							isPaymentType={isPaymentType}
 						/>
 					) : (
 						<VolunteerFilters
 							eventId={filterEventId}
-							handleFilter={handleFilter}
 							filters={filters}
+							handleFilter={handleFilter}
 							isPaymentType={isPaymentType}
 						/>
 					)}

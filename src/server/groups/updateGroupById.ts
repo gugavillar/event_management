@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { groupSchemaRoute } from '@/app/api/groups/group.schema'
 import { MEMBERS, prisma } from '@/constants'
-import { FormGroup } from '@/services/queries/groups/groups.types'
+import type { FormGroup } from '@/services/queries/groups/groups.types'
 
 export const updateGroupById = async (data: FormGroup, id: string) => {
 	try {
@@ -15,8 +15,8 @@ export const updateGroupById = async (data: FormGroup, id: string) => {
 		return await prisma.$transaction(async (tx) => {
 			const group = await tx.group.update({
 				data: {
-					name: data.name,
 					eventId: data.eventId,
+					name: data.name,
 				},
 				where: {
 					id,
@@ -26,8 +26,8 @@ export const updateGroupById = async (data: FormGroup, id: string) => {
 
 			await tx.groupMember.createMany({
 				data: data.members.map((member) => ({
-					type: member.type,
 					groupId: group.id,
+					type: member.type,
 					...(member.type === MEMBERS.PARTICIPANT
 						? { participantId: member.member }
 						: { volunteerId: member.member }),

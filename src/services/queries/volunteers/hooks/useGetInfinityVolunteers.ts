@@ -1,12 +1,14 @@
 'use client'
-import { useInfiniteQuery, UseInfiniteQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
+import {
+	type UseInfiniteQueryResult,
+	useInfiniteQuery,
+} from '@tanstack/react-query'
 import { useState } from 'react'
 
-import { CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
-
+import { type CHECK_IN_STATUS, LIMIT_PER_PAGE, QUERY_KEYS } from '@/constants'
+import { useDebounce } from '@uidotdev/usehooks'
 import { getVolunteers } from '../usecases'
-import { VolunteersFromAPI } from '../volunteers.type'
+import type { VolunteersFromAPI } from '../volunteers.type'
 
 export type UseGetInfinityVolunteersArgs = {
 	eventId: string
@@ -35,7 +37,22 @@ export const useGetInfinityVolunteers = ({
 		pages: Array<VolunteersFromAPI>
 		pageParams: Array<number>
 	}> = useInfiniteQuery({
+		enabled: !!eventId,
+		getNextPageParam: (lastPage: VolunteersFromAPI) => {
+			const { currentPage, totalPages } = lastPage
+			return currentPage < totalPages ? currentPage + 1 : undefined
+		},
 		initialPageParam: 1,
+		queryFn: async ({ pageParam }) =>
+			await getVolunteers({
+				eventId,
+				searchVolunteer: debounceVolunteer,
+				...(statusVolunteer && { statusVolunteer }),
+				...(hasNoGroup && { hasNoGroup }),
+				...(hasNoRoom && { hasNoRoom }),
+				limit,
+				page: pageParam,
+			}),
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS_INFINITY,
 			eventId,
@@ -45,28 +62,13 @@ export const useGetInfinityVolunteers = ({
 			statusVolunteer,
 			limit,
 		],
-		queryFn: async ({ pageParam }) =>
-			await getVolunteers({
-				searchVolunteer: debounceVolunteer,
-				eventId,
-				...(statusVolunteer && { statusVolunteer }),
-				...(hasNoGroup && { hasNoGroup }),
-				...(hasNoRoom && { hasNoRoom }),
-				page: pageParam,
-				limit,
-			}),
-		getNextPageParam: (lastPage: VolunteersFromAPI) => {
-			const { currentPage, totalPages } = lastPage
-			return currentPage < totalPages ? currentPage + 1 : undefined
-		},
-		enabled: !!eventId,
 	})
 
 	return {
 		data,
+		fetchNextPage,
 		hasNextPage,
 		isFetchingNextPage,
-		fetchNextPage,
 		searchVolunteer,
 		setSearchVolunteer,
 	}

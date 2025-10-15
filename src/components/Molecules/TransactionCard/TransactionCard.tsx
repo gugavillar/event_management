@@ -34,7 +34,7 @@ export const TransactionCard = ({
 	isLoading,
 }: TransactionCardProps) => {
 	return (
-		<InformationCard headingText={headerText} headerClassName={headerClassName}>
+		<InformationCard headerClassName={headerClassName} headingText={headerText}>
 			<div className="flex h-full items-center justify-end p-4 md:p-5">
 				<Header as="h3" className="text-4xl">
 					{isLoading ? <Spinner /> : currencyValue(value)}

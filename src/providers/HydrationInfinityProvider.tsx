@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { getQueryClient } from '@/constants'
 
@@ -19,9 +19,9 @@ export const HydrationInfinityProvider = async ({
 	const query = getQueryClient()
 
 	await query.prefetchInfiniteQuery({
-		queryKey,
-		queryFn,
 		initialPageParam,
+		queryFn,
+		queryKey,
 	})
 
 	return (

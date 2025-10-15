@@ -6,8 +6,8 @@ const arrayOfUuidBooleanObjects = z.array(uuidBooleanObject)
 
 export const MeetingSchema = z
 	.object({
-		presence: arrayOfUuidBooleanObjects,
 		justification: arrayOfUuidBooleanObjects,
+		presence: arrayOfUuidBooleanObjects,
 	})
 	.superRefine((data, ctx) => {
 		const flattenArray = (arr: Array<Record<string, boolean>>) => {
@@ -27,22 +27,22 @@ export const MeetingSchema = z
 			if (presenceFlat[uuid] && justificationFlat[uuid]) {
 				const presenceIndex = data.presence.findIndex((obj) => uuid in obj)
 				const justificationIndex = data.justification.findIndex(
-					(obj) => uuid in obj,
+					(obj) => uuid in obj
 				)
 
 				if (presenceIndex !== -1) {
 					ctx.addIssue({
-						path: ['presence', presenceIndex, uuid],
-						message: 'Apenas uma opção.',
 						code: 'custom',
+						message: 'Apenas uma opção.',
+						path: ['presence', presenceIndex, uuid],
 					})
 				}
 
 				if (justificationIndex !== -1) {
 					ctx.addIssue({
-						path: ['justification', justificationIndex, uuid],
-						message: 'Apenas uma opção.',
 						code: 'custom',
+						message: 'Apenas uma opção.',
+						path: ['justification', justificationIndex, uuid],
 					})
 				}
 			}

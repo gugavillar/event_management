@@ -1,11 +1,10 @@
 'use client'
 import Link from 'next/link'
-import PixBR from 'pixbrasil'
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 
 import { MODALS_IDS, PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
-
+import PixBR from 'pixbrasil'
 import { ModalPaymentPix } from './ModalPaymentPix'
 
 export type PaymentChoiceProps = {
@@ -50,9 +49,9 @@ export const PaymentChoice = ({
 					<p>
 						Após o pagamento, envie o comprovante para a o número{' '}
 						<Link
-							target="_blank"
-							href={`https://wa.me/+55${process.env.NEXT_PUBLIC_PHONE}`}
 							className="text-blue-500 underline"
+							href={`https://wa.me/+55${process.env.NEXT_PUBLIC_PHONE}`}
+							target="_blank"
 						>
 							{formatPhone(process.env.NEXT_PUBLIC_PHONE ?? '')}
 						</Link>{' '}

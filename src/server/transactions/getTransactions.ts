@@ -8,7 +8,7 @@ import {
 export const getTransactions = async (
 	eventId: string | null,
 	searchTransaction: string | null,
-	page = 1,
+	page = 1
 ) => {
 	try {
 		const skip = (page - 1) * LIMIT_PER_PAGE
@@ -129,18 +129,18 @@ export const getTransactions = async (
 				totalAccountOutcome: 0,
 				totalCashIncome: 0,
 				totalCashOutcome: 0,
-			},
+			}
 		)
 
 		return {
+			currentPage: page,
 			data: transactions,
+			perPage: LIMIT_PER_PAGE,
 			sumOfAllIncome: transactionsIncome._sum.amount?.toNumber(),
 			sumOfAllOutcome: transactionsOutcome._sum.amount?.toNumber(),
-			currentPage: page,
-			perPage: LIMIT_PER_PAGE,
 			totalCount: totalOfTransactions,
-			totalPages: Math.ceil(totalOfTransactions / LIMIT_PER_PAGE),
 			totalOfAccountAndCash,
+			totalPages: Math.ceil(totalOfTransactions / LIMIT_PER_PAGE),
 		}
 	} catch (error) {
 		console.error('@getTransactions error:', error)

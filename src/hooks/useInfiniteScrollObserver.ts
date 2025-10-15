@@ -27,7 +27,7 @@ export const useInfiniteScrollObserver = ({
 
 			if (node) observerRef.current.observe(node)
 		},
-		[hasNextPage, isFetchingNextPage, fetchNextPage],
+		[hasNextPage, isFetchingNextPage, fetchNextPage]
 	)
 
 	return lastItemRef

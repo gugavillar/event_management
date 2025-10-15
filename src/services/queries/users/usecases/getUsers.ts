@@ -11,8 +11,8 @@ export const getUsers = async ({ searchUser, page = 1 }: GetUsersParams) => {
 	const response = await api.get(ENDPOINTS.GET_USERS, {
 		params: {
 			...(searchUser && { searchUser }),
-			pageUser: page,
 			limit: LIMIT_PER_PAGE,
+			pageUser: page,
 		},
 	})
 

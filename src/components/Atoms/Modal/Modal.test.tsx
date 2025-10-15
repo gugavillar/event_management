@@ -7,7 +7,7 @@ describe('Modal component', () => {
 		const { getByTestId } = render(
 			<Modal modalId="modal">
 				<p>teste</p>
-			</Modal>,
+			</Modal>
 		)
 		const modal = getByTestId('modal')
 		expect(modal).toBeInTheDocument()
@@ -17,7 +17,7 @@ describe('Modal component', () => {
 		const { getByTestId } = render(
 			<Modal modalId="modal">
 				<p>teste</p>
-			</Modal>,
+			</Modal>
 		)
 		const modal = getByTestId('modal')
 		expect(modal).toHaveTextContent('teste')

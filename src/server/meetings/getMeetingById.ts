@@ -19,24 +19,24 @@ export const getMeetingById = async (id: string) => {
 			if (!meeting) {
 				return NextResponse.json(
 					{ error: 'Reunião não encontrada' },
-					{ status: 400 },
+					{ status: 400 }
 				)
 			}
 
 			const volunteers = await tx.volunteer.findMany({
+				orderBy: {
+					name: 'asc',
+				},
+				select: {
+					id: true,
+					name: true,
+				},
 				where: {
 					eventId: meeting.eventId,
 					OR: [
 						{ checkIn: null },
 						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
 					],
-				},
-				select: {
-					id: true,
-					name: true,
-				},
-				orderBy: {
-					name: 'asc',
 				},
 			})
 

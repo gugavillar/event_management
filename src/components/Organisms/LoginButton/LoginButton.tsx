@@ -1,16 +1,18 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useLayoutEffect } from 'react'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button, Header } from '@/components/Atoms'
 import { InputField } from '@/components/Molecules'
 import { convertToBoolean } from '@/formatters'
 import { useLogin } from '@/services/queries/auth'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import { DefinedNewPassword } from './DefinedNewPassword'
-import { LoginButtonSchema, LoginButtonSchemaType } from './LoginButton.schema'
+import {
+	LoginButtonSchema,
+	type LoginButtonSchemaType,
+} from './LoginButton.schema'
 
 export const LoginButton = () => {
 	const methods = useForm({
@@ -18,8 +20,8 @@ export const LoginButton = () => {
 			email: '',
 			password: '',
 		},
-		resolver: zodResolver(LoginButtonSchema),
 		mode: 'onChange',
+		resolver: zodResolver(LoginButtonSchema),
 	})
 	const {
 		login,
@@ -29,7 +31,7 @@ export const LoginButton = () => {
 	} = useLogin()
 
 	const handleSubmitLogin: SubmitHandler<LoginButtonSchemaType> = async (
-		values,
+		values
 	) => {
 		await login({
 			email: values.email,
@@ -39,7 +41,7 @@ export const LoginButton = () => {
 
 	useLayoutEffect(() => {
 		setHasToDefineNewPassword(
-			convertToBoolean(sessionStorage.getItem('hasToDefineNewPassword')),
+			convertToBoolean(sessionStorage.getItem('hasToDefineNewPassword'))
 		)
 	}, [setHasToDefineNewPassword])
 
@@ -55,7 +57,7 @@ export const LoginButton = () => {
 					className="flex w-full flex-col gap-6"
 					onSubmit={methods.handleSubmit(handleSubmitLogin)}
 				>
-					<InputField type="email" fieldName="email">
+					<InputField fieldName="email" type="email">
 						Email
 					</InputField>
 					<InputField fieldName="password" type="password">
@@ -63,8 +65,8 @@ export const LoginButton = () => {
 					</InputField>
 					<Button
 						className="items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-						isLoading={isPending}
 						disabled={!methods.formState.isValid}
+						isLoading={isPending}
 					>
 						Entrar
 					</Button>

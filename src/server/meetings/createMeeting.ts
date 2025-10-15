@@ -1,6 +1,6 @@
 import {
+	type MeetingSchemaRouteType,
 	meetingSchemaRoute,
-	MeetingSchemaRouteType,
 } from '@/app/api/meetings/meeting.schema'
 import { prisma } from '@/constants'
 

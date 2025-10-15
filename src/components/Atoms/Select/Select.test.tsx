@@ -1,7 +1,7 @@
-import { faker } from '@faker-js/faker'
 import { fireEvent, render } from '@testing-library/react'
 import { createRef } from 'react'
 
+import { faker } from '@faker-js/faker'
 import { Select } from './Select'
 
 const generateOptions = (length: number) => {
@@ -14,7 +14,7 @@ const generateOptions = (length: number) => {
 describe('Field component', () => {
 	it('renders input correctly', () => {
 		const { getByTestId } = render(
-			<Select data-testid="select-field" options={generateOptions(6)} />,
+			<Select data-testid="select-field" options={generateOptions(6)} />
 		)
 		expect(getByTestId('select-field')).toBeInTheDocument()
 	})
@@ -26,7 +26,7 @@ describe('Field component', () => {
 				data-testid="select-field"
 				options={generateOptions(10)}
 				ref={ref}
-			/>,
+			/>
 		)
 		expect(ref.current).toBeDefined()
 	})
@@ -34,10 +34,10 @@ describe('Field component', () => {
 	it('applies custom class name', () => {
 		const { getByTestId } = render(
 			<Select
+				className="custom-class"
 				data-testid="select-field"
 				options={generateOptions(2)}
-				className="custom-class"
-			/>,
+			/>
 		)
 		const select = getByTestId('select-field')
 		expect(select).toHaveClass('custom-class')
@@ -51,9 +51,9 @@ describe('Field component', () => {
 		const { getByTestId } = render(
 			<Select
 				data-testid="select-field"
-				options={OPTIONS}
 				onChange={onChangeMock}
-			/>,
+				options={OPTIONS}
+			/>
 		)
 
 		const options = getByTestId('select-field').querySelectorAll('option')
@@ -69,11 +69,11 @@ describe('Field component', () => {
 
 		const { getByTestId } = render(
 			<Select
-				options={OPTIONS}
-				onChange={onChangeMock}
-				ref={ref}
 				data-testid="select-field"
-			/>,
+				onChange={onChangeMock}
+				options={OPTIONS}
+				ref={ref}
+			/>
 		)
 
 		const selectOption = OPTIONS[randomOption].value
@@ -91,7 +91,7 @@ describe('Field component', () => {
 				data-testid="select-field"
 				options={generateOptions(10)}
 				placeholder="Selecione"
-			/>,
+			/>
 		)
 		const select = getByTestId('select-field').querySelectorAll('option')[0]
 
@@ -100,7 +100,7 @@ describe('Field component', () => {
 
 	it('renders nothing if options is a empty array', () => {
 		const { queryAllByRole } = render(
-			<Select data-testid="select-field" options={[]} />,
+			<Select data-testid="select-field" options={[]} />
 		)
 
 		expect(queryAllByRole('option')).toHaveLength(0)
@@ -110,15 +110,15 @@ describe('Field component', () => {
 		const { getByTestId } = render(
 			<Select
 				data-testid="select-field"
-				options={generateOptions(10)}
 				isInvalid
-			/>,
+				options={generateOptions(10)}
+			/>
 		)
 
 		const select = getByTestId('select-field')
 
 		expect(select).toHaveClass(
-			'border-red-500 focus:border-red-500 focus:ring-red-500',
+			'border-red-500 focus:border-red-500 focus:ring-red-500'
 		)
 	})
 })

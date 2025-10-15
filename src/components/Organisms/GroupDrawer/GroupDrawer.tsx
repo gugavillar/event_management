@@ -1,36 +1,38 @@
 'use client'
 import { UserRoundPlus, UserRoundX } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import {
-	Controller,
-	type SubmitHandler,
-	useFieldArray,
-	useFormContext,
-} from 'react-hook-form'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
-	InputField,
-	FieldArrayContainerWithAppendButton,
 	ComboBox,
-	RadioField,
+	FieldArrayContainerWithAppendButton,
+	InputField,
 	ParticipantField,
+	RadioField,
 	VolunteerField,
 } from '@/components/Molecules'
 import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
-import { FormGroup, GroupAPI } from '@/services/queries/groups/groups.types'
+import type {
+	FormGroup,
+	GroupAPI,
+} from '@/services/queries/groups/groups.types'
 import {
 	useCreateGroup,
 	useGetGroup,
 	useUpdateGroup,
 } from '@/services/queries/groups/hooks'
 import { generateToastError } from '@/utils/errors'
-
-import { GroupSchemaType } from './GroupDrawer.schema'
+import {
+	Controller,
+	type SubmitHandler,
+	useFieldArray,
+	useFormContext,
+} from 'react-hook-form'
+import type { GroupSchemaType } from './GroupDrawer.schema'
 
 type GroupDrawerProps = {
 	drawerId: string
@@ -70,45 +72,45 @@ export const GroupDrawer = ({
 		if (selectedGroup) {
 			return await update(
 				{
-					groupId: selectedGroup,
 					data: {
 						...(values as FormGroup),
 					},
+					groupId: selectedGroup,
 				},
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atualizar grupo'),
 					onSuccess: () => {
 						reset()
 						setSelectedGroup(null)
 						toast.success('Grupo atualizado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar grupo'),
-				},
+				}
 			)
 		}
 
 		await create(values as FormGroup, {
+			onError: (error) => generateToastError(error, 'Erro ao criar grupo'),
 			onSuccess: () => {
 				reset()
 				setSelectedGroup(null)
 				toast.success('Grupo criado com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: (error) => generateToastError(error, 'Erro ao criar grupo'),
 		})
 	}
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleClose = () => {
@@ -126,34 +128,34 @@ export const GroupDrawer = ({
 
 	return (
 		<Drawer
-			drawerId={drawerId}
-			headingTitle={selectedGroup ? 'Editar grupo' : 'Criar grupo'}
 			className="max-w-3xl"
+			drawerId={drawerId}
 			handleClose={handleClose}
+			headingTitle={selectedGroup ? 'Editar grupo' : 'Criar grupo'}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<Controller
-						name="eventId"
 						control={control}
+						name="eventId"
 						render={({ field }) => (
 							<ComboBox
-								label="Evento"
+								error={formState.errors.eventId?.message}
 								keyOptionLabel="label"
 								keyOptionValue="value"
+								label="Evento"
+								lastItemRef={lastItemRef}
 								options={formattedEvents}
 								selectedValue={field.value}
 								setSelectedValue={field.onChange}
-								lastItemRef={lastItemRef}
-								error={formState.errors.eventId?.message}
 							/>
 						)}
 					/>
 					<InputField fieldName="name">Nome do grupo</InputField>
 				</div>
 				<FieldArrayContainerWithAppendButton
-					label="Membro"
 					handleAppendField={() => append({ member: '', type: '' })}
+					label="Membro"
 					leftIcon={<UserRoundPlus />}
 				>
 					{fields.map((field, index) => {
@@ -166,8 +168,8 @@ export const GroupDrawer = ({
 									{hasMoreThanOneMember ? (
 										<Button
 											className="mb-1 rounded-full border-none p-1 text-red-500 transition-colors duration-500 hover:bg-red-100 hover:text-red-800"
-											onClick={() => remove(index)}
 											leftIcon={<UserRoundX />}
+											onClick={() => remove(index)}
 										/>
 									) : null}
 								</div>
@@ -182,26 +184,26 @@ export const GroupDrawer = ({
 									{watch(fieldTypeName) === MEMBERS.PARTICIPANT &&
 										hasEventId && (
 											<ParticipantField
-												key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 												eventId={eventId}
-												fieldMemberName={fieldMemberName}
-												hasNoGroup={selectedGroup === null}
-												isEdition={Boolean(selectedGroup)}
 												fieldError={
 													formState.errors.members?.[index]?.member?.message
 												}
+												fieldMemberName={fieldMemberName}
+												hasNoGroup={selectedGroup === null}
+												isEdition={Boolean(selectedGroup)}
+												key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 											/>
 										)}
 									{watch(fieldTypeName) === MEMBERS.VOLUNTEER && hasEventId && (
 										<VolunteerField
-											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 											eventId={eventId}
-											fieldMemberName={fieldMemberName}
-											hasNoGroup={selectedGroup === null}
-											isEdition={Boolean(selectedGroup)}
 											fieldError={
 												formState.errors.members?.[index]?.member?.message
 											}
+											fieldMemberName={fieldMemberName}
+											hasNoGroup={selectedGroup === null}
+											isEdition={Boolean(selectedGroup)}
+											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 										/>
 									)}
 								</div>
@@ -213,9 +215,9 @@ export const GroupDrawer = ({
 			<DrawerFooter>
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-					onClick={handleSubmit(onSubmit)}
 					disabled={!formState.isValid}
 					isLoading={isPendingCreate || isPendingUpdate}
+					onClick={handleSubmit(onSubmit)}
 				>
 					{selectedGroup ? 'Atualizar grupo' : 'Criar grupo'}
 				</Button>

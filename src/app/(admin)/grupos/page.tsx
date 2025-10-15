@@ -1,4 +1,4 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
 import { Groups } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
@@ -22,14 +22,14 @@ export default async function GroupsPage({ searchParams }: SearchParams) {
 	const eventId = params.groupEventId
 	const searchMemberGroup = params.searchMemberGroup
 
-	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 	const getGroups = () => getGroupByEventId(eventId as UUID, searchMemberGroup)
 
 	return (
 		<HydrationInfinityProvider
+			initialPageParam={1}
 			queryFn={getAllEvents}
 			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-			initialPageParam={1}
 		>
 			<HydrationProvider
 				queryFn={getGroups}

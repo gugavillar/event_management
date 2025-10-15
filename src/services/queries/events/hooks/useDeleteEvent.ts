@@ -1,6 +1,5 @@
 import { QUERY_KEYS } from '@/constants'
 import { useMutation, useQueryClient } from '@/providers/QueryProvider'
-
 import { deleteEvent } from '../usecases'
 
 export const useDeleteEvent = () => {

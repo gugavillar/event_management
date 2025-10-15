@@ -1,21 +1,23 @@
-import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
 import { validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
+import { validateEmail, validatePhone, validateUF } from 'validations-br'
 
 export const VolunteerSchema = z
 	.object({
-		eventId: z.string().trim().min(1, 'Campo obrigatório'),
-		name: z.string().trim().min(3, 'Campo obrigatório'),
-		email: z
-			.email({ error: 'Email inválido' })
-			.trim()
-			.refine((value) => validateEmail(value), { error: 'Email inválido' }),
-		called: z
-			.string({ error: 'Campo obrigatório' })
-			.trim()
-			.min(1, 'Campo obrigatório'),
+		address: z.object({
+			city: z.string().trim().min(3, 'Campo obrigatório'),
+			neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
+			number: z.string().trim().min(1, 'Campo obrigatório'),
+			state: z
+				.string({ error: 'Campo obrigatório' })
+				.max(2)
+				.refine((value) => validateUF(value), {
+					error: 'Campo obrigatório',
+				}),
+			street: z.string().trim().min(3, 'Campo obrigatório'),
+		}),
 		birthdate: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
@@ -24,23 +26,19 @@ export const VolunteerSchema = z
 					/^\d{2}\/\d{2}\/\d{4}/g.test(value)
 						? validateBirthdate(value)
 						: false,
-				{ error: 'Data inválida' },
+				{ error: 'Data inválida' }
 			),
-		phone: z
-			.string({ error: 'Campo obrigatório' })
+		called: z
+			.string({ error: 'Campo obrigatório' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' },
-			),
-		relative: z.string().trim().min(1, 'Campo obrigatório'),
-		relativePhone: z
-			.string({ error: 'Campo obrigatório' })
+			.min(1, 'Campo obrigatório'),
+		cell: z.string().nullable().optional(),
+		community: z.string().trim().min(1, 'Campo obrigatório'),
+		email: z
+			.email({ error: 'Email inválido' })
 			.trim()
-			.refine(
-				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
-				{ error: 'Telefone inválido' },
-			),
+			.refine((value) => validateEmail(value), { error: 'Email inválido' }),
+		eventId: z.string().trim().min(1, 'Campo obrigatório'),
 		hasCell: z
 			.union([
 				z.enum(['Yes', 'No'], {
@@ -51,7 +49,6 @@ export const VolunteerSchema = z
 			.refine((value) => ['Yes', 'No'].includes(value), {
 				message: 'Campo obrigatório',
 			}),
-		cell: z.string().nullable().optional(),
 		hasHealth: z
 			.union([
 				z.enum(['Yes', 'No'], {
@@ -63,19 +60,22 @@ export const VolunteerSchema = z
 				error: 'Campo obrigatório',
 			}),
 		health: z.string().nullable().optional(),
-		community: z.string().trim().min(1, 'Campo obrigatório'),
-		address: z.object({
-			street: z.string().trim().min(3, 'Campo obrigatório'),
-			neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
-			number: z.string().trim().min(1, 'Campo obrigatório'),
-			city: z.string().trim().min(3, 'Campo obrigatório'),
-			state: z
-				.string({ error: 'Campo obrigatório' })
-				.max(2)
-				.refine((value) => validateUF(value), {
-					error: 'Campo obrigatório',
-				}),
-		}),
+		name: z.string().trim().min(3, 'Campo obrigatório'),
+		phone: z
+			.string({ error: 'Campo obrigatório' })
+			.trim()
+			.refine(
+				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
+				{ error: 'Telefone inválido' }
+			),
+		relative: z.string().trim().min(1, 'Campo obrigatório'),
+		relativePhone: z
+			.string({ error: 'Campo obrigatório' })
+			.trim()
+			.refine(
+				(value) => (!value || value.length < 15 ? false : validatePhone(value)),
+				{ error: 'Telefone inválido' }
+			),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
@@ -95,7 +95,7 @@ export const VolunteerSchema = z
 		validatePhonesNotEquals(
 			data.phone,
 			[{ field: 'relativePhone', phone: data.relativePhone }],
-			ctx,
+			ctx
 		)
 	})
 

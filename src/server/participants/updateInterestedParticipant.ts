@@ -9,13 +9,13 @@ export type UpdateInterestedParticipantArgs = {
 
 export const updateInterestedParticipant = async (
 	participantId: string,
-	interested: boolean,
+	interested: boolean
 ) => {
 	try {
 		z.object({
-			participantId: z.uuid(),
 			interested: z.boolean(),
-		}).parse({ participantId, interested })
+			participantId: z.uuid(),
+		}).parse({ interested, participantId })
 
 		return await prisma.participant.update({
 			data: {

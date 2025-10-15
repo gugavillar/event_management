@@ -19,8 +19,7 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetTransactions } from '@/services/queries/transactions/hooks'
-import { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
-
+import type { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
 import {
 	formatTableData,
 	HEADER_LABELS,
@@ -51,13 +50,13 @@ export const Transaction = () => {
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleRemoveTransaction = (id: TransactionsAPI['id']) => {
@@ -79,7 +78,7 @@ export const Transaction = () => {
 		(data?.totalOfAccountAndCash?.totalAccountOutcome ?? 0)
 
 	const eventName = formattedEvents.find(
-		(event) => event.customProps.value === eventId,
+		(event) => event.customProps.value === eventId
 	)?.customProps.label
 
 	return (
@@ -89,11 +88,11 @@ export const Transaction = () => {
 					className="max-w-[25.875rem]"
 					keyOptionLabel="label"
 					keyOptionValue="value"
+					label="Selecione o evento"
+					lastItemRef={lastItemRef}
 					options={formattedEvents}
 					selectedValue={eventId}
 					setSelectedValue={setEventId}
-					lastItemRef={lastItemRef}
-					label="Selecione o evento"
 				/>
 				{eventId && (
 					<div className="flex flex-col items-center justify-center gap-6 md:flex-row md:justify-end">
@@ -107,31 +106,28 @@ export const Transaction = () => {
 				)}
 			</div>
 			<TransactionCardInfo
-				isFetching={isLoading}
-				selectedEvent={eventId}
-				search={searchTransaction}
 				content={
 					<>
 						<section className="grid grid-cols-1 gap-8 lg:grid-cols-3">
 							<TransactionCard
-								headerText="Entradas"
-								value={data?.sumOfAllIncome ?? 0}
 								headerClassName="bg-green-100"
+								headerText="Entradas"
 								isLoading={isLoading}
+								value={data?.sumOfAllIncome ?? 0}
 							/>
 							<TransactionCard
-								headerText="Saídas"
-								value={data?.sumOfAllOutcome ?? 0}
 								headerClassName="bg-red-100"
+								headerText="Saídas"
 								isLoading={isLoading}
+								value={data?.sumOfAllOutcome ?? 0}
 							/>
 							<TransactionCard
-								headerText="Saldo"
-								value={balanceAmount}
-								isShowAccounts
 								amountAccount={balanceAmountAccount}
 								amountCash={balanceAmountCash}
+								headerText="Saldo"
 								isLoading={isLoading}
+								isShowAccounts
+								value={balanceAmount}
 							/>
 						</section>
 						<ListPage
@@ -154,6 +150,9 @@ export const Transaction = () => {
 						</ListPage>
 					</>
 				}
+				isFetching={isLoading}
+				search={searchTransaction}
+				selectedEvent={eventId}
 			/>
 			<TransactionDeleteModal
 				modalId={MODALS_IDS.TRANSACTION_REMOVE_MODAL}

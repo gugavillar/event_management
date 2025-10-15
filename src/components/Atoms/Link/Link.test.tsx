@@ -13,9 +13,9 @@ describe('Link component', () => {
 
 	it('applies custom classes', () => {
 		const { getByRole } = render(
-			<Link href="#" className="custom-class">
+			<Link className="custom-class" href="#">
 				Link
-			</Link>,
+			</Link>
 		)
 
 		const link = getByRole('link', { name: 'Link' })
@@ -25,9 +25,9 @@ describe('Link component', () => {
 
 	it('renders change href', () => {
 		const { getByRole } = render(
-			<Link href="#" as="/link">
+			<Link as="/link" href="#">
 				Link
-			</Link>,
+			</Link>
 		)
 
 		const link = getByRole('link', { name: 'Link' })

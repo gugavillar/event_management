@@ -1,6 +1,6 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
-import { GenderTypeAPI } from '@/constants'
+import type { GenderTypeAPI } from '@/constants'
 
 export type FormEvent = {
 	name: string

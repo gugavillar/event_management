@@ -1,21 +1,21 @@
-import { screen, render, fireEvent } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { Step } from './Step'
 
 const stepsProps = {
-	steps: [
-		{
-			title: 'Step 1',
-			content: <p>Content 1</p>,
-		},
-		{
-			title: 'Step 2',
-			content: <p>Content 2</p>,
-		},
-	],
+	handleFinish: jest.fn(),
 	handleNext: jest.fn(),
 	handlePrev: jest.fn(),
-	handleFinish: jest.fn(),
+	steps: [
+		{
+			content: <p>Content 1</p>,
+			title: 'Step 1',
+		},
+		{
+			content: <p>Content 2</p>,
+			title: 'Step 2',
+		},
+	],
 }
 
 describe('Step component', () => {

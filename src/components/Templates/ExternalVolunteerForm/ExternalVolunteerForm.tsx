@@ -1,8 +1,6 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Step } from '@/components/Atoms'
@@ -20,10 +18,11 @@ import {
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateVolunteer } from '@/services/queries/volunteers'
 import { generateToastError } from '@/utils/errors'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import {
+	type FullSchemaType,
 	fullSchema,
-	FullSchemaType,
 	stepsFields,
 } from './ExternalVolunteerForm.schema'
 
@@ -40,30 +39,30 @@ export const ExternalVolunteerForm = ({
 
 	const { create, isPending } = useCreateVolunteer()
 	const methods = useForm<FullSchemaType>({
-		mode: 'onChange',
 		defaultValues: {
-			name: '',
-			called: '',
-			email: '',
-			phone: '',
+			address: {
+				city: '',
+				neighborhood: '',
+				number: '',
+				state: '',
+				street: '',
+			},
 			birthdate: '',
-			relative: '',
-			relativePhone: '',
+			called: '',
+			cell: '',
+			community: '',
+			email: '',
 			hasCell: '',
 			hasHealth: '',
 			health: '',
-			cell: '',
-			community: '',
-			terms: undefined,
-			address: {
-				street: '',
-				number: '',
-				neighborhood: '',
-				city: '',
-				state: '',
-			},
+			name: '',
 			paymentMethod: undefined,
+			phone: '',
+			relative: '',
+			relativePhone: '',
+			terms: undefined,
 		},
+		mode: 'onChange',
 		resolver: zodResolver(fullSchema),
 	})
 
@@ -97,14 +96,16 @@ export const ExternalVolunteerForm = ({
 			...(hasCell === 'Yes' && { cell }),
 			...(hasHealth === 'Yes' && { health }),
 			birthdate: formatDateToSendToApi(data.birthdate),
+			eventId,
 			phone: data.phone.replace(/\D/g, ''),
 			relativePhone: data.relativePhone.replace(/\D/g, ''),
-			eventId,
 		}
 
 		await create(
 			{ ...formattedData },
 			{
+				onError: (error) =>
+					generateToastError(error, 'Erro ao realizar inscrição'),
 				onSuccess: () => {
 					if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
 						return overlayOpen(MODALS_IDS.PAYMENT_PIX_MODAL)
@@ -113,9 +114,7 @@ export const ExternalVolunteerForm = ({
 					methods.reset()
 					toast.success('Inscrição realizada com sucesso!')
 				},
-				onError: (error) =>
-					generateToastError(error, 'Erro ao realizar inscrição'),
-			},
+			}
 		)
 	}
 
@@ -123,27 +122,27 @@ export const ExternalVolunteerForm = ({
 		<div className="flex w-full grow flex-col" id="stepper">
 			<FormProvider {...methods}>
 				<Step
+					currentStep={currentStep}
+					handleFinish={methods.handleSubmit(onSubmit)}
+					handleNext={handleNext}
+					handlePrev={handlePrev}
+					isPending={isPending}
 					steps={[
-						{ title: 'Voluntário', content: <VolunteerExternalForm /> },
+						{ content: <VolunteerExternalForm />, title: 'Voluntário' },
 						{
-							title: 'Endereço',
 							content: <AddressExternalForm type={MEMBERS.VOLUNTEER} />,
+							title: 'Endereço',
 						},
 						{
-							title: 'Pagamento',
 							content: (
 								<PaymentExternalForm
 									registrationValue={registrationValue}
 									setCurrentStep={setCurrentStep}
 								/>
 							),
+							title: 'Pagamento',
 						},
 					]}
-					isPending={isPending}
-					currentStep={currentStep}
-					handlePrev={handlePrev}
-					handleNext={handleNext}
-					handleFinish={methods.handleSubmit(onSubmit)}
 				/>
 			</FormProvider>
 		</div>

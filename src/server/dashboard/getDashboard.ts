@@ -1,12 +1,11 @@
-import { differenceInYears, getMonth } from 'date-fns'
-
 import {
 	CHECK_IN_STATUS,
 	PaymentSelectOptions,
 	PaymentType,
-	PaymentTypeAPI,
+	type PaymentTypeAPI,
 	prisma,
 } from '@/constants'
+import { differenceInYears, getMonth } from 'date-fns'
 
 const calculationAge = (birthdate: Date, finalEventDate: Date) => {
 	return differenceInYears(finalEventDate, birthdate)
@@ -16,22 +15,26 @@ const queries = async (eventId: string | null) => {
 	const [participants, volunteers, participantsCities, interestedParticipants] =
 		await Promise.all([
 			await prisma.participant.findMany({
+				include: {
+					event: true,
+					payments: true,
+				},
 				where: {
 					...(eventId && { eventId }),
-					OR: [
-						{ checkIn: null },
-						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
-					],
 					AND: {
 						OR: [{ interested: false }, { interested: null }],
 					},
+					OR: [
+						{ checkIn: null },
+						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
+					],
 				},
+			}),
+			await prisma.volunteer.findMany({
 				include: {
 					event: true,
 					payments: true,
 				},
-			}),
-			await prisma.volunteer.findMany({
 				where: {
 					...(eventId && { eventId }),
 					OR: [
@@ -39,27 +42,23 @@ const queries = async (eventId: string | null) => {
 						{ checkIn: { not: CHECK_IN_STATUS.WITHDREW } },
 					],
 				},
-				include: {
-					event: true,
-					payments: true,
-				},
 			}),
 			await prisma.participantAddress.groupBy({
+				_count: true,
+				by: ['city'],
 				where: {
 					...(eventId && { participant: { eventId } }),
-					OR: [
-						{ participant: { checkIn: null } },
-						{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
-					],
 					AND: {
 						OR: [
 							{ participant: { interested: false } },
 							{ participant: { interested: null } },
 						],
 					},
+					OR: [
+						{ participant: { checkIn: null } },
+						{ participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+					],
 				},
-				by: ['city'],
-				_count: true,
 			}),
 			await prisma.participant.count({
 				where: {
@@ -70,10 +69,10 @@ const queries = async (eventId: string | null) => {
 		])
 
 	return {
-		participants,
-		volunteers,
-		participantsCities,
 		interestedParticipants,
+		participants,
+		participantsCities,
+		volunteers,
 	}
 }
 
@@ -89,10 +88,10 @@ export const getDashboard = async (eventId: string | null) => {
 		const totalOfParticipants = participants.length
 		const totalOfVolunteers = volunteers.length
 		const totalOfConfirmedParticipants = participants.filter(
-			(participant) => participant.checkIn === CHECK_IN_STATUS.CONFIRMED,
+			(participant) => participant.checkIn === CHECK_IN_STATUS.CONFIRMED
 		).length
 		const totalOfConfirmedVolunteers = volunteers.filter(
-			(volunteer) => volunteer.checkIn === CHECK_IN_STATUS.CONFIRMED,
+			(volunteer) => volunteer.checkIn === CHECK_IN_STATUS.CONFIRMED
 		).length
 		const totalOfParticipantsPayments = participants.reduce(
 			(acc, participant) => {
@@ -100,7 +99,7 @@ export const getDashboard = async (eventId: string | null) => {
 				if (hasPayment) {
 					const participantPaymentValue = participant.payments.reduce(
 						(value, p) => (value += p.paymentValue.toNumber()),
-						0,
+						0
 					)
 					if (
 						participantPaymentValue >=
@@ -111,14 +110,14 @@ export const getDashboard = async (eventId: string | null) => {
 				}
 				return acc
 			},
-			0,
+			0
 		)
 		const totalOfVolunteersPayments = volunteers.reduce((acc, volunteer) => {
 			const hasPayment = volunteer.payments.length > 0
 			if (hasPayment) {
 				const volunteerPaymentValue = volunteer.payments.reduce(
 					(value, v) => (value += v.paymentValue.toNumber()),
-					0,
+					0
 				)
 				if (
 					volunteerPaymentValue >= volunteer.event.volunteerPrice.toNumber()
@@ -151,7 +150,7 @@ export const getDashboard = async (eventId: string | null) => {
 		participants.forEach((p) => {
 			const age = calculationAge(
 				new Date(p.birthdate),
-				new Date(p.event.finalDate),
+				new Date(p.event.finalDate)
 			)
 			if (age <= 19) return ageRangesParticipants['14–19']++
 			if (age <= 29) return ageRangesParticipants['20–29']++
@@ -163,7 +162,7 @@ export const getDashboard = async (eventId: string | null) => {
 		volunteers.forEach((v) => {
 			const age = calculationAge(
 				new Date(v.birthdate),
-				new Date(v.event.finalDate),
+				new Date(v.event.finalDate)
 			)
 			if (age <= 19) return ageRangesVolunteers['14–19']++
 			if (age <= 29) return ageRangesVolunteers['20–29']++
@@ -184,7 +183,7 @@ export const getDashboard = async (eventId: string | null) => {
 				}
 				const volunteerPaidValue = volunteer.payments.reduce(
 					(value, v) => (value += v.paymentValue.toNumber()),
-					0,
+					0
 				)
 				const isPaidEnough =
 					volunteerPaidValue >= volunteer.event.volunteerPrice.toNumber()
@@ -199,7 +198,7 @@ export const getDashboard = async (eventId: string | null) => {
 
 				return acc
 			},
-			{} as Record<string, number>,
+			{} as Record<string, number>
 		)
 
 		const participantsPaymentsByType = participants.reduce(
@@ -210,7 +209,7 @@ export const getDashboard = async (eventId: string | null) => {
 				}
 				const participantPaidValue = participant.payments.reduce(
 					(acc, p) => (acc += p.paymentValue.toNumber()),
-					0,
+					0
 				)
 				const isPaidEnough =
 					participantPaidValue >= participant.event.participantPrice.toNumber()
@@ -225,18 +224,18 @@ export const getDashboard = async (eventId: string | null) => {
 
 				return acc
 			},
-			{} as Record<string, number>,
+			{} as Record<string, number>
 		)
 
 		const paymentTypesLabelsArray = PaymentSelectOptions.map(
-			(paymentOption) => paymentOption.label,
+			(paymentOption) => paymentOption.label
 		)
 
 		const participantsPaymentsByTypeArray = PaymentSelectOptions.map(
-			(paymentOption) => participantsPaymentsByType[paymentOption.label] || 0,
+			(paymentOption) => participantsPaymentsByType[paymentOption.label] || 0
 		)
 		const volunteersPaymentsByTypeArray = PaymentSelectOptions.map(
-			(paymentOption) => volunteersPaymentsByType[paymentOption.label] || 0,
+			(paymentOption) => volunteersPaymentsByType[paymentOption.label] || 0
 		)
 
 		const birthdayParticipant = participants.filter((p) => {
@@ -260,42 +259,42 @@ export const getDashboard = async (eventId: string | null) => {
 		})
 
 		const birthdatePeople = [...birthdayParticipant, ...birthdayVolunteer].sort(
-			(peopleA, peopleB) => peopleA.name.localeCompare(peopleB.name),
+			(peopleA, peopleB) => peopleA.name.localeCompare(peopleB.name)
 		)
 
 		return {
-			confirmedVolunteers: totalOfConfirmedVolunteers,
-			confirmedParticipants: totalOfConfirmedParticipants,
-			participants: totalOfParticipants,
-			volunteers: totalOfVolunteers,
-			participantPayment: totalOfParticipantsPayments,
-			volunteerPayment: totalOfVolunteersPayments,
 			ageRanges: {
-				labels: labelAgesArray,
 				data: [
 					{
-						name: 'Participantes',
 						data: agesCountsParticipantsArray,
+						name: 'Participantes',
 					},
 					{
-						name: 'Voluntários',
 						data: agesCountsVolunteersArray,
+						name: 'Voluntários',
 					},
 				],
+				labels: labelAgesArray,
+			},
+			birthdayPeople: birthdatePeople,
+			confirmedParticipants: totalOfConfirmedParticipants,
+			confirmedVolunteers: totalOfConfirmedVolunteers,
+			interestedParticipants,
+			participantPayment: totalOfParticipantsPayments,
+			participants: totalOfParticipants,
+			participantsCities: {
+				data: citiesCountArray,
+				labels: labelCitiesArray,
 			},
 			paymentsTypes: {
-				labels: paymentTypesLabelsArray,
 				data: [
-					{ name: 'Participantes', data: participantsPaymentsByTypeArray },
-					{ name: 'Voluntários', data: volunteersPaymentsByTypeArray },
+					{ data: participantsPaymentsByTypeArray, name: 'Participantes' },
+					{ data: volunteersPaymentsByTypeArray, name: 'Voluntários' },
 				],
+				labels: paymentTypesLabelsArray,
 			},
-			participantsCities: {
-				labels: labelCitiesArray,
-				data: citiesCountArray,
-			},
-			interestedParticipants,
-			birthdayPeople: birthdatePeople,
+			volunteerPayment: totalOfVolunteersPayments,
+			volunteers: totalOfVolunteers,
 		}
 	} catch (error) {
 		console.error('@getDashboard error:', error)

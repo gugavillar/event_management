@@ -1,5 +1,9 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
+
+import { QUERY_KEYS } from '@/constants'
+import { useQuery } from '@/providers/QueryProvider'
 import { useDebounce } from '@uidotdev/usehooks'
 import {
 	parseAsInteger,
@@ -7,26 +11,21 @@ import {
 	useQueryState,
 	useQueryStates,
 } from 'nuqs'
-import { useEffect, useRef } from 'react'
-
-import { QUERY_KEYS } from '@/constants'
-import { useQuery } from '@/providers/QueryProvider'
-
 import { getPayments } from '../usecases'
-import { VolunteersFromAPI } from '../volunteers.type'
+import type { VolunteersFromAPI } from '../volunteers.type'
 
 export const useGetPayments = () => {
 	const [query, setQuery] = useQueryStates({
+		city: parseAsString.withDefault(''),
 		eventId: parseAsString.withDefault(''),
 		paymentType: parseAsString.withDefault(''),
-		city: parseAsString.withDefault(''),
 	})
 	const [search, setSearch] = useQueryState('searchVolunteer', {
 		defaultValue: '',
 	})
 	const [page, setPage] = useQueryState(
 		'pageVolunteerPayment',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debounceEventId = useDebounce(query.eventId, 500)
@@ -46,6 +45,14 @@ export const useGetPayments = () => {
 	}, [debounceEventId, debounceSearch, debouncePaymentType, debounceCity])
 
 	const { isLoading, data }: UseQueryResult<VolunteersFromAPI> = useQuery({
+		queryFn: () =>
+			getPayments({
+				eventId: debounceEventId,
+				page,
+				paymentType: debouncePaymentType,
+				searchVolunteer: debounceSearch,
+				volunteerCity: debounceCity,
+			}),
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS_PAYMENTS,
 			debounceEventId,
@@ -54,24 +61,16 @@ export const useGetPayments = () => {
 			debounceCity,
 			page,
 		],
-		queryFn: () =>
-			getPayments({
-				eventId: debounceEventId,
-				searchVolunteer: debounceSearch,
-				paymentType: debouncePaymentType,
-				volunteerCity: debounceCity,
-				page,
-			}),
 	})
 
 	return {
-		isLoading,
 		data,
-		setSearch,
-		search,
+		isLoading,
 		page,
-		setPage,
 		query,
+		search,
+		setPage,
 		setQuery,
+		setSearch,
 	}
 }

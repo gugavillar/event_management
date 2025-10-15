@@ -5,13 +5,20 @@ export const getAllVolunteersPayments = async (
 	search: string | null,
 	city: string | null,
 	paymentType: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI] | null,
-	page = 1,
+	page = 1
 ) => {
 	try {
 		const skip = (page - 1) * LIMIT_PER_PAGE
 
 		const [payments, totalOfPayments] = await Promise.all([
 			prisma.volunteer.findMany({
+				include: {
+					event: true,
+					payments: true,
+				},
+				orderBy: { name: 'asc' },
+				skip,
+				take: LIMIT_PER_PAGE,
 				where: {
 					...(eventId && { eventId }),
 					...(search && { name: { contains: search } }),
@@ -34,13 +41,6 @@ export const getAllVolunteersPayments = async (
 						},
 					}),
 				},
-				include: {
-					event: true,
-					payments: true,
-				},
-				orderBy: { name: 'asc' },
-				skip,
-				take: LIMIT_PER_PAGE,
 			}),
 			prisma.volunteer.count({
 				where: {
@@ -69,8 +69,8 @@ export const getAllVolunteersPayments = async (
 		])
 
 		return {
-			data: payments,
 			currentPage: page,
+			data: payments,
 			perPage: LIMIT_PER_PAGE,
 			totalCount: totalOfPayments,
 			totalPages: Math.ceil(totalOfPayments / LIMIT_PER_PAGE),

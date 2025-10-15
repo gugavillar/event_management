@@ -1,4 +1,4 @@
-import { ComponentProps, useMemo } from 'react'
+import { type ComponentProps, useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Text } from '@/components/Atoms'
@@ -18,7 +18,7 @@ export const PageContent = ({
 }: PageContentProps) => {
 	const memoSubheadingPage = useMemo(
 		() => <Text className="opacity-50">{subheadingPage}</Text>,
-		[subheadingPage],
+		[subheadingPage]
 	)
 	return (
 		<>
@@ -26,7 +26,7 @@ export const PageContent = ({
 			<div
 				className={twMerge(
 					'flex w-full flex-col space-y-8 px-6 py-12',
-					className,
+					className
 				)}
 				{...props}
 			>

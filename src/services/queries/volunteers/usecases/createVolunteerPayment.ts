@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { VolunteersPaymentsAPI } from '../volunteers.type'
+import type { VolunteersPaymentsAPI } from '../volunteers.type'
 
 type CreateVolunteerPaymentArgs = {
 	data: Pick<

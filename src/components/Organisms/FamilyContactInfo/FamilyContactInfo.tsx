@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { InformationCard } from '@/components/Atoms'
@@ -34,8 +34,8 @@ export const FamilyContactInfo = ({
 }: FamilyContactInfoProps) => {
 	return (
 		<InformationCard
-			headingText="Rede de apoio"
 			className={twMerge('space-y-3 pb-6', className)}
+			headingText="Rede de apoio"
 			{...props}
 		>
 			{type === 'participant' ? (
@@ -45,24 +45,24 @@ export const FamilyContactInfo = ({
 						value={responsibleInfo.responsible}
 					/>
 					<InfoBox
+						isPhone
 						label="Telefone do responsável/parente"
 						value={responsibleInfo.responsiblePhone}
-						isPhone
 					/>
 					<InfoBox label="Quem convidou" value={responsibleInfo.host} />
 					<InfoBox
+						isPhone
 						label="Contato de quem convidou"
 						value={responsibleInfo.hostPhone}
-						isPhone
 					/>
 				</>
 			) : (
 				<>
 					<InfoBox label="Parente próximo" value={responsibleInfo.relative} />
 					<InfoBox
+						isPhone
 						label="Telefone do parente"
 						value={responsibleInfo.relativePhone}
-						isPhone
 					/>
 				</>
 			)}

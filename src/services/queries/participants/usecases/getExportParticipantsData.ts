@@ -3,7 +3,7 @@ import { ENDPOINTS } from '@/services/endpoints'
 
 export const getExportParticipantsData = async (
 	event_id: string,
-	isInterested?: boolean,
+	isInterested?: boolean
 ) => {
 	const response: BlobPart = await api.get(
 		ENDPOINTS.EXPORT_PARTICIPANTS_DATA(event_id),
@@ -12,7 +12,7 @@ export const getExportParticipantsData = async (
 				...(isInterested && { isInterested }),
 			},
 			responseType: 'arraybuffer',
-		},
+		}
 	)
 
 	return response

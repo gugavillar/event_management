@@ -8,42 +8,42 @@ export const updateVolunteerFunction = async (
 		roles: Array<{ roleId: string; isLeader: boolean }>
 	},
 	volunteerId: string,
-	onlyRemove?: boolean,
+	onlyRemove?: boolean
 ) => {
 	try {
 		z.object({
-			volunteerId: z.uuid(),
 			eventId: z.uuid(),
+			onlyRemove: z.boolean().optional(),
 			roles: z.array(
 				z.object({
-					roleId: z.uuid(),
 					isLeader: z.boolean(),
-				}),
+					roleId: z.uuid(),
+				})
 			),
-			onlyRemove: z.boolean().optional(),
+			volunteerId: z.uuid(),
 		}).parse({ volunteerId, ...data, onlyRemove })
 
 		return await prisma.$transaction(async (tx) => {
 			const eventRoles = await tx.eventVolunteerRole.findMany({
-				where: {
-					eventId: data.eventId,
-				},
 				select: {
 					id: true,
+				},
+				where: {
+					eventId: data.eventId,
 				},
 			})
 
 			for (const { id: eventVolunteerRoleId } of eventRoles) {
 				await tx.eventVolunteerRole.update({
-					where: { id: eventVolunteerRoleId },
 					data: {
-						volunteers: {
-							disconnect: { id: volunteerId },
-						},
 						leaders: {
 							disconnect: { id: volunteerId },
 						},
+						volunteers: {
+							disconnect: { id: volunteerId },
+						},
 					},
+					where: { id: eventVolunteerRoleId },
 				})
 			}
 
@@ -60,7 +60,6 @@ export const updateVolunteerFunction = async (
 				if (!evr) continue
 
 				await tx.eventVolunteerRole.update({
-					where: { id: evr.id },
 					data: {
 						volunteers: {
 							connect: { id: volunteerId },
@@ -71,6 +70,7 @@ export const updateVolunteerFunction = async (
 							},
 						}),
 					},
+					where: { id: evr.id },
 				})
 			}
 		})

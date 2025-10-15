@@ -1,5 +1,5 @@
 import { TriangleAlert } from 'lucide-react'
-import { ComponentPropsWithRef, forwardRef, ReactNode } from 'react'
+import { type ComponentPropsWithRef, forwardRef, type ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FieldProps = ComponentPropsWithRef<'input'> & {
@@ -24,7 +24,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 			<div
 				className={twMerge(
 					'relative w-full',
-					props.disabled && 'pointer-events-none opacity-50',
+					props.disabled && 'pointer-events-none opacity-50'
 				)}
 			>
 				<input
@@ -32,7 +32,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 						'block w-full rounded-lg py-3 text-base',
 						className,
 						isInvalid &&
-							'border-red-500 focus:border-red-500 focus:ring-red-500',
+							'border-red-500 focus:border-red-500 focus:ring-red-500'
 					)}
 					ref={ref}
 					{...props}
@@ -48,7 +48,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(
 				{isInvalid ? <Warning /> : null}
 			</div>
 		)
-	},
+	}
 )
 
 Field.displayName = 'Field'

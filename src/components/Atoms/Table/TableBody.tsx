@@ -1,11 +1,11 @@
-import { ComponentProps, ReactNode, isValidElement } from 'react'
+import { type ComponentProps, isValidElement, type ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
+
+import type { UUID } from 'crypto'
+
 import { v4 as uuid } from 'uuid'
-
-import { UUID } from 'crypto'
-
-import { type TableHeaderProps } from './TableHeader'
 import { Spinner } from '../Spinner'
+import type { TableHeaderProps } from './TableHeader'
 
 type HeaderAccessor = Extract<
 	TableHeaderProps['headerLabels'][number]['accessor'],
@@ -47,8 +47,8 @@ export const TableBody = ({
 			{!bodyData || !bodyData?.length ? (
 				<tr>
 					<td
-						colSpan={headerLabels.length}
 						className="place-items-center py-36 text-center"
+						colSpan={headerLabels.length}
 						data-testid="no-data"
 					>
 						{isLoading ? (
@@ -61,10 +61,10 @@ export const TableBody = ({
 			) : (
 				bodyData?.map(({ backgroundColor, ...data }) => (
 					<tr
-						key={data?.id}
 						className={twMerge(
-							'odd:bg-slate-50 even:bg-slate-100 hover:bg-slate-200',
+							'odd:bg-slate-50 even:bg-slate-100 hover:bg-slate-200'
 						)}
+						key={data?.id}
 						style={{ backgroundColor }}
 					>
 						{headerLabels?.map(({ accessor }) => {
@@ -72,11 +72,11 @@ export const TableBody = ({
 								handleClickRow && !isValidElement(data[accessor])
 							return (
 								<td
-									key={uuid()}
 									className={twMerge(
 										'px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800 md:first:sticky md:first:left-0 md:first:bg-inherit',
-										isToApplyClassOrFunction && 'cursor-pointer',
+										isToApplyClassOrFunction && 'cursor-pointer'
 									)}
+									key={uuid()}
 									style={{ backgroundColor }}
 									{...(isToApplyClassOrFunction && {
 										onClick: () => handleClickRow(data),

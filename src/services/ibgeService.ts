@@ -6,5 +6,5 @@ export const ibgeUfAPI = axios.create({
 
 ibgeUfAPI.interceptors.response.use(
 	(response) => response,
-	(error) => error?.message,
+	(error) => error?.message
 )

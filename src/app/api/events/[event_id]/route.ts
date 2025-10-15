@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { getEventById, removeEventById, updateEventById } from '@/server'
-import { FormEvent } from '@/services/queries/events/event.type'
+import type { FormEvent } from '@/services/queries/events/event.type'
 import { requestProcess } from '@/utils/prisma'
 
 type Params = {

@@ -1,8 +1,8 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
-import { ROLES } from '@/constants'
+import type { ROLES } from '@/constants'
 import { updateUserRole } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 

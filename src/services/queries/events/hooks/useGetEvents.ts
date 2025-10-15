@@ -1,13 +1,12 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
-import { useQueryState, parseAsInteger } from 'nuqs'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { EventsFromAPI } from '../event.type'
+import { useDebounce } from '@uidotdev/usehooks'
+import { parseAsInteger, useQueryState } from 'nuqs'
+import type { EventsFromAPI } from '../event.type'
 import { getEvents } from '../usecases'
 
 export const useGetEvents = () => {
@@ -16,7 +15,7 @@ export const useGetEvents = () => {
 	})
 	const [page, setPage] = useQueryState(
 		'pageEvent',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debouceValue = useDebounce(search, 500)
@@ -33,9 +32,9 @@ export const useGetEvents = () => {
 	}, [debouceValue])
 
 	const { data, isLoading }: UseQueryResult<EventsFromAPI> = useQuery({
+		queryFn: () => getEvents({ page, searchEvent: debouceValue }),
 		queryKey: [QUERY_KEYS.EVENTS, debouceValue, page],
-		queryFn: () => getEvents({ searchEvent: debouceValue, page }),
 	})
 
-	return { data, isLoading, search, setSearch, page, setPage }
+	return { data, isLoading, page, search, setPage, setSearch }
 }

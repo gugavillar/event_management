@@ -18,10 +18,13 @@ export type CreateParticipantPaymentArgs = {
 }
 
 export const createParticipantPayment = async (
-	values: CreateParticipantPaymentArgs,
+	values: CreateParticipantPaymentArgs
 ) => {
 	try {
 		z.object({
+			eventId: z.uuid(),
+			participantId: z.uuid(),
+			paymentReceived: z.number().optional(),
 			paymentType: z.enum([
 				PaymentTypeAPI.CARD,
 				PaymentTypeAPI.CASH,
@@ -33,9 +36,6 @@ export const createParticipantPayment = async (
 				.number()
 				.min(MIN_CURRENCY_VALUE)
 				.max(MAX_CURRENCY_VALUE),
-			eventId: z.uuid(),
-			participantId: z.uuid(),
-			paymentReceived: z.number().optional(),
 		}).parse({ ...values })
 
 		return await prisma.$transaction(async (tx) => {
@@ -47,7 +47,7 @@ export const createParticipantPayment = async (
 
 			if (
 				[PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO].includes(
-					values.paymentType,
+					values.paymentType
 				)
 			) {
 				return
@@ -61,18 +61,18 @@ export const createParticipantPayment = async (
 
 			await tx.transactions.create({
 				data: {
-					eventId: values.eventId,
 					amount:
 						values.paymentType === PaymentTypeAPI.CARD
 							? (values.paymentReceived as number)
 							: values.paymentValue,
-					participantPaymentId: payment.id,
-					date: new Date(),
-					description: `Pagamento ficha - ${participant?.name}`,
 					amountType:
 						values.paymentType === PaymentTypeAPI.CASH
 							? TransactionAmountType.CASH
 							: TransactionAmountType.ACCOUNT,
+					date: new Date(),
+					description: `Pagamento ficha - ${participant?.name}`,
+					eventId: values.eventId,
+					participantPaymentId: payment.id,
 					type: TransactionsType.INCOME,
 				},
 			})

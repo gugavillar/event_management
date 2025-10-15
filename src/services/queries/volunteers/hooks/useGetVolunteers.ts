@@ -1,5 +1,9 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
+
+import { QUERY_KEYS } from '@/constants'
+import { useQuery } from '@/providers/QueryProvider'
 import { useDebounce } from '@uidotdev/usehooks'
 import {
 	parseAsInteger,
@@ -7,27 +11,22 @@ import {
 	useQueryState,
 	useQueryStates,
 } from 'nuqs'
-import { useEffect, useRef } from 'react'
-
-import { QUERY_KEYS } from '@/constants'
-import { useQuery } from '@/providers/QueryProvider'
-
 import { getVolunteers } from '../usecases'
-import { VolunteersFromAPI } from '../volunteers.type'
+import type { VolunteersFromAPI } from '../volunteers.type'
 
 export const useGetVolunteers = () => {
 	const [query, setQuery] = useQueryStates({
-		eventId: parseAsString.withDefault(''),
-		status: parseAsString.withDefault(''),
 		city: parseAsString.withDefault(''),
+		eventId: parseAsString.withDefault(''),
 		role: parseAsString.withDefault(''),
+		status: parseAsString.withDefault(''),
 	})
 	const [search, setSearch] = useQueryState('searchVolunteer', {
 		defaultValue: '',
 	})
 	const [page, setPage] = useQueryState(
 		'pageVolunteer',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debounceEventId = useDebounce(query.eventId, 500)
@@ -54,6 +53,15 @@ export const useGetVolunteers = () => {
 	])
 
 	const { data, isLoading }: UseQueryResult<VolunteersFromAPI> = useQuery({
+		queryFn: () =>
+			getVolunteers({
+				eventId: debounceEventId,
+				page,
+				roleVolunteer: debounceRole,
+				searchVolunteer: debounceSearch,
+				statusVolunteer: debounceStatus,
+				volunteerCity: debounceCity,
+			}),
 		queryKey: [
 			QUERY_KEYS.VOLUNTEERS,
 			debounceEventId,
@@ -63,25 +71,16 @@ export const useGetVolunteers = () => {
 			debounceCity,
 			page,
 		],
-		queryFn: () =>
-			getVolunteers({
-				eventId: debounceEventId,
-				searchVolunteer: debounceSearch,
-				statusVolunteer: debounceStatus,
-				roleVolunteer: debounceRole,
-				volunteerCity: debounceCity,
-				page,
-			}),
 	})
 
 	return {
 		data,
 		isLoading,
-		setSearch,
-		search,
 		page,
-		setPage,
 		query,
+		search,
+		setPage,
 		setQuery,
+		setSearch,
 	}
 }

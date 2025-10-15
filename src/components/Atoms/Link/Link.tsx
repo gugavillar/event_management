@@ -1,5 +1,5 @@
-import NextLink, { LinkProps as NextLinkProps } from 'next/link'
-import { ReactNode } from 'react'
+import NextLink, { type LinkProps as NextLinkProps } from 'next/link'
+import type { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type LinkProps = NextLinkProps & {
@@ -10,11 +10,11 @@ type LinkProps = NextLinkProps & {
 export const Link = ({ href, className, children, ...props }: LinkProps) => {
 	return (
 		<NextLink
-			href={href}
 			className={twMerge(
 				'inline-flex items-center gap-x-2 text-lg font-medium text-gray-800',
-				className,
+				className
 			)}
+			href={href}
 			{...props}
 		>
 			{children}

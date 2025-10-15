@@ -1,12 +1,11 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
-import { useQueryState } from 'nuqs'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { GroupAPI } from '../groups.types'
+import { useDebounce } from '@uidotdev/usehooks'
+import { useQueryState } from 'nuqs'
+import type { GroupAPI } from '../groups.types'
 import { getGroupByEventId } from '../usecases'
 
 export const useGetGroupByEventId = (eventId: string) => {
@@ -17,24 +16,24 @@ export const useGetGroupByEventId = (eventId: string) => {
 		'searchMemberGroup',
 		{
 			defaultValue: '',
-		},
+		}
 	)
 
 	const debounceSearchMember = useDebounce(searchMemberGroup, 500)
 
 	const { data, isLoading }: UseQueryResult<Array<GroupAPI>> = useQuery({
-		queryKey: [QUERY_KEYS.GROUPS, groupEventId, debounceSearchMember],
+		enabled: !!groupEventId,
 		queryFn: () =>
 			getGroupByEventId(groupEventId as GroupAPI['id'], debounceSearchMember),
-		enabled: !!groupEventId,
+		queryKey: [QUERY_KEYS.GROUPS, groupEventId, debounceSearchMember],
 	})
 
 	return {
 		data,
-		isLoading,
 		groupEventId,
-		setGroupEventId,
+		isLoading,
 		searchMemberGroup,
+		setGroupEventId,
 		setSearchMemberGroup,
 	}
 }

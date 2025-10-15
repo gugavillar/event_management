@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef, forwardRef, ReactNode } from 'react'
+import { type ComponentPropsWithRef, forwardRef, type ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type CheckboxProps = ComponentPropsWithRef<'input'> & {
@@ -13,26 +13,26 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 				className={twMerge(
 					'flex',
 					props.disabled && 'pointer-events-none opacity-50',
-					className,
+					className
 				)}
 			>
 				<input
-					type="checkbox"
 					className={twMerge(
 						'mt-0.5 shrink-0 rounded-sm border-gray-500 text-blue-600 checked:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50',
 						className,
 						isInvalid &&
-							'border-red-500 focus:border-red-500 focus:ring-red-500',
+							'border-red-500 focus:border-red-500 focus:ring-red-500'
 					)}
 					ref={ref}
+					type="checkbox"
 					{...props}
 				/>
-				<label htmlFor={props.id} className="ms-3 text-sm">
+				<label className="ms-3 text-sm" htmlFor={props.id}>
 					{label}
 				</label>
 			</div>
 		)
-	},
+	}
 )
 
 Checkbox.displayName = 'Checkbox'

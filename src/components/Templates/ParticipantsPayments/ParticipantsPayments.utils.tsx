@@ -4,11 +4,11 @@ import { twMerge } from 'tailwind-merge'
 import { PaymentTag, Tooltip } from '@/components/Atoms'
 import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
-import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 const generateTooltipText = (
 	participantWithdraw: boolean,
-	paymentTotal: boolean,
+	paymentTotal: boolean
 ) => {
 	if (participantWithdraw) {
 		return 'Participante desistiu'
@@ -21,36 +21,36 @@ const generateTooltipText = (
 
 export const HEADER_LABELS = [
 	{
-		label: 'Nome',
 		accessor: 'name',
+		label: 'Nome',
 	},
 	{
-		label: 'Chamado',
 		accessor: 'called',
+		label: 'Chamado',
 	},
 	{
-		label: 'Telefone',
 		accessor: 'phone',
+		label: 'Telefone',
 	},
 	{
-		label: 'Evento',
 		accessor: 'eventName',
+		label: 'Evento',
 	},
 	{
-		label: 'Valor evento',
 		accessor: 'eventValue',
+		label: 'Valor evento',
 	},
 	{
-		label: 'Valor pago',
 		accessor: 'valuePayed',
+		label: 'Valor pago',
 	},
 	{
-		label: 'Status',
 		accessor: 'payment',
+		label: 'Status',
 	},
 	{
-		label: '',
 		accessor: 'actions',
+		label: '',
 	},
 ]
 
@@ -58,7 +58,7 @@ export const formatTableData = (
 	payments: Array<ParticipantsAPI> | undefined,
 	handlePaymentModal: (payment: ParticipantsAPI) => void,
 	handleReturnPaymentModal: (payment: ParticipantsAPI) => void,
-	handleShowParticipant: (id: ParticipantsAPI['id']) => void,
+	handleShowParticipant: (id: ParticipantsAPI['id']) => void
 ) => {
 	if (!payments) return []
 
@@ -85,34 +85,13 @@ export const formatTableData = (
 					? LINE_COLOR.withdrew
 					: LINE_COLOR.payment,
 			}),
-			id: payment.id,
-			name: payment.name,
-			called: payment.called,
-			phone: formatPhone(payment.phone),
-			valuePayed: currencyValue(totalPayment),
-			eventName: payment.event.name,
-			eventValue: currencyValue(Number(payment.event.participantPrice)),
-			payment: (
-				<div className="flex gap-2">
-					{!payment.payments.length ? (
-						<PaymentTag status={PaymentTypeAPI.OPEN} />
-					) : (
-						payment.payments.map((p) => (
-							<PaymentTag
-								key={p.id}
-								status={!p.paymentType ? PaymentTypeAPI.OPEN : p.paymentType}
-							/>
-						))
-					)}
-				</div>
-			),
 			actions: (
 				<div className="flex space-x-4">
 					<div className="hs-tooltip">
 						<FileUser
 							className="cursor-pointer"
-							size={20}
 							onClick={() => handleShowParticipant(payment.id)}
+							size={20}
 						/>
 						<Tooltip>Informações</Tooltip>
 					</div>
@@ -121,7 +100,7 @@ export const formatTableData = (
 							className={twMerge(
 								isParticipantWithdraw || isPaymentTotal
 									? 'cursor-not-allowed opacity-50'
-									: 'cursor-pointer',
+									: 'cursor-pointer'
 							)}
 							size={20}
 							{...(canInformPayment && {
@@ -136,14 +115,35 @@ export const formatTableData = (
 						<div className="hs-tooltip">
 							<BanknoteArrowUp
 								className="cursor-pointer"
-								size={20}
 								onClick={() => handleReturnPaymentModal(payment)}
+								size={20}
 							/>
 							<Tooltip>Devolver pagamento</Tooltip>
 						</div>
 					)}
 				</div>
 			),
+			called: payment.called,
+			eventName: payment.event.name,
+			eventValue: currencyValue(Number(payment.event.participantPrice)),
+			id: payment.id,
+			name: payment.name,
+			payment: (
+				<div className="flex gap-2">
+					{!payment.payments.length ? (
+						<PaymentTag status={PaymentTypeAPI.OPEN} />
+					) : (
+						payment.payments.map((p) => (
+							<PaymentTag
+								key={p.id}
+								status={!p.paymentType ? PaymentTypeAPI.OPEN : p.paymentType}
+							/>
+						))
+					)}
+				</div>
+			),
+			phone: formatPhone(payment.phone),
+			valuePayed: currencyValue(totalPayment),
 		}
 	})
 }

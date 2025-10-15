@@ -1,8 +1,8 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import {
+	type UpdateCheckInParticipantArgs,
 	updateCheckInParticipant,
-	UpdateCheckInParticipantArgs,
 } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 

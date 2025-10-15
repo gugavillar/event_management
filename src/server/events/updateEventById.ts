@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { eventSchemaRoute } from '@/app/api/events/event.schema'
 import { prisma } from '@/constants'
-import { FormEvent } from '@/services/queries/events/event.type'
+import type { FormEvent } from '@/services/queries/events/event.type'
 
 export const updateEventById = async (data: FormEvent, id: string) => {
 	try {

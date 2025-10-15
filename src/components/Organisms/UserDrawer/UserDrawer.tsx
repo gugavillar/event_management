@@ -1,13 +1,12 @@
 'use client'
-import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, SelectField } from '@/components/Molecules'
 import { overlayClose, RolesTypesSelectOptions } from '@/constants'
 import { useCreateUser } from '@/services/queries/users'
-
-import { UserSchemaType } from './UserDrawer.schema'
+import { type SubmitHandler, useFormContext } from 'react-hook-form'
+import type { UserSchemaType } from './UserDrawer.schema'
 
 type UserDrawerProps = {
 	drawerId: string
@@ -21,12 +20,12 @@ export const UserDrawer = ({ drawerId }: UserDrawerProps) => {
 		if (!values) return
 
 		await create(values, {
+			onError: () => toast.error('Erro ao criar usuário'),
 			onSuccess: () => {
 				reset()
 				toast.success('Usuário criado com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: () => toast.error('Erro ao criar usuário'),
 		})
 	}
 
@@ -37,8 +36,8 @@ export const UserDrawer = ({ drawerId }: UserDrawerProps) => {
 				<InputField fieldName="email">Email do usuário</InputField>
 				<SelectField
 					fieldName="role"
-					placeholder="Selecione a permissão do usuário"
 					options={RolesTypesSelectOptions}
+					placeholder="Selecione a permissão do usuário"
 				>
 					Permissão
 				</SelectField>
@@ -46,10 +45,10 @@ export const UserDrawer = ({ drawerId }: UserDrawerProps) => {
 			<DrawerFooter>
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					disabled={isPendingCreate}
+					isLoading={isPendingCreate}
 					onClick={handleSubmit(onSubmit)}
 					type="submit"
-					isLoading={isPendingCreate}
-					disabled={isPendingCreate}
 				>
 					Criar usuário
 				</Button>

@@ -1,6 +1,5 @@
-import { format } from 'date-fns'
 import { BanknoteArrowDown, BanknoteArrowUp, Trash2 } from 'lucide-react'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
@@ -10,7 +9,8 @@ import {
 } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
 import { TransactionsType } from '@/constants'
 import { currencyValue } from '@/formatters'
-import { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
+import type { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
+import { format } from 'date-fns'
 
 export const TransactionCardInfo = ({
 	isFetching,
@@ -48,34 +48,34 @@ export const TransactionCardInfo = ({
 
 export const HEADER_LABELS = [
 	{
-		label: 'Descrição',
 		accessor: 'description',
+		label: 'Descrição',
 	},
 	{
-		label: 'Tipo',
 		accessor: 'type',
+		label: 'Tipo',
 	},
 	{
-		label: 'Transação',
 		accessor: 'amountType',
+		label: 'Transação',
 	},
 	{
-		label: 'Valor',
 		accessor: 'amount',
+		label: 'Valor',
 	},
 	{
-		label: 'Data',
 		accessor: 'date',
+		label: 'Data',
 	},
 	{
-		label: '',
 		accessor: 'action',
+		label: '',
 	},
 ]
 
 export const formatTableData = (
 	data: Array<TransactionsAPI> | undefined,
-	handleRemoveDonation: (id: TransactionsAPI['id']) => void,
+	handleRemoveDonation: (id: TransactionsAPI['id']) => void
 ) => {
 	if (!data) return []
 
@@ -83,14 +83,21 @@ export const formatTableData = (
 		const type = transaction.type
 		return {
 			...transaction,
-			event: transaction.event.name,
+			action: (
+				<div className="hs-tooltip">
+					<Trash2
+						className="cursor-pointer"
+						onClick={() => handleRemoveDonation(transaction.id)}
+						size={18}
+					/>
+					<Tooltip>Excluir</Tooltip>
+				</div>
+			),
 			amount: (
 				<span
 					className={twMerge(
 						'flex items-center gap-2',
-						type === TransactionsType.INCOME
-							? 'text-green-500'
-							: 'text-red-500',
+						type === TransactionsType.INCOME ? 'text-green-500' : 'text-red-500'
 					)}
 				>
 					{type === TransactionsType.INCOME ? (
@@ -101,19 +108,10 @@ export const formatTableData = (
 					{currencyValue(Number(transaction.amount))}
 				</span>
 			),
-			type: transactionType[transaction.type],
 			amountType: amountType[transaction.amountType],
 			date: format(transaction.date, 'dd/MM/yyyy'),
-			action: (
-				<div className="hs-tooltip">
-					<Trash2
-						className="cursor-pointer"
-						size={18}
-						onClick={() => handleRemoveDonation(transaction.id)}
-					/>
-					<Tooltip>Excluir</Tooltip>
-				</div>
-			),
+			event: transaction.event.name,
+			type: transactionType[transaction.type],
 		}
 	})
 }

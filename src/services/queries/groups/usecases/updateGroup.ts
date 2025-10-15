@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { FormGroup, GroupAPI } from '../groups.types'
+import type { FormGroup, GroupAPI } from '../groups.types'
 
 type UpdateGroupArgs = {
 	groupId: GroupAPI['id']

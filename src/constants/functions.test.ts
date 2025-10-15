@@ -15,7 +15,7 @@ describe('functions', () => {
 	test('eventPermitCreateRegistration return false when event is undefined', () => {
 		const isRegistrationOpen = eventPermitCreateRegistration(
 			undefined,
-			MEMBERS.PARTICIPANT,
+			MEMBERS.PARTICIPANT
 		)
 		expect(isRegistrationOpen).toBe(false)
 	})
@@ -25,7 +25,7 @@ describe('functions', () => {
 			{
 				initialDate: '01/01/2000',
 			},
-			MEMBERS.PARTICIPANT,
+			MEMBERS.PARTICIPANT
 		)
 		expect(isRegistrationOpen).toBe(false)
 	})
@@ -38,7 +38,7 @@ describe('functions', () => {
 				initialDate: future,
 				isParticipantRegistrationOpen: true,
 			},
-			MEMBERS.PARTICIPANT,
+			MEMBERS.PARTICIPANT
 		)
 		expect(isRegistrationOpen).toBe(true)
 	})
@@ -51,7 +51,7 @@ describe('functions', () => {
 				initialDate: future,
 				isVolunteerRegistrationOpen: true,
 			},
-			MEMBERS.VOLUNTEER,
+			MEMBERS.VOLUNTEER
 		)
 		expect(isRegistrationOpen).toBe(true)
 	})
@@ -64,7 +64,7 @@ describe('functions', () => {
 				initialDate: future,
 				isParticipantRegistrationOpen: false,
 			},
-			MEMBERS.PARTICIPANT,
+			MEMBERS.PARTICIPANT
 		)
 		expect(isRegistrationOpen).toBe(false)
 	})
@@ -77,7 +77,7 @@ describe('functions', () => {
 				initialDate: future,
 				isVolunteerRegistrationOpen: false,
 			},
-			MEMBERS.VOLUNTEER,
+			MEMBERS.VOLUNTEER
 		)
 		expect(isRegistrationOpen).toBe(false)
 	})

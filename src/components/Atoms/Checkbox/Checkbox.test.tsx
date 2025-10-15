@@ -11,12 +11,12 @@ describe('Checkbox component', () => {
 	it('renders with invalid state', () => {
 		const { getByRole } = render(<Checkbox isInvalid label="Test checkbox" />)
 		expect(getByRole('checkbox')).toHaveClass(
-			'border-red-500 focus:border-red-500 focus:ring-red-500',
+			'border-red-500 focus:border-red-500 focus:ring-red-500'
 		)
 	})
 
 	it('applies customs props', () => {
-		const { getByRole } = render(<Checkbox label="Test checkbox" id="test" />)
+		const { getByRole } = render(<Checkbox id="test" label="Test checkbox" />)
 		expect(getByRole('checkbox')).toHaveAttribute('id', 'test')
 	})
 
@@ -27,13 +27,13 @@ describe('Checkbox component', () => {
 
 	it('applies custom classes', () => {
 		const { getByRole } = render(
-			<Checkbox label="Test checkbox" className="custom-class" />,
+			<Checkbox className="custom-class" label="Test checkbox" />
 		)
 		expect(getByRole('checkbox')).toHaveClass('custom-class')
 	})
 
 	it('check when click', () => {
-		const { getByRole } = render(<Checkbox label="Test checkbox" id="test" />)
+		const { getByRole } = render(<Checkbox id="test" label="Test checkbox" />)
 		expect(getByRole('checkbox')).not.toBeChecked()
 		getByRole('checkbox').click()
 		expect(getByRole('checkbox')).toBeChecked()
@@ -41,7 +41,7 @@ describe('Checkbox component', () => {
 
 	it('disabled when disabled', () => {
 		const { getByRole } = render(
-			<Checkbox label="Test checkbox" id="test" disabled />,
+			<Checkbox disabled id="test" label="Test checkbox" />
 		)
 		expect(getByRole('checkbox')).toBeDisabled()
 	})

@@ -16,13 +16,13 @@ type SearchParams = {
 export default async function UsersPage({ searchParams }: SearchParams) {
 	const session = await getServerSession(authOptions)
 	const params = await searchParams.then((res) => ({
-		searchUser: res.searchUser ?? '',
 		pageUser: res.pageUser ?? '',
+		searchUser: res.searchUser ?? '',
 	}))
 	const debounceValue = params.searchUser
 	const page = generatePage(params.pageUser)
 
-	const getAllUsers = () => getUsers({ searchUser: debounceValue, page })
+	const getAllUsers = () => getUsers({ page, searchUser: debounceValue })
 
 	return (
 		<HydrationProvider

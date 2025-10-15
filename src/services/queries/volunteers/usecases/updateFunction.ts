@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import {
+import type {
 	VolunteersFunctionsForm,
 	VolunteersFunctionsFromAPI,
 } from '../volunteers.type'
@@ -15,8 +14,8 @@ export const updateFunction = async ({
 	events,
 }: UpdateFunctionArgs) => {
 	const response = await api.put(ENDPOINTS.UPDATE_FUNCTION(id), {
-		role,
 		events,
+		role,
 	})
 
 	return response.data

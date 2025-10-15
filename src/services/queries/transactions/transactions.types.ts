@@ -1,6 +1,6 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
-import { EventsAPI } from '../events/event.type'
+import type { EventsAPI } from '../events/event.type'
 
 export type TransactionsAPI = {
 	id: UUID

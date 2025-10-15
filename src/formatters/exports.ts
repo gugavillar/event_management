@@ -1,5 +1,4 @@
-import { $Enums } from '@prisma/client'
-import { differenceInYears, format } from 'date-fns'
+import type { $Enums } from '@prisma/client'
 
 import {
 	CHECK_IN_STATUS,
@@ -7,10 +6,11 @@ import {
 	PaymentTypeAPI,
 	StatusType,
 } from '@/constants'
+import { differenceInYears, format } from 'date-fns'
 
 export const paymentStatus = (
 	checkInStatus: $Enums.ParticipantOrVolunteerStatus | null,
-	hasPayment: $Enums.PaymentType | null,
+	hasPayment: $Enums.PaymentType | null
 ) => {
 	if (checkInStatus === CHECK_IN_STATUS.WITHDREW) {
 		return StatusType[CHECK_IN_STATUS.WITHDREW].label
@@ -23,7 +23,7 @@ export const paymentStatus = (
 
 export const paymentDate = (
 	hasPayment: $Enums.PaymentType | null,
-	date: Date,
+	date: Date
 ) => {
 	if (!hasPayment) return ''
 
@@ -31,7 +31,7 @@ export const paymentDate = (
 }
 
 export const formatCheckIn = (
-	checkIn: $Enums.ParticipantOrVolunteerStatus | null,
+	checkIn: $Enums.ParticipantOrVolunteerStatus | null
 ) => {
 	if (!checkIn) return StatusType[CHECK_IN_STATUS.NOT_ANSWERED].label
 
@@ -41,7 +41,7 @@ export const formatCheckIn = (
 export const formatBirthdate = (
 	birthdate: string | Date,
 	eventFinalDate: string | Date,
-	showAge = true,
+	showAge = true
 ) => {
 	if (!birthdate || !eventFinalDate) return ''
 

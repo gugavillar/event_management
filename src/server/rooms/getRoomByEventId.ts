@@ -4,7 +4,7 @@ import { prisma } from '@/constants'
 
 export const getRoomByEventId = async (
 	id: string,
-	searchName: string | null,
+	searchName: string | null
 ) => {
 	try {
 		z.object({
@@ -13,17 +13,17 @@ export const getRoomByEventId = async (
 		}).parse({ id, searchName })
 
 		const rooms = await prisma.room.findMany({
-			where: {
-				eventId: id,
-			},
 			include: {
+				event: true,
 				members: {
 					include: { participant: true, volunteer: true },
 				},
-				event: true,
 			},
 			orderBy: {
 				roomNumber: 'asc',
+			},
+			where: {
+				eventId: id,
 			},
 		})
 

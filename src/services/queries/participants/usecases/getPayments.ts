@@ -22,8 +22,8 @@ export const getPayments = async ({
 			...(searchParticipant && { searchParticipant }),
 			...(paymentType && { paymentType }),
 			...(participantCity && { participantCity }),
-			pageParticipantPayment: page,
 			limit: LIMIT_PER_PAGE,
+			pageParticipantPayment: page,
 		},
 	})
 	return response.data

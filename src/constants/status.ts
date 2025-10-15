@@ -26,7 +26,7 @@ export const PaymentType = {
 }
 
 export const PaymentSelectOptions = Object.values(PaymentTypeAPI).map(
-	(value) => ({ ...PaymentType[value] }),
+	(value) => ({ ...PaymentType[value] })
 )
 
 export enum CHECK_IN_STATUS {
@@ -51,7 +51,7 @@ export const StatusType = {
 }
 
 export const StatusSelectOptions = Object.values(CHECK_IN_STATUS).map(
-	(value) => ({ ...StatusType[value] }),
+	(value) => ({ ...StatusType[value] })
 )
 
 export enum GenderTypeAPI {
@@ -67,7 +67,7 @@ export const GenderType = {
 }
 
 export const GenderSelectOptions = Object.values(GenderTypeAPI).map(
-	(value) => ({ ...GenderType[value] }),
+	(value) => ({ ...GenderType[value] })
 )
 
 export enum ROLES {

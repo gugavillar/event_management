@@ -16,21 +16,21 @@ export default async function VolunteersFunctionsPage({
 	searchParams,
 }: SearchParams) {
 	const params = await searchParams.then((res) => ({
-		searchFunction: res.searchFunction ?? '',
 		eventId: res.eventId ?? '',
+		searchFunction: res.searchFunction ?? '',
 	}))
 	const debounceValue = params.searchFunction
 	const debounceEventId = params.eventId
 
 	const getAllFunctions = () =>
-		getFunctions({ searchFunction: debounceValue, eventId: debounceEventId })
-	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+		getFunctions({ eventId: debounceEventId, searchFunction: debounceValue })
+	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 
 	return (
 		<HydrationInfinityProvider
+			initialPageParam={1}
 			queryFn={getAllEvents}
 			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-			initialPageParam={1}
 		>
 			<HydrationProvider
 				queryFn={getAllFunctions}

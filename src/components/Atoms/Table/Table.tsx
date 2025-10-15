@@ -1,8 +1,8 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { TableBody, TableBodyProps } from './TableBody'
-import { TableHeader, TableHeaderProps } from './TableHeader'
+import { TableBody, type TableBodyProps } from './TableBody'
+import { TableHeader, type TableHeaderProps } from './TableHeader'
 
 export type TableProps = ComponentProps<'table'> &
 	TableHeaderProps &
@@ -25,8 +25,8 @@ export const Table = ({
 				<TableHeader headerLabels={headerLabels} />
 				<TableBody
 					bodyData={bodyData}
-					headerLabels={headerLabels}
 					handleClickRow={handleClickRow}
+					headerLabels={headerLabels}
 					isLoading={isLoading}
 				/>
 			</table>

@@ -5,8 +5,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { HelperErrorText, Label } from '@/components/Atoms'
 import { useClickAway } from '@/hooks'
-
-import { ComboBoxOptionsProps, ComboBoxProps } from './ComboBox.types'
+import type { ComboBoxOptionsProps, ComboBoxProps } from './ComboBox.types'
 
 const Warning = () => {
 	return (
@@ -45,12 +44,12 @@ const ComboBoxOptions = <T,>({
 						index === options?.length - 1 ? { ref: lastItemRef } : {}
 					return (
 						<li
-							key={valueOption}
 							className={twMerge(
 								'cursor-pointer px-4 py-2 text-base hover:bg-gray-100',
 								selectedValue === valueOption && 'bg-gray-100 font-medium',
-								opt.disabled && 'cursor-not-allowed text-gray-400',
+								opt.disabled && 'cursor-not-allowed text-gray-400'
 							)}
+							key={valueOption}
 							onClick={() => handleSelectValue(valueOption as T, opt.disabled)}
 							{...refProps}
 						>
@@ -92,35 +91,35 @@ export const ComboBox = <T,>({
 			{label && <Label {...(error && { 'aria-invalid': true })}>{label}</Label>}
 			<div className="relative w-full">
 				<button
-					type="button"
 					className={twMerge(
 						'inline-flex min-h-12 w-full items-center justify-between rounded-lg border border-gray-500 bg-white px-4 py-3 text-left text-base shadow-sm focus:ring-2 focus:ring-gray-300 focus-visible:outline-none',
-						error && 'border-red-500 focus:ring-red-500',
+						error && 'border-red-500 focus:ring-red-500'
 					)}
 					onClick={() => setIsOpen((prev) => !prev)}
+					type="button"
 				>
 					{isLoading ? 'Carregando...' : selectLabel || placeholderLabel}
 					{error ? (
 						<Warning />
 					) : (
 						<ChevronDown
-							size={14}
 							className={twMerge(
 								'transition-transform duration-200',
-								isOpen && 'rotate-180',
+								isOpen && 'rotate-180'
 							)}
+							size={14}
 						/>
 					)}
 				</button>
 				{isOpen && (
 					<ComboBoxOptions
-						options={options}
 						keyOptionLabel={keyOptionLabel}
 						keyOptionValue={keyOptionValue}
 						lastItemRef={lastItemRef}
+						options={options}
 						selectedValue={selectedValue}
-						setSelectedValue={setSelectedValue}
 						setIsOpen={setIsOpen}
+						setSelectedValue={setSelectedValue}
 					/>
 				)}
 			</div>

@@ -1,5 +1,9 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
+
+import { QUERY_KEYS } from '@/constants'
+import { useQuery } from '@/providers/QueryProvider'
 import { useDebounce } from '@uidotdev/usehooks'
 import {
 	parseAsInteger,
@@ -7,26 +11,21 @@ import {
 	useQueryState,
 	useQueryStates,
 } from 'nuqs'
-import { useEffect, useRef } from 'react'
-
-import { QUERY_KEYS } from '@/constants'
-import { useQuery } from '@/providers/QueryProvider'
-
-import { ParticipantsFromAPI } from '../participants.type'
+import type { ParticipantsFromAPI } from '../participants.type'
 import { getPayments } from '../usecases'
 
 export const useGetPayments = () => {
 	const [query, setQuery] = useQueryStates({
+		city: parseAsString.withDefault(''),
 		eventId: parseAsString.withDefault(''),
 		paymentType: parseAsString.withDefault(''),
-		city: parseAsString.withDefault(''),
 	})
 	const [search, setSearch] = useQueryState('searchParticipant', {
 		defaultValue: '',
 	})
 	const [page, setPage] = useQueryState(
 		'pageParticipantPayment',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debounceEventId = useDebounce(query.eventId, 500)
@@ -46,6 +45,14 @@ export const useGetPayments = () => {
 	}, [debounceEventId, debounceSearch, debouncePaymentType, debounceCity])
 
 	const { data, isLoading }: UseQueryResult<ParticipantsFromAPI> = useQuery({
+		queryFn: () =>
+			getPayments({
+				eventId: debounceEventId,
+				page,
+				participantCity: debounceCity,
+				paymentType: debouncePaymentType,
+				searchParticipant: debounceSearch,
+			}),
 		queryKey: [
 			QUERY_KEYS.PARTICIPANTS_PAYMENTS,
 			debounceEventId,
@@ -54,24 +61,16 @@ export const useGetPayments = () => {
 			debounceCity,
 			page,
 		],
-		queryFn: () =>
-			getPayments({
-				eventId: debounceEventId,
-				searchParticipant: debounceSearch,
-				paymentType: debouncePaymentType,
-				participantCity: debounceCity,
-				page,
-			}),
 	})
 
 	return {
 		data,
 		isLoading,
-		setSearch,
-		search,
 		page,
-		setPage,
 		query,
+		search,
+		setPage,
 		setQuery,
+		setSearch,
 	}
 }

@@ -1,6 +1,5 @@
 'use client'
-import { Dispatch, memo, SetStateAction, useEffect } from 'react'
-import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
@@ -20,10 +19,10 @@ import {
 	useGetVolunteer,
 	useUpdateVolunteer,
 } from '@/services/queries/volunteers'
-import { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
-
-import { VolunteerType } from './VolunteerDrawer.schema'
+import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import type { VolunteerType } from './VolunteerDrawer.schema'
 
 type VolunteerDrawerProps = {
 	drawerId: string
@@ -67,13 +66,13 @@ export const VolunteerDrawer = memo(
 		const formattedEvents = formatterComboBoxValues(
 			events?.pages?.flatMap((page) => page.data),
 			'name',
-			'id',
+			'id'
 		)
 
 		const lastItemRef = useInfiniteScrollObserver({
+			fetchNextPage,
 			hasNextPage: Boolean(hasNextPage),
 			isFetchingNextPage,
-			fetchNextPage,
 		})
 
 		const handleSubmitForm: SubmitHandler<VolunteerType> = async (values) => {
@@ -94,20 +93,20 @@ export const VolunteerDrawer = memo(
 			if (selectedVolunteer) {
 				return await update(
 					{
-						volunteerId: selectedVolunteer,
 						data: {
 							...formattedData,
 						},
+						volunteerId: selectedVolunteer,
 					},
 					{
+						onError: () => toast.error('Erro ao atualizar voluntário'),
 						onSuccess: () => {
 							reset()
 							setSelectedVolunteer(null)
 							toast.success('Voluntário atualizado com sucesso!')
 							overlayClose(drawerId)
 						},
-						onError: () => toast.error('Erro ao atualizar voluntário'),
-					},
+					}
 				)
 			}
 			await create(
@@ -115,15 +114,15 @@ export const VolunteerDrawer = memo(
 					...formattedData,
 				},
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao criar voluntário'),
 					onSuccess: () => {
 						reset()
 						setSelectedVolunteer(null)
 						toast.success('Voluntário criado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao criar voluntário'),
-				},
+				}
 			)
 		}
 
@@ -141,25 +140,25 @@ export const VolunteerDrawer = memo(
 		return (
 			<Drawer
 				drawerId={drawerId}
-				headingTitle="Dados do voluntário"
 				handleClose={handleClose}
+				headingTitle="Dados do voluntário"
 			>
 				<DrawerBody isLoading={isLoading}>
 					<Controller
-						name="eventId"
 						control={control}
+						name="eventId"
 						render={({ field }) => (
 							<SearchBox
-								search={search}
-								setSearch={setSearch}
+								error={errors.eventId?.message}
 								keyOptionLabel="label"
 								keyOptionValue="value"
-								options={formattedEvents}
-								selectedValue={field.value}
-								setSelectedValue={field.onChange}
-								lastItemRef={lastItemRef}
 								label="Evento"
-								error={errors.eventId?.message}
+								lastItemRef={lastItemRef}
+								options={formattedEvents}
+								search={search}
+								selectedValue={field.value}
+								setSearch={setSearch}
+								setSelectedValue={field.onChange}
 							/>
 						)}
 					/>
@@ -167,28 +166,28 @@ export const VolunteerDrawer = memo(
 					<InputField fieldName="called">
 						Como você gostaria de ser chamado(a)?
 					</InputField>
-					<InputField type="email" fieldName="email">
+					<InputField fieldName="email" type="email">
 						E-mail
 					</InputField>
-					<MaskedInputField format="(##) #####-####" fieldName="phone">
+					<MaskedInputField fieldName="phone" format="(##) #####-####">
 						Telefone
 					</MaskedInputField>
-					<MaskedInputField format="##/##/####" fieldName="birthdate">
+					<MaskedInputField fieldName="birthdate" format="##/##/####">
 						Data de nascimento
 					</MaskedInputField>
 					<InputField fieldName="community">Igreja que frequenta</InputField>
 					<SelectField
 						fieldName="hasCell"
-						placeholder="Selecione uma opção"
 						options={YES_OR_NO_SELECT_OPTIONS}
+						placeholder="Selecione uma opção"
 					>
 						Participa de célula?
 					</SelectField>
 					{hasCell === 'Yes' && <InputField fieldName="cell">Qual?</InputField>}
 					<SelectField
 						fieldName="hasHealth"
-						placeholder="Selecione uma opção"
 						options={YES_OR_NO_SELECT_OPTIONS}
+						placeholder="Selecione uma opção"
 					>
 						Tem restrição saúde/alimentar?
 					</SelectField>
@@ -196,22 +195,22 @@ export const VolunteerDrawer = memo(
 						<InputField fieldName="health">Descreva?</InputField>
 					)}
 					<InputField fieldName="relative">Parente próximo</InputField>
-					<MaskedInputField format="(##) #####-####" fieldName="relativePhone">
+					<MaskedInputField fieldName="relativePhone" format="(##) #####-####">
 						Telefone do parente
 					</MaskedInputField>
 					<InputField fieldName="address.street">Endereço</InputField>
 					<InputField fieldName="address.number">Número</InputField>
 					<SelectField
 						fieldName="address.state"
-						placeholder="Selecione o estado"
 						options={UF}
+						placeholder="Selecione o estado"
 					>
 						Estado
 					</SelectField>
 					<SelectField
 						fieldName="address.city"
-						placeholder="Selecione a cidade"
 						options={cities ?? []}
+						placeholder="Selecione a cidade"
 					>
 						Cidade
 					</SelectField>
@@ -220,17 +219,17 @@ export const VolunteerDrawer = memo(
 				<DrawerFooter>
 					<Button
 						className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+						disabled={!isValid || !isDirty}
+						isLoading={isCreating || isUpdating}
 						onClick={handleSubmit(handleSubmitForm)}
 						type="submit"
-						isLoading={isCreating || isUpdating}
-						disabled={!isValid || !isDirty}
 					>
 						Salvar
 					</Button>
 				</DrawerFooter>
 			</Drawer>
 		)
-	},
+	}
 )
 
 VolunteerDrawer.displayName = 'VolunteerDrawer'

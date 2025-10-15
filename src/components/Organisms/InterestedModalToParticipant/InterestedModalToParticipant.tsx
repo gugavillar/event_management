@@ -1,12 +1,12 @@
 'use client'
 import { OctagonAlert } from 'lucide-react'
-import { Dispatch, memo, SetStateAction } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useUpdateInterestedParticipant } from '@/services/queries/participants'
-import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
 
 type InterestedModalToParticipantProps = {
@@ -29,16 +29,16 @@ export const InterestedModalToParticipant = memo(
 			if (!selectedParticipant) return
 
 			await update(
-				{ participantId: selectedParticipant, interested },
+				{ interested, participantId: selectedParticipant },
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atualizar participante'),
 					onSuccess: () => {
 						setSelectedParticipant(null)
 						toast.success('Participante movido com sucesso!')
 						overlayClose(modalId)
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar participante'),
-				},
+				}
 			)
 		}
 
@@ -49,12 +49,12 @@ export const InterestedModalToParticipant = memo(
 
 		return (
 			<Modal
-				modalId={modalId}
 				handleClose={handleCloseInterestedModalToParticipant}
+				modalId={modalId}
 			>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
-						<OctagonAlert size={64} className="text-amber-300" />
+						<OctagonAlert className="text-amber-300" size={64} />
 						<div className="space-y-4 text-center">
 							<Header as="h3" className="text-2xl">
 								{interested
@@ -69,18 +69,18 @@ export const InterestedModalToParticipant = memo(
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button
-								type="button"
 								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
 								disabled={isPending}
 								onClick={handleCloseInterestedModalToParticipant}
+								type="button"
 							>
 								Cancelar
 							</Button>
 							<Button
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-								onClick={handleMoveParticipant}
-								isLoading={isPending}
 								disabled={isPending}
+								isLoading={isPending}
+								onClick={handleMoveParticipant}
 							>
 								Confirmar
 							</Button>
@@ -89,7 +89,7 @@ export const InterestedModalToParticipant = memo(
 				</div>
 			</Modal>
 		)
-	},
+	}
 )
 
 InterestedModalToParticipant.displayName = 'InterestedModalToParticipant'

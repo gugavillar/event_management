@@ -1,10 +1,9 @@
 import { Wrench } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 
 import { Button } from '@/components/Atoms'
 import { overlayOpen } from '@/constants'
-import { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
-
+import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 import { CreateVolunteerFunctionModal } from '../CreateVolunteerFunctionModal'
 
 type CreateVolunteerFunctionButtonProps = {

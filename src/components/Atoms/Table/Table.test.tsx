@@ -1,28 +1,28 @@
-import { faker } from '@faker-js/faker'
 import { fireEvent, render } from '@testing-library/react'
 
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
+import { faker } from '@faker-js/faker'
 import { Table } from './Table'
 
 const generateTableData = (length: number) => {
 	const tableData = Array.from({ length }, () => ({
+		action: <button>Button</button>,
+		birthdate: faker.date.birthdate().getUTCDate(),
+		email: faker.internet.email(),
 		id: faker.string.uuid() as UUID,
 		name: faker.person.fullName(),
-		email: faker.internet.email(),
 		phone: faker.phone.number(),
-		birthdate: faker.date.birthdate().getUTCDate(),
-		action: <button>Button</button>,
 	}))
 
 	const tableFields = Object.keys(tableData[0])
 
 	const tableHeader = tableFields.map((field) => ({
-		label: field,
 		accessor: field,
+		label: field,
 	}))
 
-	return { tableHeader, tableData }
+	return { tableData, tableHeader }
 }
 
 describe('Table component', () => {
@@ -30,11 +30,11 @@ describe('Table component', () => {
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={tableData}
 				data-testid="table"
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+			/>
 		)
 
 		expect(getByTestId('table')).toBeInTheDocument()
@@ -44,12 +44,12 @@ describe('Table component', () => {
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={tableData}
-				data-testid="table"
 				className="custom-class"
+				data-testid="table"
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+			/>
 		)
 		expect(getByTestId('table')).toHaveClass('custom-class')
 	})
@@ -58,12 +58,12 @@ describe('Table component', () => {
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={tableData}
 				data-testid="table"
-				width={150}
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+				width={150}
+			/>
 		)
 		expect(getByTestId('table')).toHaveAttribute('width', '150')
 	})
@@ -73,12 +73,12 @@ describe('Table component', () => {
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={tableData}
 				data-testid="table"
 				handleClickRow={(row) => handleClick(row)}
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+			/>
 		)
 
 		const rows = getByTestId('table').querySelectorAll('tbody tr td')
@@ -94,12 +94,12 @@ describe('Table component', () => {
 		const randomIndex = Math.floor(Math.random() * tableData.length)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={tableData}
 				data-testid="table"
 				handleClickRow={(row) => handleClick(row)}
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+			/>
 		)
 
 		const row = getByTestId('table').querySelectorAll('tbody tr')[randomIndex]
@@ -115,12 +115,12 @@ describe('Table component', () => {
 		const randomIndex = Math.floor(Math.random() * tableData.length)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={tableData}
 				data-testid="table"
 				handleClickRow={(row) => handleClick(row)}
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+			/>
 		)
 
 		const row = getByTestId('table').querySelectorAll('tbody tr')[randomIndex]
@@ -134,11 +134,11 @@ describe('Table component', () => {
 		const { tableHeader } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={undefined}
 				data-testid="table"
+				headerLabels={tableHeader}
 				isLoading
-			/>,
+			/>
 		)
 		const spinner = getByTestId('spinner')
 
@@ -149,11 +149,11 @@ describe('Table component', () => {
 		const { tableHeader } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
-				headerLabels={tableHeader}
 				bodyData={undefined}
 				data-testid="table"
+				headerLabels={tableHeader}
 				isLoading={false}
-			/>,
+			/>
 		)
 
 		const noData = getByTestId('no-data')

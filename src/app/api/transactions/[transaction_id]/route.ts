@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { removeTransactionById } from '@/server'
 import { requestProcess } from '@/utils/prisma'

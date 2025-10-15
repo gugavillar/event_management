@@ -1,4 +1,4 @@
-import { UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
+import type { UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 

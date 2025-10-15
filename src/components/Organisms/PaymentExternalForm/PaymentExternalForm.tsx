@@ -1,12 +1,11 @@
 'use client'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { type Dispatch, type SetStateAction, useState } from 'react'
 
 import { SelectField } from '@/components/Molecules'
-import { ExternalParticipantFormProps } from '@/components/Templates'
-import { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
+import type { ExternalParticipantFormProps } from '@/components/Templates'
+import type { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { PAYMENT_METHOD_EXTERNAL_OPTIONS } from '@/constants'
-
+import { useFormContext } from 'react-hook-form'
 import { PaymentChoice } from './PaymentChoice'
 
 type PaymentExternalFormProps = ExternalParticipantFormProps & {
@@ -26,8 +25,8 @@ export const PaymentExternalForm = ({
 		<div className="flex flex-col space-y-8">
 			<SelectField
 				fieldName="paymentMethod"
-				placeholder="Selecione o tipo de pagamento"
 				options={PAYMENT_METHOD_EXTERNAL_OPTIONS}
+				placeholder="Selecione o tipo de pagamento"
 			>
 				Selecione uma das opções abaixo e siga as instruções para concluir o
 				pagamento da sua inscrição
@@ -35,9 +34,9 @@ export const PaymentExternalForm = ({
 			<PaymentChoice
 				paymentMethod={paymentMethod}
 				pixValue={pixValue}
-				setPixValue={setPixValue}
 				registrationValue={registrationValue}
 				setCurrentStep={setCurrentStep}
+				setPixValue={setPixValue}
 			/>
 		</div>
 	)

@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
-import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { CHECK_IN_STATUS, prisma } from '@/constants'
+import { utils, write } from 'xlsx'
 
 export const getExportPresenceMeeting = async (eventId: string) => {
 	try {
@@ -11,15 +11,6 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 		}).parse({ eventId })
 
 		const presences = await prisma.meetingPresence.findMany({
-			where: {
-				meeting: {
-					eventId,
-				},
-				OR: [
-					{ volunteer: { checkIn: null } },
-					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
-				],
-			},
 			include: {
 				meeting: {
 					include: {
@@ -33,17 +24,26 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 					name: 'asc',
 				},
 			},
+			where: {
+				meeting: {
+					eventId,
+				},
+				OR: [
+					{ volunteer: { checkIn: null } },
+					{ volunteer: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } },
+				],
+			},
 		})
 
 		if (!presences.length) {
 			return NextResponse.json(
 				{ error: 'Nenhuma reunião encontrada' },
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 
 		const meetingTitles = Array.from(
-			new Set(presences.map((p) => p.meeting.title).filter(Boolean)),
+			new Set(presences.map((p) => p.meeting.title).filter(Boolean))
 		)
 
 		const volunteerMap: Record<
@@ -86,15 +86,15 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 		const workbook = utils.book_new()
 		utils.book_append_sheet(workbook, worksheet, 'Presenças')
 
-		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
+		const buffer = write(workbook, { bookType: 'xlsx', type: 'buffer' })
 
 		return new NextResponse(buffer, {
-			status: 200,
 			headers: {
+				'Content-Disposition': 'attachment; filename="lista-presenca.xlsx"',
 				'Content-Type':
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-				'Content-Disposition': 'attachment; filename="lista-presenca.xlsx"',
 			},
+			status: 200,
 		})
 	} catch (error) {
 		console.error('@getExportPresenceMeeting error:', error)

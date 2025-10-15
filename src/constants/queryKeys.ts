@@ -4,11 +4,11 @@ const makeQueryClient = () =>
 	new QueryClient({
 		defaultOptions: {
 			queries: {
-				staleTime: 60 * 1000,
 				refetchOnMount: false,
 				refetchOnReconnect: false,
 				refetchOnWindowFocus: true,
 				retry: false,
+				staleTime: 60 * 1000,
 			},
 		},
 	})
@@ -16,56 +16,55 @@ const makeQueryClient = () =>
 let browserQueryClient: QueryClient | undefined
 
 export const QUERY_KEYS = {
-	// Events
-	EVENTS: 'events',
-	EVENT: 'event',
-	EVENTS_INFINITY: 'events-infinity',
-
-	// Participants
-	PARTICIPANTS_EXPORT_DATA: 'participants-export-data',
-	PARTICIPANTS: 'participants',
-	PARTICIPANT: 'participant',
-	PARTICIPANTS_PAYMENTS: 'payment-participants',
-	PARTICIPANTS_INFINITY: 'participants-infinity',
-	PARTICIPANTS_CITIES: 'participants-cities',
-
-	// Volunteers
-	VOLUNTEERS_EXPORT_DATA: 'volunteers-export-data',
-	VOLUNTEERS: 'volunteers',
-	VOLUNTEER: 'volunteer',
-	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
-	VOLUNTEERS_PAYMENTS: 'payment-volunteers',
-	VOLUNTEERS_INFINITY: 'volunteers-infinity',
-	VOLUNTEERS_CITIES: 'volunteers-cities',
+	// Cities
+	CITIES: 'cities',
 
 	// Dashboard
 	DASHBOARD: 'dashboard',
 
-	// Users
-	USERS: 'users',
-
-	// Cities
-	CITIES: 'cities',
+	// Donations
+	DONATIONS: 'donations',
+	EVENT: 'event',
+	// Events
+	EVENTS: 'events',
+	EVENTS_INFINITY: 'events-infinity',
+	GROUP: 'group',
 
 	// Groups
 	GROUPS: 'groups',
-	GROUP: 'group',
-
-	// Rooms
-	ROOMS: 'rooms',
-	ROOM: 'room',
+	MEETING: 'meeting',
 
 	// Meetings
 	MEETINGS: 'meetings',
-	MEETING: 'meeting',
 	MEETINGS_EXPORT_DATA: 'meetings-export-data',
+	PARTICIPANT: 'participant',
+	PARTICIPANTS: 'participants',
+	PARTICIPANTS_CITIES: 'participants-cities',
 
-	// Donations
-	DONATIONS: 'donations',
+	// Participants
+	PARTICIPANTS_EXPORT_DATA: 'participants-export-data',
+	PARTICIPANTS_INFINITY: 'participants-infinity',
+	PARTICIPANTS_PAYMENTS: 'payment-participants',
+	ROOM: 'room',
+
+	// Rooms
+	ROOMS: 'rooms',
 
 	// Transactions
 	TRANSACTIONS: 'transactions',
 	TRANSACTIONS_EXPORT_DATA: 'transactions-export-data',
+
+	// Users
+	USERS: 'users',
+	VOLUNTEER: 'volunteer',
+	VOLUNTEERS: 'volunteers',
+	VOLUNTEERS_CITIES: 'volunteers-cities',
+
+	// Volunteers
+	VOLUNTEERS_EXPORT_DATA: 'volunteers-export-data',
+	VOLUNTEERS_FUNCTIONS: 'volunteers-functions',
+	VOLUNTEERS_INFINITY: 'volunteers-infinity',
+	VOLUNTEERS_PAYMENTS: 'payment-volunteers',
 } as const
 
 export const getQueryClient = () => {

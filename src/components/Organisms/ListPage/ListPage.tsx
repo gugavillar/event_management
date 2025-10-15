@@ -1,5 +1,5 @@
 import { Search } from 'lucide-react'
-import { ComponentProps, Dispatch, ReactNode, SetStateAction } from 'react'
+import type { ComponentProps, Dispatch, ReactNode, SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Field } from '@/components/Atoms'
@@ -27,17 +27,17 @@ export const ListPage = ({
 			<div
 				className={twMerge(
 					'flex flex-row items-center gap-4 lg:max-w-xl',
-					className,
+					className
 				)}
 				{...props}
 			>
 				{placeholderField && (
 					<Field
+						className="ps-11"
+						onChange={(event) => setSearch?.(event.target.value)}
 						placeholder={placeholderField}
 						rightIcon={<Search size={24} />}
-						className="ps-11"
 						value={search}
-						onChange={(event) => setSearch?.(event.target.value)}
 					/>
 				)}
 				{moreFilter || null}

@@ -1,23 +1,22 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header } from '@/components/Atoms'
 import { InputField } from '@/components/Molecules'
 import { useUpdatePassword } from '@/services/queries/users'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import {
 	DefineNewPasswordSchema,
-	DefineNewPasswordSchemaType,
+	type DefineNewPasswordSchemaType,
 } from './LoginButton.schema'
 
 export const DefinedNewPassword = () => {
 	const { isPending, update } = useUpdatePassword()
 	const methods = useForm<DefineNewPasswordSchemaType>({
 		defaultValues: {
-			password: '',
 			confirmPassword: '',
+			password: '',
 		},
 		mode: 'onChange',
 		resolver: zodResolver(DefineNewPasswordSchema),
@@ -29,14 +28,14 @@ export const DefinedNewPassword = () => {
 		await update(
 			{ password },
 			{
+				onError: () => toast.error('Erro ao redefinir senha'),
 				onSuccess: () => {
 					sessionStorage.removeItem('hasToDefineNewPassword')
 					toast.success(
-						'Senha redefinida com sucesso! Efetue o login com a nova senha',
+						'Senha redefinida com sucesso! Efetue o login com a nova senha'
 					)
 				},
-				onError: () => toast.error('Erro ao redefinir senha'),
-			},
+			}
 		)
 	}
 
@@ -56,8 +55,8 @@ export const DefinedNewPassword = () => {
 					</InputField>
 					<Button
 						className="items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-						isLoading={isPending}
 						disabled={!methods.formState.isValid}
+						isLoading={isPending}
 					>
 						Redefinir
 					</Button>

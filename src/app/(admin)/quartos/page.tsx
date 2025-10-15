@@ -1,4 +1,4 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
 import { Rooms } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'
@@ -22,14 +22,14 @@ export default async function RoomsPage({ searchParams }: SearchParams) {
 	const eventId = params.roomEventId
 	const searchMemberRoom = params.searchMemberRoom
 
-	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 	const getRooms = () => getRoomByEventId(eventId as UUID, searchMemberRoom)
 
 	return (
 		<HydrationInfinityProvider
+			initialPageParam={1}
 			queryFn={getAllEvents}
 			queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-			initialPageParam={1}
 		>
 			<HydrationProvider
 				queryFn={getRooms}

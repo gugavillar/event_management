@@ -11,8 +11,8 @@ export const getEvents = async ({ searchEvent, page = 1 }: GetEventsParams) => {
 	const response = await api.get(ENDPOINTS.GET_EVENTS, {
 		params: {
 			...(searchEvent && { searchEvent }),
-			page,
 			limit: LIMIT_PER_PAGE,
+			page,
 		},
 	})
 

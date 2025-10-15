@@ -38,3 +38,6 @@ next-env.d.ts
 
 # api test
 *.http
+
+#vscode
+.vscode

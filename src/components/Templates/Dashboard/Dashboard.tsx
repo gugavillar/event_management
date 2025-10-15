@@ -1,4 +1,5 @@
 'use client'
+
 import { Header, Table } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import {
@@ -12,7 +13,6 @@ import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetDashboardData } from '@/services/queries/dashboard'
 import { useGetInfinityEvents } from '@/services/queries/events'
-
 import { DownloadPDF } from './BirthdayPeoplePrint'
 import { CardInfo } from './CardInfo'
 import { formatTableData, HEADERS_LABELS } from './Dashboard.utils'
@@ -29,13 +29,13 @@ export const Dashboard = () => {
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const formattedBirthdayPeople = formatTableData(data?.birthdayPeople ?? [])
@@ -46,31 +46,31 @@ export const Dashboard = () => {
 				className="max-w-sm"
 				keyOptionLabel="label"
 				keyOptionValue="value"
+				label="Selecione o evento"
+				lastItemRef={lastItemRef}
 				options={formattedEvents}
 				selectedValue={eventId}
 				setSelectedValue={setEventId}
-				label="Selecione o evento"
-				lastItemRef={lastItemRef}
 			/>
 			{!eventId ? (
 				<CardInfo />
 			) : (
 				<>
-					<DashboardCards isLoading={isLoading} data={data} />
+					<DashboardCards data={data} isLoading={isLoading} />
 					<CitiesChart
 						categories={data?.participantsCities?.labels}
-						series={[{ data: data?.participantsCities?.data ?? [] }]}
 						isLoading={isLoading}
+						series={[{ data: data?.participantsCities?.data ?? [] }]}
 					/>
 					<PaymentsChart
 						categories={data?.paymentsTypes?.labels}
-						series={data?.paymentsTypes.data}
 						isLoading={isLoading}
+						series={data?.paymentsTypes.data}
 					/>
 					<AgesChart
 						categories={data?.ageRanges?.labels}
-						series={data?.ageRanges.data}
 						isLoading={isLoading}
+						series={data?.ageRanges.data}
 					/>
 					<div className="space-y-4">
 						<div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
@@ -78,9 +78,9 @@ export const Dashboard = () => {
 							<DownloadPDF birthdayPeople={formattedBirthdayPeople} />
 						</div>
 						<Table
+							bodyData={formattedBirthdayPeople}
 							headerLabels={HEADERS_LABELS}
 							isLoading={isLoading}
-							bodyData={formattedBirthdayPeople}
 						/>
 					</div>
 				</>

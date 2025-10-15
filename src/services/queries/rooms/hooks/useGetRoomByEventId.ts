@@ -1,12 +1,11 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
-import { useQueryState } from 'nuqs'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { RoomAPI } from '../rooms.types'
+import { useDebounce } from '@uidotdev/usehooks'
+import { useQueryState } from 'nuqs'
+import type { RoomAPI } from '../rooms.types'
 import { getRoomByEventId } from '../usecases'
 
 export const useGetRoomByEventId = (eventId: string) => {
@@ -17,24 +16,24 @@ export const useGetRoomByEventId = (eventId: string) => {
 		'searchMemberRoom',
 		{
 			defaultValue: '',
-		},
+		}
 	)
 
 	const debounceSearchMember = useDebounce(searchMemberRoom, 500)
 
 	const { isLoading, data }: UseQueryResult<Array<RoomAPI>> = useQuery({
-		queryKey: [QUERY_KEYS.ROOMS, roomEventId, debounceSearchMember],
+		enabled: !!roomEventId,
 		queryFn: () =>
 			getRoomByEventId(roomEventId as RoomAPI['id'], debounceSearchMember),
-		enabled: !!roomEventId,
+		queryKey: [QUERY_KEYS.ROOMS, roomEventId, debounceSearchMember],
 	})
 
 	return {
-		isLoading,
 		data,
+		isLoading,
 		roomEventId,
-		setRoomEventId,
 		searchMemberRoom,
+		setRoomEventId,
 		setSearchMemberRoom,
 	}
 }

@@ -5,7 +5,7 @@ import {
 	TransactionAmountType,
 	TransactionsType,
 } from '@/constants'
-import { FormDonation } from '@/services/queries/donations/donations.types'
+import type { FormDonation } from '@/services/queries/donations/donations.types'
 
 export const createDonation = async (data: FormDonation) => {
 	try {
@@ -17,15 +17,15 @@ export const createDonation = async (data: FormDonation) => {
 			})
 			await tx.transactions.create({
 				data: {
-					eventId: data.eventId,
 					amount: data.value,
-					donationId: donations.id,
-					date: new Date(),
-					description: `Doação - ${data.name}`,
 					amountType:
 						data.type === PaymentTypeAPI.CASH
 							? TransactionAmountType.CASH
 							: TransactionAmountType.ACCOUNT,
+					date: new Date(),
+					description: `Doação - ${data.name}`,
+					donationId: donations.id,
+					eventId: data.eventId,
 					type: TransactionsType.INCOME,
 				},
 			})

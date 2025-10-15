@@ -13,8 +13,7 @@ import {
 	useGetFunctions,
 	useGetVolunteersCities,
 } from '@/services/queries/volunteers'
-
-import { FilterType } from './FilterDrawer'
+import type { FilterType } from './FilterDrawer'
 
 type VolunteerFiltersProps = {
 	eventId: string
@@ -41,7 +40,7 @@ export const VolunteerFilters = ({
 	const formattedCities = formatterFieldSelectValues(
 		volunteersCities,
 		'city',
-		'city',
+		'city'
 	)
 	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
 
@@ -58,29 +57,29 @@ export const VolunteerFilters = ({
 				<div className="w-full">
 					<Label>Tipo de pagamento</Label>
 					<Select
-						placeholder="Selecione o tipo de pagamento"
-						options={PaymentSelectOptions}
-						value={filters.paymentType}
 						onChange={(e) => handleFilter('paymentType', e.target.value)}
+						options={PaymentSelectOptions}
+						placeholder="Selecione o tipo de pagamento"
+						value={filters.paymentType}
 					/>
 				</div>
 			) : (
 				<div className="w-full">
 					<Label>Status</Label>
 					<Select
-						placeholder="Selecione o status"
-						options={StatusSelectOptions}
-						value={filters.status}
 						onChange={(e) => handleFilter('status', e.target.value)}
+						options={StatusSelectOptions}
+						placeholder="Selecione o status"
+						value={filters.status}
 					/>
 				</div>
 			)}
 			<div className="w-full">
 				<Label>Cidade</Label>
 				<Select
+					onChange={(e) => handleFilter('city', e.target.value)}
 					options={formattedCities}
 					value={filters.city}
-					onChange={(e) => handleFilter('city', e.target.value)}
 				/>
 			</div>
 			{!isPaymentType && (
@@ -88,10 +87,10 @@ export const VolunteerFilters = ({
 					<Label>Função</Label>
 					<Select
 						disabled={!eventId}
-						placeholder="Selecione a função"
-						options={formattedRoles ?? []}
-						value={filters.role}
 						onChange={(e) => handleFilter('role', e.target.value)}
+						options={formattedRoles ?? []}
+						placeholder="Selecione a função"
+						value={filters.role}
 					/>
 				</div>
 			)}

@@ -1,6 +1,4 @@
-import { format } from 'date-fns'
 import { NextResponse } from 'next/server'
-import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import {
@@ -14,6 +12,8 @@ import {
 	TransactionsType,
 } from '@/constants'
 import { currencyValue } from '@/formatters'
+import { format } from 'date-fns'
+import { utils, write } from 'xlsx'
 
 export const getExportTransactions = async (eventId: string) => {
 	try {
@@ -22,14 +22,14 @@ export const getExportTransactions = async (eventId: string) => {
 		}).parse({ eventId })
 
 		const transactions = await prisma.transactions.findMany({
-			where: {
-				eventId,
-			},
 			include: {
 				event: true,
 			},
 			orderBy: {
 				date: 'asc',
+			},
+			where: {
+				eventId,
 			},
 		})
 
@@ -38,7 +38,7 @@ export const getExportTransactions = async (eventId: string) => {
 				{
 					error: 'Nenhuma transação encontrada',
 				},
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 
@@ -47,37 +47,37 @@ export const getExportTransactions = async (eventId: string) => {
 		const incomeTransactions = transactions
 			.filter((transaction) => transaction.type === TransactionsType.INCOME)
 			.map((transaction) => ({
+				Data: format(transaction.date, 'dd/MM/yyyy'),
 				Descrição: transaction.description,
 				Tipo: transactionType[transaction.type],
 				Transação: amountType[transaction.amountType],
 				Valor: currencyValue(Number(transaction.amount)),
-				Data: format(transaction.date, 'dd/MM/yyyy'),
 			}))
 
 		const outcomeTransactions = transactions
 			.filter((transaction) => transaction.type === TransactionsType.OUTCOME)
 			.map((transaction) => ({
+				Data: format(transaction.date, 'dd/MM/yyyy'),
 				Descrição: transaction.description,
 				Tipo: transactionType[transaction.type],
 				Transação: amountType[transaction.amountType],
 				Valor: currencyValue(Number(transaction.amount)),
-				Data: format(transaction.date, 'dd/MM/yyyy'),
 			}))
 
 		const incomeAndOutcomeTransactionsHeader = Object.keys(
-			incomeTransactions[0],
+			incomeTransactions[0]
 		)
 		const worksheetIncomeTransactions = utils.json_to_sheet(
 			incomeTransactions,
 			{
 				header: incomeAndOutcomeTransactionsHeader,
-			},
+			}
 		)
 		const worksheetOutcomeTransactions = utils.json_to_sheet(
 			outcomeTransactions,
 			{
 				header: incomeAndOutcomeTransactionsHeader,
-			},
+			}
 		)
 		const workbook = utils.book_new()
 		worksheetIncomeTransactions['!cols'] =
@@ -135,7 +135,7 @@ export const getExportTransactions = async (eventId: string) => {
 				totalAccountOutcome: 0,
 				totalCashIncome: 0,
 				totalCashOutcome: 0,
-			},
+			}
 		)
 
 		const geralBalance =
@@ -151,7 +151,7 @@ export const getExportTransactions = async (eventId: string) => {
 				currencyValue(totalOfAccountAndCash.totalAccountOutcome),
 				currencyValue(
 					totalOfAccountAndCash.totalAccountIncome -
-						totalOfAccountAndCash.totalAccountOutcome,
+						totalOfAccountAndCash.totalAccountOutcome
 				),
 			],
 			[
@@ -160,7 +160,7 @@ export const getExportTransactions = async (eventId: string) => {
 				currencyValue(totalOfAccountAndCash.totalCashOutcome),
 				currencyValue(
 					totalOfAccountAndCash.totalCashIncome -
-						totalOfAccountAndCash.totalCashOutcome,
+						totalOfAccountAndCash.totalCashOutcome
 				),
 			],
 			['Saldo geral', '', '', currencyValue(geralBalance)],
@@ -169,15 +169,15 @@ export const getExportTransactions = async (eventId: string) => {
 		worksheetTransactionsBalance['!cols'] = generateColumnWidths(data)
 
 		utils.book_append_sheet(workbook, worksheetTransactionsBalance, 'Geral')
-		const buffer = write(workbook, { type: 'buffer', bookType: 'xlsx' })
+		const buffer = write(workbook, { bookType: 'xlsx', type: 'buffer' })
 
 		return new NextResponse(buffer, {
-			status: 200,
 			headers: {
+				'Content-Disposition': `attachment; filename="transações-${eventName}.xlsx"`,
 				'Content-Type':
 					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-				'Content-Disposition': `attachment; filename="transações-${eventName}.xlsx"`,
 			},
+			status: 200,
 		})
 	} catch (error) {
 		console.error('@getExportTransactions error:', error)

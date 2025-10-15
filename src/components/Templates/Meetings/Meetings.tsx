@@ -1,9 +1,6 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useDebounce } from '@uidotdev/usehooks'
 import { Search } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field, Select } from '@/components/Atoms'
 import {
@@ -28,8 +25,10 @@ import {
 	useGetMeeting,
 	useGetMeetingsByEventId,
 } from '@/services/queries/meetings'
-
-import { MeetingSchema, MeetingSchemaType } from './Meetings.schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useDebounce } from '@uidotdev/usehooks'
+import { FormProvider, useForm } from 'react-hook-form'
+import { MeetingSchema, type MeetingSchemaType } from './Meetings.schema'
 import { formatTableData, HEADER_LABELS } from './Meetings.utils'
 
 export const Meetings = () => {
@@ -37,8 +36,8 @@ export const Meetings = () => {
 	const [search, setSearch] = useState('')
 	const methods = useForm<MeetingSchemaType>({
 		defaultValues: {
-			presence: [],
 			justification: [],
+			presence: [],
 		},
 		resolver: zodResolver(MeetingSchema),
 	})
@@ -67,26 +66,26 @@ export const Meetings = () => {
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const formattedMeetings = formatterFieldSelectValues(
 		meetings ?? [],
 		'title',
-		'id',
+		'id'
 	)
 
 	const debounceSearch = useDebounce(search, 500)
 
 	let formattedPresenceList = formatTableData(meeting?.meeting, methods.watch)
 	formattedPresenceList = formattedPresenceList.filter((item) =>
-		item.name.toLowerCase().includes(debounceSearch.toLowerCase()),
+		item.name.toLowerCase().includes(debounceSearch.toLowerCase())
 	)
 
 	const hasPreviousRecord =
@@ -106,14 +105,14 @@ export const Meetings = () => {
 				parsedData.presence.map((item: Record<string, boolean>) => {
 					const [id, value] = Object.entries(item)[0]
 					return [id, value]
-				}),
+				})
 			)
 
 			const justificationObject = Object.fromEntries(
 				parsedData.justification.map((item: Record<string, boolean>) => {
 					const [id, value] = Object.entries(item)[0]
 					return [id, value]
-				}),
+				})
 			)
 
 			const justifications = meeting?.meeting.volunteers.map((volunteer) => ({
@@ -125,7 +124,7 @@ export const Meetings = () => {
 
 			methods.reset(
 				{ justification: justifications, presence: presences },
-				{ keepDefaultValues: true },
+				{ keepDefaultValues: true }
 			)
 		}
 	}, [hasPreviousRecord, meeting?.meeting, meetingId, methods])
@@ -135,10 +134,10 @@ export const Meetings = () => {
 
 		methods.reset(
 			{
-				presence: meeting?.presenceResponse.presence,
 				justification: meeting?.presenceResponse.justification,
+				presence: meeting?.presenceResponse.presence,
 			},
-			{ keepDefaultValues: true },
+			{ keepDefaultValues: true }
 		)
 	}, [
 		hasPreviousRecord,
@@ -165,28 +164,28 @@ export const Meetings = () => {
 						<ComboBox
 							keyOptionLabel="label"
 							keyOptionValue="value"
+							lastItemRef={lastItemRef}
 							options={formattedEvents}
 							selectedValue={eventId}
 							setSelectedValue={setEventId}
-							lastItemRef={lastItemRef}
 						/>
 						<Select
-							placeholder="Selecione a reunião"
-							options={formattedMeetings}
 							disabled={!eventId || !formattedMeetings?.length}
-							value={meetingId}
 							onChange={(e) => {
 								methods.reset()
 								setMeetingId(e.target.value)
 							}}
+							options={formattedMeetings}
+							placeholder="Selecione a reunião"
+							value={meetingId}
 						/>
 						<Field
-							placeholder="Encontrar voluntário"
-							rightIcon={<Search size={24} />}
 							className="ps-11"
-							value={search}
 							disabled={!eventId || !formattedMeetings?.length}
 							onChange={(event) => setSearch?.(event.target.value)}
+							placeholder="Encontrar voluntário"
+							rightIcon={<Search size={24} />}
+							value={search}
 						/>
 					</>
 				}
@@ -204,35 +203,35 @@ export const Meetings = () => {
 				) : (
 					<FormProvider {...methods}>
 						<ListManager
-							headerLabels={HEADER_LABELS}
 							bodyData={formattedPresenceList}
+							headerLabels={HEADER_LABELS}
 							isLoading={isLoading}
 						/>
 						<div className="mt-6 flex flex-col items-center justify-end gap-5 md:flex-row">
 							<Button
-								onClick={() => handleOpenAlert('draft')}
-								type="button"
 								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={hasPreviousRecord || !meetingId}
+								onClick={() => handleOpenAlert('draft')}
+								type="button"
 							>
 								Salvar rascunho
 							</Button>
 							<Button
-								onClick={() => handleOpenAlert('send')}
-								type="button"
 								className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={!meetingId}
+								onClick={() => handleOpenAlert('send')}
+								type="button"
 							>
 								Enviar presenças
 							</Button>
 						</div>
 						<MeetingAlertModal
+							clearState={clearState}
 							hasPreviousRecord={hasPreviousRecord}
+							isUpdate={hasPreviousRecord}
+							meetingId={meetingId}
 							modalId={MODALS_IDS.MEETING_ALERT_MODAL}
 							type={type}
-							meetingId={meetingId}
-							clearState={clearState}
-							isUpdate={hasPreviousRecord}
 						/>
 					</FormProvider>
 				)}

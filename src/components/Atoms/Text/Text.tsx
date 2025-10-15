@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ElementType } from 'react'
+import type { ComponentPropsWithoutRef, ElementType } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type TextElement = 'span' | 'p'

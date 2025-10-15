@@ -11,7 +11,7 @@ describe('date formatters', () => {
 	it('formatToBrazilianDate format correctly', () => {
 		const dateFormatted = formatToBrazilianDate(new Date().toISOString())
 		expect(dateFormatted).toBe(
-			`${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`,
+			`${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`
 		)
 	})
 

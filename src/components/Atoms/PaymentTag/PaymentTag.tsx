@@ -1,7 +1,7 @@
-import { ComponentProps, memo } from 'react'
+import { type ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { PaymentTypeAPI, PaymentType } from '@/constants'
+import { PaymentType, PaymentTypeAPI } from '@/constants'
 
 type PaymentTagProps = ComponentProps<'mark'> & {
 	status: (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI]
@@ -23,14 +23,14 @@ export const PaymentTag = memo(
 				className={twMerge(
 					'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl px-4 py-1 text-slate-800',
 					className,
-					STATUS_COLORS[status],
+					STATUS_COLORS[status]
 				)}
 				{...props}
 			>
 				{PaymentType[status].label}
 			</mark>
 		)
-	},
+	}
 )
 
 PaymentTag.displayName = 'PaymentTag'

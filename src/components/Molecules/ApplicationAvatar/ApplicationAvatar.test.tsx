@@ -7,7 +7,7 @@ describe('ApplicationAvatar component', () => {
 
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />,
+			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />
 		)
 
 		const applicationAvatar = getByTestId('application-avatar')
@@ -17,7 +17,7 @@ describe('ApplicationAvatar component', () => {
 
 	it('renders a paragraph with the text "Hub de Eventos"', () => {
 		const { getByText } = render(
-			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />,
+			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />
 		)
 
 		const paragraph = getByText('Hub de Eventos')
@@ -27,7 +27,7 @@ describe('ApplicationAvatar component', () => {
 
 	it('renders a paragraph with the text "Anglicana Vida"', () => {
 		const { getByText } = render(
-			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />,
+			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />
 		)
 
 		const paragraph = getByText('Anglicana Vida')
@@ -37,7 +37,7 @@ describe('ApplicationAvatar component', () => {
 
 	it('renders a icon with the size of 48', () => {
 		const { getByTestId } = render(
-			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />,
+			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />
 		)
 
 		const icon = getByTestId('ticket-icon')
@@ -48,7 +48,7 @@ describe('ApplicationAvatar component', () => {
 
 	it('calls handleCollapse function when clicked', () => {
 		const { getByRole } = render(
-			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />,
+			<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />
 		)
 		const button = getByRole('button')
 		fireEvent.click(button)

@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-import { CHECK_IN_STATUS } from '@/constants'
+import type { CHECK_IN_STATUS } from '@/constants'
 import { createVolunteer, getAllVolunteers } from '@/server'
 import { requestProcess } from '@/utils/prisma'
-
-import { VolunteerSchemaRouteType } from './volunteer.schema'
+import type { VolunteerSchemaRouteType } from './volunteer.schema'
 
 const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('searchVolunteer')
@@ -13,7 +12,7 @@ const handlerGet = async (request: NextRequest) => {
 	const roleParams = request.nextUrl.searchParams.get('roleVolunteer')
 	const cityParams = request.nextUrl.searchParams.get('volunteerCity')
 	const hasNoGroupParams = Boolean(
-		request.nextUrl.searchParams.get('hasNoGroup'),
+		request.nextUrl.searchParams.get('hasNoGroup')
 	)
 	const hasNoRoomParams = Boolean(request.nextUrl.searchParams.get('hasNoRoom'))
 	const pageParams =
@@ -31,7 +30,7 @@ const handlerGet = async (request: NextRequest) => {
 				hasNoRoomParams,
 				cityParams,
 				pageParams,
-				limitParams,
+				limitParams
 			),
 	})
 }

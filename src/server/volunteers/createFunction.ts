@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { MAX_FIELD_LENGTH, prisma } from '@/constants'
-import { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
 
 export const createFunction = async ({
 	role,
@@ -9,13 +9,13 @@ export const createFunction = async ({
 }: VolunteersFunctionsForm) => {
 	try {
 		z.object({
-			role: z.string().trim().min(1).max(MAX_FIELD_LENGTH),
 			events: z.array(
 				z.object({
 					id: z.uuid(),
-				}),
+				})
 			),
-		}).parse({ role, events })
+			role: z.string().trim().min(1).max(MAX_FIELD_LENGTH),
+		}).parse({ events, role })
 
 		return prisma.$transaction(async (tx) => {
 			const newRole = await tx.volunteerRole.create({
@@ -29,8 +29,8 @@ export const createFunction = async ({
 							eventId: id,
 							volunteerRoleId: newRole.id,
 						},
-					}),
-				),
+					})
+				)
 			)
 		})
 	} catch (error) {

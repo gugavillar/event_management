@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 import { memo, useState } from 'react'
 
 import { Button, Header, Modal, Select, Text } from '@/components/Atoms'
-import { DownloadPDFProps } from '@/components/Templates'
+import type { DownloadPDFProps } from '@/components/Templates'
 import { overlayOpen } from '@/constants'
 
 type GenerateGroupListProps = {
@@ -12,7 +12,7 @@ type GenerateGroupListProps = {
 }
 
 const DownloadPDF = dynamic(() =>
-	import('@/components/Templates').then((mod) => mod.DownloadPDF),
+	import('@/components/Templates').then((mod) => mod.DownloadPDF)
 )
 
 export const GenerateGroupList = memo(
@@ -30,13 +30,13 @@ export const GenerateGroupList = memo(
 		return (
 			<>
 				<Button
-					type="button"
-					onClick={handleOpen}
 					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					onClick={handleOpen}
+					type="button"
 				>
 					Gerar lista de grupos
 				</Button>
-				<Modal modalId={modalId} handleClose={handleClose}>
+				<Modal handleClose={handleClose} modalId={modalId}>
 					<div className="flex flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
 							<div className="flex flex-col items-center gap-2">
@@ -50,15 +50,15 @@ export const GenerateGroupList = memo(
 							</div>
 							<Select
 								className="w-full"
+								onChange={(e) =>
+									setListType(e.target.value as DownloadPDFProps['listType'])
+								}
 								options={[
 									{ label: 'Selecione uma opção', value: '' },
 									{ label: 'Detalhada', value: 'landscape' },
 									{ label: 'Resumida', value: 'portrait' },
 								]}
 								value={listType}
-								onChange={(e) =>
-									setListType(e.target.value as DownloadPDFProps['listType'])
-								}
 							/>
 							{listType && (
 								<DownloadPDF groups={formattedGroups} listType={listType} />
@@ -68,7 +68,7 @@ export const GenerateGroupList = memo(
 				</Modal>
 			</>
 		)
-	},
+	}
 )
 
 GenerateGroupList.displayName = 'GenerateGroupList'

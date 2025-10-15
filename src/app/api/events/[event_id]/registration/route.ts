@@ -1,6 +1,6 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-import { MEMBERS } from '@/constants'
+import type { MEMBERS } from '@/constants'
 import { updateRegistrationById } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 

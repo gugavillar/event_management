@@ -13,17 +13,17 @@ export const updateCheckInVolunteer = async ({
 }: UpdateCheckInVolunteerArgs) => {
 	try {
 		z.object({
-			volunteerId: z.uuid(),
 			status: z.enum([CHECK_IN_STATUS.CONFIRMED, CHECK_IN_STATUS.WITHDREW]),
-		}).parse({ volunteerId, status })
+			volunteerId: z.uuid(),
+		}).parse({ status, volunteerId })
 
 		if (status === CHECK_IN_STATUS.CONFIRMED) {
 			return await prisma.volunteer.update({
-				where: {
-					id: volunteerId,
-				},
 				data: {
 					checkIn: CHECK_IN_STATUS.CONFIRMED,
+				},
+				where: {
+					id: volunteerId,
 				},
 			})
 		}
@@ -68,25 +68,25 @@ export const updateCheckInVolunteer = async ({
 			if (volunteerRoles.length) {
 				for (const { id: eventVolunteerRoleId } of volunteerRoles) {
 					await tx.eventVolunteerRole.update({
-						where: { id: eventVolunteerRoleId },
 						data: {
-							volunteers: {
-								disconnect: { id: volunteerId },
-							},
 							leaders: {
 								disconnect: { id: volunteerId },
 							},
+							volunteers: {
+								disconnect: { id: volunteerId },
+							},
 						},
+						where: { id: eventVolunteerRoleId },
 					})
 				}
 			}
 
 			return await tx.volunteer.update({
-				where: {
-					id: volunteerId,
-				},
 				data: {
 					checkIn: CHECK_IN_STATUS.WITHDREW,
+				},
+				where: {
+					id: volunteerId,
 				},
 			})
 		})

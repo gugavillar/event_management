@@ -1,15 +1,14 @@
 'use client'
-import copy from 'copy-to-clipboard'
 import Link from 'next/link'
-import { useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import QRCode from 'react-qr-code'
 
 import { Button, Modal, Spinner } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { formatPhone } from '@/formatters'
-
-import { type PaymentChoiceProps } from './PaymentChoice'
+import copy from 'copy-to-clipboard'
+import { useFormContext } from 'react-hook-form'
+import QRCode from 'react-qr-code'
+import type { PaymentChoiceProps } from './PaymentChoice'
 
 type ModalPaymentPixProps = Pick<
 	PaymentChoiceProps,
@@ -43,7 +42,7 @@ export const ModalPaymentPix = ({
 	}
 
 	return (
-		<Modal modalId={modalId} isStatic handleClose={handleClose}>
+		<Modal handleClose={handleClose} isStatic modalId={modalId}>
 			<div className="flex flex-col items-center justify-center space-y-6">
 				<div className="space-y-2.5 text-center">
 					<h2 className="text-lg font-semibold">
@@ -53,9 +52,9 @@ export const ModalPaymentPix = ({
 					<p>
 						Após o pagamento, envie o comprovante para a o número{' '}
 						<Link
-							target="_blank"
-							href={`https://wa.me/+55${process.env.NEXT_PUBLIC_PHONE}`}
 							className="text-blue-500 underline"
+							href={`https://wa.me/+55${process.env.NEXT_PUBLIC_PHONE}`}
+							target="_blank"
 						>
 							{formatPhone(process.env.NEXT_PUBLIC_PHONE ?? '')}
 						</Link>{' '}
@@ -64,11 +63,11 @@ export const ModalPaymentPix = ({
 				</div>
 				{pixValue ? (
 					<>
-						<QRCode value={pixValue} size={200} />
+						<QRCode size={200} value={pixValue} />
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 md:w-2/5"
-							onClick={handleCopyPixValue}
 							disabled={!pixValue}
+							onClick={handleCopyPixValue}
 						>
 							Copiar código
 						</Button>

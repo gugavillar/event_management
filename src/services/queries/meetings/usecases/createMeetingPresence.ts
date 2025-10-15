@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { FormMeetingPresence } from '../meetings.types'
+import type { FormMeetingPresence } from '../meetings.types'
 
 type CreateMeetingPresenceArgs = {
 	data: FormMeetingPresence
@@ -23,7 +22,7 @@ export const createMeetingPresence = async ({
 					updatePresence,
 				}),
 			},
-		},
+		}
 	)
 
 	return response.data

@@ -1,11 +1,10 @@
-import { forwardRef, ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
+
+import { currencyFieldValue } from '@/formatters'
 import {
 	NumberFormatBase,
 	type NumberFormatBaseProps,
 } from 'react-number-format'
-
-import { currencyFieldValue } from '@/formatters'
-
 import { Field } from '../Field'
 
 type CurrencyInputProps = Omit<
@@ -22,13 +21,13 @@ export const CurrencyInput = forwardRef<HTMLInputElement, CurrencyInputProps>(
 
 		return (
 			<NumberFormatBase
-				getInputRef={ref}
-				format={format}
 				customInput={Field}
+				format={format}
+				getInputRef={ref}
 				{...props}
 			/>
 		)
-	},
+	}
 )
 
 CurrencyInput.displayName = 'CurrencyInput'

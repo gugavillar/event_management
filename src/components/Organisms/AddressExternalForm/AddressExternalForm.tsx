@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link'
-import { useFormContext } from 'react-hook-form'
 
 import { CheckboxField, InputField, SelectField } from '@/components/Molecules'
-import { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
+import type { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { MEMBERS, UF } from '@/constants'
 import { useGetCities } from '@/services/queries/cities'
+import { useFormContext } from 'react-hook-form'
 
 type AddressExternalFormProps = {
 	type: MEMBERS
@@ -49,15 +49,15 @@ export const AddressExternalForm = ({ type }: AddressExternalFormProps) => {
 			<InputField fieldName="address.number">Número</InputField>
 			<SelectField
 				fieldName="address.state"
-				placeholder="Selecione o estado"
 				options={UF}
+				placeholder="Selecione o estado"
 			>
 				Estado
 			</SelectField>
 			<SelectField
 				fieldName="address.city"
-				placeholder="Selecione a cidade"
 				options={cities ?? []}
+				placeholder="Selecione a cidade"
 			>
 				Cidade
 			</SelectField>

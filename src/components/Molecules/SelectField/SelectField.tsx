@@ -1,9 +1,14 @@
 'use client'
-import { get } from 'lodash'
-import { ComponentProps, ReactNode } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
+import type { ComponentProps, ReactNode } from 'react'
 
-import { HelperErrorText, Label, Select, SelectProps } from '@/components/Atoms'
+import {
+	HelperErrorText,
+	Label,
+	Select,
+	type SelectProps,
+} from '@/components/Atoms'
+import { get } from 'lodash'
+import { Controller, useFormContext } from 'react-hook-form'
 
 type SelectFieldProps = ComponentProps<'div'> & {
 	children: ReactNode
@@ -25,13 +30,13 @@ export const SelectField = ({
 		<div className="w-full">
 			<Label htmlFor={fieldName}>{children}</Label>
 			<Controller
-				name={fieldName}
 				control={control}
+				name={fieldName}
 				render={({ field }) => (
 					<Select
-						options={options}
 						id={fieldName}
 						isInvalid={!!error?.message}
+						options={options}
 						placeholder={placeholder}
 						{...field}
 					/>

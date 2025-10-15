@@ -11,7 +11,7 @@ describe('LoginSvg component', () => {
 
 	it('accept custom props', () => {
 		const { getByTestId } = render(
-			<LoginSvg data-testid="svg-login" id="svg-login" />,
+			<LoginSvg data-testid="svg-login" id="svg-login" />
 		)
 		const svgLogin = getByTestId('svg-login')
 		expect(svgLogin).toHaveAttribute('id', 'svg-login')

@@ -12,7 +12,7 @@ import {
 	ModalReturnPayment,
 	PageContent,
 } from '@/components/Organisms'
-import { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
+import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
 import {
 	MEMBERS,
 	MODALS_IDS,
@@ -26,17 +26,16 @@ import {
 	useGetPayments,
 } from '@/services/queries/participants'
 import { useReturnParticipantPayment } from '@/services/queries/participants/hooks/useReturnParticipantPayment'
-import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
-
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
 
 const PaymentModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.PaymentModal),
+	import('@/components/Organisms').then((mod) => mod.PaymentModal)
 )
 
 const ParticipantModalData = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.ParticipantModalData),
+	import('@/components/Organisms').then((mod) => mod.ParticipantModalData)
 )
 
 export const ParticipantsPayments = () => {
@@ -64,7 +63,7 @@ export const ParticipantsPayments = () => {
 			setSelectedParticipant(payment)
 			overlayOpen(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenModalToReturnPaymentParticipant = useCallback(
@@ -72,7 +71,7 @@ export const ParticipantsPayments = () => {
 			setSelectedParticipant(payment)
 			overlayOpen(MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenModalToShowParticipantData = useCallback(
@@ -80,14 +79,14 @@ export const ParticipantsPayments = () => {
 			setSelectParticipant(id)
 			overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
 		},
-		[],
+		[]
 	)
 
 	const formattedData = formatTableData(
 		participantsPayments?.data,
 		handleOpenModalToPaymentParticipant,
 		handleOpenModalToReturnPaymentParticipant,
-		handleOpenModalToShowParticipantData,
+		handleOpenModalToShowParticipantData
 	)
 
 	const handleUpdate = useCallback(
@@ -95,46 +94,44 @@ export const ParticipantsPayments = () => {
 			if (!selectedParticipant) return
 
 			const formatValues = {
-				paymentType: values.paymentType as PaymentTypeAPI,
 				eventId: selectedParticipant.eventId,
 				participantId: selectedParticipant.id,
+				paymentType: values.paymentType as PaymentTypeAPI,
 				paymentValue:
 					values.paid === 'partial' && values.paymentValue
 						? Number(removeCurrencyFormat(values.paymentValue))
 						: Number(
-								removeCurrencyFormat(
-									selectedParticipant.event.participantPrice,
-								),
+								removeCurrencyFormat(selectedParticipant.event.participantPrice)
 							),
 				...(values.paymentType === PaymentTypeAPI.CARD && {
 					paymentReceived: Number(
-						removeCurrencyFormat(values.paymentReceived as string),
+						removeCurrencyFormat(values.paymentReceived as string)
 					),
 				}),
 			}
 			await create(
 				{ data: formatValues },
 				{
+					onError: (error) =>
+						generateToastError(
+							error,
+							'Erro ao registrar pagamento do participante'
+						),
 					onSuccess: () => {
 						setSelectedParticipant(null)
 						toast.success('Pagamento do participante registrado com sucesso!')
 					},
-					onError: (error) =>
-						generateToastError(
-							error,
-							'Erro ao registrar pagamento do participante',
-						),
-				},
+				}
 			)
 		},
-		[selectedParticipant, create],
+		[selectedParticipant, create]
 	)
 
 	const handleReturnPayment = useCallback(async () => {
 		if (!selectedParticipant) return
 
 		const results = await Promise.allSettled(
-			selectedParticipant.payments.map((p) => returnPayment({ id: p.id })),
+			selectedParticipant.payments.map((p) => returnPayment({ id: p.id }))
 		)
 		const hasError = results.some((res) => res.status === 'rejected')
 
@@ -154,7 +151,7 @@ export const ParticipantsPayments = () => {
 	const paidValue =
 		selectedParticipant?.payments?.reduce(
 			(total, p) => (total += Number(p.paymentValue)),
-			0,
+			0
 		) ?? 0
 	const eventValue = Number(selectedParticipant?.event?.participantPrice) ?? 0
 
@@ -164,19 +161,19 @@ export const ParticipantsPayments = () => {
 			subheadingPage="Lista de pagamentos"
 		>
 			<ListPage
-				placeholderField="Encontrar um participante"
 				className="lg:max-w-full"
-				search={search}
-				setSearch={setSearch}
 				moreFilter={
 					<FilterDrawer
 						drawerId={MODALS_IDS.PARTICIPANT_FILTER_PAYMENT_DRAWER}
+						isPaymentType
 						query={query}
 						setQuery={setQuery}
 						type={MEMBERS.PARTICIPANT}
-						isPaymentType
 					/>
 				}
+				placeholderField="Encontrar um participante"
+				search={search}
+				setSearch={setSearch}
 			>
 				<ListManager
 					bodyData={formattedData}
@@ -186,25 +183,25 @@ export const ParticipantsPayments = () => {
 				{hasMoreThanOnePage && (
 					<Pagination
 						currentPage={page}
-						totalPages={participantsPayments?.totalPages}
 						setPage={setPage}
+						totalPages={participantsPayments?.totalPages}
 					/>
 				)}
 			</ListPage>
 			<PaymentModal
+				eventValue={eventValue}
+				handleSubmit={handleUpdate}
+				isExistPayment={isExistPayment}
+				isPending={isPending}
 				modalId={MODALS_IDS.PARTICIPANT_PAYMENT_MODAL}
 				modalType="participante"
-				handleSubmit={handleUpdate}
-				isPending={isPending}
-				isExistPayment={isExistPayment}
-				eventValue={eventValue}
 				paidValue={paidValue}
 			/>
 			<ModalReturnPayment
+				handleReturnPayment={handleReturnPayment}
+				isPending={isReturnPending}
 				modalId={MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL}
 				modalType="participante"
-				isPending={isReturnPending}
-				handleReturnPayment={handleReturnPayment}
 			/>
 			<ParticipantModalData
 				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}

@@ -1,14 +1,13 @@
 'use client'
 
-import { useFormContext } from 'react-hook-form'
-
 import {
 	InputField,
 	MaskedInputField,
 	SelectField,
 } from '@/components/Molecules'
-import { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
+import type { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import { useFormContext } from 'react-hook-form'
 
 type ParticipantExternalFormProps = {
 	isNotHappening?: boolean
@@ -33,21 +32,21 @@ export const ParticipantExternalForm = ({
 				<InputField fieldName="called">
 					Como você gostaria de ser chamado(a)?
 				</InputField>
-				<InputField type="email" fieldName="email">
+				<InputField fieldName="email" type="email">
 					E-mail
 				</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="phone">
+				<MaskedInputField fieldName="phone" format="(##) #####-####">
 					Telefone
 				</MaskedInputField>
-				<MaskedInputField format="##/##/####" fieldName="birthdate">
+				<MaskedInputField fieldName="birthdate" format="##/##/####">
 					Data de nascimento
 				</MaskedInputField>
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<SelectField
 					fieldName="hasReligion"
-					placeholder="Selecione uma opção"
 					options={YES_OR_NO_SELECT_OPTIONS}
+					placeholder="Selecione uma opção"
 				>
 					Tem religião?
 				</SelectField>
@@ -58,8 +57,8 @@ export const ParticipantExternalForm = ({
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<SelectField
 					fieldName="hasHealth"
-					placeholder="Selecione uma opção"
 					options={YES_OR_NO_SELECT_OPTIONS}
+					placeholder="Selecione uma opção"
 				>
 					Tem restrição saúde/alimentar?
 				</SelectField>
@@ -69,12 +68,12 @@ export const ParticipantExternalForm = ({
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<InputField fieldName="responsible">{fieldResponsibleLabel}</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="responsiblePhone">
+				<MaskedInputField fieldName="responsiblePhone" format="(##) #####-####">
 					{filedResponsiblePhoneLabel}
 				</MaskedInputField>
 
 				<InputField fieldName="host">Quem convidou</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="hostPhone">
+				<MaskedInputField fieldName="hostPhone" format="(##) #####-####">
 					Telefone quem convidou
 				</MaskedInputField>
 			</div>

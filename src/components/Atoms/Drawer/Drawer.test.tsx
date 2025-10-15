@@ -5,9 +5,9 @@ import { Drawer } from './Drawer'
 describe('Drawer component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<Drawer headingTitle="Drawer test" drawerId="drawer" data-testid="drawer">
+			<Drawer data-testid="drawer" drawerId="drawer" headingTitle="Drawer test">
 				<p>teste</p>
-			</Drawer>,
+			</Drawer>
 		)
 		const drawer = getByTestId('drawer')
 		expect(drawer).toBeInTheDocument()
@@ -15,9 +15,9 @@ describe('Drawer component', () => {
 
 	it('applies correct id to drawer', () => {
 		const { getByTestId } = render(
-			<Drawer headingTitle="Drawer test" drawerId="drawer" data-testid="drawer">
+			<Drawer data-testid="drawer" drawerId="drawer" headingTitle="Drawer test">
 				<p>teste</p>
-			</Drawer>,
+			</Drawer>
 		)
 		const drawer = getByTestId('drawer')
 		expect(drawer).toHaveAttribute('id', 'drawer')
@@ -25,9 +25,9 @@ describe('Drawer component', () => {
 
 	it('applies correct heading title', () => {
 		const { getByText } = render(
-			<Drawer headingTitle="Drawer test" drawerId="drawer" data-testid="drawer">
+			<Drawer data-testid="drawer" drawerId="drawer" headingTitle="Drawer test">
 				<p>teste</p>
-			</Drawer>,
+			</Drawer>
 		)
 		const heading = getByText('Drawer test')
 		expect(heading).toBeInTheDocument()
@@ -35,9 +35,9 @@ describe('Drawer component', () => {
 
 	it('renders correct children', () => {
 		const { getByTestId } = render(
-			<Drawer headingTitle="Drawer test" drawerId="drawer" data-testid="drawer">
+			<Drawer data-testid="drawer" drawerId="drawer" headingTitle="Drawer test">
 				<p>teste</p>
-			</Drawer>,
+			</Drawer>
 		)
 		const drawer = getByTestId('drawer')
 		expect(drawer).toHaveTextContent('teste')

@@ -1,9 +1,8 @@
 import { twMerge } from 'tailwind-merge'
 
 import { Link, Tooltip } from '@/components/Atoms'
-import { PAGES_ROLES, ROLES } from '@/constants'
-
-import { MenuLinkWithHref } from './PrincipalMenu.utils'
+import { PAGES_ROLES, type ROLES } from '@/constants'
+import type { MenuLinkWithHref } from './PrincipalMenu.utils'
 
 type MenuItemProps = Omit<MenuLinkWithHref, 'hasSubMenu'> & {
 	path: string
@@ -28,14 +27,14 @@ export const MenuItem = ({
 	}
 	return (
 		<Link
-			key={buttonLabel}
-			href={href}
 			className={twMerge(
 				'hs-tooltip rounded-lg p-2 text-gray-100 transition-colors duration-500 hover:bg-slate-900/80',
 				collapsed && 'justify-center gap-x-0',
 				path === href && 'bg-slate-900/80',
-				width && width < 768 ? '[--placement:bottom]' : '[--placement:right]',
+				width && width < 768 ? '[--placement:bottom]' : '[--placement:right]'
 			)}
+			href={href}
+			key={buttonLabel}
 		>
 			<Tooltip
 				className={

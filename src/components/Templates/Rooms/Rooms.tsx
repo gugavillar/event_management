@@ -1,36 +1,35 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { BedSingle, Search } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
 import {
 	RoomSchema,
-	RoomSchemaType,
+	type RoomSchemaType,
 } from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetRoomByEventId } from '@/services/queries/rooms'
-import { RoomAPI } from '@/services/queries/rooms/rooms.types'
-
+import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
 import { Content, formatTableData } from './Rooms.utils'
 
 const RoomDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.RoomDeleteModal),
+	import('@/components/Organisms').then((mod) => mod.RoomDeleteModal)
 )
 
 const RoomDrawer = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.RoomDrawer),
+	import('@/components/Organisms').then((mod) => mod.RoomDrawer)
 )
 
 const DownloadPDF = dynamic(() =>
-	import('./RoomsPrint').then((mod) => mod.DownloadPDF),
+	import('./RoomsPrint').then((mod) => mod.DownloadPDF)
 )
 
 export const Rooms = ({ eventId }: { eventId: string }) => {
@@ -52,25 +51,25 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 	} = useGetInfinityEvents()
 
 	const methods = useForm<RoomSchemaType>({
-		mode: 'onChange',
-		resolver: zodResolver(RoomSchema),
 		defaultValues: {
 			eventId: '',
+			members: [{ member: '', type: '' }],
 			roomNumber: '',
-			members: [{ type: '', member: '' }],
 		},
+		mode: 'onChange',
+		resolver: zodResolver(RoomSchema),
 	})
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleOpenModalToDeleteRoom = useCallback((id: RoomAPI['id']) => {
@@ -87,7 +86,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 			}
 			overlayOpen(MODALS_IDS.ROOM_DRAWER)
 		},
-		[],
+		[]
 	)
 
 	const formattedRooms = formatTableData(rooms)
@@ -97,10 +96,10 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<DownloadPDF rooms={formattedRooms} />
 				<Button
-					type="button"
-					onClick={() => handleOpenDrawerToCreateOrEditRoom()}
-					leftIcon={<BedSingle />}
 					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					leftIcon={<BedSingle />}
+					onClick={() => handleOpenDrawerToCreateOrEditRoom()}
+					type="button"
 				>
 					Criar um novo quarto
 				</Button>
@@ -112,19 +111,19 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 						<ComboBox
 							keyOptionLabel="label"
 							keyOptionValue="value"
+							lastItemRef={lastItemRef}
 							options={formattedEvents}
+							placeholder="Selecione um evento"
 							selectedValue={roomEventId}
 							setSelectedValue={setRoomEventId}
-							lastItemRef={lastItemRef}
-							placeholder="Selecione um evento"
 						/>
 						<Field
-							placeholder="Encontrar membro"
-							rightIcon={<Search size={24} />}
 							className="ps-11"
-							value={searchMemberRoom}
 							disabled={!roomEventId}
 							onChange={(event) => setSearchMemberRoom(event.target.value)}
+							placeholder="Encontrar membro"
+							rightIcon={<Search size={24} />}
+							value={searchMemberRoom}
 						/>
 					</>
 				}
@@ -134,7 +133,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 					isLoading,
 					formattedRooms,
 					handleOpenModalToDeleteRoom,
-					handleOpenDrawerToCreateOrEditRoom,
+					handleOpenDrawerToCreateOrEditRoom
 				)}
 			</ListPage>
 			<FormProvider {...methods}>

@@ -2,14 +2,14 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import {
+	type VolunteerSchemaRouteType,
 	volunteerSchemaRoute,
-	VolunteerSchemaRouteType,
 } from '@/app/api/volunteers/volunteer.schema'
 import { deepTrim, prisma } from '@/constants'
 
 export const createVolunteer = async (
 	data: VolunteerSchemaRouteType & { eventId: string },
-	inscriptionType: string | null,
+	inscriptionType: string | null
 ) => {
 	try {
 		volunteerSchemaRoute
@@ -32,7 +32,7 @@ export const createVolunteer = async (
 		if (isAlreadyRegistered) {
 			return NextResponse.json(
 				{ error: 'Voluntário ja cadastrado' },
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 
@@ -45,7 +45,7 @@ export const createVolunteer = async (
 		if (!isRegistrationOpen?.isVolunteerRegistrationOpen && !inscriptionType) {
 			return NextResponse.json(
 				{ error: 'Inscrições encerradas' },
-				{ status: 400 },
+				{ status: 400 }
 			)
 		}
 

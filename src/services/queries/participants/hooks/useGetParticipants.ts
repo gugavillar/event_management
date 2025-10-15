@@ -1,5 +1,9 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
+import { useEffect, useRef } from 'react'
+
+import { QUERY_KEYS } from '@/constants'
+import { useQuery } from '@/providers/QueryProvider'
 import { useDebounce } from '@uidotdev/usehooks'
 import {
 	parseAsInteger,
@@ -7,19 +11,14 @@ import {
 	useQueryState,
 	useQueryStates,
 } from 'nuqs'
-import { useEffect, useRef } from 'react'
-
-import { QUERY_KEYS } from '@/constants'
-import { useQuery } from '@/providers/QueryProvider'
-
-import { ParticipantsFromAPI } from '../participants.type'
+import type { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
 export const useGetParticipants = (isInterested?: boolean) => {
 	const [query, setQuery] = useQueryStates({
+		city: parseAsString.withDefault(''),
 		eventId: parseAsString.withDefault(''),
 		status: parseAsString.withDefault(''),
-		city: parseAsString.withDefault(''),
 	})
 	const [search, setSearch] = useQueryState('searchParticipant', {
 		defaultValue: '',
@@ -27,7 +26,7 @@ export const useGetParticipants = (isInterested?: boolean) => {
 
 	const [page, setPage] = useQueryState(
 		'pageParticipant',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debounceEventId = useDebounce(query.eventId, 500)
@@ -48,6 +47,15 @@ export const useGetParticipants = (isInterested?: boolean) => {
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceCity])
 
 	const { data, isLoading }: UseQueryResult<ParticipantsFromAPI> = useQuery({
+		queryFn: () =>
+			getParticipants({
+				eventId: debounceEventId,
+				isInterested,
+				page,
+				participantCity: debounceCity,
+				searchParticipant: debounceSearch,
+				statusParticipant: debounceStatus,
+			}),
 		queryKey: [
 			QUERY_KEYS.PARTICIPANTS,
 			debounceEventId,
@@ -57,25 +65,16 @@ export const useGetParticipants = (isInterested?: boolean) => {
 			isInterested,
 			page,
 		],
-		queryFn: () =>
-			getParticipants({
-				eventId: debounceEventId,
-				searchParticipant: debounceSearch,
-				statusParticipant: debounceStatus,
-				participantCity: debounceCity,
-				isInterested,
-				page,
-			}),
 	})
 
 	return {
 		data,
 		isLoading,
-		setSearch,
-		search,
 		page,
-		setPage,
 		query,
+		search,
+		setPage,
 		setQuery,
+		setSearch,
 	}
 }

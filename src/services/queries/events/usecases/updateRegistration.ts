@@ -1,8 +1,7 @@
-import { MEMBERS } from '@/constants'
+import type { MEMBERS } from '@/constants'
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { EventsAPI } from '../event.type'
+import type { EventsAPI } from '../event.type'
 
 type UpdateRegistrationArgs = {
 	eventId: EventsAPI['id']
@@ -20,7 +19,7 @@ export const updateRegistration = async ({
 		{
 			action,
 			memberType,
-		},
+		}
 	)
 
 	return response.data

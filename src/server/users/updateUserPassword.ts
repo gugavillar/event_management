@@ -1,18 +1,18 @@
-import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { prisma } from '@/constants'
+import bcrypt from 'bcryptjs'
 
 export const updateUserPassword = async (
 	userIdLogged: string,
-	newPassword: string,
+	newPassword: string
 ) => {
 	try {
 		z.object({
-			userIdLogged: z.uuid(),
 			newPassword: z.string().min(6),
-		}).parse({ userIdLogged, newPassword })
+			userIdLogged: z.uuid(),
+		}).parse({ newPassword, userIdLogged })
 
 		const isUserExist = await prisma.user.findUnique({
 			where: {
@@ -27,17 +27,17 @@ export const updateUserPassword = async (
 				},
 				{
 					status: 400,
-				},
+				}
 			)
 		}
 
 		return await prisma.user.update({
+			data: {
+				firstAccess: false,
+				passwordHash: bcrypt.hashSync(newPassword, 10),
+			},
 			where: {
 				id: userIdLogged,
-			},
-			data: {
-				passwordHash: bcrypt.hashSync(newPassword, 10),
-				firstAccess: false,
 			},
 		})
 	} catch (error) {

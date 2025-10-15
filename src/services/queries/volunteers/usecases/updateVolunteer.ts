@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { FormVolunteer, VolunteersAPI } from '../volunteers.type'
+import type { FormVolunteer, VolunteersAPI } from '../volunteers.type'
 
 type UpdateVolunteerArgs = {
 	volunteerId: VolunteersAPI['id']

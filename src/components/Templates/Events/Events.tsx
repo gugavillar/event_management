@@ -10,24 +10,28 @@ import {
 	ListPage,
 	PageContent,
 } from '@/components/Organisms'
-import { MEMBERS, MembersTypes, MODALS_IDS, overlayOpen } from '@/constants'
+import {
+	type MEMBERS,
+	MembersTypes,
+	MODALS_IDS,
+	overlayOpen,
+} from '@/constants'
 import {
 	useGetEvents,
 	useUpdateInterested,
 	useUpdateRegistration,
 } from '@/services/queries/events'
-import { EventsAPI } from '@/services/queries/events/event.type'
+import type { EventsAPI } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
-
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
 const EventDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.EventDeleteModal),
+	import('@/components/Organisms').then((mod) => mod.EventDeleteModal)
 )
 
 export const Events = () => {
 	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(
-		null,
+		null
 	)
 	const { update: updateRegistration } = useUpdateRegistration()
 	const { update: updateInterested } = useUpdateInterested()
@@ -54,12 +58,12 @@ export const Events = () => {
 		(id: EventsAPI['id'], type: 'participante' | 'voluntario') => {
 			window.open(`${window.location.origin}/inscricao/${id}/${type}`)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenInterestedLink = useCallback((id: EventsAPI['id']) => {
 		window.open(
-			`${window.location.origin}/lista-interessados/${id}/participante`,
+			`${window.location.origin}/lista-interessados/${id}/participante`
 		)
 	}, [])
 
@@ -68,46 +72,46 @@ export const Events = () => {
 			updateInterested(
 				{ action, eventId: id },
 				{
-					onSuccess: () => {
-						toast.success(
-							`Lista de interessados ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`,
-						)
-					},
 					onError: (error) => {
 						generateToastError(
 							error,
-							`Falha ao tentar ${action === 'open' ? 'abrir' : 'fechar'} lista de interessados`,
+							`Falha ao tentar ${action === 'open' ? 'abrir' : 'fechar'} lista de interessados`
 						)
 					},
-				},
+					onSuccess: () => {
+						toast.success(
+							`Lista de interessados ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`
+						)
+					},
+				}
 			)
 		},
-		[updateInterested],
+		[updateInterested]
 	)
 
 	const handleBlockOrOpenRegistration = useCallback(
 		async (
 			id: EventsAPI['id'],
 			memberType: MEMBERS,
-			action: 'open' | 'close',
+			action: 'open' | 'close'
 		) => {
 			await updateRegistration(
-				{ eventId: id, memberType, action },
+				{ action, eventId: id, memberType },
 				{
-					onSuccess: () => {
-						toast.success(
-							`Inscrição de ${MembersTypes[memberType].label.toLowerCase()} ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`,
-						)
-					},
 					onError: (error) =>
 						generateToastError(
 							error,
-							'Falha ao tentar bloquear ou abrir inscrição',
+							'Falha ao tentar bloquear ou abrir inscrição'
 						),
-				},
+					onSuccess: () => {
+						toast.success(
+							`Inscrição de ${MembersTypes[memberType].label.toLowerCase()} ${action === 'open' ? 'aberta' : 'fechada'} com sucesso!`
+						)
+					},
+				}
 			)
 		},
-		[updateRegistration],
+		[updateRegistration]
 	)
 
 	const formatData = formatTableData(
@@ -117,7 +121,7 @@ export const Events = () => {
 		handleOpenSelectedLink,
 		handleBlockOrOpenRegistration,
 		handleActivatedOrDeactivatedInterestedList,
-		handleOpenInterestedLink,
+		handleOpenInterestedLink
 	)
 
 	const hasMoreThanOnePage = !!events?.totalPages && events.totalPages > 1
@@ -125,10 +129,6 @@ export const Events = () => {
 	return (
 		<PageContent subheadingPage="Lista de eventos">
 			<ListPage
-				placeholderField="Encontrar um evento"
-				className="w-full lg:max-w-full"
-				search={search}
-				setSearch={setSearch}
 				actionButton={
 					<CreateEventButton
 						drawerId={MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER}
@@ -136,6 +136,10 @@ export const Events = () => {
 						setSelectedEvent={setSelectedEvent}
 					/>
 				}
+				className="w-full lg:max-w-full"
+				placeholderField="Encontrar um evento"
+				search={search}
+				setSearch={setSearch}
 			>
 				<ListManager
 					bodyData={formatData}
@@ -145,8 +149,8 @@ export const Events = () => {
 				{hasMoreThanOnePage && (
 					<Pagination
 						currentPage={page}
-						totalPages={events?.totalPages}
 						setPage={setPage}
+						totalPages={events?.totalPages}
 					/>
 				)}
 			</ListPage>

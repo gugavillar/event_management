@@ -1,5 +1,5 @@
 import { PanelRightClose, PanelRightOpen, Tickets } from 'lucide-react'
-import { Dispatch, memo, SetStateAction } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Button, Text } from '@/components/Atoms'
@@ -15,16 +15,16 @@ export const ApplicationAvatar = memo(
 			<section
 				className={twMerge(
 					'relative flex items-center gap-x-4',
-					collapsed && 'justify-center',
+					collapsed && 'justify-center'
 				)}
 				data-testid="application-avatar"
 			>
 				{!collapsed && (
 					<>
 						<Tickets
-							size={48}
 							className="text-slate-100"
 							data-testid="ticket-icon"
+							size={48}
 						/>
 						<div>
 							<Text className="text-xl font-bold text-gray-100">
@@ -35,12 +35,12 @@ export const ApplicationAvatar = memo(
 					</>
 				)}
 				<Button
-					type="button"
-					onClick={() => handleCollapse(!collapsed)}
 					className={twMerge(
 						'absolute -top-3 hidden items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500 md:inline-flex',
-						collapsed ? 'left-12' : 'left-64',
+						collapsed ? 'left-12' : 'left-64'
 					)}
+					onClick={() => handleCollapse(!collapsed)}
+					type="button"
 				>
 					{collapsed ? (
 						<PanelRightClose size={28} />
@@ -50,7 +50,7 @@ export const ApplicationAvatar = memo(
 				</Button>
 			</section>
 		)
-	},
+	}
 )
 
 ApplicationAvatar.displayName = 'ApplicationAvatar'

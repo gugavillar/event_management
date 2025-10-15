@@ -17,7 +17,7 @@ describe('Dropdown component', () => {
 		render(
 			<Dropdown label="Test dropdown">
 				<p>option 1</p>
-			</Dropdown>,
+			</Dropdown>
 		)
 
 		expect(screen.getByText('Test dropdown')).toBeInTheDocument()
@@ -29,7 +29,7 @@ describe('Dropdown component', () => {
 		render(
 			<Dropdown label="Test dropdown">
 				<p>option 1</p>
-			</Dropdown>,
+			</Dropdown>
 		)
 		expect(HSDropdown.autoInit).toHaveBeenCalled()
 	})

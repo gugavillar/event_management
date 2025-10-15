@@ -1,8 +1,6 @@
-import { signOut } from 'next-auth/react'
-
 import { PRINCIPAL_LINKS } from '@/constants'
 import { useMutation } from '@/providers/QueryProvider'
-
+import { signOut } from 'next-auth/react'
 import { updatePassword } from '../usecases'
 
 export const useUpdatePassword = () => {

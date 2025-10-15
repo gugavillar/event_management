@@ -1,14 +1,13 @@
 'use client'
 
-import { useFormContext } from 'react-hook-form'
-
 import {
 	InputField,
 	MaskedInputField,
 	SelectField,
 } from '@/components/Molecules'
-import { FullSchemaType } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
+import type { FullSchemaType } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
 import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import { useFormContext } from 'react-hook-form'
 
 export const VolunteerExternalForm = () => {
 	const { watch } = useFormContext<FullSchemaType>()
@@ -21,13 +20,13 @@ export const VolunteerExternalForm = () => {
 				<InputField fieldName="called">
 					Como você gostaria de ser chamado(a)?
 				</InputField>
-				<InputField type="email" fieldName="email">
+				<InputField fieldName="email" type="email">
 					E-mail
 				</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="phone">
+				<MaskedInputField fieldName="phone" format="(##) #####-####">
 					Telefone
 				</MaskedInputField>
-				<MaskedInputField format="##/##/####" fieldName="birthdate">
+				<MaskedInputField fieldName="birthdate" format="##/##/####">
 					Data de nascimento
 				</MaskedInputField>
 				<InputField fieldName="community">Igreja que frequenta</InputField>
@@ -35,8 +34,8 @@ export const VolunteerExternalForm = () => {
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<SelectField
 					fieldName="hasCell"
-					placeholder="Selecione uma opção"
 					options={YES_OR_NO_SELECT_OPTIONS}
+					placeholder="Selecione uma opção"
 				>
 					Participa de célula?
 				</SelectField>
@@ -45,8 +44,8 @@ export const VolunteerExternalForm = () => {
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<SelectField
 					fieldName="hasHealth"
-					placeholder="Selecione uma opção"
 					options={YES_OR_NO_SELECT_OPTIONS}
+					placeholder="Selecione uma opção"
 				>
 					Tem restrição saúde/alimentar?
 				</SelectField>
@@ -56,7 +55,7 @@ export const VolunteerExternalForm = () => {
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<InputField fieldName="relative">Parente próximo</InputField>
-				<MaskedInputField format="(##) #####-####" fieldName="relativePhone">
+				<MaskedInputField fieldName="relativePhone" format="(##) #####-####">
 					Telefone do parente
 				</MaskedInputField>
 			</div>

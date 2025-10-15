@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 
-import { UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
+import type { UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
 import { createUser, getAllUsers, updateUserPassword } from '@/server'
 import { requestProcess } from '@/utils/prisma'
-
 import { authOptions } from '../auth/[...nextauth]/authOptions'
 
 const handlerPost = async (request: NextRequest) => {

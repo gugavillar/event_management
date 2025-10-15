@@ -5,15 +5,15 @@ import { Radio } from './Radio'
 
 const options = [
 	{
-		label: 'radio 1',
 		description: 'description radio 1',
 		id: '1',
+		label: 'radio 1',
 		value: '1',
 	},
 	{
-		label: 'radio 2',
 		description: 'description radio 2',
 		id: '2',
+		label: 'radio 2',
 		value: '2',
 	},
 ]
@@ -21,7 +21,7 @@ const options = [
 describe('Radio component', () => {
 	it('renders correctly', () => {
 		const { getByTestId } = render(
-			<Radio fieldName="test" options={options} name="radio-test" />,
+			<Radio fieldName="test" name="radio-test" options={options} />
 		)
 		const radio = getByTestId('radio')
 		expect(radio).toBeInTheDocument()
@@ -30,11 +30,11 @@ describe('Radio component', () => {
 	it('applies custom props in input radios', () => {
 		const { getAllByTestId } = render(
 			<Radio
-				fieldName="test"
-				options={options}
-				name="radio-test"
 				data-testid="radio-input"
-			/>,
+				fieldName="test"
+				name="radio-test"
+				options={options}
+			/>
 		)
 
 		const radios = getAllByTestId('radio-input')
@@ -45,7 +45,7 @@ describe('Radio component', () => {
 
 	it('content is null when options is empty', () => {
 		const { container } = render(
-			<Radio fieldName="test" options={[]} name="radio-test" />,
+			<Radio fieldName="test" name="radio-test" options={[]} />
 		)
 
 		expect(container.firstChild).toBeNull()
@@ -54,27 +54,27 @@ describe('Radio component', () => {
 	it('applies errors classes correctly when is invalid', () => {
 		const { getAllByTestId } = render(
 			<Radio
-				fieldName="test"
-				options={options}
-				name="radio-test"
-				isInvalid
 				data-testid="radio-input"
-			/>,
+				fieldName="test"
+				isInvalid
+				name="radio-test"
+				options={options}
+			/>
 		)
 
 		const radios = getAllByTestId('radio-input')
 
 		expect(radios[0]).toHaveClass(
-			'border-red-500 focus:border-red-500 focus:ring-red-500',
+			'border-red-500 focus:border-red-500 focus:ring-red-500'
 		)
 		expect(radios[1]).toHaveClass(
-			'border-red-500 focus:border-red-500 focus:ring-red-500',
+			'border-red-500 focus:border-red-500 focus:ring-red-500'
 		)
 	})
 
 	it('renders the correct number of options', () => {
 		const { getAllByRole } = render(
-			<Radio fieldName="test" options={options} />,
+			<Radio fieldName="test" options={options} />
 		)
 
 		const radioOptions = getAllByRole('radio')
@@ -104,10 +104,10 @@ describe('Radio component', () => {
 		const { getAllByRole } = render(
 			<Radio
 				fieldName="test"
-				options={options}
 				name="radio-test"
 				onChange={onChangeMock}
-			/>,
+				options={options}
+			/>
 		)
 
 		const radio = getAllByRole('radio')
@@ -121,13 +121,13 @@ describe('Radio component', () => {
 				target: expect.objectContaining({
 					value: options[0].value,
 				}),
-			}),
+			})
 		)
 	})
 
 	it('when position is column recives space-y-3 class', () => {
 		const { container } = render(
-			<Radio fieldName="test" options={options} position="column" />,
+			<Radio fieldName="test" options={options} position="column" />
 		)
 
 		expect(container.firstChild).toHaveClass('space-y-3')

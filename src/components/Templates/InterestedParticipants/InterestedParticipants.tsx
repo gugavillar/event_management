@@ -13,22 +13,21 @@ import {
 } from '@/components/Organisms'
 import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
 import { useGetParticipants } from '@/services/queries/participants'
-import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
-
+import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { formatTableData, HEADER_LABELS } from './InterestedParticipants.utils'
 
 const ParticipantModalData = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.ParticipantModalData),
+	import('@/components/Organisms').then((mod) => mod.ParticipantModalData)
 )
 
 const InterestedModalToParticipant = dynamic(() =>
 	import('@/components/Organisms').then(
-		(mod) => mod.InterestedModalToParticipant,
-	),
+		(mod) => mod.InterestedModalToParticipant
+	)
 )
 
 const ParticipantDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal),
+	import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal)
 )
 
 export const InterestedParticipants = () => {
@@ -51,7 +50,7 @@ export const InterestedParticipants = () => {
 			setSelectedParticipant(id)
 			overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenModalInterestedParticipant = useCallback(
@@ -59,7 +58,7 @@ export const InterestedParticipants = () => {
 			setSelectedParticipant(id)
 			overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const handleOpenModalToDeleteParticipant = useCallback(
@@ -67,14 +66,14 @@ export const InterestedParticipants = () => {
 			setSelectedParticipant(id)
 			overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
 		},
-		[],
+		[]
 	)
 
 	const formattedInterestedParticipants = formatTableData(
 		participants?.data,
 		handleOpenModalToShowParticipantData,
 		handleOpenModalInterestedParticipant,
-		handleOpenModalToDeleteParticipant,
+		handleOpenModalToDeleteParticipant
 	)
 
 	const hasMoreThanOnePage =
@@ -82,26 +81,26 @@ export const InterestedParticipants = () => {
 
 	return (
 		<PageContent
-			subheadingPage="Lista de participantes interessados"
 			pageTitle="Participantes interessados"
+			subheadingPage="Lista de participantes interessados"
 		>
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
 				<ExportParticipantsButton isInterested />
 			</div>
 			<ListPage
-				placeholderField="Encontrar um participante"
 				className="lg:max-w-full"
-				search={search}
-				setSearch={setSearch}
 				moreFilter={
 					<FilterDrawer
 						drawerId={MODALS_IDS.PARTICIPANT_FILTER_INTERESTED_DRAWER}
+						isInterestedList
 						query={query}
 						setQuery={setQuery}
 						type={MEMBERS.PARTICIPANT}
-						isInterestedList
 					/>
 				}
+				placeholderField="Encontrar um participante"
+				search={search}
+				setSearch={setSearch}
 			>
 				<ListManager
 					bodyData={formattedInterestedParticipants}
@@ -111,8 +110,8 @@ export const InterestedParticipants = () => {
 				{hasMoreThanOnePage && (
 					<Pagination
 						currentPage={page}
-						totalPages={participants?.totalPages}
 						setPage={setPage}
+						totalPages={participants?.totalPages}
 					/>
 				)}
 			</ListPage>
@@ -122,10 +121,10 @@ export const InterestedParticipants = () => {
 				setSelectedParticipant={setSelectedParticipant}
 			/>
 			<InterestedModalToParticipant
+				interested={false}
 				modalId={MODALS_IDS.PARTICIPANT_INTERESTED_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
-				interested={false}
 			/>
 			<ParticipantDeleteModal
 				modalId={MODALS_IDS.PARTICIPANT_REMOVE_MODAL}

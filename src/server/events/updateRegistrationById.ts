@@ -5,14 +5,14 @@ import { MEMBERS, prisma } from '@/constants'
 export const updateRegistrationById = async (
 	id: string,
 	memberType: MEMBERS,
-	action: 'open' | 'close',
+	action: 'open' | 'close'
 ) => {
 	try {
 		z.object({
+			action: z.enum(['open', 'close']),
 			id: z.uuid(),
 			memberType: z.enum([MEMBERS.PARTICIPANT, MEMBERS.VOLUNTEER]),
-			action: z.enum(['open', 'close']),
-		}).parse({ id, memberType, action })
+		}).parse({ action, id, memberType })
 
 		return await prisma.event.update({
 			data: {

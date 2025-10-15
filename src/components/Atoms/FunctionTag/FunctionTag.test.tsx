@@ -26,10 +26,10 @@ describe('Function Tag Component', () => {
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
 			<FunctionTag
-				status="Função"
 				className="custom-class"
 				data-testid="function-tag"
-			/>,
+				status="Função"
+			/>
 		)
 		expect(getByTestId('function-tag')).toHaveClass('custom-class')
 	})

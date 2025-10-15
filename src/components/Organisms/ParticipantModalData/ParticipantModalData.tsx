@@ -1,9 +1,8 @@
-import { Dispatch, memo, SetStateAction } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 
 import { Header, Modal, Spinner } from '@/components/Atoms'
 import { useGetParticipant } from '@/services/queries/participants'
-import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
-
+import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { AddressInfoCard } from '../AddressInfoCard'
 import { FamilyContactInfo } from '../FamilyContactInfo'
 import { PersonalInfoCard } from '../PersonalInfoCard'
@@ -23,9 +22,9 @@ export const ParticipantModalData = memo(
 		const { data, isLoading } = useGetParticipant(selectedParticipant)
 		return (
 			<Modal
-				modalId={modalId}
 				handleClose={() => setSelectedParticipant(null)}
 				isLarge
+				modalId={modalId}
 			>
 				<div className="flex flex-col space-y-4 max-md:h-[85dvh] max-md:overflow-y-auto">
 					<Header as="h3" className="text-center">
@@ -37,7 +36,7 @@ export const ParticipantModalData = memo(
 						</div>
 					) : (
 						<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-							<PersonalInfoCard userInfo={{ ...data }} type="participant" />
+							<PersonalInfoCard type="participant" userInfo={{ ...data }} />
 							<AddressInfoCard
 								addressInfo={{
 									...data.address,
@@ -52,7 +51,7 @@ export const ParticipantModalData = memo(
 				</div>
 			</Modal>
 		)
-	},
+	}
 )
 
 ParticipantModalData.displayName = 'ParticipantModalData'

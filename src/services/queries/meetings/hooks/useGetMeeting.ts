@@ -1,11 +1,10 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import {
+import type {
 	FormMeetingPresence,
 	MeetingAPI,
 	MeetingsFromAPI,
@@ -23,19 +22,19 @@ export const useGetMeeting = () => {
 		meeting: MeetingAPI
 		presenceResponse: Omit<FormMeetingPresence, 'meetingId'>
 	}> = useQuery({
-		queryKey: [QUERY_KEYS.MEETING, meetingId],
+		enabled: !!meetingId,
 		queryFn: async () => {
 			const meeting = await getMeeting(meetingId as MeetingsFromAPI['id'])
 			const presences: Array<PresencesFromApi> = await getMeetingPresenceById(
-				meetingId as MeetingsFromAPI['id'],
+				meetingId as MeetingsFromAPI['id']
 			)
 
 			if (!presences.length) {
 				return {
 					meeting,
 					presenceResponse: {
-						presence: [],
 						justification: [],
+						presence: [],
 					},
 				}
 			}
@@ -46,14 +45,14 @@ export const useGetMeeting = () => {
 						[volunteer.id]:
 							presences.find((p) => p.volunteerId === volunteer.id)
 								?.justification ?? false,
-					}),
+					})
 				),
 				presence: meeting.volunteers.map(
 					(volunteer: MeetingAPI['volunteers'][number]) => ({
 						[volunteer.id]:
 							presences.find((p) => p.volunteerId === volunteer.id)?.presence ??
 							false,
-					}),
+					})
 				),
 			}
 			return {
@@ -61,7 +60,7 @@ export const useGetMeeting = () => {
 				presenceResponse,
 			}
 		},
-		enabled: !!meetingId,
+		queryKey: [QUERY_KEYS.MEETING, meetingId],
 	})
 
 	return { data, isLoading, meetingId, setMeetingId }

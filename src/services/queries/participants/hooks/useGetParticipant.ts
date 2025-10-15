@@ -1,14 +1,13 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { format } from 'date-fns'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
 import { QUERY_KEYS } from '@/constants'
 import { formatPhone } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { ParticipantsAPI } from '../participants.type'
+import { format } from 'date-fns'
+import type { ParticipantsAPI } from '../participants.type'
 import { getParticipant } from '../usecases'
 
 type FormattedParticipantsAPI = Omit<ParticipantsAPI, 'address'> & {
@@ -18,24 +17,24 @@ type FormattedParticipantsAPI = Omit<ParticipantsAPI, 'address'> & {
 }
 
 export const useGetParticipant = (
-	participantId: ParticipantsAPI['id'] | null,
+	participantId: ParticipantsAPI['id'] | null
 ) => {
 	const { data, isLoading }: UseQueryResult<FormattedParticipantsAPI> =
 		useQuery({
-			queryKey: [QUERY_KEYS.PARTICIPANT, participantId],
-			queryFn: () => getParticipant(participantId as ParticipantsAPI['id']),
 			enabled: !!participantId,
+			queryFn: () => getParticipant(participantId as ParticipantsAPI['id']),
+			queryKey: [QUERY_KEYS.PARTICIPANT, participantId],
 			select: ({ address, ...data }: ParticipantsAPI) => ({
 				...data,
-				birthdate: format(data.birthdate, 'dd/MM/yyyy'),
-				phone: formatPhone(data.phone),
-				responsiblePhone: formatPhone(data.responsiblePhone),
-				hostPhone: formatPhone(data.hostPhone),
-				hasReligion: data.religion ? 'Yes' : ('No' as 'Yes' | 'No'),
-				hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
 				address: {
 					...address,
 				},
+				birthdate: format(data.birthdate, 'dd/MM/yyyy'),
+				hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
+				hasReligion: data.religion ? 'Yes' : ('No' as 'Yes' | 'No'),
+				hostPhone: formatPhone(data.hostPhone),
+				phone: formatPhone(data.phone),
+				responsiblePhone: formatPhone(data.responsiblePhone),
 			}),
 		})
 

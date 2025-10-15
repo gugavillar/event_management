@@ -1,13 +1,13 @@
 'use client'
 import { OctagonAlert } from 'lucide-react'
 import { memo } from 'react'
-import { useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { MeetingSchemaType } from '@/components/Templates/Meetings/Meetings.schema'
+import type { MeetingSchemaType } from '@/components/Templates/Meetings/Meetings.schema'
 import { overlayClose } from '@/constants'
 import { useCreateMeetingPresence } from '@/services/queries/meetings'
+import { useFormContext } from 'react-hook-form'
 
 type MeetingAlertModalProps = {
 	modalId: string
@@ -42,21 +42,21 @@ export const MeetingAlertModal = memo(
 			await create(
 				{ data: formattedValues, ...(isUpdate && { updatePresence: true }) },
 				{
+					onError: () => toast.error('Erro ao registrar presença'),
 					onSuccess: () => {
 						clearState()
 						reset()
 						localStorage.removeItem(meetingId)
 						toast.success('Presença registrada com sucesso!')
 					},
-					onError: () => toast.error('Erro ao registrar presença'),
-				},
+				}
 			)
 		}
 
 		const handleSaveList = () => {
 			if (hasPreviousRecord) {
 				return toast.error(
-					'Não é possível criar um rascunho. Já existem presenças salvas para esta reunião.',
+					'Não é possível criar um rascunho. Já existem presenças salvas para esta reunião.'
 				)
 			}
 
@@ -86,7 +86,7 @@ export const MeetingAlertModal = memo(
 			<Modal modalId={modalId}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
-						<OctagonAlert size={64} className="text-amber-300" />
+						<OctagonAlert className="text-amber-300" size={64} />
 						<div className="space-y-4 text-center">
 							<Header as="h3" className="text-2xl">
 								{title}
@@ -95,20 +95,20 @@ export const MeetingAlertModal = memo(
 						</div>
 						<div className="flex w-full items-center justify-between gap-x-8">
 							<Button
-								type="button"
 								className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
-								onClick={handleCloseMeetingAlertModal}
 								disabled={isPending}
+								onClick={handleCloseMeetingAlertModal}
+								type="button"
 							>
 								Cancelar
 							</Button>
 							<Button
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+								disabled={isPending}
+								isLoading={isPending}
 								onClick={
 									type === 'draft' ? handleSaveList : handleSubmit(onSubmit)
 								}
-								isLoading={isPending}
-								disabled={isPending}
 							>
 								Confirmar
 							</Button>
@@ -117,7 +117,7 @@ export const MeetingAlertModal = memo(
 				</div>
 			</Modal>
 		)
-	},
+	}
 )
 
 MeetingAlertModal.displayName = 'MeetingAlertModal'

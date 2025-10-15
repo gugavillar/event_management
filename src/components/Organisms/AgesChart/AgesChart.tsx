@@ -1,7 +1,7 @@
 import {
 	ChartContainer,
 	ChartValidation,
-	ChartValidationProps,
+	type ChartValidationProps,
 } from '@/components/Molecules'
 
 export const AgesChart = ({
@@ -15,8 +15,8 @@ export const AgesChart = ({
 			subheadingText="Quantitativo por faixa etária"
 		>
 			<ChartValidation
-				isLoading={isLoading}
 				categories={categories}
+				isLoading={isLoading}
 				series={series}
 			/>
 		</ChartContainer>

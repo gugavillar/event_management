@@ -1,15 +1,13 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Step } from '@/components/Atoms'
 import {
 	AddressExternalForm,
-	PaymentExternalForm,
 	ParticipantExternalForm,
+	PaymentExternalForm,
 } from '@/components/Organisms'
 import {
 	MEMBERS,
@@ -20,10 +18,11 @@ import {
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateParticipant } from '@/services/queries/participants'
 import { generateToastError } from '@/utils/errors'
-
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import {
+	type FullSchemaType,
 	fullSchema,
-	FullSchemaType,
 	stepsFields,
 } from './ExternalParticipantForm.schema'
 
@@ -48,31 +47,31 @@ export const ExternalParticipantForm = ({
 
 	const { create, isPending } = useCreateParticipant()
 	const methods = useForm<FullSchemaType>({
-		mode: 'onChange',
 		defaultValues: {
-			name: '',
+			address: {
+				city: '',
+				neighborhood: '',
+				number: '',
+				state: '',
+				street: '',
+			},
+			birthdate: '',
 			called: '',
 			email: '',
-			phone: '',
-			birthdate: '',
-			responsible: '',
-			responsiblePhone: '',
-			hasReligion: '',
 			hasHealth: '',
+			hasReligion: '',
 			health: '',
-			religion: '',
 			host: '',
 			hostPhone: '',
-			terms: undefined,
-			address: {
-				street: '',
-				number: '',
-				neighborhood: '',
-				city: '',
-				state: '',
-			},
+			name: '',
 			paymentMethod: undefined,
+			phone: '',
+			religion: '',
+			responsible: '',
+			responsiblePhone: '',
+			terms: undefined,
 		},
+		mode: 'onChange',
 		resolver: zodResolver(fullSchema(minAge, maxAge, isInterestedList)),
 	})
 
@@ -113,19 +112,21 @@ export const ExternalParticipantForm = ({
 			...(hasReligion === 'Yes' && { religion }),
 			...(hasHealth === 'Yes' && { health }),
 			birthdate: formatDateToSendToApi(data.birthdate),
-			phone: data.phone.replace(/\D/g, ''),
-			hostPhone: data.hostPhone.replace(/\D/g, ''),
-			responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
 			eventId,
+			hostPhone: data.hostPhone.replace(/\D/g, ''),
+			phone: data.phone.replace(/\D/g, ''),
+			responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
 			...(isInterestedList && {
-				interested: true,
 				inscriptionType: 'interested' as const,
+				interested: true,
 			}),
 		}
 
 		await create(
 			{ ...formattedData },
 			{
+				onError: (error) =>
+					generateToastError(error, 'Erro ao realizar inscrição'),
 				onSuccess: () => {
 					if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
 						return overlayOpen(MODALS_IDS.PAYMENT_PIX_MODAL)
@@ -135,12 +136,10 @@ export const ExternalParticipantForm = ({
 					toast.success(
 						isInterestedList
 							? 'Inscrição de interesse realizada com sucesso, caso hajam desistências, entraremos em contato'
-							: 'Inscrição realizada com sucesso!',
+							: 'Inscrição realizada com sucesso!'
 					)
 				},
-				onError: (error) =>
-					generateToastError(error, 'Erro ao realizar inscrição'),
-			},
+			}
 		)
 	}
 
@@ -148,36 +147,36 @@ export const ExternalParticipantForm = ({
 		<div className="flex w-full grow flex-col" id="stepper">
 			<FormProvider {...methods}>
 				<Step
+					currentStep={currentStep}
+					handleFinish={methods.handleSubmit(onSubmit)}
+					handleNext={handleNext}
+					handlePrev={handlePrev}
+					isPending={isPending}
 					steps={[
 						{
-							title: 'Participante',
 							content: (
 								<ParticipantExternalForm isNotHappening={isNotHappening} />
 							),
+							title: 'Participante',
 						},
 						{
-							title: 'Endereço',
 							content: <AddressExternalForm type={MEMBERS.PARTICIPANT} />,
+							title: 'Endereço',
 						},
 						...(!isInterestedList
 							? [
 									{
-										title: 'Pagamento',
 										content: (
 											<PaymentExternalForm
 												registrationValue={registrationValue}
 												setCurrentStep={setCurrentStep}
 											/>
 										),
+										title: 'Pagamento',
 									},
 								]
 							: []),
 					]}
-					isPending={isPending}
-					currentStep={currentStep}
-					handlePrev={handlePrev}
-					handleNext={handleNext}
-					handleFinish={methods.handleSubmit(onSubmit)}
 				/>
 			</FormProvider>
 		</div>

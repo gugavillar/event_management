@@ -1,14 +1,13 @@
 'use client'
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import { type SubmitHandler, useFormContext } from 'react-hook-form'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import {
-	InputField,
-	SelectField,
-	MaskedInputField,
 	CurrencyInputField,
+	InputField,
+	MaskedInputField,
+	SelectField,
 } from '@/components/Molecules'
 import { GenderSelectOptions, overlayClose } from '@/constants'
 import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
@@ -17,10 +16,10 @@ import {
 	useGetEvent,
 	useUpdateEvent,
 } from '@/services/queries/events'
-import { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
+import type { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
-
-import { EventSchemaType } from './EventDrawer.schema'
+import { type SubmitHandler, useFormContext } from 'react-hook-form'
+import type { EventSchemaType } from './EventDrawer.schema'
 
 type EventDrawerProps = {
 	drawerId: string
@@ -47,10 +46,10 @@ export const EventDrawer = ({
 
 		const formattedValues = {
 			...values,
+			finalDate: formatDateToSendToApi(values.finalDate),
+			initialDate: formatDateToSendToApi(values.initialDate),
 			participantPrice: Number(removeCurrencyFormat(values.participantPrice)),
 			volunteerPrice: Number(removeCurrencyFormat(values.volunteerPrice)),
-			initialDate: formatDateToSendToApi(values.initialDate),
-			finalDate: formatDateToSendToApi(values.finalDate),
 			...(values.minAge ? { minAge: Number(values.minAge) } : { minAge: null }),
 			...(values.maxAge ? { maxAge: Number(values.maxAge) } : { maxAge: null }),
 		} as FormEvent
@@ -58,28 +57,28 @@ export const EventDrawer = ({
 		if (selectedEvent) {
 			return await update(
 				{
-					eventId: selectedEvent,
 					data: formattedValues,
+					eventId: selectedEvent,
 				},
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao atualizar evento'),
 					onSuccess: () => {
 						reset()
 						setSelectedEvent(null)
 						toast.success('Evento atualizado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao atualizar evento'),
-				},
+				}
 			)
 		}
 		await create(formattedValues, {
+			onError: (error) => generateToastError(error, 'Erro ao criar evento'),
 			onSuccess: () => {
 				reset()
 				toast.success('Evento criado com sucesso!')
 				overlayClose(drawerId)
 			},
-			onError: (error) => generateToastError(error, 'Erro ao criar evento'),
 		})
 	}
 
@@ -97,22 +96,22 @@ export const EventDrawer = ({
 				...(minAge && { minAge: String(minAge) }),
 				...(maxAge && { maxAge: String(maxAge) }),
 			},
-			{ keepDefaultValues: true },
+			{ keepDefaultValues: true }
 		)
 	}, [data, reset])
 
 	return (
 		<Drawer
 			drawerId={drawerId}
-			headingTitle={selectedEvent ? 'Editar evento' : 'Novo evento'}
 			handleClose={handleClose}
+			headingTitle={selectedEvent ? 'Editar evento' : 'Novo evento'}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<InputField fieldName="name">Nome do evento</InputField>
 				<SelectField
 					fieldName="gender"
-					placeholder="Selecione o gênero do evento"
 					options={GenderSelectOptions}
+					placeholder="Selecione o gênero do evento"
 				>
 					Gênero do evento
 				</SelectField>
@@ -125,29 +124,29 @@ export const EventDrawer = ({
 					</MaskedInputField>
 				</div>
 				<CurrencyInputField
-					type="tel"
 					fieldName="participantPrice"
+					type="tel"
 					value={data?.participantPrice}
 				>
 					Valor ficha participante
 				</CurrencyInputField>
 				<CurrencyInputField
-					type="tel"
 					fieldName="volunteerPrice"
+					type="tel"
 					value={data?.volunteerPrice}
 				>
 					Valor ficha voluntário
 				</CurrencyInputField>
 				<MaskedInputField
-					format="##/##/####"
 					fieldName="initialDate"
+					format="##/##/####"
 					value={data?.initialDate}
 				>
 					Data de início do evento
 				</MaskedInputField>
 				<MaskedInputField
-					format="##/##/####"
 					fieldName="finalDate"
+					format="##/##/####"
 					value={data?.finalDate}
 				>
 					Data de término do evento
@@ -156,10 +155,10 @@ export const EventDrawer = ({
 			<DrawerFooter>
 				<Button
 					className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					disabled={!isValid || !isDirty}
+					isLoading={isPendingCreate || isPendingUpdate}
 					onClick={handleSubmit(onSubmit)}
 					type="submit"
-					isLoading={isPendingCreate || isPendingUpdate}
-					disabled={!isValid || !isDirty}
 				>
 					{selectedEvent ? 'Editar evento' : 'Criar evento'}
 				</Button>

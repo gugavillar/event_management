@@ -6,14 +6,14 @@ import { MaskedInput } from './MaskedInput'
 describe('Field component', () => {
 	it('renders input correctly', () => {
 		const { getByTestId } = render(
-			<MaskedInput format="##/##/####" data-testid="mask-field" />,
+			<MaskedInput data-testid="mask-field" format="##/##/####" />
 		)
 		expect(getByTestId('mask-field')).toBeInTheDocument()
 	})
 
 	it('displays warning when isInvalid true', () => {
 		const { getByTestId } = render(
-			<MaskedInput format="##/##/####" isInvalid />,
+			<MaskedInput format="##/##/####" isInvalid />
 		)
 		expect(getByTestId('warning-icon')).toBeInTheDocument()
 	})
@@ -27,10 +27,10 @@ describe('Field component', () => {
 	it('applies custom class name', () => {
 		const { getByTestId } = render(
 			<MaskedInput
-				format="##/##/####"
 				className="custom-class"
 				data-testid="input-field"
-			/>,
+				format="##/##/####"
+			/>
 		)
 		const input = getByTestId('input-field')
 		expect(input).toHaveClass('custom-class')
@@ -41,10 +41,10 @@ describe('Field component', () => {
 
 		const { getByTestId } = render(
 			<MaskedInput
-				format="##/##/####"
 				data-testid="input-field"
+				format="##/##/####"
 				onChange={onChangeMock}
-			/>,
+			/>
 		)
 
 		const inputElement = getByTestId('input-field')
@@ -58,7 +58,7 @@ describe('Field component', () => {
 				target: expect.objectContaining({
 					value: '15/06/1988',
 				}),
-			}),
+			})
 		)
 	})
 
@@ -68,11 +68,11 @@ describe('Field component', () => {
 
 		const { getByTestId } = render(
 			<MaskedInput
-				format="##/##/####"
 				data-testid="input-field"
+				format="##/##/####"
 				onChange={onChangeMock}
 				ref={ref}
-			/>,
+			/>
 		)
 
 		const inputElement = getByTestId('input-field')
@@ -88,7 +88,7 @@ describe('Field component', () => {
 				data-testid="input-field"
 				format="##/##/####"
 				rightIcon={<p>teste</p>}
-			/>,
+			/>
 		)
 		expect(getByTestId('right-icon')).toBeInTheDocument()
 	})

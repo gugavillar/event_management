@@ -6,7 +6,7 @@ import { ClosedInscriptions } from '@/components/Templates'
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
 import { eventPermitCreateRegistration, image, MEMBERS } from '@/constants'
 import { getEvent } from '@/services/queries/events'
-import { EventsAPI } from '@/services/queries/events/event.type'
+import type { EventsAPI } from '@/services/queries/events/event.type'
 
 type Params = {
 	params: Promise<{
@@ -32,7 +32,7 @@ export default async function RegistrationPage({ params }: Params) {
 
 	const isRegistrationPermitted = eventPermitCreateRegistration(
 		event,
-		MEMBERS.PARTICIPANT,
+		MEMBERS.PARTICIPANT
 	)
 
 	if (!isRegistrationPermitted) {
@@ -46,13 +46,13 @@ export default async function RegistrationPage({ params }: Params) {
 		<div className="grid h-dvh w-full lg:grid-cols-2">
 			<div className="relative size-full h-[50dvh] lg:h-dvh">
 				<Image
-					src={backgroundImage}
-					fill
-					sizes="100vw"
-					className="object-cover"
-					placeholder="blur"
-					blurDataURL="/placeholder.png"
 					alt="Background image"
+					blurDataURL="/placeholder.png"
+					className="object-cover"
+					fill
+					placeholder="blur"
+					sizes="100vw"
+					src={backgroundImage}
 				/>
 			</div>
 			<div className="size-full h-[50dvh] overflow-y-auto lg:h-full">
@@ -62,11 +62,11 @@ export default async function RegistrationPage({ params }: Params) {
 						<h2 className="text-3xl">Participante</h2>
 					</header>
 					<ExternalParticipantForm
-						registrationValue={Number(event.participantPrice)}
-						minAge={event?.minAge}
-						maxAge={event?.maxAge}
 						eventId={event?.id}
 						isNotHappening={isNotHappening}
+						maxAge={event?.maxAge}
+						minAge={event?.minAge}
+						registrationValue={Number(event.participantPrice)}
 					/>
 				</div>
 			</div>

@@ -29,7 +29,7 @@ export async function requestProcess<T>({
 					error: 'Usuário não autenticado!',
 					message: 'Usuário não autenticado!',
 				},
-				{ status: 401 },
+				{ status: 401 }
 			)
 		}
 
@@ -47,7 +47,7 @@ export async function requestProcess<T>({
 				},
 				{
 					status: 409,
-				},
+				}
 			)
 		}
 
@@ -59,7 +59,7 @@ export async function requestProcess<T>({
 				},
 				{
 					status: 409,
-				},
+				}
 			)
 		}
 	}
@@ -70,7 +70,7 @@ export async function requestProcess<T>({
 				error: 'Usuário sem permissão!',
 				message: 'Usuário sem permissão!',
 			},
-			{ status: 403 },
+			{ status: 403 }
 		)
 	}
 
@@ -98,7 +98,7 @@ export async function requestProcess<T>({
 					error: 'Erro de validação dos campos.',
 					message: errorsFormatted,
 				},
-				{ status: 422 },
+				{ status: 422 }
 			)
 		}
 
@@ -109,7 +109,7 @@ export async function requestProcess<T>({
 					error_description: error,
 				}),
 			},
-			{ status: 500 },
+			{ status: 500 }
 		)
 	}
 }

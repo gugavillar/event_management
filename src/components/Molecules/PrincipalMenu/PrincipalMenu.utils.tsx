@@ -9,7 +9,7 @@ import {
 	Speech,
 	UsersRound,
 } from 'lucide-react'
-import { ReactElement } from 'react'
+import type { ReactElement } from 'react'
 
 type BaseMenuLink = {
 	buttonLabel: string
@@ -33,67 +33,67 @@ type MENU_LINKS_TYPE = MenuLinkWithHref | MenuLinkWithSubMenu
 
 export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 	{
-		buttonLabel: 'Dashboard',
-		href: '/dashboard',
 		buttonIcon: <Gauge size={24} />,
+		buttonLabel: 'Dashboard',
 		hasSubMenu: false,
+		href: '/dashboard',
 	},
 	{
-		buttonLabel: 'Eventos',
-		href: '/eventos',
 		buttonIcon: <Calendar size={24} />,
+		buttonLabel: 'Eventos',
 		hasSubMenu: false,
+		href: '/eventos',
 	},
 	{
-		buttonLabel: 'Participantes',
 		buttonIcon: <CircleUserRound size={24} />,
+		buttonLabel: 'Participantes',
 		hasSubMenu: true,
 		links: [
-			{ label: 'Listagem', href: '/participantes/listagem' },
+			{ href: '/participantes/listagem', label: 'Listagem' },
 			{
-				label: 'Lista de interessados',
 				href: '/participantes/lista-interessados',
+				label: 'Lista de interessados',
 			},
-			{ label: 'Pagamentos', href: '/participantes/pagamentos' },
+			{ href: '/participantes/pagamentos', label: 'Pagamentos' },
 		],
 	},
 	{
-		buttonLabel: 'Voluntários',
 		buttonIcon: <BriefcaseBusiness size={24} />,
+		buttonLabel: 'Voluntários',
 		hasSubMenu: true,
 		links: [
-			{ label: 'Listagem', href: '/voluntarios/listagem' },
-			{ label: 'Funções', href: '/voluntarios/funcoes' },
-			{ label: 'Pagamentos', href: '/voluntarios/pagamentos' },
+			{ href: '/voluntarios/listagem', label: 'Listagem' },
+			{ href: '/voluntarios/funcoes', label: 'Funções' },
+			{ href: '/voluntarios/pagamentos', label: 'Pagamentos' },
 		],
 	},
 	{
-		buttonLabel: 'Grupos',
-		href: '/grupos',
 		buttonIcon: <UsersRound size={24} />,
+		buttonLabel: 'Grupos',
 		hasSubMenu: false,
+		href: '/grupos',
 	},
 	{
-		buttonLabel: 'Quartos',
-		href: '/quartos',
 		buttonIcon: <ConciergeBell size={24} />,
+		buttonLabel: 'Quartos',
 		hasSubMenu: false,
+		href: '/quartos',
 	},
 	{
-		buttonLabel: 'Reuniões',
 		buttonIcon: <Speech size={24} />,
+		buttonLabel: 'Reuniões',
 		hasSubMenu: false,
 		href: '/reunioes',
 	},
 	{
-		buttonLabel: 'Doações',
 		buttonIcon: <HandHeart size={24} />,
+		buttonLabel: 'Doações',
 		hasSubMenu: false,
 		href: '/doacoes',
 	},
 	{
-		buttonLabel: 'Transações',
 		buttonIcon: <Landmark size={24} />,
+		buttonLabel: 'Transações',
 		hasSubMenu: false,
 		href: '/transacoes',
 	},

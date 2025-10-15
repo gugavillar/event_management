@@ -1,20 +1,19 @@
 'use client'
 
-import {
-	PDFDownloadLink,
-	Page,
-	View,
-	Document,
-	StyleSheet,
-	Text,
-} from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { Spinner } from '@/components/Atoms'
 import { generatePrintKey } from '@/constants'
-
-import { formatTableData } from './Groups.utils'
+import {
+	Document,
+	Page,
+	PDFDownloadLink,
+	StyleSheet,
+	Text,
+	View,
+} from '@react-pdf/renderer'
+import type { formatTableData } from './Groups.utils'
 
 export type DownloadPDFProps = {
 	groups: ReturnType<typeof formatTableData>
@@ -28,29 +27,29 @@ type DocumentsProps = {
 const styles = StyleSheet.create({
 	page: { padding: 20 },
 	section: { marginBottom: 10 },
-	tableRow: { flexDirection: 'row' },
-	title: { fontSize: 16, paddingBottom: 5, fontWeight: 'bold' },
 	tableCell: {
+		borderWidth: 0.5,
+		fontSize: 14,
+		paddingHorizontal: 5,
+		paddingVertical: 2,
 		width: '70%',
-		borderWidth: 0.5,
-		fontSize: 14,
-		paddingHorizontal: 5,
-		paddingVertical: 2,
-	},
-	tableCellPhoneAndBirthdate: {
-		width: '30%',
-		borderWidth: 0.5,
-		fontSize: 14,
-		paddingHorizontal: 5,
-		paddingVertical: 2,
 	},
 	tableCellMemberType: {
-		width: '30%',
 		borderWidth: 0.5,
 		fontSize: 14,
 		paddingHorizontal: 5,
 		paddingVertical: 2,
+		width: '30%',
 	},
+	tableCellPhoneAndBirthdate: {
+		borderWidth: 0.5,
+		fontSize: 14,
+		paddingHorizontal: 5,
+		paddingVertical: 2,
+		width: '30%',
+	},
+	tableRow: { flexDirection: 'row' },
+	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 5 },
 })
 
 const PortraitList = ({ groups }: DocumentsProps) => {
@@ -63,7 +62,7 @@ const PortraitList = ({ groups }: DocumentsProps) => {
 							{group.name} - Quantidade de membros: {group.members.length}
 						</Text>
 						{group.members.map((member) => (
-							<View style={styles.tableRow} key={member.id}>
+							<View key={member.id} style={styles.tableRow}>
 								<Text style={styles.tableCell}>{member.member}</Text>
 								<Text style={styles.tableCellMemberType}>{member.type}</Text>
 							</View>
@@ -81,8 +80,8 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 			{groups.map((group) => (
 				<Page
 					key={group.id}
-					size="A4"
 					orientation="landscape"
+					size="A4"
 					style={styles.page}
 				>
 					<View style={styles.section} wrap={false}>
@@ -90,7 +89,7 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 							{group.name} - Quantidade de membros: {group.members.length}
 						</Text>
 						{group.members.map((member) => (
-							<View style={styles.tableRow} key={member.id}>
+							<View key={member.id} style={styles.tableRow}>
 								<Text style={styles.tableCell}>{member.member}</Text>
 								<Text style={styles.tableCellPhoneAndBirthdate}>
 									{member.birthdate}
@@ -111,7 +110,7 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
 	const renderKey = useMemo(
 		() => generatePrintKey(groups, listType),
-		[groups, listType],
+		[groups, listType]
 	)
 
 	if (!groups.length) return null
@@ -121,7 +120,6 @@ export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
 
 	return (
 		<PDFDownloadLink
-			key={renderKey}
 			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 text-base font-semibold text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
 			document={
 				listType === 'portrait' ? (
@@ -131,6 +129,7 @@ export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
 				)
 			}
 			fileName={fileName}
+			key={renderKey}
 		>
 			{({ loading }) =>
 				loading ? (

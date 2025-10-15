@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { InformationCard } from '@/components/Atoms'
@@ -21,8 +21,8 @@ export const AddressInfoCard = ({
 }: AddressInfoCardProps) => {
 	return (
 		<InformationCard
-			headingText="Endereço"
 			className={twMerge('space-y-3 pb-6', className)}
+			headingText="Endereço"
 			{...props}
 		>
 			<InfoBox label="Endereço" value={addressInfo.street} />

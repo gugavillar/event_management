@@ -1,17 +1,16 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { MEMBERS, QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
-import { GroupAPI } from '../groups.types'
+import type { GroupAPI } from '../groups.types'
 import { getGroup } from '../usecases'
 
 export const useGetGroup = (groupId: GroupAPI['id'] | null) => {
 	const { data, isLoading }: UseQueryResult<GroupAPI> = useQuery({
-		queryKey: [QUERY_KEYS.GROUP, groupId],
-		queryFn: () => getGroup(groupId as GroupAPI['id']),
 		enabled: !!groupId,
+		queryFn: () => getGroup(groupId as GroupAPI['id']),
+		queryKey: [QUERY_KEYS.GROUP, groupId],
 		select: (data: GroupAPI) => ({
 			...data,
 			members: data.members.map((member) => ({

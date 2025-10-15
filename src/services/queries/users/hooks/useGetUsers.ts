@@ -1,14 +1,13 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
-import { parseAsInteger, useQueryState } from 'nuqs'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
+import { useDebounce } from '@uidotdev/usehooks'
+import { parseAsInteger, useQueryState } from 'nuqs'
 import { getUsers } from '../usecases'
-import { UsersFromAPI } from '../users.type'
+import type { UsersFromAPI } from '../users.type'
 
 export const useGetUsers = () => {
 	const [search, setSearch] = useQueryState('searchUser', {
@@ -16,7 +15,7 @@ export const useGetUsers = () => {
 	})
 	const [page, setPage] = useQueryState(
 		'pageUser',
-		parseAsInteger.withDefault(1),
+		parseAsInteger.withDefault(1)
 	)
 
 	const debouceValue = useDebounce(search, 500)
@@ -33,9 +32,9 @@ export const useGetUsers = () => {
 	}, [debouceValue])
 
 	const { data, isLoading }: UseQueryResult<UsersFromAPI> = useQuery({
+		queryFn: () => getUsers({ page, searchUser: debouceValue }),
 		queryKey: [QUERY_KEYS.USERS, debouceValue, page],
-		queryFn: () => getUsers({ searchUser: debouceValue, page }),
 	})
 
-	return { data, isLoading, search, setSearch, page, setPage }
+	return { data, isLoading, page, search, setPage, setSearch }
 }

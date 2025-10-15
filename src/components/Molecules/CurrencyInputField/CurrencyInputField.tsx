@@ -1,9 +1,9 @@
 'use client'
+
+import { CurrencyInput, HelperErrorText, Label } from '@/components/Atoms'
 import { get } from 'lodash'
 import { Controller, useFormContext } from 'react-hook-form'
-import { type NumberFormatBaseProps } from 'react-number-format'
-
-import { HelperErrorText, Label, CurrencyInput } from '@/components/Atoms'
+import type { NumberFormatBaseProps } from 'react-number-format'
 
 type CurrencyInputFieldProps = Omit<
 	NumberFormatBaseProps,
@@ -25,8 +25,8 @@ export const CurrencyInputField = ({
 		<div className="w-full">
 			<Label htmlFor={fieldName}>{children}</Label>
 			<Controller
-				name={fieldName}
 				control={control}
+				name={fieldName}
 				render={({ field }) => (
 					<CurrencyInput
 						id={fieldName}

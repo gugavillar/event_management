@@ -9,11 +9,11 @@ export const getMeetingByEventId = async (eventId: string) => {
 		}).parse({ eventId })
 
 		return await prisma.meetings.findMany({
-			where: {
-				eventId,
-			},
 			orderBy: {
 				title: 'asc',
+			},
+			where: {
+				eventId,
 			},
 		})
 	} catch (error) {

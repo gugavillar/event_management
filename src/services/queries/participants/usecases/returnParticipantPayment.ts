@@ -1,4 +1,4 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'

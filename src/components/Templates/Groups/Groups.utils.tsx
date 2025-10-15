@@ -1,24 +1,24 @@
 import { SquarePen, Trash2 } from 'lucide-react'
 
-import { Header, Spinner, Tooltip, Text } from '@/components/Atoms'
+import { Header, Spinner, Text, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { MEMBERS, MembersTypes } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
-import { GroupAPI } from '@/services/queries/groups/groups.types'
+import type { GroupAPI } from '@/services/queries/groups/groups.types'
 
 export const HEADER_LABELS = [
 	{
-		label: 'Nome',
 		accessor: 'member',
 		className: 'w-9/12',
+		label: 'Nome',
 	},
 	{
-		label: 'Tipo',
 		accessor: 'type',
+		label: 'Tipo',
 	},
 	{
-		label: 'Grupo',
 		accessor: 'group',
+		label: 'Grupo',
 	},
 ]
 
@@ -28,27 +28,27 @@ export const formatTableData = (data: Array<GroupAPI> | undefined) => {
 	return data?.map((group) => {
 		return {
 			id: group.id,
-			name: group.name.trim(),
 			members: group.members.map((member) => {
 				const memberType =
 					member.type === MEMBERS.PARTICIPANT ? 'participant' : 'volunteer'
 
 				return {
-					id: member.id,
-					type: MembersTypes[member.type].label,
-					group: group.name,
+					address: `${member[memberType]?.address?.street?.trim()}, ${member[memberType]?.address?.number?.trim()}, ${member[memberType]?.address?.neighborhood?.trim()}, ${member[memberType]?.address?.city}-${member[memberType]?.address?.state}`,
 					birthdate: formatBirthdate(
 						member[memberType]?.birthdate as string,
-						member[memberType]?.event?.finalDate as string,
+						member[memberType]?.event?.finalDate as string
 					),
-					phone: formatPhone(member[memberType]?.phone ?? ''),
-					address: `${member[memberType]?.address?.street?.trim()}, ${member[memberType]?.address?.number?.trim()}, ${member[memberType]?.address?.neighborhood?.trim()}, ${member[memberType]?.address?.city}-${member[memberType]?.address?.state}`,
+					group: group.name,
+					id: member.id,
 					member:
 						member.type === MEMBERS.PARTICIPANT
 							? member.participant?.name
 							: member.volunteer?.name,
+					phone: formatPhone(member[memberType]?.phone ?? ''),
+					type: MembersTypes[member.type].label,
 				}
 			}),
+			name: group.name.trim(),
 		}
 	})
 }
@@ -58,7 +58,7 @@ export const Content = (
 	isFetching: boolean,
 	groups: ReturnType<typeof formatTableData>,
 	handleRemoveGroup: (id: GroupAPI['id']) => void,
-	handleEditGroup: (id: GroupAPI['id']) => void,
+	handleEditGroup: (id: GroupAPI['id']) => void
 ) => {
 	if (!selectedEvent) {
 		return (
@@ -113,19 +113,19 @@ export const Content = (
 		if (!data.members.length) return <></>
 
 		const sortedMembers = data?.members?.sort((memberA, memberB) =>
-			memberB.type?.localeCompare(memberA.type),
+			memberB.type?.localeCompare(memberA.type)
 		)
 
 		const totalOfParticipants = sortedMembers?.filter(
-			(member) => member.type === MembersTypes[MEMBERS.PARTICIPANT].label,
+			(member) => member.type === MembersTypes[MEMBERS.PARTICIPANT].label
 		)?.length
 
 		const totalOfLeaders = sortedMembers?.filter(
-			(member) => member.type === MembersTypes[MEMBERS.VOLUNTEER].label,
+			(member) => member.type === MembersTypes[MEMBERS.VOLUNTEER].label
 		)?.length
 
 		return (
-			<div key={data.id} className="space-y-2">
+			<div className="space-y-2" key={data.id}>
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col space-y-2.5">
 						<Header>{data.name}</Header>
@@ -146,24 +146,24 @@ export const Content = (
 						<div className="hs-tooltip">
 							<SquarePen
 								className="cursor-pointer"
-								size={20}
 								onClick={() => handleEditGroup(data.id)}
+								size={20}
 							/>
 							<Tooltip>Editar</Tooltip>
 						</div>
 						<div className="hs-tooltip">
 							<Trash2
 								className="cursor-pointer"
-								size={20}
 								onClick={() => handleRemoveGroup(data.id)}
+								size={20}
 							/>
 							<Tooltip>Excluir</Tooltip>
 						</div>
 					</div>
 				</div>
 				<ListManager
-					headerLabels={HEADER_LABELS}
 					bodyData={sortedMembers}
+					headerLabels={HEADER_LABELS}
 					isLoading={isFetching}
 				/>
 			</div>

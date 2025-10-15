@@ -1,6 +1,6 @@
 import { PhoneCall } from 'lucide-react'
 import Link from 'next/link'
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Text, WhatsAppIcon } from '@/components/Atoms'
@@ -31,7 +31,7 @@ export const InfoBox = ({
 					<Link href={`tel:0${phoneNumber}`}>
 						<PhoneCall size={16} />
 					</Link>
-					<Link target="_blank" href={`https://wa.me/+55${phoneNumber}`}>
+					<Link href={`https://wa.me/+55${phoneNumber}`} target="_blank">
 						<WhatsAppIcon className="size-4 text-gray-800" />
 					</Link>
 				</div>

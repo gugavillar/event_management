@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-import { PaymentTypeAPI } from '@/constants'
-import { getAllParticipantsPayments, createParticipantPayment } from '@/server'
+import type { PaymentTypeAPI } from '@/constants'
+import { createParticipantPayment, getAllParticipantsPayments } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
 const handlerGet = async (request: NextRequest) => {
@@ -19,7 +19,7 @@ const handlerGet = async (request: NextRequest) => {
 				searchParams,
 				cityParams,
 				paymentTypeParams as (typeof PaymentTypeAPI)[keyof typeof PaymentTypeAPI],
-				pageParams,
+				pageParams
 			),
 	})
 }

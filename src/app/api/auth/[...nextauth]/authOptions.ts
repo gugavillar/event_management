@@ -1,28 +1,66 @@
-import bcrypt from 'bcryptjs'
-import { NextAuthOptions } from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import type { NextAuthOptions } from 'next-auth'
 
 import { prisma, ROLES } from '@/constants'
+import bcrypt from 'bcryptjs'
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 const COOKIE_PREFIX = 'event-manager'
 
 export const authOptions: NextAuthOptions = {
+	callbacks: {
+		async jwt({ token, user }) {
+			if (user?.role) {
+				token.role = user.role
+				token.firstAccess = user.firstAccess
+			}
+
+			return token
+		},
+
+		async session({ session, token }) {
+			if (token && session.user) {
+				session.user.id = token.sub as string
+				session.user.role = token.role
+				session.user.firstAccess = token.firstAccess
+			}
+
+			return session
+		},
+	},
+	cookies: {
+		callbackUrl: {
+			name: `${COOKIE_PREFIX}.callback-url`,
+			options: {
+				path: '/',
+				sameSite: 'lax',
+				secure: true,
+			},
+		},
+		csrfToken: {
+			name: `${COOKIE_PREFIX}.csrf-token`,
+			options: {
+				httpOnly: true,
+				path: '/',
+				sameSite: 'lax',
+				secure: true,
+			},
+		},
+		sessionToken: {
+			name: `${COOKIE_PREFIX}.session-token`,
+			options: {
+				httpOnly: true,
+				path: '/',
+				sameSite: 'lax',
+				secure: true,
+			},
+		},
+	},
+
+	pages: {
+		signIn: '/',
+	},
 	providers: [
 		CredentialsProvider({
-			name: 'credentials',
-
-			credentials: {
-				email: {
-					label: 'Email',
-					type: 'text',
-					placeholder: 'seu-emai@email.com.br',
-				},
-				password: {
-					label: 'Password',
-					type: 'password',
-				},
-			},
-
 			authorize: async (credentials) => {
 				if (!credentials) {
 					throw new Error('Credenciais inválidas!')
@@ -45,7 +83,7 @@ export const authOptions: NextAuthOptions = {
 				}
 
 				const userHasRole = [ROLES.ADMIN, ROLES.USER].includes(
-					user.role as ROLES,
+					user.role as ROLES
 				)
 
 				if (!userHasRole) {
@@ -57,73 +95,33 @@ export const authOptions: NextAuthOptions = {
 				}
 
 				return {
-					id: user.id,
 					email: user.email,
+					firstAccess: user.firstAccess,
+					id: user.id,
 					name: user.name,
 					role: user.role as ROLES,
-					firstAccess: user.firstAccess,
 				}
 			},
+
+			credentials: {
+				email: {
+					label: 'Email',
+					placeholder: 'seu-emai@email.com.br',
+					type: 'text',
+				},
+				password: {
+					label: 'Password',
+					type: 'password',
+				},
+			},
+			name: 'credentials',
 		}),
 	],
-
-	pages: {
-		signIn: '/',
-	},
 	secret: process.env.NEXTAUTH_SECRET,
-	cookies: {
-		sessionToken: {
-			name: `${COOKIE_PREFIX}.session-token`,
-			options: {
-				httpOnly: true,
-				sameSite: 'lax',
-				path: '/',
-				secure: true,
-			},
-		},
-		callbackUrl: {
-			name: `${COOKIE_PREFIX}.callback-url`,
-			options: {
-				sameSite: 'lax',
-				path: '/',
-				secure: true,
-			},
-		},
-		csrfToken: {
-			name: `${COOKIE_PREFIX}.csrf-token`,
-			options: {
-				httpOnly: true,
-				sameSite: 'lax',
-				path: '/',
-				secure: true,
-			},
-		},
-	},
 
 	session: {
-		strategy: 'jwt',
 		maxAge: 60 * 60 * 24, // 1 day
+		strategy: 'jwt',
 		updateAge: 60 * 60, // 1 hour
-	},
-
-	callbacks: {
-		async jwt({ token, user }) {
-			if (user?.role) {
-				token.role = user.role
-				token.firstAccess = user.firstAccess
-			}
-
-			return token
-		},
-
-		async session({ session, token }) {
-			if (token && session.user) {
-				session.user.id = token.sub as string
-				session.user.role = token.role
-				session.user.firstAccess = token.firstAccess
-			}
-
-			return session
-		},
 	},
 }

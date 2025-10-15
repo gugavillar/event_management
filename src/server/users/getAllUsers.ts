@@ -11,16 +11,16 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 						name: { contains: search },
 					},
 				}),
-				select: {
-					id: true,
-					name: true,
-					email: true,
-					role: true,
-					firstAccess: true,
-					deletedAt: true,
-				},
 				orderBy: {
 					name: 'asc',
+				},
+				select: {
+					deletedAt: true,
+					email: true,
+					firstAccess: true,
+					id: true,
+					name: true,
+					role: true,
 				},
 				skip,
 				take: LIMIT_PER_PAGE,
@@ -35,8 +35,8 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 		])
 
 		return {
-			data: users,
 			currentPage: page,
+			data: users,
 			perPage: LIMIT_PER_PAGE,
 			totalCount: totalOfUsers,
 			totalPages: Math.ceil(totalOfUsers / LIMIT_PER_PAGE),

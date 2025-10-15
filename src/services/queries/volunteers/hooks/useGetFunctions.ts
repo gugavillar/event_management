@@ -1,14 +1,13 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { useDebounce } from '@uidotdev/usehooks'
+import type { UseQueryResult } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
+import { useDebounce } from '@uidotdev/usehooks'
 import { getFunctions } from '../usecases'
-import { VolunteersFunctionsFromAPI } from '../volunteers.type'
+import type { VolunteersFunctionsFromAPI } from '../volunteers.type'
 
 export const useGetFunctions = (externalEventId = '') => {
 	const searchParams = useSearchParams()
@@ -25,14 +24,14 @@ export const useGetFunctions = (externalEventId = '') => {
 
 	const { data, isLoading }: UseQueryResult<Array<VolunteersFunctionsFromAPI>> =
 		useQuery({
-			queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch, eventId],
+			enabled: !!eventId,
 			queryFn: () =>
 				getFunctions({
 					eventId,
 					searchFunction: debounceSearch,
 				}),
-			enabled: !!eventId,
+			queryKey: [QUERY_KEYS.VOLUNTEERS_FUNCTIONS, debounceSearch, eventId],
 		})
 
-	return { data, isLoading, setSearch, search, eventId, setEventId }
+	return { data, eventId, isLoading, search, setEventId, setSearch }
 }

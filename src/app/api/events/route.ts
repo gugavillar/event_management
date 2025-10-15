@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 
 import { createEvent, getAllEvents } from '@/server'
-import { FormEvent } from '@/services/queries/events/event.type'
+import type { FormEvent } from '@/services/queries/events/event.type'
 import { requestProcess } from '@/utils/prisma'
-
 import { authOptions } from '../auth/[...nextauth]/authOptions'
 
 const handlerPost = async (request: NextRequest) => {

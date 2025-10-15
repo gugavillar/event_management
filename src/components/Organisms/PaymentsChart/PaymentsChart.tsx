@@ -1,7 +1,7 @@
 import {
 	ChartContainer,
 	ChartValidation,
-	ChartValidationProps,
+	type ChartValidationProps,
 } from '@/components/Molecules'
 
 export const PaymentsChart = ({
@@ -15,8 +15,8 @@ export const PaymentsChart = ({
 			subheadingText="Quantitativo de pagamentos por tipo"
 		>
 			<ChartValidation
-				isLoading={isLoading}
 				categories={categories}
+				isLoading={isLoading}
 				series={series}
 			/>
 		</ChartContainer>

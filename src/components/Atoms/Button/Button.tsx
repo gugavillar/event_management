@@ -1,7 +1,7 @@
-import { ComponentProps, ReactNode } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { Spinner, SpinnerProps } from '../Spinner'
+import { Spinner, type SpinnerProps } from '../Spinner'
 
 type ButtonProps = ComponentProps<'button'> & {
 	leftIcon?: ReactNode
@@ -23,7 +23,7 @@ export const Button = ({
 		<button
 			className={twMerge(
 				'inline-flex cursor-pointer items-center gap-x-2 rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold disabled:pointer-events-none disabled:opacity-50',
-				className,
+				className
 			)}
 			disabled={isLoading}
 			{...props}

@@ -1,6 +1,6 @@
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
-import { ROLES } from '@/constants'
+import type { ROLES } from '@/constants'
 
 export type UserAPI = {
 	id: UUID

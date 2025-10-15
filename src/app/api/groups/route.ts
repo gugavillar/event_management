@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { createGroup } from '@/server'
-import { FormGroup } from '@/services/queries/groups/groups.types'
+import type { FormGroup } from '@/services/queries/groups/groups.types'
 import { requestProcess } from '@/utils/prisma'
 
 const handlerPost = async (request: NextRequest) => {

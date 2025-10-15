@@ -4,7 +4,7 @@ type Event = MouseEvent | TouchEvent
 
 export const useClickAway = <T extends HTMLElement | null>(
 	ref: React.RefObject<T>,
-	onClickAway: (event: Event) => void,
+	onClickAway: (event: Event) => void
 ) => {
 	const savedCallback = useRef(onClickAway)
 

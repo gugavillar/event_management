@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-import { CHECK_IN_STATUS } from '@/constants'
+import type { CHECK_IN_STATUS } from '@/constants'
 import { createParticipant, getAllParticipants } from '@/server'
 import { requestProcess } from '@/utils/prisma'
-
-import { ParticipantSchemaRouteType } from './participant.schema'
+import type { ParticipantSchemaRouteType } from './participant.schema'
 
 const handlerGet = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams.get('searchParticipant')
@@ -12,11 +11,11 @@ const handlerGet = async (request: NextRequest) => {
 	const statusParams = request.nextUrl.searchParams.get('statusParticipant')
 	const cityParams = request.nextUrl.searchParams.get('participantCity')
 	const hasNoGroupParams = Boolean(
-		request.nextUrl.searchParams.get('hasNoGroup'),
+		request.nextUrl.searchParams.get('hasNoGroup')
 	)
 	const hasNoRoomParams = Boolean(request.nextUrl.searchParams.get('hasNoRoom'))
 	const isInterestedParams = Boolean(
-		request.nextUrl.searchParams.get('isInterested'),
+		request.nextUrl.searchParams.get('isInterested')
 	)
 	const pageParams =
 		Number(request.nextUrl.searchParams.get('pageParticipant')) || 1
@@ -33,7 +32,7 @@ const handlerGet = async (request: NextRequest) => {
 				cityParams,
 				isInterestedParams,
 				pageParams,
-				limitParams,
+				limitParams
 			),
 	})
 }

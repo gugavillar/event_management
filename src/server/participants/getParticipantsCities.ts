@@ -2,11 +2,14 @@ import { prisma } from '@/constants'
 
 export const getParticipantsCities = async (
 	isInterested: boolean | null,
-	eventId: string | null,
+	eventId: string | null
 ) => {
 	try {
 		return await prisma.participantAddress.groupBy({
 			by: ['city'],
+			orderBy: {
+				city: 'asc',
+			},
 			where: {
 				participant: {
 					...(eventId && { eventId }),
@@ -16,9 +19,6 @@ export const getParticipantsCities = async (
 								OR: [{ interested: false }, { interested: null }],
 							}),
 				},
-			},
-			orderBy: {
-				city: 'asc',
 			},
 		})
 	} catch (error) {

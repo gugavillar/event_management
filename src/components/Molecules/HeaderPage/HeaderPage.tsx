@@ -1,6 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Header } from '@/components/Atoms'

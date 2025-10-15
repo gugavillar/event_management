@@ -1,4 +1,4 @@
-import { CHECK_IN_STATUS } from '@/constants'
+import type { CHECK_IN_STATUS } from '@/constants'
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
@@ -8,11 +8,11 @@ type UpdateCheckInParticipantArgs = {
 }
 
 export const updateCheckInParticipant = async (
-	data: UpdateCheckInParticipantArgs,
+	data: UpdateCheckInParticipantArgs
 ) => {
 	const response = await api.patch(
 		ENDPOINTS.UPDATE_CHECK_IN_PARTICIPANT(data.participantId),
-		{ ...data },
+		{ ...data }
 	)
 
 	return response.data

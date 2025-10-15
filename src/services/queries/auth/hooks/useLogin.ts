@@ -1,17 +1,17 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { getSession, signIn, SignInResponse } from 'next-auth/react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-import { LoginButtonSchemaType } from '@/components/Organisms/LoginButton/LoginButton.schema'
+import type { LoginButtonSchemaType } from '@/components/Organisms/LoginButton/LoginButton.schema'
 import { PRINCIPAL_LINKS } from '@/constants'
 import { convertToBoolean } from '@/formatters'
 import { useMutation } from '@/providers/QueryProvider'
+import { getSession, type SignInResponse, signIn } from 'next-auth/react'
 
 export const useLogin = () => {
 	const [hasToDefineNewPassword, setHasToDefineNewPassword] = useState(
-		convertToBoolean(''),
+		convertToBoolean('')
 	)
 	const { push } = useRouter()
 
@@ -22,11 +22,15 @@ export const useLogin = () => {
 				password,
 				redirect: false,
 			}),
+		onError: () => {
+			toast.error('Erro ao efetuar login')
+		},
 		onSuccess: async (data: SignInResponse | undefined) => {
 			if (data?.error) {
 				return toast.error(data?.error ?? 'Erro ao efetuar login')
 			}
 			await toast.promise(getSession(), {
+				error: () => 'Falha ao realizar o login tente novamente',
 				loading: 'Verificando credenciais...',
 				success: (data) => {
 					const userRole = data?.user?.role
@@ -44,18 +48,14 @@ export const useLogin = () => {
 
 					return 'Redirecionando para o dashboard'
 				},
-				error: () => 'Falha ao realizar o login tente novamente',
 			})
-		},
-		onError: () => {
-			toast.error('Erro ao efetuar login')
 		},
 	})
 
 	return {
-		isPending,
 		hasToDefineNewPassword,
-		setHasToDefineNewPassword,
+		isPending,
 		login,
+		setHasToDefineNewPassword,
 	}
 }

@@ -2,20 +2,20 @@ import { z } from 'zod'
 
 import {
 	GenderTypeAPI,
-	MAX_FIELD_LENGTH,
 	MAX_CURRENCY_VALUE,
+	MAX_FIELD_LENGTH,
 	MIN_CURRENCY_VALUE,
 } from '@/constants'
 
 export const eventSchemaRoute = z.object({
-	name: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
+	finalDate: z.iso.datetime({ precision: 3 }),
 	gender: z.enum([
 		GenderTypeAPI.MALE,
 		GenderTypeAPI.FEMALE,
 		GenderTypeAPI.BOTH,
 	]),
 	initialDate: z.iso.datetime({ precision: 3 }),
-	finalDate: z.iso.datetime({ precision: 3 }),
+	name: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
 	participantPrice: z.coerce
 		.number()
 		.min(MIN_CURRENCY_VALUE)

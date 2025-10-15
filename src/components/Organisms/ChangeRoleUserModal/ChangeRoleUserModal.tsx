@@ -1,18 +1,17 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Dispatch, memo, SetStateAction } from 'react'
-import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal } from '@/components/Atoms'
 import { SelectField } from '@/components/Molecules'
-import { overlayClose, ROLES, RolesTypesSelectOptions } from '@/constants'
+import { overlayClose, type ROLES, RolesTypesSelectOptions } from '@/constants'
 import { useUpdateUserRole } from '@/services/queries/users'
-import { UserAPI } from '@/services/queries/users/users.type'
-
+import type { UserAPI } from '@/services/queries/users/users.type'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import {
 	ChangeRoleUserSchema,
-	ChangeRoleUserType,
+	type ChangeRoleUserType,
 } from './ChangeRoleUserModal.schema'
 
 type ChangeRoleUserModalProps = {
@@ -37,19 +36,19 @@ export const ChangeRoleUserModal = memo(
 			await update(
 				{ role: values.role as ROLES, userId: selectedUser },
 				{
+					onError: () => toast.error('Erro ao alterar a permissão'),
 					onSuccess: () => {
 						setSelectedUser(null)
 						methods.reset()
 						toast.success('Permissão atualizada com sucesso!')
 						overlayClose(modalId)
 					},
-					onError: () => toast.error('Erro ao alterar a permissão'),
-				},
+				}
 			)
 		}
 
 		return (
-			<Modal modalId={modalId} handleClose={() => setSelectedUser(null)}>
+			<Modal handleClose={() => setSelectedUser(null)} modalId={modalId}>
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
@@ -58,17 +57,17 @@ export const ChangeRoleUserModal = memo(
 							</Header>
 							<SelectField
 								fieldName="role"
-								placeholder="Selecione o tipo de permissão"
 								options={RolesTypesSelectOptions}
+								placeholder="Selecione o tipo de permissão"
 							>
 								Tipo de permissão
 							</SelectField>
 							<Button
 								className="w-full max-w-60 items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-								type="submit"
-								onClick={methods.handleSubmit(handleSubmit)}
 								disabled={!methods.formState.isValid}
 								isLoading={isPending}
+								onClick={methods.handleSubmit(handleSubmit)}
+								type="submit"
 							>
 								Alterar a permissão
 							</Button>
@@ -77,7 +76,7 @@ export const ChangeRoleUserModal = memo(
 				</FormProvider>
 			</Modal>
 		)
-	},
+	}
 )
 
 ChangeRoleUserModal.displayName = 'ChangeRoleUserModal'

@@ -17,8 +17,8 @@ export const getTransactions = async ({
 		params: {
 			...(eventId && { eventId }),
 			...(searchTransaction && { searchTransaction }),
-			page,
 			limit: LIMIT_PER_PAGE,
+			page,
 		},
 	})
 

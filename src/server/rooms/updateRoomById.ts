@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 import { roomSchemaRoute } from '@/app/api/rooms/room.schema'
 import { MEMBERS, prisma } from '@/constants'
-import { FormRoom } from '@/services/queries/rooms/rooms.types'
+import type { FormRoom } from '@/services/queries/rooms/rooms.types'
 
 export const updateRoomById = async (data: FormRoom, id: string) => {
 	try {
@@ -15,8 +15,8 @@ export const updateRoomById = async (data: FormRoom, id: string) => {
 		return await prisma.$transaction(async (tx) => {
 			const room = await tx.room.update({
 				data: {
-					roomNumber: data.roomNumber,
 					eventId: data.eventId,
+					roomNumber: data.roomNumber,
 				},
 				where: {
 					id,
@@ -26,8 +26,8 @@ export const updateRoomById = async (data: FormRoom, id: string) => {
 
 			await tx.roomMember.createMany({
 				data: data.members.map((member: any) => ({
-					type: member.type,
 					roomId: room.id,
+					type: member.type,
 					...(member.type === MEMBERS.PARTICIPANT
 						? { participantId: member.member }
 						: { volunteerId: member.member }),

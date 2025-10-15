@@ -1,9 +1,7 @@
 'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, UsersRound } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useCallback, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
@@ -14,31 +12,32 @@ import {
 } from '@/components/Organisms'
 import {
 	GroupSchema,
-	GroupSchemaType,
+	type GroupSchemaType,
 } from '@/components/Organisms/GroupDrawer/GroupDrawer.schema'
 import { MODALS_IDS, overlayOpen } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetGroupByEventId } from '@/services/queries/groups'
-import { GroupAPI } from '@/services/queries/groups/groups.types'
-
+import type { GroupAPI } from '@/services/queries/groups/groups.types'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
 import { Content, formatTableData } from './Groups.utils'
 
 const GroupDeleteModal = dynamic(() =>
-	import('@/components/Organisms').then((mod) => mod.GroupDeleteModal),
+	import('@/components/Organisms').then((mod) => mod.GroupDeleteModal)
 )
 
 const GroupDrawer = dynamic(
 	() => import('@/components/Organisms').then((mod) => mod.GroupDrawer),
 	{
 		ssr: false,
-	},
+	}
 )
 
 export const Groups = ({ eventId }: { eventId: string }) => {
 	const [selectedGroup, setSelectedGroup] = useState<GroupAPI['id'] | null>(
-		null,
+		null
 	)
 
 	const {
@@ -57,25 +56,25 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 	} = useGetInfinityEvents()
 
 	const methods = useForm<GroupSchemaType>({
-		mode: 'onChange',
-		resolver: zodResolver(GroupSchema),
 		defaultValues: {
 			eventId: '',
+			members: [{ member: '', type: '' }],
 			name: '',
-			members: [{ type: '', member: '' }],
 		},
+		mode: 'onChange',
+		resolver: zodResolver(GroupSchema),
 	})
 
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
+		fetchNextPage,
 		hasNextPage: Boolean(hasNextPage),
 		isFetchingNextPage,
-		fetchNextPage,
 	})
 
 	const handleOpenModalToDeleteGroup = useCallback((id: GroupAPI['id']) => {
@@ -92,7 +91,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 			}
 			overlayOpen(MODALS_IDS.GROUP_DRAWER)
 		},
-		[],
+		[]
 	)
 
 	const formattedGroups = formatTableData(groups)
@@ -107,10 +106,10 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 					/>
 				)}
 				<Button
-					type="button"
-					onClick={() => handleOpenDrawerToCreateOrEditGroup()}
-					leftIcon={<UsersRound />}
 					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+					leftIcon={<UsersRound />}
+					onClick={() => handleOpenDrawerToCreateOrEditGroup()}
+					type="button"
 				>
 					Criar um novo grupo
 				</Button>
@@ -122,19 +121,19 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 						<ComboBox
 							keyOptionLabel="label"
 							keyOptionValue="value"
+							lastItemRef={lastItemRef}
 							options={formattedEvents}
+							placeholder="Selecione um evento"
 							selectedValue={groupEventId}
 							setSelectedValue={setGroupEventId}
-							lastItemRef={lastItemRef}
-							placeholder="Selecione um evento"
 						/>
 						<Field
-							placeholder="Encontrar membro"
-							rightIcon={<Search size={24} />}
 							className="ps-11"
-							value={searchMemberGroup}
 							disabled={!groupEventId}
 							onChange={(event) => setSearchMemberGroup(event.target.value)}
+							placeholder="Encontrar membro"
+							rightIcon={<Search size={24} />}
+							value={searchMemberGroup}
 						/>
 					</>
 				}
@@ -144,7 +143,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 					isLoading,
 					formattedGroups,
 					handleOpenModalToDeleteGroup,
-					handleOpenDrawerToCreateOrEditGroup,
+					handleOpenDrawerToCreateOrEditGroup
 				)}
 			</ListPage>
 			<FormProvider {...methods}>

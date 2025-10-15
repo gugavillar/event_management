@@ -1,6 +1,6 @@
 import { transactionSchemaRoute } from '@/app/api/transactions/transaction.schema'
 import { prisma } from '@/constants'
-import { FormTransaction } from '@/services/queries/transactions/transactions.types'
+import type { FormTransaction } from '@/services/queries/transactions/transactions.types'
 
 export const createTransaction = (data: FormTransaction) => {
 	try {

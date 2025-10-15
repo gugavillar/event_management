@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker'
-
 import {
 	convertToBoolean,
 	formatterComboBoxValues,
@@ -8,10 +7,10 @@ import {
 
 const MOCKED_VALUES = (quantity: number) =>
 	Array.from({ length: quantity }, () => ({
+		email: faker.internet.email(),
+		gender: faker.person.gender(),
 		id: faker.string.uuid(),
 		name: faker.person.fullName(),
-		gender: faker.person.gender(),
-		email: faker.internet.email(),
 		phone: faker.phone.number(),
 	}))
 
@@ -20,7 +19,7 @@ describe('inputs formatters', () => {
 		const values = MOCKED_VALUES(10)
 		const formattedValues = formatterFieldSelectValues(values, 'name', 'id')
 		expect(formattedValues).toEqual(
-			values.map((value) => ({ label: value.name, value: value.id })),
+			values.map((value) => ({ label: value.name, value: value.id }))
 		)
 	})
 
@@ -40,7 +39,7 @@ describe('inputs formatters', () => {
 		expect(formattedValues).toEqual(
 			values.map((value) => ({
 				customProps: { label: value.name, value: value.id },
-			})),
+			}))
 		)
 	})
 
@@ -64,7 +63,7 @@ describe('inputs formatters', () => {
 			'name',
 			'id',
 			true,
-			'All',
+			'All'
 		)
 		expect(formattedValues).toEqual([
 			{

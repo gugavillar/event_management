@@ -1,22 +1,21 @@
 'use client'
 
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 import { QUERY_KEYS } from '@/constants'
 import { useQuery } from '@/providers/QueryProvider'
-
 import { getExportParticipantsData } from '../usecases'
 
 export const useGetExportParticipantsData = (
 	event_id: string,
-	isInterested?: boolean,
+	isInterested?: boolean
 ) => {
 	const { isError, isFetching, data }: UseQueryResult<BlobPart> = useQuery({
-		queryKey: [QUERY_KEYS.PARTICIPANTS_EXPORT_DATA, event_id, isInterested],
-		queryFn: () => getExportParticipantsData(event_id, isInterested),
 		enabled: !!event_id,
+		queryFn: () => getExportParticipantsData(event_id, isInterested),
+		queryKey: [QUERY_KEYS.PARTICIPANTS_EXPORT_DATA, event_id, isInterested],
 		staleTime: 100,
 	})
 
-	return { isError, isFetching, data }
+	return { data, isError, isFetching }
 }

@@ -1,9 +1,9 @@
 'use client'
-import { useWindowSize } from '@uidotdev/usehooks'
 import { usePathname } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import { memo } from 'react'
 
+import { useWindowSize } from '@uidotdev/usehooks'
+import { useSession } from 'next-auth/react'
 import { MenuItem } from './MenuItem'
 import { MENU_LINKS } from './PrincipalMenu.utils'
 import { SubMenuItem } from './SubMenuItem'
@@ -25,22 +25,22 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 				item.hasSubMenu ? (
 					<SubMenuItem
 						{...item}
-						path={path}
-						key={item.buttonLabel}
 						collapsed={collapsed}
+						key={item.buttonLabel}
+						path={path}
 						userRole={data?.user?.role}
 						width={width}
 					/>
 				) : (
 					<MenuItem
 						{...item}
-						path={path}
-						key={item.buttonLabel}
 						collapsed={collapsed}
+						key={item.buttonLabel}
+						path={path}
 						userRole={data?.user?.role}
 						width={width}
 					/>
-				),
+				)
 			)}
 		</nav>
 	)

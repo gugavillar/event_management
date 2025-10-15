@@ -6,7 +6,7 @@ export const getExportTransactions = async (event_id: string) => {
 		ENDPOINTS.EXPORT_TRANSACTIONS_DATA(event_id),
 		{
 			responseType: 'arraybuffer',
-		},
+		}
 	)
 
 	return response

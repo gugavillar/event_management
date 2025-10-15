@@ -6,7 +6,7 @@ import { prisma } from '@/constants'
 export const blockOrUnblockUser = async (
 	userId: string,
 	userIdLogged: string,
-	isBlock: boolean,
+	isBlock: boolean
 ) => {
 	try {
 		z.object({
@@ -23,16 +23,16 @@ export const blockOrUnblockUser = async (
 				},
 				{
 					status: 400,
-				},
+				}
 			)
 		}
 
 		return await prisma.user.update({
-			where: {
-				id: userId,
-			},
 			data: {
 				deletedAt: isBlock ? new Date() : null,
+			},
+			where: {
+				id: userId,
 			},
 		})
 	} catch (error) {

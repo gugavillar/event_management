@@ -22,11 +22,11 @@ export default async function ParticipantsPaymentsPage({
 	searchParams,
 }: SearchParams) {
 	const params = await searchParams.then((res) => ({
-		searchParticipant: res.searchParticipant ?? '',
-		eventId: res.eventId ?? '',
-		paymentType: res.paymentType ?? '',
-		pageParticipantPayment: res.pageParticipantPayment ?? '',
 		cityParticipant: res.cityParticipant ?? '',
+		eventId: res.eventId ?? '',
+		pageParticipantPayment: res.pageParticipantPayment ?? '',
+		paymentType: res.paymentType ?? '',
+		searchParticipant: res.searchParticipant ?? '',
 	}))
 	const debounceSearchValue = params.searchParticipant
 	const debounceEventIdValue = params.eventId
@@ -34,14 +34,14 @@ export default async function ParticipantsPaymentsPage({
 	const debounceCityValue = params.cityParticipant
 	const page = generatePage(params.pageParticipantPayment)
 
-	const getAllEvents = () => getEvents({ searchEvent: '', page: 1 })
+	const getAllEvents = () => getEvents({ page: 1, searchEvent: '' })
 	const getAllPayments = () =>
 		getPayments({
-			searchParticipant: debounceSearchValue,
 			eventId: debounceEventIdValue,
-			paymentType: debouncePaymentType,
-			participantCity: debounceCityValue,
 			page,
+			participantCity: debounceCityValue,
+			paymentType: debouncePaymentType,
+			searchParticipant: debounceSearchValue,
 		})
 	const getCities = () => getParticipantsCities(false, debounceEventIdValue)
 
@@ -58,9 +58,9 @@ export default async function ParticipantsPaymentsPage({
 			]}
 		>
 			<HydrationInfinityProvider
+				initialPageParam={1}
 				queryFn={getAllEvents}
 				queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}
-				initialPageParam={1}
 			>
 				<HydrationProvider
 					queryFn={getCities}

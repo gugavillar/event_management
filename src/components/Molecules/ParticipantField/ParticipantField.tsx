@@ -1,14 +1,13 @@
 'use client'
-import { Controller, useFormContext } from 'react-hook-form'
 
 import { CHECK_IN_STATUS, LIMIT_PER_PAGE_EDITION, MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import {
+	type UseGetInfinityParticipantsArgs,
 	useGetInfinityParticipants,
-	UseGetInfinityParticipantsArgs,
 } from '@/services/queries/participants'
-
+import { Controller, useFormContext } from 'react-hook-form'
 import { SearchBox } from '../SearchBox'
 
 type ParticipantFieldProps = UseGetInfinityParticipantsArgs & {
@@ -47,31 +46,31 @@ export const ParticipantField = ({
 	const formattedParticipants = formatterComboBoxValues(
 		baseParticipants,
 		'name',
-		'id',
+		'id'
 	)
 
 	const lastItemRefParticipants = useInfiniteScrollObserver({
+		fetchNextPage: fetchNextPageParticipants,
 		hasNextPage: Boolean(hasNextPageParticipants),
 		isFetchingNextPage: isFetchingNextPageParticipants,
-		fetchNextPage: fetchNextPageParticipants,
 	})
 	return (
 		<Controller
+			control={control}
 			key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 			name={fieldMemberName}
-			control={control}
 			render={({ field }) => (
 				<SearchBox
-					search={searchParticipant}
-					setSearch={setSearchParticipant}
-					label="Membro"
+					error={fieldError}
 					keyOptionLabel="label"
 					keyOptionValue="value"
-					options={formattedParticipants}
-					selectedValue={field.value}
-					setSelectedValue={field.onChange}
+					label="Membro"
 					lastItemRef={lastItemRefParticipants}
-					error={fieldError}
+					options={formattedParticipants}
+					search={searchParticipant}
+					selectedValue={field.value}
+					setSearch={setSearchParticipant}
+					setSelectedValue={field.onChange}
 				/>
 			)}
 		/>

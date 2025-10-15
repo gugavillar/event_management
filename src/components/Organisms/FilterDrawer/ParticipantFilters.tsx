@@ -2,8 +2,7 @@ import { Label, Select } from '@/components/Atoms'
 import { PaymentSelectOptions, StatusSelectOptions } from '@/constants'
 import { formatterFieldSelectValues } from '@/formatters'
 import { useGetParticipantsCities } from '@/services/queries/participants'
-
-import { FilterType } from './FilterDrawer'
+import type { FilterType } from './FilterDrawer'
 
 type ParticipantFiltersProps = {
 	eventId: string
@@ -27,7 +26,7 @@ export const ParticipantFilters = ({
 	const formattedCities = formatterFieldSelectValues(
 		participantsCities,
 		'city',
-		'city',
+		'city'
 	)
 	formattedCities.unshift({
 		label: 'Todos as cidades',
@@ -40,10 +39,10 @@ export const ParticipantFilters = ({
 				<div className="w-full">
 					<Label>Tipo de pagamento</Label>
 					<Select
-						placeholder="Selecione o tipo de pagamento"
-						options={PaymentSelectOptions}
-						value={filters.paymentType}
 						onChange={(e) => handleFilter('paymentType', e.target.value)}
+						options={PaymentSelectOptions}
+						placeholder="Selecione o tipo de pagamento"
+						value={filters.paymentType}
 					/>
 				</div>
 			) : (
@@ -51,10 +50,10 @@ export const ParticipantFilters = ({
 					<div className="w-full">
 						<Label>Status</Label>
 						<Select
-							placeholder="Selecione o status"
-							options={StatusSelectOptions}
-							value={filters.status}
 							onChange={(e) => handleFilter('status', e.target.value)}
+							options={StatusSelectOptions}
+							placeholder="Selecione o status"
+							value={filters.status}
 						/>
 					</div>
 				)
@@ -62,9 +61,9 @@ export const ParticipantFilters = ({
 			<div className="w-full">
 				<Label>Cidade</Label>
 				<Select
+					onChange={(e) => handleFilter('city', e.target.value)}
 					options={formattedCities}
 					value={filters.city}
-					onChange={(e) => handleFilter('city', e.target.value)}
 				/>
 			</div>
 		</>

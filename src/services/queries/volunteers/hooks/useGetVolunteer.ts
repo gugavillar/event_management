@@ -1,15 +1,14 @@
 'use client'
-import { UseQueryResult } from '@tanstack/react-query'
-import { format } from 'date-fns'
+import type { UseQueryResult } from '@tanstack/react-query'
 
-import { UUID } from 'crypto'
+import type { UUID } from 'crypto'
 
 import { QUERY_KEYS } from '@/constants'
 import { formatPhone } from '@/formatters'
 import { useQuery } from '@/providers/QueryProvider'
-
+import { format } from 'date-fns'
 import { getVolunteer } from '../usecases'
-import { VolunteersAPI } from '../volunteers.type'
+import type { VolunteersAPI } from '../volunteers.type'
 
 type FormattedVolunteersAPI = Omit<VolunteersAPI, 'address'> & {
 	address: Extract<VolunteersAPI['address'], { id: UUID }>
@@ -19,19 +18,19 @@ type FormattedVolunteersAPI = Omit<VolunteersAPI, 'address'> & {
 
 export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
 	const { data, isLoading }: UseQueryResult<FormattedVolunteersAPI> = useQuery({
-		queryKey: [QUERY_KEYS.VOLUNTEER, volunteerId],
-		queryFn: () => getVolunteer(volunteerId as VolunteersAPI['id']),
 		enabled: !!volunteerId,
+		queryFn: () => getVolunteer(volunteerId as VolunteersAPI['id']),
+		queryKey: [QUERY_KEYS.VOLUNTEER, volunteerId],
 		select: ({ address, ...data }: VolunteersAPI) => ({
 			...data,
-			birthdate: format(data.birthdate, 'dd/MM/yyyy'),
-			phone: formatPhone(data.phone),
-			relativePhone: formatPhone(data.relativePhone),
-			hasCell: data.cell ? 'Yes' : ('No' as 'Yes' | 'No'),
-			hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
 			address: {
 				...address,
 			},
+			birthdate: format(data.birthdate, 'dd/MM/yyyy'),
+			hasCell: data.cell ? 'Yes' : ('No' as 'Yes' | 'No'),
+			hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
+			phone: formatPhone(data.phone),
+			relativePhone: formatPhone(data.relativePhone),
 		}),
 	})
 

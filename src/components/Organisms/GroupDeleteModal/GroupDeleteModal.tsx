@@ -1,12 +1,12 @@
 'use client'
 import { OctagonAlert } from 'lucide-react'
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { overlayClose } from '@/constants'
 import { useDeleteGroup } from '@/services/queries/groups'
-import { GroupAPI } from '@/services/queries/groups/groups.types'
+import type { GroupAPI } from '@/services/queries/groups/groups.types'
 import { generateToastError } from '@/utils/errors'
 
 type GroupDeleteModalProps = {
@@ -25,12 +25,12 @@ export const GroupDeleteModal = ({
 	const handleDeleteGroup = async () => {
 		if (!selectedGroup) return
 		await remove(selectedGroup, {
+			onError: (error) => generateToastError(error, 'Erro ao excluir grupo'),
 			onSuccess: () => {
 				setSelectedGroup(null)
 				toast.success('Grupo excluído com sucesso!')
 				overlayClose(modalId)
 			},
-			onError: (error) => generateToastError(error, 'Erro ao excluir grupo'),
 		})
 	}
 
@@ -40,10 +40,10 @@ export const GroupDeleteModal = ({
 	}
 
 	return (
-		<Modal modalId={modalId} handleClose={handleCloseGroupDeleteModal}>
+		<Modal handleClose={handleCloseGroupDeleteModal} modalId={modalId}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
-					<OctagonAlert size={64} className="text-amber-300" />
+					<OctagonAlert className="text-amber-300" size={64} />
 					<div className="space-y-4 text-center">
 						<Header as="h3" className="text-2xl">
 							Você deseja excluir o grupo?
@@ -55,18 +55,18 @@ export const GroupDeleteModal = ({
 					</div>
 					<div className="flex w-full items-center justify-between gap-x-8">
 						<Button
-							type="button"
 							className="w-full items-center justify-center transition-colors duration-500 hover:bg-gray-200"
 							disabled={isPending}
 							onClick={handleCloseGroupDeleteModal}
+							type="button"
 						>
 							Cancelar
 						</Button>
 						<Button
 							className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
-							onClick={handleDeleteGroup}
-							isLoading={isPending}
 							disabled={isPending}
+							isLoading={isPending}
+							onClick={handleDeleteGroup}
 						>
 							Confirmar
 						</Button>

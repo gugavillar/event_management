@@ -1,40 +1,40 @@
 'use client'
-import { format } from 'date-fns'
 import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
 
 import { Dropdown, Tooltip } from '@/components/Atoms'
 import { GenderType, MEMBERS } from '@/constants'
 import { currencyValue } from '@/formatters'
-import { EventsAPI } from '@/services/queries/events/event.type'
+import type { EventsAPI } from '@/services/queries/events/event.type'
+import { format } from 'date-fns'
 
 export const HEADER_LABELS = [
 	{
-		label: 'Nome',
 		accessor: 'name',
+		label: 'Nome',
 	},
 	{
-		label: 'Gênero',
 		accessor: 'gender',
+		label: 'Gênero',
 	},
 	{
-		label: 'Data inicial',
 		accessor: 'initialDate',
+		label: 'Data inicial',
 	},
 	{
-		label: 'Data final',
 		accessor: 'finalDate',
+		label: 'Data final',
 	},
 	{
-		label: 'R$ Participante',
 		accessor: 'participantPrice',
+		label: 'R$ Participante',
 	},
 	{
-		label: 'R$ Voluntário',
 		accessor: 'volunteerPrice',
+		label: 'R$ Voluntário',
 	},
 	{
-		label: '',
 		accessor: 'actions',
+		label: '',
 	},
 ]
 
@@ -44,28 +44,23 @@ export const formatTableData = (
 	handleDeleteEvent: (id: EventsAPI['id']) => void,
 	handleOpenLink: (
 		id: EventsAPI['id'],
-		type: 'participante' | 'voluntario',
+		type: 'participante' | 'voluntario'
 	) => void,
 	handleBlockOrOpenRegistration: (
 		id: EventsAPI['id'],
 		memberType: MEMBERS,
-		action: 'open' | 'close',
+		action: 'open' | 'close'
 	) => void,
 	handleActivatedOrDeactivatedInterestedList: (
 		id: EventsAPI['id'],
-		action: 'open' | 'close',
+		action: 'open' | 'close'
 	) => void,
-	handleOpenInterestedLink: (id: EventsAPI['id']) => void,
+	handleOpenInterestedLink: (id: EventsAPI['id']) => void
 ) => {
 	if (!data) return []
 
 	return data?.map((event) => ({
 		...event,
-		gender: GenderType[event.gender].label,
-		initialDate: format(event.initialDate, 'dd/MM/yyyy'),
-		finalDate: format(event.finalDate, 'dd/MM/yyyy'),
-		participantPrice: currencyValue(Number(event.participantPrice)),
-		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
 		actions: (
 			<div className="flex space-x-4">
 				<div className="hs-tooltip">
@@ -83,7 +78,7 @@ export const formatTableData = (
 									handleBlockOrOpenRegistration(
 										event.id,
 										MEMBERS.PARTICIPANT,
-										event.isParticipantRegistrationOpen ? 'close' : 'open',
+										event.isParticipantRegistrationOpen ? 'close' : 'open'
 									)
 								}
 							>
@@ -103,7 +98,7 @@ export const formatTableData = (
 									handleBlockOrOpenRegistration(
 										event.id,
 										MEMBERS.VOLUNTEER,
-										event.isVolunteerRegistrationOpen ? 'close' : 'open',
+										event.isVolunteerRegistrationOpen ? 'close' : 'open'
 									)
 								}
 							>
@@ -122,7 +117,7 @@ export const formatTableData = (
 								onClick={() =>
 									handleActivatedOrDeactivatedInterestedList(
 										event.id,
-										event.isInterestedListOpen ? 'close' : 'open',
+										event.isInterestedListOpen ? 'close' : 'open'
 									)
 								}
 							>
@@ -137,20 +132,25 @@ export const formatTableData = (
 				<div className="hs-tooltip">
 					<SquarePen
 						className="cursor-pointer"
-						size={18}
 						onClick={() => handleOpenDrawer(event.id)}
+						size={18}
 					/>
 					<Tooltip>Editar</Tooltip>
 				</div>
 				<div className="hs-tooltip">
 					<CalendarMinus
 						className="cursor-pointer"
-						size={18}
 						onClick={() => handleDeleteEvent(event.id)}
+						size={18}
 					/>
 					<Tooltip>Excluir</Tooltip>
 				</div>
 			</div>
 		),
+		finalDate: format(event.finalDate, 'dd/MM/yyyy'),
+		gender: GenderType[event.gender].label,
+		initialDate: format(event.initialDate, 'dd/MM/yyyy'),
+		participantPrice: currencyValue(Number(event.participantPrice)),
+		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
 	}))
 }

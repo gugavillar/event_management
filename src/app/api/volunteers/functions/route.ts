@@ -1,7 +1,7 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { createFunction, getAllFunctions } from '@/server'
-import { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
+import type { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
 import { requestProcess } from '@/utils/prisma'
 
 const handlePost = async (request: NextRequest) => {

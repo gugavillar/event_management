@@ -16,7 +16,7 @@ describe('Button component', () => {
 		const { getByTestId } = render(
 			<Button leftIcon={leftIcon} rightIcon={rightIcon}>
 				Button
-			</Button>,
+			</Button>
 		)
 
 		expect(getByTestId('left-icon')).toBeInTheDocument()
@@ -25,7 +25,7 @@ describe('Button component', () => {
 
 	it('applies custom className', () => {
 		const { getByRole } = render(
-			<Button className="custom-class">Button</Button>,
+			<Button className="custom-class">Button</Button>
 		)
 		const button = getByRole('button', { name: 'Button' })
 		expect(button).toHaveClass('custom-class')
@@ -55,7 +55,7 @@ describe('Button component', () => {
 		const { getByTestId } = render(
 			<Button isLoading spinnerProps={{ className: 'custom-class' }}>
 				Button
-			</Button>,
+			</Button>
 		)
 		const spinner = getByTestId('loading-spinner')
 		expect(spinner).toHaveClass('custom-class')
@@ -65,7 +65,7 @@ describe('Button component', () => {
 		const { getByTestId } = render(
 			<Button isLoading leftIcon={<span>👈</span>}>
 				Button
-			</Button>,
+			</Button>
 		)
 		const spinner = getByTestId('loading-spinner')
 		expect(spinner).toBeInTheDocument()
@@ -74,11 +74,11 @@ describe('Button component', () => {
 	it('show left icon when leftIcon is provided and isLoading is false', () => {
 		const { getByTestId } = render(
 			<Button
-				leftIcon={<span data-testid="left-icon">👈</span>}
 				isLoading={false}
+				leftIcon={<span data-testid="left-icon">👈</span>}
 			>
 				Button
-			</Button>,
+			</Button>
 		)
 		const leftIcon = getByTestId('left-icon')
 		expect(leftIcon).toBeInTheDocument()

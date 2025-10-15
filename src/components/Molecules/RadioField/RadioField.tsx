@@ -1,8 +1,13 @@
 'use client'
+
+import {
+	HelperErrorText,
+	Label,
+	Radio,
+	type RadioProps,
+} from '@/components/Atoms'
 import { get } from 'lodash'
 import { useFormContext } from 'react-hook-form'
-
-import { HelperErrorText, Label, Radio, RadioProps } from '@/components/Atoms'
 
 type RadioFieldProps = {
 	children: string
@@ -26,9 +31,9 @@ export const RadioField = ({
 			<Radio
 				options={options}
 				{...register(fieldName)}
+				fieldName={fieldName}
 				isInvalid={!!error?.message}
 				position={position}
-				fieldName={fieldName}
 			/>
 			{error?.message ? (
 				<HelperErrorText className="text-red-500">

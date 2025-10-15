@@ -20,7 +20,7 @@ describe('Header component', () => {
 		const { getByText } = render(
 			<Header as={heading} data-testid="header">
 				Header
-			</Header>,
+			</Header>
 		)
 
 		const header = getByText('Header')
@@ -32,7 +32,7 @@ describe('Header component', () => {
 		const { container } = render(
 			<Header className="custom-class" data-testid="header">
 				Header
-			</Header>,
+			</Header>
 		)
 
 		const header = container.querySelector('h1')
@@ -44,7 +44,7 @@ describe('Header component', () => {
 		const { container } = render(
 			<Header data-testid="header" id="test">
 				Header
-			</Header>,
+			</Header>
 		)
 
 		const header = container.querySelector('h1')

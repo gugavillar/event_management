@@ -6,7 +6,7 @@ export const getExportVolunteerData = async (event_id: string) => {
 		ENDPOINTS.EXPORT_VOLUNTEERS_DATA(event_id),
 		{
 			responseType: 'arraybuffer',
-		},
+		}
 	)
 
 	return response

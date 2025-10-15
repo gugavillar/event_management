@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { UserAPI } from '../users.type'
+import type { UserAPI } from '../users.type'
 
 type ResetPasswordArgs = {
 	userId: UserAPI['id']

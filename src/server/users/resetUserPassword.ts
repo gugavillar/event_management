@@ -1,12 +1,12 @@
-import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { prisma } from '@/constants'
+import bcrypt from 'bcryptjs'
 
 export const resetUserPassword = async (
 	userId: string,
-	userIdLogged: string,
+	userIdLogged: string
 ) => {
 	try {
 		z.object({
@@ -23,17 +23,17 @@ export const resetUserPassword = async (
 				},
 				{
 					status: 400,
-				},
+				}
 			)
 		}
 
 		return await prisma.user.update({
+			data: {
+				firstAccess: true,
+				passwordHash: bcrypt.hashSync('123456', 10),
+			},
 			where: {
 				id: userId,
-			},
-			data: {
-				passwordHash: bcrypt.hashSync('123456', 10),
-				firstAccess: true,
 			},
 		})
 	} catch (error) {

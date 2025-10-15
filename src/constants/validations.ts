@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import type { z } from 'zod'
 
 export const MIN_CURRENCY_VALUE = 0.01
 export const MAX_CURRENCY_VALUE = 999999.99
@@ -8,7 +8,7 @@ export const validateFieldsForNotEquals = <T>(
 	value: Array<T>,
 	ctx: z.RefinementCtx,
 	keyOfArray: keyof T,
-	errorMessage: string,
+	errorMessage: string
 ) => {
 	const indices: Array<number> = []
 	const stringArray = value.map((val) => val[keyOfArray])
@@ -28,9 +28,9 @@ export const validateFieldsForNotEquals = <T>(
 		duplicatesFields?.forEach((value) =>
 			ctx.addIssue({
 				code: 'custom',
-				path: [`${value}.${keyOfArray as string}`],
 				message: errorMessage,
-			}),
+				path: [`${value}.${keyOfArray as string}`],
+			})
 		)
 	}
 }
@@ -38,14 +38,14 @@ export const validateFieldsForNotEquals = <T>(
 export const validatePhonesNotEquals = (
 	personPhone: string,
 	value: Array<{ phone: string; field: string }>,
-	ctx: z.RefinementCtx,
+	ctx: z.RefinementCtx
 ) => {
 	value.forEach((value) => {
 		if (value.phone === personPhone) {
 			ctx.addIssue({
 				code: 'custom',
-				path: [value.field],
 				message: 'Telefone duplicado',
+				path: [value.field],
 			})
 		}
 	})

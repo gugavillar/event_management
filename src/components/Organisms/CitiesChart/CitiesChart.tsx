@@ -1,7 +1,7 @@
 import {
 	ChartContainer,
 	ChartValidation,
-	ChartValidationProps,
+	type ChartValidationProps,
 } from '@/components/Molecules'
 
 export const CitiesChart = ({
@@ -15,8 +15,8 @@ export const CitiesChart = ({
 			subheadingText="Quantitativo de participantes por cidade"
 		>
 			<ChartValidation
-				isLoading={isLoading}
 				categories={categories}
+				isLoading={isLoading}
 				series={series}
 			/>
 		</ChartContainer>

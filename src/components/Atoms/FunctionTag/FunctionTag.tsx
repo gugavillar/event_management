@@ -1,4 +1,4 @@
-import { ComponentProps, memo } from 'react'
+import { type ComponentProps, memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FunctionTagProps = ComponentProps<'mark'> & {
@@ -13,7 +13,7 @@ export const FunctionTag = memo(
 				className={twMerge(
 					'flex w-fit items-center justify-center gap-x-1.5 rounded-3xl bg-gray-400/30 px-4 py-1.5 text-slate-800',
 					!status ? 'bg-gray-400/30' : 'bg-emerald-400/30',
-					className,
+					className
 				)}
 				{...props}
 			>
@@ -23,7 +23,7 @@ export const FunctionTag = memo(
 				{status ?? 'Sem função'}
 			</mark>
 		)
-	},
+	}
 )
 
 FunctionTag.displayName = 'FunctionTag'

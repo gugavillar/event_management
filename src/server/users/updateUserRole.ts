@@ -6,13 +6,13 @@ import { prisma, ROLES } from '@/constants'
 export const updateUserRole = async (
 	userId: string,
 	role: ROLES,
-	userIdLogged: string,
+	userIdLogged: string
 ) => {
 	try {
 		z.object({
-			userId: z.uuid(),
 			role: z.enum([ROLES.ADMIN, ROLES.USER]),
-		}).parse({ userId, role })
+			userId: z.uuid(),
+		}).parse({ role, userId })
 
 		const isSameUser = userId === userIdLogged
 
@@ -23,16 +23,16 @@ export const updateUserRole = async (
 				},
 				{
 					status: 400,
-				},
+				}
 			)
 		}
 
 		return await prisma.user.update({
-			where: {
-				id: userId,
-			},
 			data: {
 				role,
+			},
+			where: {
+				id: userId,
 			},
 		})
 	} catch (error) {

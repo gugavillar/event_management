@@ -1,13 +1,12 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { FormVolunteer } from '../volunteers.type'
+import type { FormVolunteer } from '../volunteers.type'
 
 export const createVolunteer = async (
 	data: FormVolunteer & {
 		eventId: string
 		inscriptionType?: 'internal'
-	},
+	}
 ) => {
 	const { inscriptionType, ...rest } = data
 	const response = await api.post(
@@ -19,7 +18,7 @@ export const createVolunteer = async (
 			params: {
 				inscriptionType,
 			},
-		},
+		}
 	)
 
 	return response.data

@@ -1,9 +1,9 @@
 'use client'
-import { get } from 'lodash'
-import { ComponentProps } from 'react'
-import { useFormContext } from 'react-hook-form'
+import type { ComponentProps } from 'react'
 
 import { Field, HelperErrorText, Label } from '@/components/Atoms'
+import { get } from 'lodash'
+import { useFormContext } from 'react-hook-form'
 
 type InputFieldProps = ComponentProps<'input'> & {
 	children: string

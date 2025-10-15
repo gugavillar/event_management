@@ -3,21 +3,21 @@ import { SquarePen, Trash2 } from 'lucide-react'
 import { Header, Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { MEMBERS, MembersTypes } from '@/constants'
-import { RoomAPI } from '@/services/queries/rooms/rooms.types'
+import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
 
 export const HEADER_LABELS = [
 	{
-		label: 'Nome',
 		accessor: 'member',
 		className: 'w-9/12',
+		label: 'Nome',
 	},
 	{
-		label: 'Tipo',
 		accessor: 'type',
+		label: 'Tipo',
 	},
 	{
-		label: 'Quarto',
 		accessor: 'roomNumber',
+		label: 'Quarto',
 	},
 ]
 
@@ -27,18 +27,18 @@ export const formatTableData = (data: Array<RoomAPI> | undefined) => {
 	return data?.map((room) => {
 		return {
 			id: room.id,
-			roomNumber: room.roomNumber,
 			members: room.members.map((member) => {
 				return {
 					id: member.id,
-					type: MembersTypes[member.type].label,
-					roomNumber: room.roomNumber,
 					member:
 						member.type === MEMBERS.PARTICIPANT
 							? member.participant?.name
 							: member.volunteer?.name,
+					roomNumber: room.roomNumber,
+					type: MembersTypes[member.type].label,
 				}
 			}),
+			roomNumber: room.roomNumber,
 		}
 	})
 }
@@ -48,7 +48,7 @@ export const Content = (
 	isFetching: boolean,
 	rooms: ReturnType<typeof formatTableData>,
 	handleRemoveRoom: (id: RoomAPI['id']) => void,
-	handleEditRoom: (id: RoomAPI['id']) => void,
+	handleEditRoom: (id: RoomAPI['id']) => void
 ) => {
 	if (!selectedEvent) {
 		return (
@@ -102,34 +102,34 @@ export const Content = (
 	return rooms?.map(
 		(data) =>
 			!!data.members.length && (
-				<div key={data.id} className="space-y-2">
+				<div className="space-y-2" key={data.id}>
 					<div className="flex items-center justify-between">
 						<Header>Quarto - {data.roomNumber}</Header>
 						<div className="flex space-x-4">
 							<div className="hs-tooltip">
 								<SquarePen
 									className="cursor-pointer"
-									size={20}
 									onClick={() => handleEditRoom(data.id)}
+									size={20}
 								/>
 								<Tooltip>Editar</Tooltip>
 							</div>
 							<div className="hs-tooltip">
 								<Trash2
 									className="cursor-pointer"
-									size={20}
 									onClick={() => handleRemoveRoom(data.id)}
+									size={20}
 								/>
 								<Tooltip>Excluir</Tooltip>
 							</div>
 						</div>
 					</div>
 					<ListManager
-						headerLabels={HEADER_LABELS}
 						bodyData={data.members}
+						headerLabels={HEADER_LABELS}
 						isLoading={isFetching}
 					/>
 				</div>
-			),
+			)
 	)
 }

@@ -1,6 +1,6 @@
-import { faker } from '@faker-js/faker'
 import { render } from '@testing-library/react'
 
+import { faker } from '@faker-js/faker'
 import { Avatar } from './Avatar'
 import { generateLettersAvatar } from './Avatar.utils'
 
@@ -17,9 +17,9 @@ describe('Avatar component', () => {
 
 	it('applies custom classes', () => {
 		const { getByTestId } = render(
-			<Avatar data-testid="avatar" className="custom-class">
+			<Avatar className="custom-class" data-testid="avatar">
 				{name}
-			</Avatar>,
+			</Avatar>
 		)
 
 		const avatar = getByTestId('avatar')
@@ -31,7 +31,7 @@ describe('Avatar component', () => {
 		const { getByTestId } = render(
 			<Avatar data-testid="avatar" id="test">
 				Av
-			</Avatar>,
+			</Avatar>
 		)
 
 		const avatar = getByTestId('avatar')

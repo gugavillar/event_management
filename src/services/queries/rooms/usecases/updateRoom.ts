@@ -1,7 +1,6 @@
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
-
-import { FormRoom, RoomAPI } from '../rooms.types'
+import type { FormRoom, RoomAPI } from '../rooms.types'
 
 type UpdateRoomArgs = {
 	roomId: RoomAPI['id']

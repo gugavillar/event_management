@@ -1,4 +1,4 @@
-import { ComponentProps, Dispatch, SetStateAction } from 'react'
+import type { ComponentProps, Dispatch, SetStateAction } from 'react'
 
 type SearchBoxOption = ComponentProps<'option'> & {
 	customProps: Record<string, string>

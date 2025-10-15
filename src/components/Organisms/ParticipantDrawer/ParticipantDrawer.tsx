@@ -1,6 +1,5 @@
 'use client'
-import { Dispatch, memo, SetStateAction, useEffect } from 'react'
-import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import { type Dispatch, memo, type SetStateAction, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
@@ -20,10 +19,10 @@ import {
 	useGetParticipant,
 	useUpdateParticipant,
 } from '@/services/queries/participants'
-import { ParticipantsAPI } from '@/services/queries/participants/participants.type'
+import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
-
-import { ParticipantType } from './ParticipantDrawer.schema'
+import { Controller, type SubmitHandler, useFormContext } from 'react-hook-form'
+import type { ParticipantType } from './ParticipantDrawer.schema'
 
 type ParticipantDrawerProps = {
 	drawerId: string
@@ -67,13 +66,13 @@ export const ParticipantDrawer = memo(
 		const formattedEvents = formatterComboBoxValues(
 			events?.pages?.flatMap((page) => page.data),
 			'name',
-			'id',
+			'id'
 		)
 
 		const lastItemRef = useInfiniteScrollObserver({
+			fetchNextPage,
 			hasNextPage: Boolean(hasNextPage),
 			isFetchingNextPage,
-			fetchNextPage,
 		})
 
 		const handleSubmitForm: SubmitHandler<ParticipantType> = async (values) => {
@@ -86,8 +85,8 @@ export const ParticipantDrawer = memo(
 				...(hasReligion === 'Yes' ? { religion } : { religion: null }),
 				...(hasHealth === 'Yes' ? { health } : { health: null }),
 				birthdate: formatDateToSendToApi(data.birthdate),
-				phone: data.phone.replace(/\D/g, ''),
 				hostPhone: data.hostPhone.replace(/\D/g, ''),
+				phone: data.phone.replace(/\D/g, ''),
 				responsiblePhone: data.responsiblePhone.replace(/\D/g, ''),
 				...(!selectedParticipant && { inscriptionType: 'internal' as const }),
 			}
@@ -95,20 +94,20 @@ export const ParticipantDrawer = memo(
 			if (selectedParticipant) {
 				return await update(
 					{
-						participantId: selectedParticipant,
 						data: {
 							...formattedData,
 						},
+						participantId: selectedParticipant,
 					},
 					{
+						onError: () => toast.error('Erro ao atualizar participante'),
 						onSuccess: () => {
 							reset()
 							setSelectedParticipant(null)
 							toast.success('Participante atualizado com sucesso!')
 							overlayClose(drawerId)
 						},
-						onError: () => toast.error('Erro ao atualizar participante'),
-					},
+					}
 				)
 			}
 			await create(
@@ -116,15 +115,15 @@ export const ParticipantDrawer = memo(
 					...formattedData,
 				},
 				{
+					onError: (error) =>
+						generateToastError(error, 'Erro ao criar participante'),
 					onSuccess: () => {
 						reset()
 						setSelectedParticipant(null)
 						toast.success('Participante criado com sucesso!')
 						overlayClose(drawerId)
 					},
-					onError: (error) =>
-						generateToastError(error, 'Erro ao criar participante'),
-				},
+				}
 			)
 		}
 
@@ -142,25 +141,25 @@ export const ParticipantDrawer = memo(
 		return (
 			<Drawer
 				drawerId={drawerId}
-				headingTitle="Dados do participante"
 				handleClose={handleClose}
+				headingTitle="Dados do participante"
 			>
 				<DrawerBody isLoading={isLoading}>
 					<Controller
-						name="eventId"
 						control={control}
+						name="eventId"
 						render={({ field }) => (
 							<SearchBox
-								search={search}
-								setSearch={setSearch}
+								error={errors.eventId?.message}
 								keyOptionLabel="label"
 								keyOptionValue="value"
-								options={formattedEvents}
-								selectedValue={field.value}
-								setSelectedValue={field.onChange}
-								lastItemRef={lastItemRef}
 								label="Evento"
-								error={errors.eventId?.message}
+								lastItemRef={lastItemRef}
+								options={formattedEvents}
+								search={search}
+								selectedValue={field.value}
+								setSearch={setSearch}
+								setSelectedValue={field.onChange}
 							/>
 						)}
 					/>
@@ -168,19 +167,19 @@ export const ParticipantDrawer = memo(
 					<InputField fieldName="called">
 						Como você gostaria de ser chamado(a)?
 					</InputField>
-					<InputField type="email" fieldName="email">
+					<InputField fieldName="email" type="email">
 						E-mail
 					</InputField>
-					<MaskedInputField format="(##) #####-####" fieldName="phone">
+					<MaskedInputField fieldName="phone" format="(##) #####-####">
 						Telefone
 					</MaskedInputField>
-					<MaskedInputField format="##/##/####" fieldName="birthdate">
+					<MaskedInputField fieldName="birthdate" format="##/##/####">
 						Data de nascimento
 					</MaskedInputField>
 					<SelectField
 						fieldName="hasReligion"
-						placeholder="Selecione uma opção"
 						options={YES_OR_NO_SELECT_OPTIONS}
+						placeholder="Selecione uma opção"
 					>
 						Tem religião?
 					</SelectField>
@@ -189,8 +188,8 @@ export const ParticipantDrawer = memo(
 					)}
 					<SelectField
 						fieldName="hasHealth"
-						placeholder="Selecione uma opção"
 						options={YES_OR_NO_SELECT_OPTIONS}
+						placeholder="Selecione uma opção"
 					>
 						Tem restrição saúde/alimentar?
 					</SelectField>
@@ -199,29 +198,29 @@ export const ParticipantDrawer = memo(
 					)}
 					<InputField fieldName="responsible">Responsável</InputField>
 					<MaskedInputField
-						format="(##) #####-####"
 						fieldName="responsiblePhone"
+						format="(##) #####-####"
 					>
 						Telefone responsável
 					</MaskedInputField>
 
 					<InputField fieldName="host">Quem convidou</InputField>
-					<MaskedInputField format="(##) #####-####" fieldName="hostPhone">
+					<MaskedInputField fieldName="hostPhone" format="(##) #####-####">
 						Telefone quem convidou
 					</MaskedInputField>
 					<InputField fieldName="address.street">Endereço</InputField>
 					<InputField fieldName="address.number">Número</InputField>
 					<SelectField
 						fieldName="address.state"
-						placeholder="Selecione o estado"
 						options={UF}
+						placeholder="Selecione o estado"
 					>
 						Estado
 					</SelectField>
 					<SelectField
 						fieldName="address.city"
-						placeholder="Selecione a cidade"
 						options={cities ?? []}
+						placeholder="Selecione a cidade"
 					>
 						Cidade
 					</SelectField>
@@ -230,17 +229,17 @@ export const ParticipantDrawer = memo(
 				<DrawerFooter>
 					<Button
 						className="w-full items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+						disabled={!isValid || !isDirty}
+						isLoading={isUpdating || isCreating}
 						onClick={handleSubmit(handleSubmitForm)}
 						type="submit"
-						isLoading={isUpdating || isCreating}
-						disabled={!isValid || !isDirty}
 					>
 						Salvar
 					</Button>
 				</DrawerFooter>
 			</Drawer>
 		)
-	},
+	}
 )
 
 ParticipantDrawer.displayName = 'ParticipantDrawer'

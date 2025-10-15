@@ -18,13 +18,13 @@ export type LoginButtonSchemaType = z.infer<typeof LoginButtonSchema>
 
 export const DefineNewPasswordSchema = z
 	.object({
-		password: z
+		confirmPassword: z
 			.string({ error: 'Campo obrigatório' })
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 			.refine((value) => value.length >= 6, {
 				message: 'Password deve ter no mínimo 6 caracteres',
 			}),
-		confirmPassword: z
+		password: z
 			.string({ error: 'Campo obrigatório' })
 			.refine((value) => !!value?.length, { message: 'Campo obrigatório' })
 			.refine((value) => value.length >= 6, {
@@ -35,8 +35,8 @@ export const DefineNewPasswordSchema = z
 		if (data.password !== data.confirmPassword) {
 			ctx.addIssue({
 				code: 'custom',
-				path: ['confirmPassword'],
 				message: 'Senhas diferentes',
+				path: ['confirmPassword'],
 			})
 		}
 	})
