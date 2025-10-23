@@ -17,6 +17,7 @@ export const useGetDonations = () => {
 
 	const isFirstRender = useRef(true)
 
+	//biome-ignore lint: necessary to get back to page one
 	useEffect(() => {
 		if (isFirstRender.current) {
 			isFirstRender.current = false
@@ -24,7 +25,6 @@ export const useGetDonations = () => {
 		}
 
 		if (page !== 1) setPage(1)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventId])
 
 	const { data, isLoading }: UseQueryResult<DonationsFromAPI> = useQuery({

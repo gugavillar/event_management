@@ -29,14 +29,15 @@ export const useGetVolunteers = () => {
 	const debounceCity = useDebounce(query.city, 500)
 	const isFirstRender = useRef(true)
 
+	// biome-ignore lint: necessary to get back to page one
 	useEffect(() => {
 		if (isFirstRender.current) {
 			isFirstRender.current = false
+			console.log('chamou')
 			return
 		}
 
 		if (page !== 1) setPage(1)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceRole, debounceCity])
 
 	const { data, isLoading }: UseQueryResult<VolunteersFromAPI> = useQuery({

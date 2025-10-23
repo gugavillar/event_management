@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 
 import { Groups } from '@/components/Templates'
 import { QUERY_KEYS } from '@/constants'

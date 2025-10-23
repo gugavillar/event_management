@@ -1,7 +1,8 @@
-import type { UUID } from 'crypto'
 import { type ComponentProps, isValidElement, type ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { v4 as uuid } from 'uuid'
+
+import type { UUID } from 'node:crypto'
 
 import { Spinner } from '../Spinner'
 import type { TableHeaderProps } from './TableHeader'

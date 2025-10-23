@@ -10,6 +10,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 	const { status } = useSession()
 	const pathname = usePathname()
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Necessary to verify token in every page
 	useEffect(() => {
 		if (status === 'unauthenticated') {
 			signOut({ callbackUrl: PRINCIPAL_LINKS.LOGIN })

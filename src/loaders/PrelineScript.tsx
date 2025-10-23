@@ -19,6 +19,7 @@ export default function PrelineScript() {
 		initPreline()
 	}, [])
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Necessary to preline
 	useEffect(() => {
 		setTimeout(() => {
 			if (window.HSStaticMethods && typeof window.HSStaticMethods.autoInit === 'function') {

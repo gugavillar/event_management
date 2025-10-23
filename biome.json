@@ -42,8 +42,6 @@
 	"javascript": {
 		"formatter": {
 			"arrowParentheses": "always",
-			"attributePosition": "auto",
-			"bracketSameLine": false,
 			"jsxQuoteStyle": "double",
 			"quoteProperties": "asNeeded",
 			"quoteStyle": "single",
@@ -52,6 +50,9 @@
 		}
 	},
 	"linter": {
+		"domains": {
+			"next": "recommended"
+		},
 		"enabled": true,
 		"rules": {
 			"recommended": false,

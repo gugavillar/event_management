@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { fireEvent, render } from '@testing-library/react'
-import type { UUID } from 'crypto'
+
+import type { UUID } from 'node:crypto'
 
 import { Table } from './Table'
 

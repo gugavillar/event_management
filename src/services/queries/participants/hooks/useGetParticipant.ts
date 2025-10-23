@@ -1,7 +1,8 @@
 'use client'
 import type { UseQueryResult } from '@tanstack/react-query'
-import type { UUID } from 'crypto'
 import { format } from 'date-fns'
+
+import type { UUID } from 'node:crypto'
 
 import { QUERY_KEYS } from '@/constants'
 import { formatPhone } from '@/formatters'

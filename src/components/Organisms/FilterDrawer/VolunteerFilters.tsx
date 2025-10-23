@@ -29,11 +29,11 @@ export const VolunteerFilters = ({ eventId, handleFilter, filters, isPaymentType
 	const formattedCities = formatterFieldSelectValues(volunteersCities, 'city', 'city')
 	formattedCities.unshift({ label: 'Todas as cidades', value: '' })
 
+	//biome-ignore lint: necessary to clear role
 	useEffect(() => {
 		if (!eventId) {
 			handleFilter('role', '')
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [eventId])
 
 	return (

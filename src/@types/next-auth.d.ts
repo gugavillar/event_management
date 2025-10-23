@@ -1,8 +1,8 @@
-import { DefaultSession } from 'next-auth'
+import type { DefaultSession } from 'next-auth'
 
-import { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 
-import { ROLES } from '@/constants'
+import type { ROLES } from '@/constants'
 
 declare module 'next-auth' {
 	interface User {
