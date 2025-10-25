@@ -1,13 +1,14 @@
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 
-FROM base AS deps
-
-RUN apk add --no-cache g++ make py3-pip libc6-compat
+RUN apt-get update -y && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN corepack enable
 
+FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
+
+FROM deps AS build
 
 ARG NEXT_PUBLIC_API_BASE_URL
 ARG NEXT_PUBLIC_API_IBGE_UF
@@ -23,26 +24,18 @@ COPY . .
 RUN pnpm prisma generate
 RUN pnpm run build
 
-FROM base AS production
+FROM gcr.io/distroless/nodejs20 AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=deps /app/public ./public
-
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-COPY --from=deps /app/next.config.mjs ./
-COPY --from=deps --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=deps --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
+COPY --from=build /app/public ./public
+COPY --from=build /app/next.config.mjs ./
+COPY --from=build /app/package.json ./
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["server.js"]
