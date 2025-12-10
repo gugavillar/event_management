@@ -28,13 +28,16 @@ FROM gcr.io/distroless/nodejs20 AS production
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 
 COPY --from=build /app/public ./public
-COPY --from=build /app/next.config.mjs ./
-COPY --from=build /app/package.json ./
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
+
+# SHARP (binário + dependências)
+COPY --from=build /app/node_modules/sharp ./node_modules/sharp
+COPY --from=build /app/node_modules/.pnpm ./node_modules/.pnpm
+# Necessário para o Next encontrar o sharp
+ENV NEXT_SHARP_PATH=/app/node_modules/sharp
 
 EXPOSE 3000
 
