@@ -23,6 +23,8 @@ ENV NEXT_PUBLIC_PHONE=$NEXT_PUBLIC_PHONE
 COPY . .
 RUN pnpm prisma generate
 RUN pnpm run build
+RUN mkdir -p /app/.next/cache/images
+RUN chown -R 65532:65532 /app
 
 FROM gcr.io/distroless/nodejs20 AS production
 WORKDIR /app
@@ -32,6 +34,7 @@ USER nonroot
 COPY --from=build /app/public ./public
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/.next/cache ./.next/cache
 COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3000
