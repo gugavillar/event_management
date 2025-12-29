@@ -1,4 +1,5 @@
-import { LIMIT_PER_PAGE, prisma } from '@/constants'
+import { LIMIT_PER_PAGE } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getAllDonations = async (eventId: string | null, page = 1) => {
 	try {

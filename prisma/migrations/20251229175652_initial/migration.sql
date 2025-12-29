@@ -1,0 +1,381 @@
+-- CreateTable
+CREATE TABLE `users` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `passwordHash` VARCHAR(191) NOT NULL,
+    `firstAccess` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `deletedAt` DATETIME(3) NULL,
+    `role` ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+
+    UNIQUE INDEX `users_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `events` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `gender` ENUM('MALE', 'FEMALE', 'BOTH') NOT NULL,
+    `initialDate` DATETIME(3) NOT NULL,
+    `finalDate` DATETIME(3) NOT NULL,
+    `participantPrice` DECIMAL(65, 30) NOT NULL,
+    `volunteerPrice` DECIMAL(65, 30) NOT NULL,
+    `isParticipantRegistrationOpen` BOOLEAN NOT NULL DEFAULT true,
+    `isVolunteerRegistrationOpen` BOOLEAN NOT NULL DEFAULT true,
+    `isInterestedListOpen` BOOLEAN NOT NULL DEFAULT false,
+    `minAge` INTEGER NULL,
+    `maxAge` INTEGER NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `events_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `volunteers_roles` (
+    `id` VARCHAR(191) NOT NULL,
+    `role` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `volunteers_roles_role_key`(`role`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `event_volunteer_roles` (
+    `id` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `volunteerRoleId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `event_volunteer_roles_eventId_volunteerRoleId_key`(`eventId`, `volunteerRoleId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `volunteers` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `called` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
+    `birthdate` DATETIME(3) NOT NULL,
+    `cell` VARCHAR(191) NULL,
+    `relative` VARCHAR(191) NOT NULL,
+    `relativePhone` VARCHAR(191) NOT NULL,
+    `health` VARCHAR(191) NULL,
+    `community` VARCHAR(191) NOT NULL,
+    `checkIn` ENUM('CONFIRMED', 'WITHDREW') NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `volunteers_email_eventId_key`(`email`, `eventId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `volunteers_addresses` (
+    `id` VARCHAR(191) NOT NULL,
+    `street` VARCHAR(191) NOT NULL,
+    `neighborhood` VARCHAR(191) NOT NULL,
+    `number` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `state` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `volunteerId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `volunteers_addresses_volunteerId_key`(`volunteerId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `volunteers_payments` (
+    `id` VARCHAR(191) NOT NULL,
+    `paymentValue` DECIMAL(65, 30) NOT NULL,
+    `paymentReceived` DECIMAL(65, 30) NULL,
+    `paymentType` ENUM('CARD', 'PIX', 'CASH', 'DONATION', 'DONATION_ROMERO') NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `volunteerId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `participants` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `called` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NOT NULL,
+    `birthdate` DATETIME(3) NOT NULL,
+    `religion` VARCHAR(191) NULL,
+    `responsible` VARCHAR(191) NOT NULL,
+    `responsiblePhone` VARCHAR(191) NOT NULL,
+    `host` VARCHAR(191) NOT NULL,
+    `hostPhone` VARCHAR(191) NOT NULL,
+    `health` VARCHAR(191) NULL,
+    `interested` BOOLEAN NULL,
+    `checkIn` ENUM('CONFIRMED', 'WITHDREW') NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `participants_email_eventId_key`(`email`, `eventId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `participants_addresses` (
+    `id` VARCHAR(191) NOT NULL,
+    `street` VARCHAR(191) NOT NULL,
+    `neighborhood` VARCHAR(191) NOT NULL,
+    `number` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `state` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `participantId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `participants_addresses_participantId_key`(`participantId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `participants_payments` (
+    `id` VARCHAR(191) NOT NULL,
+    `paymentValue` DECIMAL(65, 30) NOT NULL,
+    `paymentReceived` DECIMAL(65, 30) NULL,
+    `paymentType` ENUM('CARD', 'PIX', 'CASH', 'DONATION', 'DONATION_ROMERO') NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `participantId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Group` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Group_eventId_name_key`(`eventId`, `name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `GroupMember` (
+    `id` VARCHAR(191) NOT NULL,
+    `type` ENUM('PARTICIPANT', 'VOLUNTEER') NOT NULL,
+    `participantId` VARCHAR(191) NULL,
+    `volunteerId` VARCHAR(191) NULL,
+    `groupId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `GroupMember_participantId_key`(`participantId`),
+    UNIQUE INDEX `GroupMember_volunteerId_key`(`volunteerId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Room` (
+    `id` VARCHAR(191) NOT NULL,
+    `roomNumber` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Room_eventId_roomNumber_key`(`eventId`, `roomNumber`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `RoomMember` (
+    `id` VARCHAR(191) NOT NULL,
+    `type` ENUM('PARTICIPANT', 'VOLUNTEER') NOT NULL,
+    `participantId` VARCHAR(191) NULL,
+    `volunteerId` VARCHAR(191) NULL,
+    `roomId` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `RoomMember_participantId_key`(`participantId`),
+    UNIQUE INDEX `RoomMember_volunteerId_key`(`volunteerId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Meetings` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL,
+    `date` DATETIME(3) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `MeetingPresence` (
+    `id` VARCHAR(191) NOT NULL,
+    `volunteerId` VARCHAR(191) NOT NULL,
+    `meetingId` VARCHAR(191) NOT NULL,
+    `presence` BOOLEAN NOT NULL,
+    `justification` BOOLEAN NOT NULL,
+    `checkedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `MeetingPresence_volunteerId_meetingId_key`(`volunteerId`, `meetingId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Donation` (
+    `id` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `value` DECIMAL(65, 30) NOT NULL,
+    `type` ENUM('CARD', 'PIX', 'CASH', 'DONATION', 'DONATION_ROMERO') NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Transactions` (
+    `id` VARCHAR(191) NOT NULL,
+    `eventId` VARCHAR(191) NOT NULL,
+    `type` ENUM('INCOME', 'OUTCOME') NOT NULL,
+    `amount` DECIMAL(65, 30) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `date` DATETIME(3) NOT NULL,
+    `amountType` ENUM('CASH', 'ACCOUNT') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `donationId` VARCHAR(191) NULL,
+    `participantPaymentId` VARCHAR(191) NULL,
+    `volunteerPaymentId` VARCHAR(191) NULL,
+
+    UNIQUE INDEX `Transactions_donationId_key`(`donationId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_VolunteersOnEventRoles` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `_VolunteersOnEventRoles_AB_unique`(`A`, `B`),
+    INDEX `_VolunteersOnEventRoles_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `_LeadersOnEventRoles` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `_LeadersOnEventRoles_AB_unique`(`A`, `B`),
+    INDEX `_LeadersOnEventRoles_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `events` ADD CONSTRAINT `events_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `event_volunteer_roles` ADD CONSTRAINT `event_volunteer_roles_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `event_volunteer_roles` ADD CONSTRAINT `event_volunteer_roles_volunteerRoleId_fkey` FOREIGN KEY (`volunteerRoleId`) REFERENCES `volunteers_roles`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `volunteers` ADD CONSTRAINT `volunteers_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `volunteers_addresses` ADD CONSTRAINT `volunteers_addresses_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `volunteers_payments` ADD CONSTRAINT `volunteers_payments_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `volunteers_payments` ADD CONSTRAINT `volunteers_payments_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `participants` ADD CONSTRAINT `participants_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `participants_addresses` ADD CONSTRAINT `participants_addresses_participantId_fkey` FOREIGN KEY (`participantId`) REFERENCES `participants`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `participants_payments` ADD CONSTRAINT `participants_payments_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `participants_payments` ADD CONSTRAINT `participants_payments_participantId_fkey` FOREIGN KEY (`participantId`) REFERENCES `participants`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Group` ADD CONSTRAINT `Group_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GroupMember` ADD CONSTRAINT `GroupMember_participantId_fkey` FOREIGN KEY (`participantId`) REFERENCES `participants`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GroupMember` ADD CONSTRAINT `GroupMember_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `GroupMember` ADD CONSTRAINT `GroupMember_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Room` ADD CONSTRAINT `Room_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_participantId_fkey` FOREIGN KEY (`participantId`) REFERENCES `participants`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RoomMember` ADD CONSTRAINT `RoomMember_roomId_fkey` FOREIGN KEY (`roomId`) REFERENCES `Room`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Meetings` ADD CONSTRAINT `Meetings_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MeetingPresence` ADD CONSTRAINT `MeetingPresence_volunteerId_fkey` FOREIGN KEY (`volunteerId`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `MeetingPresence` ADD CONSTRAINT `MeetingPresence_meetingId_fkey` FOREIGN KEY (`meetingId`) REFERENCES `Meetings`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Donation` ADD CONSTRAINT `Donation_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `events`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_donationId_fkey` FOREIGN KEY (`donationId`) REFERENCES `Donation`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_participantPaymentId_fkey` FOREIGN KEY (`participantPaymentId`) REFERENCES `participants_payments`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Transactions` ADD CONSTRAINT `Transactions_volunteerPaymentId_fkey` FOREIGN KEY (`volunteerPaymentId`) REFERENCES `volunteers_payments`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_VolunteersOnEventRoles` ADD CONSTRAINT `_VolunteersOnEventRoles_A_fkey` FOREIGN KEY (`A`) REFERENCES `event_volunteer_roles`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_VolunteersOnEventRoles` ADD CONSTRAINT `_VolunteersOnEventRoles_B_fkey` FOREIGN KEY (`B`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_LeadersOnEventRoles` ADD CONSTRAINT `_LeadersOnEventRoles_A_fkey` FOREIGN KEY (`A`) REFERENCES `event_volunteer_roles`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_LeadersOnEventRoles` ADD CONSTRAINT `_LeadersOnEventRoles_B_fkey` FOREIGN KEY (`B`) REFERENCES `volunteers`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

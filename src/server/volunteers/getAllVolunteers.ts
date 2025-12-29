@@ -1,4 +1,5 @@
-import { CHECK_IN_STATUS, LIMIT_PER_PAGE, NO_FUNCTION, prisma } from '@/constants'
+import { CHECK_IN_STATUS, LIMIT_PER_PAGE, NO_FUNCTION } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getAllVolunteers = async (
 	eventId: string | null,

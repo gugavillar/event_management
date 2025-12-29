@@ -1,5 +1,5 @@
 import { type MeetingPresenceRouteType, meetingPresenceRoute } from '@/app/api/meetings/meeting.schema'
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 type AttendanceInput = {
 	presence: Array<Record<string, boolean>>

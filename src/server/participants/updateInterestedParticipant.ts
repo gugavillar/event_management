@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export type UpdateInterestedParticipantArgs = {
 	participantId: string

@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { MEMBERS, prisma } from '@/constants'
+import { MEMBERS } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const updateRegistrationById = async (id: string, memberType: MEMBERS, action: 'open' | 'close') => {
 	try {

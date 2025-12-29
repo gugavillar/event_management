@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const blockOrUnblockUser = async (userId: string, userIdLogged: string, isBlock: boolean) => {
 	try {

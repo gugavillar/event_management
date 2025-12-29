@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 import { volunteerSchemaRoute } from '@/app/api/volunteers/volunteer.schema'
-import { deepTrim, prisma } from '@/constants'
+import { deepTrim } from '@/constants'
+import { prisma } from '@/lib/prisma'
 import type { FormVolunteer } from '@/services/queries/volunteers/volunteers.type'
 
 export const updateVolunteerById = async (data: FormVolunteer, id: string) => {

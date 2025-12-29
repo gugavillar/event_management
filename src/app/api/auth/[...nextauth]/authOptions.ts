@@ -2,7 +2,8 @@ import bcrypt from 'bcryptjs'
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { prisma, ROLES } from '@/constants'
+import { ROLES } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 const COOKIE_PREFIX = 'event-manager'
 

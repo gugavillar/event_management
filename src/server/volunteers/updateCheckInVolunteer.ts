@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { CHECK_IN_STATUS, prisma } from '@/constants'
+import { CHECK_IN_STATUS } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export type UpdateCheckInVolunteerArgs = {
 	volunteerId: string

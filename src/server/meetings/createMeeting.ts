@@ -1,5 +1,5 @@
 import { type MeetingSchemaRouteType, meetingSchemaRoute } from '@/app/api/meetings/meeting.schema'
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const createMeeting = async (data: MeetingSchemaRouteType) => {
 	try {

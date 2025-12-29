@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 import { roomSchemaRoute } from '@/app/api/rooms/room.schema'
-import { MEMBERS, prisma } from '@/constants'
+import { MEMBERS } from '@/constants'
+import { prisma } from '@/lib/prisma'
 import type { FormRoom } from '@/services/queries/rooms/rooms.types'
 
 export const updateRoomById = async (data: FormRoom, id: string) => {

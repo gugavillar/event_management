@@ -3,8 +3,9 @@ import { getServerSession } from 'next-auth'
 import { ZodError } from 'zod'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
-import { prisma, ROLES } from '@/constants'
+import { ROLES } from '@/constants'
 import { formatZodValidationErrors } from '@/formatters'
+import { prisma } from '@/lib/prisma'
 
 const isDevelopmentEnvironment = process.env.NODE_ENV !== 'production'
 

@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const resetUserPassword = async (userId: string, userIdLogged: string) => {
 	try {

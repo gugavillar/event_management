@@ -1,6 +1,7 @@
 import { differenceInYears, getMonth } from 'date-fns'
 
-import { CHECK_IN_STATUS, PaymentSelectOptions, PaymentType, type PaymentTypeAPI, prisma } from '@/constants'
+import { CHECK_IN_STATUS, PaymentSelectOptions, PaymentType, type PaymentTypeAPI } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 const calculationAge = (birthdate: Date, finalEventDate: Date) => {
 	return differenceInYears(finalEventDate, birthdate)

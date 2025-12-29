@@ -1,4 +1,4 @@
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getAllFunctions = async (search: string | null, eventId: string) => {
 	try {

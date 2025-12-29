@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { generateColumnWidths, prisma } from '@/constants'
+import { generateColumnWidths } from '@/constants'
 import { currencyValue, formatBirthdate, formatCheckIn, formatPhone, paymentDate, paymentStatus } from '@/formatters'
+import { prisma } from '@/lib/prisma'
 
 export const getExportParticipantsData = async (eventId: string, isInterested: boolean) => {
 	try {

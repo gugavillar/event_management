@@ -4,8 +4,9 @@ import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
 import { amountType, transactionType } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
-import { generateColumnWidths, prisma, TransactionAmountType, TransactionsType } from '@/constants'
+import { generateColumnWidths, TransactionAmountType, TransactionsType } from '@/constants'
 import { currencyValue } from '@/formatters'
+import { prisma } from '@/lib/prisma'
 
 export const getExportTransactions = async (eventId: string) => {
 	try {

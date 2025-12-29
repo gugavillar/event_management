@@ -1,4 +1,5 @@
-import { LIMIT_PER_PAGE, PaymentTypeAPI, prisma } from '@/constants'
+import { LIMIT_PER_PAGE, PaymentTypeAPI } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getAllParticipantsPayments = async (
 	eventId: string | null,

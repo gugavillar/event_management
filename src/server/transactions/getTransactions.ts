@@ -1,4 +1,5 @@
-import { LIMIT_PER_PAGE, prisma, TransactionAmountType, TransactionsType } from '@/constants'
+import { LIMIT_PER_PAGE, TransactionAmountType, TransactionsType } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getTransactions = async (eventId: string | null, searchTransaction: string | null, page = 1) => {
 	try {

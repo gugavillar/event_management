@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { MAX_FIELD_LENGTH, prisma } from '@/constants'
+import { MAX_FIELD_LENGTH } from '@/constants'
+import { prisma } from '@/lib/prisma'
 import type { VolunteersFunctionsForm } from '@/services/queries/volunteers/volunteers.type'
 
 export const createFunction = async ({ role, events }: VolunteersFunctionsForm) => {

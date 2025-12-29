@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getEventById = async (id: string) => {
 	try {

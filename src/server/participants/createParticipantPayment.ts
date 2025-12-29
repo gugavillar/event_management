@@ -4,10 +4,10 @@ import {
 	MAX_CURRENCY_VALUE,
 	MIN_CURRENCY_VALUE,
 	PaymentTypeAPI,
-	prisma,
 	TransactionAmountType,
 	TransactionsType,
 } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export type CreateParticipantPaymentArgs = {
 	paymentType: (typeof PaymentTypeAPI)['CARD' | 'CASH' | 'PIX' | 'DONATION']

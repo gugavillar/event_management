@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { prisma, ROLES } from '@/constants'
+import { ROLES } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const updateUserRole = async (userId: string, role: ROLES, userIdLogged: string) => {
 	try {

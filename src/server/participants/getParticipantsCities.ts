@@ -1,4 +1,4 @@
-import { prisma } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getParticipantsCities = async (isInterested: boolean | null, eventId: string | null) => {
 	try {

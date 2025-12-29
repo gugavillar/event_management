@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { CHECK_IN_STATUS, prisma } from '@/constants'
+import { CHECK_IN_STATUS } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const getExportPresenceMeeting = async (eventId: string) => {
 	try {

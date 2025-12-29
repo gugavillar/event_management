@@ -1,5 +1,6 @@
 import { donationSchemaRoute } from '@/app/api/donations/donation.schema'
-import { PaymentTypeAPI, prisma, TransactionAmountType, TransactionsType } from '@/constants'
+import { PaymentTypeAPI, TransactionAmountType, TransactionsType } from '@/constants'
+import { prisma } from '@/lib/prisma'
 import type { FormDonation } from '@/services/queries/donations/donations.types'
 
 export const createDonation = async (data: FormDonation) => {

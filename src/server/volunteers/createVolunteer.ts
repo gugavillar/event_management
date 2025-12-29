@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { type VolunteerSchemaRouteType, volunteerSchemaRoute } from '@/app/api/volunteers/volunteer.schema'
-import { deepTrim, prisma } from '@/constants'
+import { deepTrim } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const createVolunteer = async (
 	data: VolunteerSchemaRouteType & { eventId: string },

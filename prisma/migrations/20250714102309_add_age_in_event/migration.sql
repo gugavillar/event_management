@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `events` ADD COLUMN `maxAge` INTEGER NULL,
-    ADD COLUMN `minAge` INTEGER NULL;

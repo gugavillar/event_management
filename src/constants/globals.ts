@@ -1,5 +1,3 @@
-import { PrismaClient } from '@prisma/client'
-
 import { ROLES } from './status'
 
 export const LIMIT_PER_PAGE = 10
@@ -69,10 +67,6 @@ export const MODALS_IDS = {
 	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
 	VOLUNTEER_RETURN_PAYMENT_MODAL: 'volunteer_return_payment_modal',
 }
-
-export const prisma = new PrismaClient({
-	log: ['query', 'error'],
-})
 
 export const FILES_TYPES = {
 	xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

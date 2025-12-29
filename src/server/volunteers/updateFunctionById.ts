@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-import { MAX_FIELD_LENGTH, prisma } from '@/constants'
+import { MAX_FIELD_LENGTH } from '@/constants'
+import { prisma } from '@/lib/prisma'
 
 export const updateFunctionById = async (data: { role: string; events: Array<{ id: string }> }, roleId: string) => {
 	try {

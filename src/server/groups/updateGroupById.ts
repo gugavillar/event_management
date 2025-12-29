@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
 import { groupSchemaRoute } from '@/app/api/groups/group.schema'
-import { MEMBERS, prisma } from '@/constants'
+import { MEMBERS } from '@/constants'
+import { prisma } from '@/lib/prisma'
 import type { FormGroup } from '@/services/queries/groups/groups.types'
 
 export const updateGroupById = async (data: FormGroup, id: string) => {
