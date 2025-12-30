@@ -2,6 +2,7 @@ import { ROLES } from './status'
 
 export const LIMIT_PER_PAGE = 10
 export const LIMIT_PER_PAGE_EDITION = 300
+export const IS_NOT_DEVELOPMENT = process.env.NODE_ENV !== 'development'
 
 export const MODALS_IDS = {
 	// DONATION
