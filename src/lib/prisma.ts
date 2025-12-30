@@ -6,7 +6,7 @@ import { PrismaClient } from '../../prisma/prisma/generate/prisma/client'
 const adapter = new PrismaMariaDb({
 	connectionLimit: 5,
 	database: process.env.MYSQL_DATABASE,
-	host: process.env.MYSQL_HOST,
+	...(process.env.NODE_ENV !== 'development' && { host: process.env.MYSQL_HOST }),
 	password: process.env.MYSQL_PASSWORD,
 	user: process.env.MYSQL_USER,
 })

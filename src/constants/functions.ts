@@ -59,7 +59,7 @@ export const image = (eventName?: string) => {
 		return IMAGES_FORMS['cursilho-feminino']
 	}
 
-	return ''
+	return '/placeholder.png'
 }
 
 export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
