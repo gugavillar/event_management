@@ -56,3 +56,4 @@ jobs:
             NEXT_PUBLIC_API_IBGE_UF=${{ secrets.API_IBGE_UF }}
             NEXT_PUBLIC_PIX_KEY=${{ secrets.PIX_KEY }}
             NEXT_PUBLIC_PHONE=${{ secrets.PHONE }}
+            NEXT_PUBLIC_MICROSOFT_CLARITY=${{ secrets.MICROSOFT_CLARITY }}
