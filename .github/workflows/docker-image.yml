@@ -57,3 +57,4 @@ jobs:
             NEXT_PUBLIC_PIX_KEY=${{ secrets.PIX_KEY }}
             NEXT_PUBLIC_PHONE=${{ secrets.PHONE }}
             NEXT_PUBLIC_MICROSOFT_CLARITY=${{ secrets.MICROSOFT_CLARITY }}
+            NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}
