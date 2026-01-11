@@ -33,11 +33,12 @@ WORKDIR /app
 ENV NODE_ENV=production
 USER nonroot
 
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/public ./public
-COPY --from=build /app/.next ./.next
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/.next/cache ./.next/cache
+COPY --from=build /app/node_modules ./node_modules
 
 EXPOSE 3000
 
-CMD ["node", "node_modules/next/dist/bin/next", "start", "-p", "3000"]
+CMD ["server.js"]
