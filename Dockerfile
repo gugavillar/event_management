@@ -1,4 +1,4 @@
-FROM node:20-slim AS base
+FROM node:22-slim AS base
 
 RUN apt-get update -y && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
@@ -28,7 +28,7 @@ RUN pnpm run build
 RUN mkdir -p /app/.next/cache/images
 RUN chown -R 65532:65532 /app
 
-FROM gcr.io/distroless/nodejs20 AS production
+FROM gcr.io/distroless/nodejs22 AS production
 WORKDIR /app
 ENV NODE_ENV=production
 USER nonroot
