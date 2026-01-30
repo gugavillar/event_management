@@ -1,5 +1,5 @@
+import type { $Enums } from '@prisma/client'
 import { differenceInYears, format } from 'date-fns'
-import type { $Enums } from 'prisma/prisma/generate/prisma/client'
 
 import { CHECK_IN_STATUS, PaymentType, PaymentTypeAPI, StatusType } from '@/constants'
 
