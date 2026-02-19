@@ -2,6 +2,7 @@
 import type { ApexOptions } from 'apexcharts'
 import dynamic from 'next/dynamic'
 import type { ComponentProps } from 'react'
+import type { Props } from 'react-apexcharts'
 import { twMerge } from 'tailwind-merge'
 
 const ApexCharts = dynamic(() => import('react-apexcharts'), {
@@ -94,8 +95,8 @@ const OPTIONS_CHART_BAR: ApexOptions = {
 }
 
 type BarChartProps = ComponentProps<'div'> & {
-	series: ApexAxisChartSeries
-	categories: ApexXAxis['categories']
+	series: Props['series']
+	categories?: Array<string>
 }
 
 export const BarChart = ({ className, categories, series }: BarChartProps) => {

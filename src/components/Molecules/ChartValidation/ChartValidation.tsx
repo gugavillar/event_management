@@ -1,8 +1,10 @@
+import type { Props } from 'react-apexcharts'
+
 import { BarChart, Spinner } from '@/components/Atoms'
 
 export type ChartValidationProps = {
 	categories?: string[]
-	series?: ApexAxisChartSeries
+	series?: Props['series']
 	isLoading: boolean
 }
 
@@ -15,7 +17,7 @@ export const ChartValidation = ({ categories, series, isLoading }: ChartValidati
 		)
 	}
 
-	const hasNoData = !series?.length || series?.some(({ data }) => data.length === 0)
+	const hasNoData = !series?.length || series?.some((value) => value === 0)
 
 	if (hasNoData) {
 		return (
