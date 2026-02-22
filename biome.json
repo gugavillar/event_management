@@ -22,14 +22,33 @@
 			}
 		},
 		"enabled": true,
-		"includes": ["src/**/*.{js,jsx,ts,tsx}"]
+		"includes": [
+			"src/**/*.{js,jsx,ts,tsx}",
+			"prisma/**/*.{js,ts}",
+			"package.json",
+			"jest.config.ts",
+			"jest.setup.ts",
+			"next.config.mjs",
+			"tsconfig.json"
+		]
 	},
 	"css": {
 		"parser": {
 			"tailwindDirectives": true
 		}
 	},
-	"files": { "ignoreUnknown": true },
+	"files": {
+		"ignoreUnknown": true,
+		"includes": [
+			"src/**/*.{js,jsx,ts,tsx}",
+			"prisma/**/*.{js,ts}",
+			"package.json",
+			"jest.config.ts",
+			"jest.setup.ts",
+			"next.config.mjs",
+			"tsconfig.json"
+		]
+	},
 	"formatter": {
 		"attributePosition": "auto",
 		"bracketSameLine": false,

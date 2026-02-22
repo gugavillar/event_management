@@ -1,24 +1,4 @@
 {
-	"name": "event_management",
-	"version": "1.0.2",
-	"private": true,
-	"prisma": {
-		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-	},
-	"scripts": {
-		"dev": "next dev --turbopack",
-		"prebuild": "next telemetry disable",
-		"build": "next build",
-		"start": "next start",
-		"biome": "biome check --write --no-errors-on-unmatched",
-		"test": "jest",
-		"test:watch": "jest --watch",
-		"prepare": "husky",
-		"check-types": "tsc --noemit",
-		"pstudio": "pnpx prisma studio",
-		"migrate:dev": "pnpx prisma migrate dev",
-		"seed": "pnpx prisma db seed"
-	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
 		"@prisma/client": "^6.19.2",
@@ -85,10 +65,8 @@
 	"lint-staged": {
 		"*.{ts,tsx,js,jsx}": ["biome check --staged --no-errors-on-unmatched"]
 	},
+	"name": "event_management",
 	"pnpm": {
-		"overrides": {
-			"brace-expansion": "^2.0.2"
-		},
 		"onlyBuiltDependencies": [
 			"@prisma/client",
 			"@prisma/engines",
@@ -97,6 +75,28 @@
 			"prisma",
 			"sharp",
 			"unrs-resolver"
-		]
-	}
+		],
+		"overrides": {
+			"brace-expansion": "^2.0.2"
+		}
+	},
+	"prisma": {
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+	},
+	"private": true,
+	"scripts": {
+		"biome": "biome check --write --no-errors-on-unmatched",
+		"build": "next build",
+		"check-types": "tsc --noemit",
+		"dev": "next dev --turbopack",
+		"migrate:dev": "pnpx prisma migrate dev",
+		"prebuild": "next telemetry disable",
+		"prepare": "husky",
+		"pstudio": "pnpx prisma studio",
+		"seed": "pnpx prisma db seed",
+		"start": "next start",
+		"test": "jest",
+		"test:watch": "jest --watch"
+	},
+	"version": "1.0.2"
 }

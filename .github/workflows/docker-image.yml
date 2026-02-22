@@ -2,7 +2,13 @@ name: Build Docker images
 
 on:
   push:
-    branches: ['main']
+    branches: 'main'
+    paths:
+      - 'Dockerfile'
+      - 'src/**'
+      - 'package.json'
+      - 'prisma/**'
+      - 'public/**'
 
 jobs:
   build-and-push-dockerfile-image:
@@ -12,11 +18,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Install pnpm
-        run: npm install -g pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: 2.3.13
+
+      - name: Run biome
+        run: biome ci .
+
+      # - name: Run unit tests
+      #   run: pnpm test
 
       # - name: Delete database
       #   env:
