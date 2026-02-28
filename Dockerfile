@@ -25,16 +25,16 @@ COPY . .
 RUN pnpm prisma generate
 RUN pnpm build
 
-FROM gcr.io/distroless/nodejs22 AS production
+FROM gcr.io/distroless/nodejs22-debian12 AS production
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=320"
 
-USER 1000
+USER nonroot
 
-COPY --from=build --chown=1000:1000 /app/.next/standalone ./
-COPY --from=build --chown=1000:1000 /app/.next/static ./.next/static
-COPY --from=build --chown=1000:1000 /app/public ./public
+COPY --from=build --chown=nonroot:nonroot /app/.next/standalone ./
+COPY --from=build --chown=nonroot:nonroot /app/.next/static ./.next/static
+COPY --from=build --chown=nonroot:nonroot /app/public ./public
 
 EXPOSE 3000
 
