@@ -1,10 +1,24 @@
-Dockerfile
-coverage
-.dockerignore
+# Dependências locais
 node_modules
-*.log
-README.md
+
+# Build local
 .next
-!.next/static
-!.next/standalone
+coverage
+dist
+
+# Logs
+*.log
+
+# Git
 .git
+.gitignore
+
+# Arquivos desnecessários
+README.md
+Dockerfile
+.dockerignore
+
+# Ambiente local
+.env
+.env.local
+.env.*.local
