@@ -1,6 +1,4 @@
-FROM node:22-slim AS base
-
-RUN apt-get update -y && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+FROM node:22-alpine AS base
 WORKDIR /app
 RUN corepack enable
 
@@ -23,21 +21,21 @@ ENV NEXT_PUBLIC_PHONE=$NEXT_PUBLIC_PHONE
 ENV NEXT_PUBLIC_MICROSOFT_CLARITY=$NEXT_PUBLIC_MICROSOFT_CLARITY
 
 COPY . .
+
 RUN pnpm prisma generate
-RUN pnpm run build
-RUN mkdir -p /app/.next/cache/images
-RUN chown -R 65532:65532 /app
+RUN pnpm build
 
 FROM gcr.io/distroless/nodejs22 AS production
 WORKDIR /app
 ENV NODE_ENV=production
-USER nonroot
+ENV NODE_OPTIONS="--max-old-space-size=320"
 
-COPY --from=build /app/package.json ./package.json
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/public ./public
-COPY --from=build /app/.next ./.next
+USER 1000
+
+COPY --from=build --chown=1000:1000 /app/.next/standalone ./
+COPY --from=build --chown=1000:1000 /app/.next/static ./.next/static
+COPY --from=build --chown=1000:1000 /app/public ./public
 
 EXPOSE 3000
 
-CMD ["node_modules/next/dist/bin/next", "start", "-p", "3000"]
+CMD ["server.js"]
