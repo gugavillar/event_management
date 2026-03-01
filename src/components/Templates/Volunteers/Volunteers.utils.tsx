@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import { BriefcaseBusiness, FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
 
 import { FunctionTag, StatusTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
+import { CHECK_IN_STATUS, COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -68,30 +68,50 @@ export const formatTableData = (
 			}),
 			actions: (
 				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<FileUser className="cursor-pointer" onClick={() => handleShowVolunteer(volunteer.id)} size={20} />
-						<Tooltip>Informações</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<SquarePen className="cursor-pointer" onClick={() => handleEditVolunteer(volunteer.id)} size={20} />
-						<Tooltip>Editar</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<BriefcaseBusiness
-							className="cursor-pointer"
-							onClick={() => handleAssignFunctionVolunteer(volunteer.id)}
-							size={20}
-						/>
-						<Tooltip>Atribuir função</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<TicketCheck className="cursor-pointer" onClick={() => handleCheckInVolunteer(volunteer.id)} size={20} />
-						<Tooltip>Check-In</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserRoundX className="cursor-pointer" onClick={() => handleDeleteVolunteer(volunteer.id)} size={20} />
-						<Tooltip>Excluir</Tooltip>
-					</div>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<FileUser className="cursor-pointer" onClick={() => handleShowVolunteer(volunteer.id)} size={20} />
+						}
+					>
+						Informações
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<SquarePen className="cursor-pointer" onClick={() => handleEditVolunteer(volunteer.id)} size={20} />
+						}
+					>
+						Editar
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<BriefcaseBusiness
+								className="cursor-pointer"
+								onClick={() => handleAssignFunctionVolunteer(volunteer.id)}
+								size={20}
+							/>
+						}
+					>
+						Atribuir função
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<TicketCheck className="cursor-pointer" onClick={() => handleCheckInVolunteer(volunteer.id)} size={20} />
+						}
+					>
+						Check-In
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<UserRoundX className="cursor-pointer" onClick={() => handleDeleteVolunteer(volunteer.id)} size={20} />
+						}
+					>
+						Excluir
+					</Tooltip>
 				</div>
 			),
 			birthdate: formatBirthdate(volunteer.birthdate, volunteer.event.finalDate),

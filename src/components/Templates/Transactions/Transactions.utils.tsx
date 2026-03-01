@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
 import { amountType, transactionType } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
-import { TransactionsType } from '@/constants'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, TransactionsType } from '@/constants'
 import { currencyValue } from '@/formatters'
 import type { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
 
@@ -80,10 +80,12 @@ export const formatTableData = (
 		return {
 			...transaction,
 			action: (
-				<div className="hs-tooltip">
-					<Trash2 className="cursor-pointer" onClick={() => handleRemoveDonation(transaction.id)} size={18} />
-					<Tooltip>Excluir</Tooltip>
-				</div>
+				<Tooltip
+					{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+					trigger={<Trash2 className="cursor-pointer" onClick={() => handleRemoveDonation(transaction.id)} size={18} />}
+				>
+					Excluir
+				</Tooltip>
 			),
 			amount: (
 				<span

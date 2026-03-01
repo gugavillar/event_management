@@ -157,3 +157,8 @@ export const PAGES_ROLES = {
 	'/voluntarios/listagem': [ROLES.ADMIN, ROLES.USER],
 	'/voluntarios/pagamentos': [ROLES.ADMIN, ROLES.USER],
 }
+
+export const COMMON_PROPS_TOOLTIPS_BUTTON_TABLE = {
+	side: 'bottom',
+	sideOffset: 5,
+} as const

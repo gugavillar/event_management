@@ -2,6 +2,7 @@ import { format } from 'date-fns'
 import { ArrowLeftRight, FileUser, UserRoundX } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -48,22 +49,38 @@ export const formatTableData = (
 		return {
 			actions: (
 				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(participant.id)} size={20} />
-						<Tooltip>Informações</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<ArrowLeftRight
-							className="cursor-pointer"
-							onClick={() => handleInterestedModal(participant.id)}
-							size={20}
-						/>
-						<Tooltip>Mover para o evento</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserRoundX className="cursor-pointer" onClick={() => handleDeleteParticipant(participant.id)} size={20} />
-						<Tooltip>Excluir</Tooltip>
-					</div>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(participant.id)} size={20} />
+						}
+					>
+						Informações
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<ArrowLeftRight
+								className="cursor-pointer"
+								onClick={() => handleInterestedModal(participant.id)}
+								size={20}
+							/>
+						}
+					>
+						Mover para o evento
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<UserRoundX
+								className="cursor-pointer"
+								onClick={() => handleDeleteParticipant(participant.id)}
+								size={20}
+							/>
+						}
+					>
+						Excluir
+					</Tooltip>
 				</div>
 			),
 			birthdate: formatBirthdate(participant.birthdate, participant.event.finalDate),

@@ -1,6 +1,7 @@
 import { Trash2 } from 'lucide-react'
 
 import { Tooltip } from '@/components/Atoms'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE } from '@/constants'
 import { currencyValue } from '@/formatters'
 import type { DonationAPI } from '@/services/queries/donations/donations.types'
 
@@ -32,10 +33,12 @@ export const formatTableData = (
 	return data.map((donation) => ({
 		...donation,
 		action: (
-			<div className="hs-tooltip">
-				<Trash2 className="cursor-pointer" onClick={() => handleRemoveDonation(donation.id)} size={18} />
-				<Tooltip>Excluir</Tooltip>
-			</div>
+			<Tooltip
+				{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+				trigger={<Trash2 className="cursor-pointer" onClick={() => handleRemoveDonation(donation.id)} size={18} />}
+			>
+				Excluir
+			</Tooltip>
 		),
 		event: donation.event.name,
 		value: currencyValue(Number(donation.value)),

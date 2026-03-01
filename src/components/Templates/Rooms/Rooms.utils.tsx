@@ -2,7 +2,7 @@ import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Header, Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { MEMBERS, MembersTypes } from '@/constants'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, MEMBERS, MembersTypes } from '@/constants'
 import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
 
 export const HEADER_LABELS = [
@@ -95,14 +95,18 @@ export const Content = (
 					<div className="flex items-center justify-between">
 						<Header>Quarto - {data.roomNumber}</Header>
 						<div className="flex space-x-4">
-							<div className="hs-tooltip">
-								<SquarePen className="cursor-pointer" onClick={() => handleEditRoom(data.id)} size={20} />
-								<Tooltip>Editar</Tooltip>
-							</div>
-							<div className="hs-tooltip">
-								<Trash2 className="cursor-pointer" onClick={() => handleRemoveRoom(data.id)} size={20} />
-								<Tooltip>Excluir</Tooltip>
-							</div>
+							<Tooltip
+								{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+								trigger={<SquarePen className="cursor-pointer" onClick={() => handleEditRoom(data.id)} size={20} />}
+							>
+								Editar
+							</Tooltip>
+							<Tooltip
+								{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+								trigger={<Trash2 className="cursor-pointer" onClick={() => handleRemoveRoom(data.id)} size={20} />}
+							>
+								Excluir
+							</Tooltip>
 						</div>
 					</div>
 					<ListManager bodyData={data.members} headerLabels={HEADER_LABELS} isLoading={isFetching} />

@@ -1,33 +1,28 @@
-'use client'
-import { isServer } from '@tanstack/react-query'
-import { type ComponentProps, memo, useEffect } from 'react'
-import { twMerge } from 'tailwind-merge'
+import * as TooltipRadix from '@radix-ui/react-tooltip'
+import type { ReactNode } from 'react'
 
-type TooltipProps = ComponentProps<'span'>
+export type TooltipProps = {
+	trigger: ReactNode
+	children: ReactNode
+	sideOffset?: number
+	side?: 'top' | 'right' | 'bottom' | 'left'
+}
 
-export const Tooltip = memo(({ children, className, ...props }: TooltipProps) => {
-	useEffect(() => {
-		const load = async () => {
-			if (isServer) return
-
-			const { HSTooltip } = await import('preline/preline')
-			HSTooltip.autoInit()
-		}
-		load()
-	}, [])
-
+export const Tooltip = ({ trigger, children, sideOffset = 20, side = 'right' }: TooltipProps) => {
 	return (
-		<span
-			className={twMerge(
-				'hs-tooltip-content hs-tooltip-shown:visible hs-tooltip-shown:opacity-100 invisible absolute z-10 inline-block rounded-md bg-gray-900 px-2 py-1 text-sm font-medium text-white opacity-0 shadow-md transition-opacity',
-				className
-			)}
-			role="tooltip"
-			{...props}
-		>
-			{children}
-		</span>
+		<TooltipRadix.Provider delayDuration={100}>
+			<TooltipRadix.Root>
+				<TooltipRadix.Trigger asChild>{trigger}</TooltipRadix.Trigger>
+				<TooltipRadix.Portal>
+					<TooltipRadix.Content
+						className="bg-gray-900 text-white px-2 py-1 text-sm shadow-lg rounded-md"
+						side={side}
+						sideOffset={sideOffset}
+					>
+						{children}
+					</TooltipRadix.Content>
+				</TooltipRadix.Portal>
+			</TooltipRadix.Root>
+		</TooltipRadix.Provider>
 	)
-})
-
-Tooltip.displayName = 'Tooltip'
+}

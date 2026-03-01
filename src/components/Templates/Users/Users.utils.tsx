@@ -1,7 +1,7 @@
 import { UserLock, UserRoundCog, UserRoundPen } from 'lucide-react'
 
 import { Tooltip, UserTag } from '@/components/Atoms'
-import { RolesTypes, USER_STATUS } from '@/constants'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, RolesTypes, USER_STATUS } from '@/constants'
 import type { UserAPI } from '@/services/queries/users/users.type'
 
 export const HEADER_LABELS = [
@@ -45,18 +45,24 @@ export const formatTableData = (
 			...user,
 			actions: (
 				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<UserRoundPen className="cursor-pointer" onClick={() => handleChangeRole(user.id)} size={20} />
-						<Tooltip>Alterar permissão</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserRoundCog className="cursor-pointer" onClick={() => handleResetPassword(user.id)} size={20} />
-						<Tooltip>Redefinir senha</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserLock className="cursor-pointer" onClick={() => handleBlockUser(user.id)} size={20} />
-						<Tooltip>Bloquear usuário</Tooltip>
-					</div>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={<UserRoundPen className="cursor-pointer" onClick={() => handleChangeRole(user.id)} size={20} />}
+					>
+						Alterar permissão
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={<UserRoundCog className="cursor-pointer" onClick={() => handleResetPassword(user.id)} size={20} />}
+					>
+						Redefinir senha
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={<UserLock className="cursor-pointer" onClick={() => handleBlockUser(user.id)} size={20} />}
+					>
+						Bloquear usuário
+					</Tooltip>
 				</div>
 			),
 			firstAccess: user.firstAccess ? 'Sim' : 'Não',

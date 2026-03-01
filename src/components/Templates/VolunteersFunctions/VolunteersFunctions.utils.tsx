@@ -2,6 +2,7 @@ import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE } from '@/constants'
 import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
 export const HEADER_LABELS = [
@@ -33,14 +34,18 @@ export const formatTableData = (
 	return data?.map((role) => ({
 		actions: (
 			<div className="flex space-x-4">
-				<div className="hs-tooltip">
-					<SquarePen className="cursor-pointer" onClick={() => handleEditFunction(role)} size={20} />
-					<Tooltip>Editar</Tooltip>
-				</div>
-				<div className="hs-tooltip">
-					<Trash2 className="cursor-pointer" onClick={() => handleDeleteFunction(role)} size={20} />
-					<Tooltip>Excluir</Tooltip>
-				</div>
+				<Tooltip
+					{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+					trigger={<SquarePen className="cursor-pointer" onClick={() => handleEditFunction(role)} size={20} />}
+				>
+					Editar
+				</Tooltip>
+				<Tooltip
+					{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+					trigger={<Trash2 className="cursor-pointer" onClick={() => handleDeleteFunction(role)} size={20} />}
+				>
+					Excluir
+				</Tooltip>
 			</div>
 		),
 		id: role.id,

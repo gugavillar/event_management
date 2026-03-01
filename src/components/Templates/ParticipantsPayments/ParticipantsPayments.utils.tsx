@@ -2,7 +2,7 @@ import { BanknoteArrowUp, FileUser, HandCoins } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 import { PaymentTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS, LINE_COLOR, PaymentTypeAPI } from '@/constants'
+import { CHECK_IN_STATUS, COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, LINE_COLOR, PaymentTypeAPI } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -79,27 +79,43 @@ export const formatTableData = (
 			}),
 			actions: (
 				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(payment.id)} size={20} />
-						<Tooltip>Informações</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<HandCoins
-							className={twMerge(
-								isParticipantWithdraw || isPaymentTotal ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
-							)}
-							size={20}
-							{...(canInformPayment && {
-								onClick: () => handlePaymentModal(payment),
-							})}
-						/>
-						<Tooltip>{generateTooltipText(isParticipantWithdraw, isPaymentTotal)}</Tooltip>
-					</div>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(payment.id)} size={20} />
+						}
+					>
+						Informações
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<HandCoins
+								className={twMerge(
+									isParticipantWithdraw || isPaymentTotal ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+								)}
+								size={20}
+								{...(canInformPayment && {
+									onClick: () => handlePaymentModal(payment),
+								})}
+							/>
+						}
+					>
+						{generateTooltipText(isParticipantWithdraw, isPaymentTotal)}
+					</Tooltip>
 					{isParticipantPaidAndWithdraw && (
-						<div className="hs-tooltip">
-							<BanknoteArrowUp className="cursor-pointer" onClick={() => handleReturnPaymentModal(payment)} size={20} />
-							<Tooltip>Devolver pagamento</Tooltip>
-						</div>
+						<Tooltip
+							{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+							trigger={
+								<BanknoteArrowUp
+									className="cursor-pointer"
+									onClick={() => handleReturnPaymentModal(payment)}
+									size={20}
+								/>
+							}
+						>
+							Devolver pagamento
+						</Tooltip>
 					)}
 				</div>
 			),

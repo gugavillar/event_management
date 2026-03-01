@@ -1,9 +1,9 @@
 'use client'
 import { format } from 'date-fns'
-import { CalendarMinus, Link2, SquarePen } from 'lucide-react'
+import { CalendarMinus, ChevronDown, ExternalLink, Lock, SquarePen } from 'lucide-react'
 
-import { Dropdown, Tooltip } from '@/components/Atoms'
-import { GenderType, MEMBERS } from '@/constants'
+import { Dropdown, DropdownItem, Tooltip } from '@/components/Atoms'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, GenderType, MEMBERS } from '@/constants'
 import { currencyValue } from '@/formatters'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 
@@ -53,73 +53,105 @@ export const formatTableData = (
 		...event,
 		actions: (
 			<div className="flex space-x-4">
-				<div className="hs-tooltip">
-					<Dropdown label={<Link2 className="cursor-pointer" size={18} />}>
-						<>
-							<p
-								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
-								onClick={() => handleOpenLink(event.id, 'participante')}
-							>
-								Inscrição participantes
-							</p>
-							<p
-								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
-								onClick={() =>
-									handleBlockOrOpenRegistration(
-										event.id,
-										MEMBERS.PARTICIPANT,
-										event.isParticipantRegistrationOpen ? 'close' : 'open'
-									)
+				<Dropdown
+					trigger={
+						<div>
+							<Tooltip
+								{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+								trigger={
+									<div className="inline-flex items-center gap-1 cursor-pointer">
+										<ExternalLink className="size-4" />
+										<ChevronDown className="size-4" />
+									</div>
 								}
 							>
-								{event.isParticipantRegistrationOpen
-									? 'Fechar inscrição participantes'
-									: 'Abrir inscrição participantes'}
-							</p>
-							<p
-								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
-								onClick={() => handleOpenLink(event.id, 'voluntario')}
-							>
-								Inscrição voluntários
-							</p>
-							<p
-								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
-								onClick={() =>
-									handleBlockOrOpenRegistration(
-										event.id,
-										MEMBERS.VOLUNTEER,
-										event.isVolunteerRegistrationOpen ? 'close' : 'open'
-									)
+								Links de inscrições
+							</Tooltip>
+						</div>
+					}
+				>
+					<DropdownItem
+						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						onSelect={() => handleOpenLink(event.id, 'participante')}
+					>
+						Inscrição participantes
+					</DropdownItem>
+
+					<DropdownItem
+						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						onSelect={() => handleOpenLink(event.id, 'voluntario')}
+					>
+						Inscrição voluntários
+					</DropdownItem>
+					<DropdownItem
+						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						onSelect={() => handleOpenInterestedLink(event.id)}
+					>
+						Lista de interessados
+					</DropdownItem>
+				</Dropdown>
+				<Dropdown
+					trigger={
+						<div>
+							<Tooltip
+								{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+								trigger={
+									<div className="inline-flex items-center gap-1 cursor-pointer">
+										<Lock className="size-4" />
+										<ChevronDown className="size-4" />
+									</div>
 								}
 							>
-								{event.isVolunteerRegistrationOpen ? 'Fechar inscrição voluntários' : 'Abrir inscrição voluntários'}
-							</p>
-							<p
-								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
-								onClick={() => handleOpenInterestedLink(event.id)}
-							>
-								Lista de interessados
-							</p>
-							<p
-								className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
-								onClick={() =>
-									handleActivatedOrDeactivatedInterestedList(event.id, event.isInterestedListOpen ? 'close' : 'open')
-								}
-							>
-								{event.isInterestedListOpen ? 'Fechar lista de interessados' : 'Abrir lista de interessados'}
-							</p>
-						</>
-					</Dropdown>
-					<Tooltip>Ações de links</Tooltip>
-				</div>
-				<div className="hs-tooltip">
-					<SquarePen className="cursor-pointer" onClick={() => handleOpenDrawer(event.id)} size={18} />
-					<Tooltip>Editar</Tooltip>
-				</div>
-				<div className="hs-tooltip">
-					<CalendarMinus className="cursor-pointer" onClick={() => handleDeleteEvent(event.id)} size={18} />
-					<Tooltip>Excluir</Tooltip>
-				</div>
+								Bloquear links
+							</Tooltip>
+						</div>
+					}
+				>
+					<DropdownItem
+						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						onSelect={() =>
+							handleBlockOrOpenRegistration(
+								event.id,
+								MEMBERS.PARTICIPANT,
+								event.isParticipantRegistrationOpen ? 'close' : 'open'
+							)
+						}
+					>
+						{event.isParticipantRegistrationOpen ? 'Fechar inscrição participantes' : 'Abrir inscrição participantes'}
+					</DropdownItem>
+					<DropdownItem
+						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						onSelect={() =>
+							handleBlockOrOpenRegistration(
+								event.id,
+								MEMBERS.VOLUNTEER,
+								event.isVolunteerRegistrationOpen ? 'close' : 'open'
+							)
+						}
+					>
+						{event.isVolunteerRegistrationOpen ? 'Fechar inscrição voluntários' : 'Abrir inscrição voluntários'}
+					</DropdownItem>
+					<DropdownItem
+						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						onSelect={() =>
+							handleActivatedOrDeactivatedInterestedList(event.id, event.isInterestedListOpen ? 'close' : 'open')
+						}
+					>
+						{event.isInterestedListOpen ? 'Fechar lista de interessados' : 'Abrir lista de interessados'}
+					</DropdownItem>
+				</Dropdown>
+				<Tooltip
+					{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+					trigger={<SquarePen className="cursor-pointer" onClick={() => handleOpenDrawer(event.id)} size={18} />}
+				>
+					Editar
+				</Tooltip>
+				<Tooltip
+					{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+					trigger={<CalendarMinus className="cursor-pointer" onClick={() => handleDeleteEvent(event.id)} size={18} />}
+				>
+					Excluir
+				</Tooltip>
 			</div>
 		),
 		finalDate: format(event.finalDate, 'dd/MM/yyyy'),

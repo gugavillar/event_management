@@ -4,12 +4,12 @@ import { IMAGES_FORMS } from './globals'
 import { MEMBERS, type ROLES } from './status'
 
 export const overlayClose = async (elementId: string) => {
-	const overlay = await import('preline/preline')
+	const overlay = await import('preline')
 	overlay.HSOverlay.close(document.getElementById(elementId) as HTMLElement)
 }
 
 export const overlayOpen = async (elementId: string) => {
-	const overlay = await import('preline/preline')
+	const overlay = await import('preline')
 	overlay.HSOverlay.autoInit()
 	overlay.HSOverlay.open(document.getElementById(elementId) as HTMLElement)
 }

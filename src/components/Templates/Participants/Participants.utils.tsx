@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import { ArrowLeftRight, FileUser, SquarePen, TicketCheck, UserRoundX } from 'lucide-react'
 
 import { StatusTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS, LINE_COLOR } from '@/constants'
+import { CHECK_IN_STATUS, COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, LINE_COLOR } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -63,34 +63,57 @@ export const formatTableData = (
 			}),
 			actions: (
 				<div className="flex space-x-4">
-					<div className="hs-tooltip">
-						<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(participant.id)} size={20} />
-						<Tooltip>Informações</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<SquarePen className="cursor-pointer" onClick={() => handleEditParticipant(participant.id)} size={20} />
-						<Tooltip>Editar</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<TicketCheck
-							className="cursor-pointer"
-							onClick={() => handleCheckInParticipant(participant.id)}
-							size={20}
-						/>
-						<Tooltip>Check-In</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<ArrowLeftRight
-							className="cursor-pointer"
-							onClick={() => handleInterestedParticipant(participant.id)}
-							size={20}
-						/>
-						<Tooltip>Mover para lista de interessados</Tooltip>
-					</div>
-					<div className="hs-tooltip">
-						<UserRoundX className="cursor-pointer" onClick={() => handleDeleteParticipant(participant.id)} size={20} />
-						<Tooltip>Excluir</Tooltip>
-					</div>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<FileUser className="cursor-pointer" onClick={() => handleShowParticipant(participant.id)} size={20} />
+						}
+					>
+						Informações
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<SquarePen className="cursor-pointer" onClick={() => handleEditParticipant(participant.id)} size={20} />
+						}
+					>
+						Editar
+					</Tooltip>
+					<Tooltip
+						trigger={
+							<TicketCheck
+								className="cursor-pointer"
+								onClick={() => handleCheckInParticipant(participant.id)}
+								size={20}
+							/>
+						}
+					>
+						Check-In
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<ArrowLeftRight
+								className="cursor-pointer"
+								onClick={() => handleInterestedParticipant(participant.id)}
+								size={20}
+							/>
+						}
+					>
+						Mover para lista de interessados
+					</Tooltip>
+					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						trigger={
+							<UserRoundX
+								className="cursor-pointer"
+								onClick={() => handleDeleteParticipant(participant.id)}
+								size={20}
+							/>
+						}
+					>
+						Excluir
+					</Tooltip>
 				</div>
 			),
 			birthdate: formatBirthdate(participant.birthdate, participant.event.finalDate),

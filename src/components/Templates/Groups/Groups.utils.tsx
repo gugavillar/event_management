@@ -2,7 +2,7 @@ import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Header, Spinner, Text, Tooltip } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
-import { MEMBERS, MembersTypes } from '@/constants'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, MEMBERS, MembersTypes } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { GroupAPI } from '@/services/queries/groups/groups.types'
 
@@ -129,14 +129,18 @@ export const Content = (
 						</Text>
 					</div>
 					<div className="flex space-x-4">
-						<div className="hs-tooltip">
-							<SquarePen className="cursor-pointer" onClick={() => handleEditGroup(data.id)} size={20} />
-							<Tooltip>Editar</Tooltip>
-						</div>
-						<div className="hs-tooltip">
-							<Trash2 className="cursor-pointer" onClick={() => handleRemoveGroup(data.id)} size={20} />
-							<Tooltip>Excluir</Tooltip>
-						</div>
+						<Tooltip
+							{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+							trigger={<SquarePen className="cursor-pointer" onClick={() => handleEditGroup(data.id)} size={20} />}
+						>
+							Editar
+						</Tooltip>
+						<Tooltip
+							trigger={<Trash2 className="cursor-pointer" onClick={() => handleRemoveGroup(data.id)} size={20} />}
+							{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
+						>
+							Excluir
+						</Tooltip>
 					</div>
 				</div>
 				<ListManager bodyData={sortedMembers} headerLabels={HEADER_LABELS} isLoading={isFetching} />
