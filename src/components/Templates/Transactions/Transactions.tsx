@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ComboBox, ExportTransactionsButton, ListManager, TransactionCard } from '@/components/Molecules'
 import { CreateTransaction, ListPage, TransactionDeleteModal } from '@/components/Organisms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { TRANSACTION_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -14,8 +14,13 @@ import type { TransactionsAPI } from '@/services/queries/transactions/transactio
 
 import { formatTableData, HEADER_LABELS, TransactionCardInfo } from './Transactions.utils'
 
+export type SelectedTransaction = {
+	modal: TRANSACTION_MODAL_TYPE
+	id: TransactionsAPI['id']
+}
+
 export const Transaction = () => {
-	const [selectedTransaction, setSelectedTransaction] = useState<TransactionsAPI['id'] | null>(null)
+	const [selectedTransaction, setSelectedTransaction] = useState<SelectedTransaction | null>(null)
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const { eventId, isLoading, setEventId, data, page, setPage, searchTransaction, setSearchTransaction } =
 		useGetTransactions()
@@ -33,8 +38,7 @@ export const Transaction = () => {
 	})
 
 	const handleRemoveTransaction = (id: TransactionsAPI['id']) => {
-		setSelectedTransaction(id)
-		overlayOpen(MODALS_IDS.TRANSACTION_REMOVE_MODAL)
+		setSelectedTransaction({ id, modal: TRANSACTION_MODAL_TYPE.DELETE })
 	}
 
 	const formatData = formatTableData(data?.data, handleRemoveTransaction)
@@ -53,7 +57,7 @@ export const Transaction = () => {
 		<>
 			<div className="flex flex-col-reverse items-center justify-between gap-6 md:flex-row md:items-end">
 				<ComboBox
-					className="max-w-[25.875rem]"
+					className="max-w-103.5"
 					keyOptionLabel="label"
 					keyOptionValue="value"
 					label="Selecione o evento"
@@ -109,7 +113,6 @@ export const Transaction = () => {
 				selectedEvent={eventId}
 			/>
 			<TransactionDeleteModal
-				modalId={MODALS_IDS.TRANSACTION_REMOVE_MODAL}
 				selectedTransaction={selectedTransaction}
 				setSelectedTransaction={setSelectedTransaction}
 			/>

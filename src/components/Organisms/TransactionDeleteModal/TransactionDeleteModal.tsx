@@ -4,19 +4,17 @@ import type { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedTransaction } from '@/components/Templates'
+import { TRANSACTION_MODAL_TYPE } from '@/constants'
 import { useDeleteTransaction } from '@/services/queries/transactions/hooks'
-import type { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
 import { generateToastError } from '@/utils/errors'
 
 type TransactionDeleteModalProps = {
-	modalId: string
-	selectedTransaction: TransactionsAPI['id'] | null
-	setSelectedTransaction: Dispatch<SetStateAction<TransactionsAPI['id'] | null>>
+	selectedTransaction: SelectedTransaction | null
+	setSelectedTransaction: Dispatch<SetStateAction<SelectedTransaction | null>>
 }
 
 export const TransactionDeleteModal = ({
-	modalId,
 	selectedTransaction,
 	setSelectedTransaction,
 }: TransactionDeleteModalProps) => {
@@ -24,23 +22,25 @@ export const TransactionDeleteModal = ({
 
 	const handleDeleteTransaction = async () => {
 		if (!selectedTransaction) return
-		await remove(selectedTransaction, {
+
+		await remove(selectedTransaction.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir transação'),
 			onSuccess: () => {
 				toast.success('Transação excluída com sucesso!')
 				setSelectedTransaction(null)
-				overlayClose(modalId)
 			},
 		})
 	}
 
 	const handleCloseTransactionDeleteModal = () => {
 		setSelectedTransaction(null)
-		overlayClose(modalId)
 	}
 
 	return (
-		<Modal handleClose={handleCloseTransactionDeleteModal} modalId={modalId}>
+		<Modal
+			onOpenChange={handleCloseTransactionDeleteModal}
+			open={selectedTransaction?.modal === TRANSACTION_MODAL_TYPE.DELETE}
+		>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

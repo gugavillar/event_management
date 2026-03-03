@@ -4,35 +4,37 @@ import { type Dispatch, memo, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedUser } from '@/components/Templates'
 import { useBlockOrUnblockUser } from '@/services/queries/users'
-import type { UserAPI } from '@/services/queries/users/users.type'
 
 type BlockUserModalProps = {
-	modalId: string
-	selectedUser: UserAPI['id'] | null
-	setSelectedUser: Dispatch<SetStateAction<UserAPI['id'] | null>>
+	selectedUser: SelectedUser | null
+	setSelectedUser: Dispatch<SetStateAction<SelectedUser | null>>
 }
 
-export const BlockUserModal = memo(({ modalId, selectedUser, setSelectedUser }: BlockUserModalProps) => {
+export const BlockUserModal = memo(({ selectedUser, setSelectedUser }: BlockUserModalProps) => {
 	const { update, isPending } = useBlockOrUnblockUser()
+
 	const handleBlockOrUnblockUser = async (block: boolean) => {
 		if (!selectedUser) return
 		await update(
-			{ blocked: block, userId: selectedUser },
+			{ blocked: block, userId: selectedUser.id },
 			{
 				onError: () => toast.error('Erro ao bloquear ou desbloquear usuário'),
 				onSuccess: () => {
 					setSelectedUser(null)
 					toast.success(block ? 'Usuário bloqueado com sucesso!' : 'Usuário desbloqueado com sucesso!')
-					overlayClose(modalId)
 				},
 			}
 		)
 	}
 
+	const handleCloseModal = () => {
+		setSelectedUser(null)
+	}
+
 	return (
-		<Modal handleClose={() => setSelectedUser(null)} modalId={modalId}>
+		<Modal onOpenChange={handleCloseModal} open={selectedUser?.modal === 'block'}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

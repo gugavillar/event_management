@@ -4,39 +4,36 @@ import type { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedRoom } from '@/components/Templates'
+import { ROOMS_MODAL_TYPE } from '@/constants'
 import { useDeleteRoom } from '@/services/queries/rooms'
-import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
 import { generateToastError } from '@/utils/errors'
 
 type RoomDeleteModalProps = {
-	modalId: string
-	selectedRoom: RoomAPI['id'] | null
-	setSelectedRoom: Dispatch<SetStateAction<RoomAPI['id'] | null>>
+	selectedRoom: SelectedRoom | null
+	setSelectedRoom: Dispatch<SetStateAction<SelectedRoom | null>>
 }
 
-export const RoomDeleteModal = ({ modalId, selectedRoom, setSelectedRoom }: RoomDeleteModalProps) => {
+export const RoomDeleteModal = ({ selectedRoom, setSelectedRoom }: RoomDeleteModalProps) => {
 	const { isPending, remove } = useDeleteRoom()
 
 	const handleDeleteRoom = async () => {
 		if (!selectedRoom) return
-		await remove(selectedRoom, {
+		await remove(selectedRoom.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir quarto'),
 			onSuccess: () => {
 				setSelectedRoom(null)
 				toast.success('Quarto excluído com sucesso!')
-				overlayClose(modalId)
 			},
 		})
 	}
 
 	const handleCloseRoomDeleteModal = () => {
 		setSelectedRoom(null)
-		overlayClose(modalId)
 	}
 
 	return (
-		<Modal handleClose={handleCloseRoomDeleteModal} modalId={modalId}>
+		<Modal onOpenChange={handleCloseRoomDeleteModal} open={selectedRoom?.modal === ROOMS_MODAL_TYPE.DELETE}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

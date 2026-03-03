@@ -6,29 +6,32 @@ import toast from 'react-hot-toast'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { CreateEventButton, ListPage, PageContent } from '@/components/Organisms'
-import { type MEMBERS, MembersTypes, MODALS_IDS, overlayOpen } from '@/constants'
+import { EVENTS_MODAL_TYPE, type MEMBERS, MembersTypes, MODALS_IDS } from '@/constants'
 import { useGetEvents, useUpdateInterested, useUpdateRegistration } from '@/services/queries/events'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
 
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
+export type SelectedEvent = {
+	id: EventsAPI['id']
+	modal: EVENTS_MODAL_TYPE
+}
+
 const EventDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.EventDeleteModal))
 
 export const Events = () => {
-	const [selectedEvent, setSelectedEvent] = useState<null | EventsAPI['id']>(null)
+	const [selectedEvent, setSelectedEvent] = useState<null | SelectedEvent>(null)
 	const { update: updateRegistration } = useUpdateRegistration()
 	const { update: updateInterested } = useUpdateInterested()
 	const { data: events, isLoading, search, setSearch, page, setPage } = useGetEvents()
 
 	const handleEditEvent = useCallback((id: EventsAPI['id']) => {
-		setSelectedEvent(id)
-		overlayOpen(MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER)
+		setSelectedEvent({ id, modal: EVENTS_MODAL_TYPE.CREATE_OR_EDIT })
 	}, [])
 
 	const handleOpenModalToDeleteEvent = useCallback((id: EventsAPI['id']) => {
-		setSelectedEvent(id)
-		overlayOpen(MODALS_IDS.EVENT_REMOVE_MODAL)
+		setSelectedEvent({ id, modal: EVENTS_MODAL_TYPE.DELETE })
 	}, [])
 
 	const handleOpenSelectedLink = useCallback((id: EventsAPI['id'], type: 'participante' | 'voluntario') => {
@@ -103,11 +106,7 @@ export const Events = () => {
 				<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
 				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={events?.totalPages} />}
 			</ListPage>
-			<EventDeleteModal
-				modalId={MODALS_IDS.EVENT_REMOVE_MODAL}
-				selectedEvent={selectedEvent}
-				setSelectedEvent={setSelectedEvent}
-			/>
+			<EventDeleteModal selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
 		</PageContent>
 	)
 }

@@ -1,27 +1,29 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import saveAs from 'file-saver'
-import { useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { FILES_TYPES, overlayClose } from '@/constants'
+import { FILES_TYPES, VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportVolunteerData } from '@/services/queries/volunteers'
 
+import type { SelectedVolunteer } from '../ExportVolunteersButton'
 import { ExportVolunteersDataModalSchema, type ExportVolunteersDataModalType } from './ExportVolunteersDataModal.schema'
 
 type ExportVolunteersDataModalProps = {
-	modalId: string
+	open: SelectedVolunteer
+	setOpen: Dispatch<SetStateAction<SelectedVolunteer>>
 }
 
 const TOAST_ID = 'download-template-volunteers'
 
-export const ExportVolunteersDataModal = ({ modalId }: ExportVolunteersDataModalProps) => {
+export const ExportVolunteersDataModal = ({ open, setOpen }: ExportVolunteersDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportVolunteersDataModalType>({
 		defaultValues: {
@@ -46,6 +48,7 @@ export const ExportVolunteersDataModal = ({ modalId }: ExportVolunteersDataModal
 
 	const handleClose = () => {
 		methods.reset()
+		setOpen({ modal: null })
 	}
 
 	useEffect(() => {
@@ -70,8 +73,7 @@ export const ExportVolunteersDataModal = ({ modalId }: ExportVolunteersDataModal
 		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
 		methods.reset()
-		overlayClose(modalId)
-	}, [data, isError, eventId, formattedEvents, methods, modalId])
+	}, [data, isError, eventId, formattedEvents, methods])
 
 	const handleSubmit = async (values: ExportVolunteersDataModalType) => {
 		if (!values.eventId) return
@@ -80,7 +82,7 @@ export const ExportVolunteersDataModal = ({ modalId }: ExportVolunteersDataModal
 	}
 
 	return (
-		<Modal handleClose={handleClose} modalId={modalId}>
+		<Modal onOpenChange={handleClose} open={open.modal === VOLUNTEER_MODAL_TYPE.EXPORT}>
 			<FormProvider {...methods}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">

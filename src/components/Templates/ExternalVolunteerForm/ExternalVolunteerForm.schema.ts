@@ -45,6 +45,7 @@ export const ExternalVolunteerFormSchemaStepOne = z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
+		pixModal: z.boolean().optional(),
 		relative: z.string().trim().min(3, 'Campo obrigatório'),
 		relativePhone: z
 			.string({ error: 'Campo obrigatório' })

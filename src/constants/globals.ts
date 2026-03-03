@@ -4,6 +4,62 @@ export const LIMIT_PER_PAGE = 10
 export const LIMIT_PER_PAGE_EDITION = 300
 export const IS_NOT_DEVELOPMENT = process.env.NODE_ENV !== 'development'
 
+export enum PARTICIPANT_MODAL_TYPE {
+	CHECK_IN = 'check-in',
+	CREATE_OR_EDIT = 'create-or-edit',
+	DELETE = 'delete',
+	EXPORT = 'export',
+	INFO = 'info',
+	INTERESTED = 'interested',
+	PAYMENT = 'payment',
+	RETURN_PAYMENT = 'return_payment',
+}
+
+export enum VOLUNTEER_MODAL_TYPE {
+	ASSIGN_FUNCTION = 'assign_function',
+	CHECK_IN = 'check-in',
+	CREATE_OR_EDIT = 'create-or-edit',
+	CREATE_OR_EDIT_FUNCTION = 'create-or-edit-function',
+	DELETE = 'delete',
+	DELETE_FUNCTION = 'delete_function',
+	EXPORT = 'export',
+	INFO = 'info',
+	PAYMENT = 'payment',
+	RETURN_PAYMENT = 'return_payment',
+}
+
+export enum TRANSACTION_MODAL_TYPE {
+	CREATE = 'create',
+	DELETE = 'delete',
+}
+
+export enum DONATION_MODAL_TYPE {
+	CREATE = 'create',
+	DELETE = 'delete',
+}
+
+export enum MEETING_MODAL_TYPE {
+	ALERT = 'alert',
+	CREATE = 'create',
+	EXPORT = 'export',
+}
+
+export enum ROOMS_MODAL_TYPE {
+	CREATE_OR_EDIT = 'create-or-edit',
+	DELETE = 'delete',
+}
+
+export enum GROUPS_MODAL_TYPE {
+	CREATE_OR_EDIT = 'create-or-edit',
+	DELETE = 'delete',
+	EXPORT = 'export',
+}
+
+export enum EVENTS_MODAL_TYPE {
+	CREATE_OR_EDIT = 'create-or-edit',
+	DELETE = 'delete',
+}
+
 export const MODALS_IDS = {
 	// DONATION
 	DONATION_CREATE_DRAWER: 'donation_create_drawer',

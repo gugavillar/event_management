@@ -2,16 +2,22 @@
 
 import { Speech } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Button } from '@/components/Atoms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { MEETING_MODAL_TYPE } from '@/constants'
 
 const MeetingCreateModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.MeetingCreateModal))
 
+export type SelectedMeeting = {
+	modal: MEETING_MODAL_TYPE | null
+}
+
 export const CreateMeetingButton = memo(() => {
+	const [open, setOpen] = useState<SelectedMeeting>({ modal: null })
+
 	const handleOpenMeetingCreateModal = () => {
-		overlayOpen(MODALS_IDS.MEETING_CREATE_MODAL)
+		setOpen({ modal: MEETING_MODAL_TYPE.CREATE })
 	}
 
 	return (
@@ -24,7 +30,7 @@ export const CreateMeetingButton = memo(() => {
 			>
 				Criar uma nova reunião
 			</Button>
-			<MeetingCreateModal modalId={MODALS_IDS.MEETING_CREATE_MODAL} />
+			<MeetingCreateModal open={open} setOpen={setOpen} />
 		</>
 	)
 })

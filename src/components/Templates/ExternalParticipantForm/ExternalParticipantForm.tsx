@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 
 import { Step } from '@/components/Atoms'
 import { AddressExternalForm, ParticipantExternalForm, PaymentExternalForm } from '@/components/Organisms'
-import { MEMBERS, MODALS_IDS, overlayOpen, PAYMENT_METHOD_EXTERNAL_OPTIONS } from '@/constants'
+import { MEMBERS, PAYMENT_METHOD_EXTERNAL_OPTIONS } from '@/constants'
 import { formatDateToSendToApi } from '@/formatters'
 import { useCreateParticipant } from '@/services/queries/participants'
 import { generateToastError } from '@/utils/errors'
@@ -85,7 +85,7 @@ export const ExternalParticipantForm = ({
 	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
-		const { hasReligion, religion, hasHealth, health, paymentMethod, terms, ...data } = methods.getValues()
+		const { hasReligion, religion, hasHealth, health, paymentMethod, terms, pixModal, ...data } = methods.getValues()
 
 		const formattedData = {
 			...data,
@@ -108,7 +108,7 @@ export const ExternalParticipantForm = ({
 				onError: (error) => generateToastError(error, 'Erro ao realizar inscrição'),
 				onSuccess: () => {
 					if (paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value) {
-						return overlayOpen(MODALS_IDS.PAYMENT_PIX_MODAL)
+						return methods.setValue('pixModal', true)
 					}
 					setCurrentStep(0)
 					methods.reset()

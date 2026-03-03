@@ -1,15 +1,20 @@
 'use client'
 import { FileDown } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Button } from '@/components/Atoms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { MEETING_MODAL_TYPE } from '@/constants'
 
 import { ExportMeetingDataModal } from '../ExportMeetingDataModal'
 
+export type SelectedMeeting = {
+	modal: MEETING_MODAL_TYPE | null
+}
+
 export const ExportMeetingButton = memo(() => {
+	const [open, setOpen] = useState<SelectedMeeting>({ modal: null })
 	const handleOpenExportMeetingModal = () => {
-		overlayOpen(MODALS_IDS.MEETING_EXPORT_MODAL)
+		setOpen({ modal: MEETING_MODAL_TYPE.EXPORT })
 	}
 
 	return (
@@ -21,7 +26,7 @@ export const ExportMeetingButton = memo(() => {
 			>
 				Export reuniões
 			</Button>
-			<ExportMeetingDataModal modalId={MODALS_IDS.MEETING_EXPORT_MODAL} />
+			<ExportMeetingDataModal open={open} setOpen={setOpen} />
 		</>
 	)
 })

@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { CurrencyInputField, InputField, MaskedInputField, SelectField } from '@/components/Molecules'
+import type { SelectedEvent } from '@/components/Templates'
 import { GenderSelectOptions, overlayClose } from '@/constants'
 import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
 import { useCreateEvent, useGetEvent, useUpdateEvent } from '@/services/queries/events'
@@ -15,8 +16,8 @@ import type { EventSchemaType } from './EventDrawer.schema'
 
 type EventDrawerProps = {
 	drawerId: string
-	selectedEvent: null | EventsAPI['id']
-	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
+	selectedEvent: null | SelectedEvent
+	setSelectedEvent: Dispatch<SetStateAction<SelectedEvent | null>>
 }
 
 export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: EventDrawerProps) => {
@@ -27,7 +28,7 @@ export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: Event
 	} = useFormContext<EventSchemaType>()
 	const { create, isPending: isPendingCreate } = useCreateEvent()
 	const { update, isPending: isPendingUpdate } = useUpdateEvent()
-	const { data, isLoading } = useGetEvent(selectedEvent)
+	const { data, isLoading } = useGetEvent(selectedEvent?.id as EventsAPI['id'])
 
 	const onSubmit: SubmitHandler<EventSchemaType> = async (values) => {
 		if (!values) return
@@ -46,7 +47,7 @@ export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: Event
 			return await update(
 				{
 					data: formattedValues,
-					eventId: selectedEvent,
+					eventId: selectedEvent.id,
 				},
 				{
 					onError: (error) => generateToastError(error, 'Erro ao atualizar evento'),

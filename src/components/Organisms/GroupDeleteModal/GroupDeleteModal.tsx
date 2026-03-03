@@ -4,39 +4,36 @@ import type { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedGroup } from '@/components/Templates'
+import { GROUPS_MODAL_TYPE } from '@/constants'
 import { useDeleteGroup } from '@/services/queries/groups'
-import type { GroupAPI } from '@/services/queries/groups/groups.types'
 import { generateToastError } from '@/utils/errors'
 
 type GroupDeleteModalProps = {
-	modalId: string
-	selectedGroup: GroupAPI['id'] | null
-	setSelectedGroup: Dispatch<SetStateAction<GroupAPI['id'] | null>>
+	selectedGroup: SelectedGroup | null
+	setSelectedGroup: Dispatch<SetStateAction<SelectedGroup | null>>
 }
 
-export const GroupDeleteModal = ({ modalId, selectedGroup, setSelectedGroup }: GroupDeleteModalProps) => {
+export const GroupDeleteModal = ({ selectedGroup, setSelectedGroup }: GroupDeleteModalProps) => {
 	const { isPending, remove } = useDeleteGroup()
 
 	const handleDeleteGroup = async () => {
 		if (!selectedGroup) return
-		await remove(selectedGroup, {
+		await remove(selectedGroup.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir grupo'),
 			onSuccess: () => {
 				setSelectedGroup(null)
 				toast.success('Grupo excluído com sucesso!')
-				overlayClose(modalId)
 			},
 		})
 	}
 
 	const handleCloseGroupDeleteModal = () => {
 		setSelectedGroup(null)
-		overlayClose(modalId)
 	}
 
 	return (
-		<Modal handleClose={handleCloseGroupDeleteModal} modalId={modalId}>
+		<Modal onOpenChange={handleCloseGroupDeleteModal} open={selectedGroup?.modal === GROUPS_MODAL_TYPE.DELETE}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Button, Field, Select } from '@/components/Atoms'
 import { ComboBox, CreateMeetingButton, ListManager } from '@/components/Molecules'
 import { ExportMeetingButton, ListPage, MeetingAlertModal, PageContent } from '@/components/Organisms'
-import { MODALS_IDS, overlayClose, overlayOpen } from '@/constants'
+import { MEETING_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues, formatterFieldSelectValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -17,8 +17,13 @@ import { useGetMeeting, useGetMeetingsByEventId } from '@/services/queries/meeti
 import { MeetingSchema, type MeetingSchemaType } from './Meetings.schema'
 import { formatTableData, HEADER_LABELS } from './Meetings.utils'
 
+export type MeetingType = {
+	modal: MEETING_MODAL_TYPE | null
+	type: 'draft' | 'send'
+}
+
 export const Meetings = () => {
-	const [type, setType] = useState<'draft' | 'send'>('send')
+	const [type, setType] = useState<MeetingType>({ modal: null, type: 'send' })
 	const [search, setSearch] = useState('')
 	const methods = useForm<MeetingSchemaType>({
 		defaultValues: {
@@ -32,12 +37,10 @@ export const Meetings = () => {
 	const { data: meeting, setMeetingId, meetingId, isLoading } = useGetMeeting()
 
 	const handleOpenAlert = (type: 'draft' | 'send') => {
-		setType(type)
-		overlayOpen(MODALS_IDS.MEETING_ALERT_MODAL)
+		setType({ modal: MEETING_MODAL_TYPE.ALERT, type })
 	}
 
 	const clearState = () => {
-		overlayClose(MODALS_IDS.MEETING_ALERT_MODAL)
 		setTimeout(() => {
 			setMeetingId('')
 			setEventId(null)
@@ -192,7 +195,7 @@ export const Meetings = () => {
 							hasPreviousRecord={hasPreviousRecord}
 							isUpdate={hasPreviousRecord}
 							meetingId={meetingId}
-							modalId={MODALS_IDS.MEETING_ALERT_MODAL}
+							setType={setType}
 							type={type}
 						/>
 					</FormProvider>

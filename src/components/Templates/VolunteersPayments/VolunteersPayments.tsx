@@ -8,12 +8,13 @@ import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { FilterDrawer, ListPage, ModalReturnPayment, PageContent } from '@/components/Organisms'
 import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MEMBERS, MODALS_IDS, overlayClose, overlayOpen, PaymentTypeAPI } from '@/constants'
+import { MEMBERS, MODALS_IDS, overlayClose, PaymentTypeAPI, VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
 import { useCreateVolunteerPayment, useGetPayments, useReturnVolunteerPayment } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
 
+import type { SelectedVolunteer } from '../Volunteers/Volunteers'
 import { formatTableData, HEADER_LABELS } from './VolunteersPayments.utils'
 
 const PaymentModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.PaymentModal))
@@ -21,7 +22,7 @@ const PaymentModal = dynamic(() => import('@/components/Organisms').then((mod) =
 const VolunteerModalData = dynamic(() => import('@/components/Organisms').then((mod) => mod.VolunteerModalData))
 export const VolunteersPayments = () => {
 	const [selectedVolunteer, setSelectedVolunteer] = useState<VolunteersAPI | null>(null)
-	const [selectVolunteer, setSelectVolunteer] = useState<VolunteersAPI['id'] | null>(null)
+	const [selectVolunteer, setSelectVolunteer] = useState<SelectedVolunteer | null>(null)
 	const {
 		data: volunteersPayments,
 		isLoading: isLoadingPayments,
@@ -37,17 +38,16 @@ export const VolunteersPayments = () => {
 
 	const handleOpenModalToPaymentVolunteer = useCallback((payment: VolunteersAPI) => {
 		setSelectedVolunteer(payment)
-		overlayOpen(MODALS_IDS.VOLUNTEER_PAYMENT_MODAL)
+		setSelectVolunteer({ id: payment.id, modal: VOLUNTEER_MODAL_TYPE.PAYMENT })
 	}, [])
 
 	const handleOpenModalToReturnPaymentVolunteer = useCallback((payment: VolunteersAPI) => {
 		setSelectedVolunteer(payment)
-		overlayOpen(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
+		setSelectVolunteer({ id: payment.id, modal: VOLUNTEER_MODAL_TYPE.RETURN_PAYMENT })
 	}, [])
 
 	const handleOpenModalToShowVolunteerData = useCallback((id: VolunteersAPI['id']) => {
-		setSelectVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
+		setSelectVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.INFO })
 	}, [])
 
 	const formattedData = formatTableData(
@@ -137,21 +137,19 @@ export const VolunteersPayments = () => {
 				handleSubmit={handleUpdate}
 				isExistPayment={isExistPayment}
 				isPending={isPending}
-				modalId={MODALS_IDS.VOLUNTEER_PAYMENT_MODAL}
 				modalType="voluntário"
 				paidValue={paidValue}
+				selected={selectVolunteer}
+				setSelected={setSelectVolunteer}
 			/>
 			<ModalReturnPayment
 				handleReturnPayment={handleReturnPayment}
 				isPending={isPendingReturn}
-				modalId={MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL}
 				modalType="voluntário"
+				selected={selectVolunteer}
+				setSelected={setSelectVolunteer}
 			/>
-			<VolunteerModalData
-				modalId={MODALS_IDS.VOLUNTEER_MODAL_DATA}
-				selectedVolunteer={selectVolunteer}
-				setSelectedVolunteer={setSelectVolunteer}
-			/>
+			<VolunteerModalData selectedVolunteer={selectVolunteer} setSelectedVolunteer={setSelectVolunteer} />
 		</PageContent>
 	)
 }

@@ -9,7 +9,7 @@ import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
 import { RoomSchema, type RoomSchemaType } from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { MODALS_IDS, ROOMS_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -18,6 +18,11 @@ import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
 
 import { Content, formatTableData } from './Rooms.utils'
 
+export type SelectedRoom = {
+	id: RoomAPI['id']
+	modal: ROOMS_MODAL_TYPE
+}
+
 const RoomDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDeleteModal))
 
 const RoomDrawer = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDrawer))
@@ -25,7 +30,7 @@ const RoomDrawer = dynamic(() => import('@/components/Organisms').then((mod) => 
 const DownloadPDF = dynamic(() => import('./RoomsPrint').then((mod) => mod.DownloadPDF))
 
 export const Rooms = ({ eventId }: { eventId: string }) => {
-	const [selectedRoom, setSelectedRoom] = useState<RoomAPI['id'] | null>(null)
+	const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null)
 
 	const {
 		data: rooms,
@@ -60,17 +65,15 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 	})
 
 	const handleOpenModalToDeleteRoom = useCallback((id: RoomAPI['id']) => {
-		setSelectedRoom(id)
-		overlayOpen(MODALS_IDS.ROOM_REMOVE_MODAL)
+		setSelectedRoom({ id, modal: ROOMS_MODAL_TYPE.DELETE })
 	}, [])
 
 	const handleOpenDrawerToCreateOrEditRoom = useCallback((id?: RoomAPI['id']) => {
 		if (id) {
-			setSelectedRoom(id)
+			setSelectedRoom({ id, modal: ROOMS_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
 			setSelectedRoom(null)
 		}
-		overlayOpen(MODALS_IDS.ROOM_DRAWER)
 	}, [])
 
 	const formattedRooms = formatTableData(rooms)
@@ -123,11 +126,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 			<FormProvider {...methods}>
 				<RoomDrawer drawerId={MODALS_IDS.ROOM_DRAWER} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
 			</FormProvider>
-			<RoomDeleteModal
-				modalId={MODALS_IDS.ROOM_REMOVE_MODAL}
-				selectedRoom={selectedRoom}
-				setSelectedRoom={setSelectedRoom}
-			/>
+			<RoomDeleteModal selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
 		</PageContent>
 	)
 }

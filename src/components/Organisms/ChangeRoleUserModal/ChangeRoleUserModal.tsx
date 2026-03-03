@@ -6,20 +6,20 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal } from '@/components/Atoms'
 import { SelectField } from '@/components/Molecules'
-import { overlayClose, type ROLES, RolesTypesSelectOptions } from '@/constants'
+import type { SelectedUser } from '@/components/Templates'
+import { type ROLES, RolesTypesSelectOptions } from '@/constants'
 import { useUpdateUserRole } from '@/services/queries/users'
-import type { UserAPI } from '@/services/queries/users/users.type'
 
 import { ChangeRoleUserSchema, type ChangeRoleUserType } from './ChangeRoleUserModal.schema'
 
 type ChangeRoleUserModalProps = {
-	modalId: string
-	selectedUser: UserAPI['id'] | null
-	setSelectedUser: Dispatch<SetStateAction<UserAPI['id'] | null>>
+	selectedUser: SelectedUser | null
+	setSelectedUser: Dispatch<SetStateAction<SelectedUser | null>>
 }
 
-export const ChangeRoleUserModal = memo(({ modalId, selectedUser, setSelectedUser }: ChangeRoleUserModalProps) => {
+export const ChangeRoleUserModal = memo(({ selectedUser, setSelectedUser }: ChangeRoleUserModalProps) => {
 	const { isPending, update } = useUpdateUserRole()
+
 	const methods = useForm<ChangeRoleUserType>({
 		defaultValues: {
 			role: '',
@@ -31,21 +31,24 @@ export const ChangeRoleUserModal = memo(({ modalId, selectedUser, setSelectedUse
 		if (!selectedUser) return
 
 		await update(
-			{ role: values.role as ROLES, userId: selectedUser },
+			{ role: values.role as ROLES, userId: selectedUser.id },
 			{
 				onError: () => toast.error('Erro ao alterar a permissão'),
 				onSuccess: () => {
 					setSelectedUser(null)
 					methods.reset()
 					toast.success('Permissão atualizada com sucesso!')
-					overlayClose(modalId)
 				},
 			}
 		)
 	}
 
+	const handleClose = () => {
+		setSelectedUser(null)
+	}
+
 	return (
-		<Modal handleClose={() => setSelectedUser(null)} modalId={modalId}>
+		<Modal onOpenChange={handleClose} open={selectedUser?.modal === 'change-role'}>
 			<FormProvider {...methods}>
 				<div className="flex w-full flex-col items-center justify-center">
 					<div className="flex w-full flex-col items-center justify-between gap-6">

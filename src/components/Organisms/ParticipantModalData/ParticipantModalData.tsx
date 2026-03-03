@@ -1,6 +1,8 @@
 import { type Dispatch, memo, type SetStateAction } from 'react'
 
 import { Header, Modal, Spinner } from '@/components/Atoms'
+import type { SelectedParticipant } from '@/components/Templates'
+import { PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { useGetParticipant } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -9,17 +11,21 @@ import { FamilyContactInfo } from '../FamilyContactInfo'
 import { PersonalInfoCard } from '../PersonalInfoCard'
 
 type ParticipantModalDataProps = {
-	modalId: string
-	selectedParticipant: ParticipantsAPI['id'] | null
-	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
+	selectedParticipant: SelectedParticipant | null
+	setSelectedParticipant: Dispatch<SetStateAction<SelectedParticipant | null>>
 }
 
 export const ParticipantModalData = memo(
-	({ modalId, setSelectedParticipant, selectedParticipant }: ParticipantModalDataProps) => {
-		const { data, isLoading } = useGetParticipant(selectedParticipant)
+	({ selectedParticipant, setSelectedParticipant }: ParticipantModalDataProps) => {
+		const { data, isLoading } = useGetParticipant(selectedParticipant?.id as ParticipantsAPI['id'])
+
+		const handleClose = () => {
+			setSelectedParticipant(null)
+		}
+
 		return (
-			<Modal handleClose={() => setSelectedParticipant(null)} isLarge modalId={modalId}>
-				<div className="flex flex-col space-y-4 max-md:h-[85dvh] max-md:overflow-y-auto">
+			<Modal isLarge onOpenChange={handleClose} open={selectedParticipant?.modal === PARTICIPANT_MODAL_TYPE.INFO}>
+				<div className="flex flex-col space-y-4 max-lg:h-[85dvh] max-lg:overflow-y-auto">
 					<Header as="h3" className="text-center">
 						Dados do participante
 					</Header>

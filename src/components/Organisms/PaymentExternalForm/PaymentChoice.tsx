@@ -3,7 +3,7 @@ import Link from 'next/link'
 import PixBR from 'pixbrasil'
 import { type Dispatch, type SetStateAction, useEffect } from 'react'
 
-import { MODALS_IDS, PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
+import { PAYMENT_METHOD_EXTERNAL_OPTIONS, PIX } from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
 
 import { ModalPaymentPix } from './ModalPaymentPix'
@@ -64,7 +64,7 @@ export const PaymentChoice = ({
 					<p>Recomendamos que não deixe para o último momento para evitar imprevistos.</p>
 				</div>
 			)}
-			<ModalPaymentPix modalId={MODALS_IDS.PAYMENT_PIX_MODAL} pixValue={pixValue} setCurrentStep={setCurrentStep} />
+			<ModalPaymentPix pixValue={pixValue} setCurrentStep={setCurrentStep} />
 		</div>
 	)
 }

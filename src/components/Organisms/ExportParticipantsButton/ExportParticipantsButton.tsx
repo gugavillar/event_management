@@ -1,9 +1,9 @@
 'use client'
 import { FileDown } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Button } from '@/components/Atoms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { PARTICIPANT_MODAL_TYPE } from '@/constants'
 
 import { ExportParticipantsDataModal } from '../ExportParticipantsDataModal'
 
@@ -11,9 +11,14 @@ type ExportParticipantsButtonProps = {
 	isInterested?: boolean
 }
 
+export type SelectedParticipant = {
+	modal: PARTICIPANT_MODAL_TYPE | null
+}
+
 export const ExportParticipantsButton = memo(({ isInterested }: ExportParticipantsButtonProps) => {
+	const [open, setOpen] = useState<SelectedParticipant>({ modal: null })
 	const handleOpenExportParticipantsModal = () => {
-		overlayOpen(MODALS_IDS.PARTICIPANT_EXPORT_MODAL)
+		setOpen({ modal: PARTICIPANT_MODAL_TYPE.EXPORT })
 	}
 
 	return (
@@ -25,7 +30,7 @@ export const ExportParticipantsButton = memo(({ isInterested }: ExportParticipan
 			>
 				{isInterested ? 'Export interessados' : 'Export participantes'}
 			</Button>
-			<ExportParticipantsDataModal isInterested={isInterested} modalId={MODALS_IDS.PARTICIPANT_EXPORT_MODAL} />
+			<ExportParticipantsDataModal isInterested={isInterested} open={open} setOpen={setOpen} />
 		</>
 	)
 })

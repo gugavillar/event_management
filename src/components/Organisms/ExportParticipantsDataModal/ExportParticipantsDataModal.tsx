@@ -1,31 +1,33 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import saveAs from 'file-saver'
-import { useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { FILES_TYPES, overlayClose } from '@/constants'
+import { FILES_TYPES, PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportParticipantsData } from '@/services/queries/participants'
 
+import type { SelectedParticipant } from '../ExportParticipantsButton'
 import {
 	ExportParticipantsFileModalSchema,
 	type ExportParticipantsFileModalType,
 } from './ExportParticipantsDataModal.schema'
 
 type ExportParticipantsDataModalProps = {
-	modalId: string
+	open: SelectedParticipant
+	setOpen: Dispatch<SetStateAction<SelectedParticipant>>
 	isInterested?: boolean
 }
 
 const TOAST_ID = 'download-template-participants'
 
-export const ExportParticipantsDataModal = ({ modalId, isInterested }: ExportParticipantsDataModalProps) => {
+export const ExportParticipantsDataModal = ({ open, setOpen, isInterested }: ExportParticipantsDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportParticipantsFileModalType>({
 		defaultValues: {
@@ -50,6 +52,7 @@ export const ExportParticipantsDataModal = ({ modalId, isInterested }: ExportPar
 
 	const handleClose = () => {
 		methods.reset()
+		setOpen({ modal: null })
 	}
 
 	useEffect(() => {
@@ -74,8 +77,7 @@ export const ExportParticipantsDataModal = ({ modalId, isInterested }: ExportPar
 		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
 		methods.reset()
-		overlayClose(modalId)
-	}, [data, isError, eventId, formattedEvents, methods, modalId, isInterested])
+	}, [data, isError, eventId, formattedEvents, methods, isInterested])
 
 	const handleSubmit = async (values: ExportParticipantsFileModalType) => {
 		if (!values.eventId) return
@@ -84,7 +86,7 @@ export const ExportParticipantsDataModal = ({ modalId, isInterested }: ExportPar
 	}
 
 	return (
-		<Modal handleClose={handleClose} modalId={modalId}>
+		<Modal onOpenChange={handleClose} open={open.modal === PARTICIPANT_MODAL_TYPE.EXPORT}>
 			<FormProvider {...methods}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">

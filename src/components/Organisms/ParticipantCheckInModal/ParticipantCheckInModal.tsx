@@ -4,39 +4,41 @@ import { type Dispatch, memo, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { CHECK_IN_STATUS, overlayClose } from '@/constants'
+import type { SelectedParticipant } from '@/components/Templates'
+import { CHECK_IN_STATUS } from '@/constants'
 import { useUpdateCheckInParticipant } from '@/services/queries/participants'
-import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
 
 type ParticipantCheckInModalProps = {
-	modalId: string
-	selectedParticipant: ParticipantsAPI['id'] | null
-	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
+	selectedParticipant: SelectedParticipant | null
+	setSelectedParticipant: Dispatch<SetStateAction<SelectedParticipant | null>>
 }
 
 export const ParticipantCheckInModal = memo(
-	({ modalId, selectedParticipant, setSelectedParticipant }: ParticipantCheckInModalProps) => {
+	({ selectedParticipant, setSelectedParticipant }: ParticipantCheckInModalProps) => {
 		const { update, isPending } = useUpdateCheckInParticipant()
 
 		const handleCheckInParticipant = async (status: CHECK_IN_STATUS) => {
 			if (!selectedParticipant) return
 
 			await update(
-				{ participantId: selectedParticipant, status },
+				{ participantId: selectedParticipant.id, status },
 				{
 					onError: (error) => generateToastError(error, 'Erro ao marcar status do participante'),
 					onSuccess: () => {
 						setSelectedParticipant(null)
 						toast.success('Participante marcado com o status selecionado!')
-						overlayClose(modalId)
 					},
 				}
 			)
 		}
 
+		const handleClose = () => {
+			setSelectedParticipant(null)
+		}
+
 		return (
-			<Modal handleClose={() => setSelectedParticipant(null)} modalId={modalId}>
+			<Modal onOpenChange={handleClose} open={selectedParticipant?.modal === 'check-in'}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert className="text-amber-300" size={64} />

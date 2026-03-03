@@ -13,6 +13,7 @@ import {
 	RadioField,
 	VolunteerField,
 } from '@/components/Molecules'
+import type { SelectedGroup } from '@/components/Templates'
 import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
@@ -25,8 +26,8 @@ import type { GroupSchemaType } from './GroupDrawer.schema'
 
 type GroupDrawerProps = {
 	drawerId: string
-	selectedGroup: GroupAPI['id'] | null
-	setSelectedGroup: Dispatch<SetStateAction<GroupAPI['id'] | null>>
+	selectedGroup: SelectedGroup | null
+	setSelectedGroup: Dispatch<SetStateAction<SelectedGroup | null>>
 }
 
 export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: GroupDrawerProps) => {
@@ -36,7 +37,7 @@ export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: Group
 	})
 	const { create, isPending: isPendingCreate } = useCreateGroup()
 	const { update, isPending: isPendingUpdate } = useUpdateGroup()
-	const { data, isLoading } = useGetGroup(selectedGroup)
+	const { data, isLoading } = useGetGroup(selectedGroup?.id as GroupAPI['id'])
 
 	const eventId = watch('eventId')
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
@@ -54,7 +55,7 @@ export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: Group
 					data: {
 						...(values as FormGroup),
 					},
-					groupId: selectedGroup,
+					groupId: selectedGroup.id,
 				},
 				{
 					onError: (error) => generateToastError(error, 'Erro ao atualizar grupo'),

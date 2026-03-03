@@ -5,7 +5,8 @@ import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, MaskedInputField, SearchBox, SelectField } from '@/components/Molecules'
-import { overlayClose, UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import type { SelectedVolunteer } from '@/components/Templates'
+import { UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetCities } from '@/services/queries/cities'
@@ -18,12 +19,12 @@ import type { VolunteerType } from './VolunteerDrawer.schema'
 
 type VolunteerDrawerProps = {
 	drawerId: string
-	selectedVolunteer: null | VolunteersAPI['id']
-	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersAPI['id'] | null>>
+	selectedVolunteer: null | SelectedVolunteer
+	setSelectedVolunteer: Dispatch<SetStateAction<SelectedVolunteer | null>>
 }
 
 export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedVolunteer }: VolunteerDrawerProps) => {
-	const { data, isLoading } = useGetVolunteer(selectedVolunteer)
+	const { data, isLoading } = useGetVolunteer(selectedVolunteer?.id as VolunteersAPI['id'])
 	const { isPending: isUpdating, update } = useUpdateVolunteer()
 	const { isPending: isCreating, create } = useCreateVolunteer()
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage, search, setSearch } = useGetInfinityEvents()
@@ -76,7 +77,7 @@ export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedV
 					data: {
 						...formattedData,
 					},
-					volunteerId: selectedVolunteer,
+					volunteerId: selectedVolunteer.id,
 				},
 				{
 					onError: () => toast.error('Erro ao atualizar voluntário'),
@@ -84,7 +85,6 @@ export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedV
 						reset()
 						setSelectedVolunteer(null)
 						toast.success('Voluntário atualizado com sucesso!')
-						overlayClose(drawerId)
 					},
 				}
 			)
@@ -99,7 +99,6 @@ export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedV
 					reset()
 					setSelectedVolunteer(null)
 					toast.success('Voluntário criado com sucesso!')
-					overlayClose(drawerId)
 				},
 			}
 		)

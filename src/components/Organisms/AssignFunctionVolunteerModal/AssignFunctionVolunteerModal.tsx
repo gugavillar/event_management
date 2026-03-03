@@ -7,24 +7,23 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { CheckboxField, ComboBox, FieldArrayContainerWithAppendButton, SelectField } from '@/components/Molecules'
-import { overlayClose } from '@/constants'
+import type { SelectedVolunteer } from '@/components/Templates'
+import { VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetFunctions, useUpdateVolunteerFunction } from '@/services/queries/volunteers'
-import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
 
 import { AssignFunctionSchema, type AssignFunctionType } from './AssignFunctionVolunteerModal.schema'
 
 type CreateVolunteerFunctionModalProps = {
-	modalId: string
-	selectedVolunteer: VolunteersAPI['id'] | null
-	setSelectedVolunteer: Dispatch<SetStateAction<VolunteersAPI['id'] | null>>
+	selectedVolunteer: SelectedVolunteer | null
+	setSelectedVolunteer: Dispatch<SetStateAction<SelectedVolunteer | null>>
 }
 
 export const AssignFunctionVolunteerModal = memo(
-	({ modalId, selectedVolunteer, setSelectedVolunteer }: CreateVolunteerFunctionModalProps) => {
+	({ selectedVolunteer, setSelectedVolunteer }: CreateVolunteerFunctionModalProps) => {
 		const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 		const { data: roles, setEventId } = useGetFunctions()
 		const { isPending, update } = useUpdateVolunteerFunction()
@@ -62,7 +61,6 @@ export const AssignFunctionVolunteerModal = memo(
 		const handleCloseModal = () => {
 			methods.reset()
 			setSelectedVolunteer(null)
-			overlayClose(modalId)
 		}
 
 		const selectedEventId = methods.watch('eventId')
@@ -71,7 +69,7 @@ export const AssignFunctionVolunteerModal = memo(
 			if (!selectedVolunteer) return
 
 			await update(
-				{ data: values, volunteerId: selectedVolunteer },
+				{ data: values, volunteerId: selectedVolunteer.id },
 				{
 					onError: (error) => generateToastError(error, 'Erro ao atribuir funções'),
 					onSuccess: () => {
@@ -89,7 +87,7 @@ export const AssignFunctionVolunteerModal = memo(
 				{
 					data: { eventId: selectedEventId, roles: [] },
 					onlyRemove: true,
-					volunteerId: selectedVolunteer,
+					volunteerId: selectedVolunteer.id,
 				},
 				{
 					onError: (error) => generateToastError(error, 'Erro ao remover funções'),
@@ -108,7 +106,7 @@ export const AssignFunctionVolunteerModal = memo(
 		}, [selectedEventId, setEventId])
 
 		return (
-			<Modal handleClose={handleCloseModal} modalId={modalId}>
+			<Modal onOpenChange={handleCloseModal} open={selectedVolunteer?.modal === VOLUNTEER_MODAL_TYPE.ASSIGN_FUNCTION}>
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">

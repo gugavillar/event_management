@@ -1,27 +1,29 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import saveAs from 'file-saver'
-import { useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { FILES_TYPES, overlayClose } from '@/constants'
+import { FILES_TYPES, MEETING_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useGetExportMeetingPresence } from '@/services/queries/meetings'
 
+import type { SelectedMeeting } from '../ExportMeetingButton'
 import { ExportMeetingFileModalSchema, type ExportMeetingFileModalType } from './ExportMeetingDataModal.schema'
 
 type ExportMeetingDataModalProps = {
-	modalId: string
+	open: SelectedMeeting
+	setOpen: Dispatch<SetStateAction<SelectedMeeting>>
 }
 
 const TOAST_ID = 'download-export-meeting'
 
-export const ExportMeetingDataModal = ({ modalId }: ExportMeetingDataModalProps) => {
+export const ExportMeetingDataModal = ({ open, setOpen }: ExportMeetingDataModalProps) => {
 	const [eventId, setEventId] = useState('')
 	const methods = useForm<ExportMeetingFileModalType>({
 		defaultValues: {
@@ -46,6 +48,7 @@ export const ExportMeetingDataModal = ({ modalId }: ExportMeetingDataModalProps)
 
 	const handleClose = () => {
 		methods.reset()
+		setOpen({ modal: null })
 	}
 
 	useEffect(() => {
@@ -70,8 +73,7 @@ export const ExportMeetingDataModal = ({ modalId }: ExportMeetingDataModalProps)
 		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
 		methods.reset()
-		overlayClose(modalId)
-	}, [data, isError, eventId, formattedEvents, methods, modalId])
+	}, [data, isError, eventId, formattedEvents, methods])
 
 	const handleSubmit = async (values: ExportMeetingFileModalType) => {
 		if (!values.eventId) return
@@ -80,7 +82,7 @@ export const ExportMeetingDataModal = ({ modalId }: ExportMeetingDataModalProps)
 	}
 
 	return (
-		<Modal handleClose={handleClose} modalId={modalId}>
+		<Modal onOpenChange={handleClose} open={open.modal === MEETING_MODAL_TYPE.EXPORT}>
 			<FormProvider {...methods}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">

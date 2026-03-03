@@ -4,39 +4,36 @@ import type { Dispatch, SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedEvent } from '@/components/Templates'
+import { EVENTS_MODAL_TYPE } from '@/constants'
 import { useDeleteEvent } from '@/services/queries/events'
-import type { EventsAPI } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
 
 type EventDeleteModalProps = {
-	modalId: string
-	selectedEvent: EventsAPI['id'] | null
-	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
+	selectedEvent: SelectedEvent | null
+	setSelectedEvent: Dispatch<SetStateAction<SelectedEvent | null>>
 }
 
-export const EventDeleteModal = ({ modalId, selectedEvent, setSelectedEvent }: EventDeleteModalProps) => {
+export const EventDeleteModal = ({ selectedEvent, setSelectedEvent }: EventDeleteModalProps) => {
 	const { remove, isPending } = useDeleteEvent()
 
 	const handleDeleteEvent = async () => {
 		if (!selectedEvent) return
-		await remove(selectedEvent, {
+		await remove(selectedEvent.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir evento'),
 			onSuccess: () => {
 				setSelectedEvent(null)
 				toast.success('Evento excluído com sucesso!')
-				overlayClose(modalId)
 			},
 		})
 	}
 
 	const handleCloseEventDeleteModal = () => {
 		setSelectedEvent(null)
-		overlayClose(modalId)
 	}
 
 	return (
-		<Modal handleClose={handleCloseEventDeleteModal} modalId={modalId}>
+		<Modal onOpenChange={handleCloseEventDeleteModal} open={selectedEvent?.modal === EVENTS_MODAL_TYPE.DELETE}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

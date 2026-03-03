@@ -1,25 +1,42 @@
 'use client'
 import { OctagonAlert } from 'lucide-react'
-import { memo } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedParticipant, SelectedVolunteer } from '@/components/Templates'
+import { PARTICIPANT_MODAL_TYPE, VOLUNTEER_MODAL_TYPE } from '@/constants'
 
-type ModalReturnPaymentProps = {
-	modalId: string
-	modalType: 'participante' | 'voluntário'
+type BaseReturnPaymentProps = {
 	handleReturnPayment: VoidFunction
 	isPending: boolean
 }
 
+type ModalReturnPaymentProps =
+	| (BaseReturnPaymentProps & {
+			modalType: 'participante'
+			selected: SelectedParticipant | null
+			setSelected: Dispatch<SetStateAction<SelectedParticipant | null>>
+	  })
+	| (BaseReturnPaymentProps & {
+			modalType: 'voluntário'
+			selected: SelectedVolunteer | null
+			setSelected: Dispatch<SetStateAction<SelectedVolunteer | null>>
+	  })
+
 export const ModalReturnPayment = memo(
-	({ modalId, modalType, isPending, handleReturnPayment }: ModalReturnPaymentProps) => {
+	({ modalType, isPending, handleReturnPayment, selected, setSelected }: ModalReturnPaymentProps) => {
 		const handleCloseModalReturnPayment = () => {
-			overlayClose(modalId)
+			setSelected(null)
 		}
 
 		return (
-			<Modal handleClose={handleCloseModalReturnPayment} modalId={modalId}>
+			<Modal
+				onOpenChange={handleCloseModalReturnPayment}
+				open={
+					selected?.modal === PARTICIPANT_MODAL_TYPE.RETURN_PAYMENT ||
+					selected?.modal === VOLUNTEER_MODAL_TYPE.RETURN_PAYMENT
+				}
+			>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert className="text-amber-300" size={64} />

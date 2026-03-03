@@ -2,25 +2,22 @@ import { Wrench } from 'lucide-react'
 import type { Dispatch, SetStateAction } from 'react'
 
 import { Button } from '@/components/Atoms'
-import { overlayOpen } from '@/constants'
-import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
+import type { SelectedFunction } from '@/components/Templates'
+import { VOLUNTEER_MODAL_TYPE } from '@/constants'
 
 import { CreateVolunteerFunctionModal } from '../CreateVolunteerFunctionModal'
 
 type CreateVolunteerFunctionButtonProps = {
-	modalId: string
-	selectedFunction: VolunteersFunctionsFromAPI | null
-	setSelectedFunction: Dispatch<SetStateAction<VolunteersFunctionsFromAPI | null>>
+	selectedFunction: SelectedFunction | null
+	setSelectedFunction: Dispatch<SetStateAction<SelectedFunction | null>>
 }
 
 export const CreateVolunteerFunctionButton = ({
 	setSelectedFunction,
 	selectedFunction,
-	modalId,
 }: CreateVolunteerFunctionButtonProps) => {
 	const handleOpenCreateVolunteerFunctionModal = () => {
-		setSelectedFunction(null)
-		overlayOpen(modalId)
+		setSelectedFunction({ function: null, modal: VOLUNTEER_MODAL_TYPE.CREATE_OR_EDIT_FUNCTION })
 	}
 
 	return (
@@ -32,11 +29,7 @@ export const CreateVolunteerFunctionButton = ({
 			>
 				Criar função
 			</Button>
-			<CreateVolunteerFunctionModal
-				modalId={modalId}
-				selectedFunction={selectedFunction}
-				setSelectedFunction={setSelectedFunction}
-			/>
+			<CreateVolunteerFunctionModal selectedFunction={selectedFunction} setSelectedFunction={setSelectedFunction} />
 		</>
 	)
 }

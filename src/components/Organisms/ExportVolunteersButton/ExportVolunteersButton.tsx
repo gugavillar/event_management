@@ -1,15 +1,20 @@
 'use client'
 import { FileDown } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 
 import { Button } from '@/components/Atoms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { VOLUNTEER_MODAL_TYPE } from '@/constants'
 
 import { ExportVolunteersDataModal } from '../ExportVolunteersDataModal'
 
+export type SelectedVolunteer = {
+	modal: VOLUNTEER_MODAL_TYPE | null
+}
+
 export const ExportVolunteersButton = memo(() => {
+	const [open, setOpen] = useState<SelectedVolunteer>({ modal: null })
 	const handleOpenExportVolunteersModal = () => {
-		overlayOpen(MODALS_IDS.VOLUNTEER_EXPORT_MODAL)
+		setOpen({ modal: VOLUNTEER_MODAL_TYPE.EXPORT })
 	}
 	return (
 		<>
@@ -20,7 +25,7 @@ export const ExportVolunteersButton = memo(() => {
 			>
 				Export voluntários
 			</Button>
-			<ExportVolunteersDataModal modalId={MODALS_IDS.VOLUNTEER_EXPORT_MODAL} />
+			<ExportVolunteersDataModal open={open} setOpen={setOpen} />
 		</>
 	)
 })

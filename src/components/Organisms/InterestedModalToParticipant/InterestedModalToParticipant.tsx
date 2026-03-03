@@ -4,33 +4,31 @@ import { type Dispatch, memo, type SetStateAction } from 'react'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
+import type { SelectedParticipant } from '@/components/Templates'
+import { PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { useUpdateInterestedParticipant } from '@/services/queries/participants'
-import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
 
 type InterestedModalToParticipantProps = {
-	modalId: string
-	selectedParticipant: ParticipantsAPI['id'] | null
-	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
+	selectedParticipant: SelectedParticipant | null
+	setSelectedParticipant: Dispatch<SetStateAction<SelectedParticipant | null>>
 	interested: boolean
 }
 
 export const InterestedModalToParticipant = memo(
-	({ modalId, selectedParticipant, setSelectedParticipant, interested }: InterestedModalToParticipantProps) => {
+	({ selectedParticipant, setSelectedParticipant, interested }: InterestedModalToParticipantProps) => {
 		const { update, isPending } = useUpdateInterestedParticipant()
 
 		const handleMoveParticipant = async () => {
 			if (!selectedParticipant) return
 
 			await update(
-				{ interested, participantId: selectedParticipant },
+				{ interested, participantId: selectedParticipant.id },
 				{
 					onError: (error) => generateToastError(error, 'Erro ao atualizar participante'),
 					onSuccess: () => {
 						setSelectedParticipant(null)
 						toast.success('Participante movido com sucesso!')
-						overlayClose(modalId)
 					},
 				}
 			)
@@ -38,11 +36,13 @@ export const InterestedModalToParticipant = memo(
 
 		const handleCloseInterestedModalToParticipant = () => {
 			setSelectedParticipant(null)
-			overlayClose(modalId)
 		}
 
 		return (
-			<Modal handleClose={handleCloseInterestedModalToParticipant} modalId={modalId}>
+			<Modal
+				onOpenChange={handleCloseInterestedModalToParticipant}
+				open={selectedParticipant?.modal === PARTICIPANT_MODAL_TYPE.INTERESTED}
+			>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert className="text-amber-300" size={64} />

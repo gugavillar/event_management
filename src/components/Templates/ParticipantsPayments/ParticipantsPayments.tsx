@@ -8,13 +8,14 @@ import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { FilterDrawer, ListPage, ModalReturnPayment, PageContent } from '@/components/Organisms'
 import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MEMBERS, MODALS_IDS, overlayClose, overlayOpen, PaymentTypeAPI } from '@/constants'
+import { MEMBERS, MODALS_IDS, overlayClose, PARTICIPANT_MODAL_TYPE, PaymentTypeAPI } from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
 import { useCreateParticipantPayment, useGetPayments } from '@/services/queries/participants'
 import { useReturnParticipantPayment } from '@/services/queries/participants/hooks/useReturnParticipantPayment'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 import { generateToastError } from '@/utils/errors'
 
+import type { SelectedParticipant } from '../Participants/Participants'
 import { formatTableData, HEADER_LABELS } from './ParticipantsPayments.utils'
 
 const PaymentModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.PaymentModal))
@@ -23,7 +24,7 @@ const ParticipantModalData = dynamic(() => import('@/components/Organisms').then
 
 export const ParticipantsPayments = () => {
 	const [selectedParticipant, setSelectedParticipant] = useState<ParticipantsAPI | null>(null)
-	const [selectParticipant, setSelectParticipant] = useState<ParticipantsAPI['id'] | null>(null)
+	const [selectParticipant, setSelectParticipant] = useState<SelectedParticipant | null>(null)
 	const {
 		data: participantsPayments,
 		isLoading: isLoadingPayments,
@@ -39,17 +40,16 @@ export const ParticipantsPayments = () => {
 
 	const handleOpenModalToPaymentParticipant = useCallback((payment: ParticipantsAPI) => {
 		setSelectedParticipant(payment)
-		overlayOpen(MODALS_IDS.PARTICIPANT_PAYMENT_MODAL)
+		setSelectParticipant({ id: payment.id, modal: PARTICIPANT_MODAL_TYPE.PAYMENT })
 	}, [])
 
 	const handleOpenModalToReturnPaymentParticipant = useCallback((payment: ParticipantsAPI) => {
 		setSelectedParticipant(payment)
-		overlayOpen(MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL)
+		setSelectParticipant({ id: payment.id, modal: PARTICIPANT_MODAL_TYPE.RETURN_PAYMENT })
 	}, [])
 
 	const handleOpenModalToShowParticipantData = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+		setSelectParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.INFO })
 	}, [])
 
 	const formattedData = formatTableData(
@@ -137,21 +137,19 @@ export const ParticipantsPayments = () => {
 				handleSubmit={handleUpdate}
 				isExistPayment={isExistPayment}
 				isPending={isPending}
-				modalId={MODALS_IDS.PARTICIPANT_PAYMENT_MODAL}
 				modalType="participante"
 				paidValue={paidValue}
+				selected={selectParticipant}
+				setSelected={setSelectParticipant}
 			/>
 			<ModalReturnPayment
 				handleReturnPayment={handleReturnPayment}
 				isPending={isReturnPending}
-				modalId={MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL}
 				modalType="participante"
+				selected={selectParticipant}
+				setSelected={setSelectParticipant}
 			/>
-			<ParticipantModalData
-				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
-				selectedParticipant={selectParticipant}
-				setSelectedParticipant={setSelectParticipant}
-			/>
+			<ParticipantModalData selectedParticipant={selectParticipant} setSelectedParticipant={setSelectParticipant} />
 		</PageContent>
 	)
 }

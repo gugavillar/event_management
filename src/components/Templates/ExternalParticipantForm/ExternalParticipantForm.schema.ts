@@ -58,6 +58,7 @@ export const ExternalParticipantFormSchemaStepOne = (minAge?: number | null, max
 				.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), {
 					error: 'Telefone inválido',
 				}),
+			pixModal: z.boolean().optional(),
 			religion: z.string().optional(),
 			responsible: z.string().trim().min(3, 'Campo obrigatório'),
 			responsiblePhone: z

@@ -13,6 +13,7 @@ import {
 	RadioField,
 	VolunteerField,
 } from '@/components/Molecules'
+import type { SelectedRoom } from '@/components/Templates'
 import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
@@ -25,8 +26,8 @@ import type { RoomSchemaType } from './RoomDrawer.schema'
 
 type RoomDrawerProps = {
 	drawerId: string
-	selectedRoom: RoomAPI['id'] | null
-	setSelectedRoom: Dispatch<SetStateAction<RoomAPI['id'] | null>>
+	selectedRoom: SelectedRoom | null
+	setSelectedRoom: Dispatch<SetStateAction<SelectedRoom | null>>
 }
 
 export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDrawerProps) => {
@@ -36,7 +37,7 @@ export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDraw
 	})
 	const { create, isPending: isPendingCreate } = useCreateRoom()
 	const { update, isPending: isPendingUpdate } = useUpdateRoom()
-	const { data, isLoading } = useGetRoom(selectedRoom)
+	const { data, isLoading } = useGetRoom(selectedRoom?.id as RoomAPI['id'])
 
 	const eventId = watch('eventId')
 
@@ -56,7 +57,7 @@ export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDraw
 					data: {
 						...(formattedValues as FormRoom),
 					},
-					roomId: selectedRoom,
+					roomId: selectedRoom.id,
 				},
 				{
 					onError: (error) => generateToastError(error, 'Erro ao atualizar quarto'),

@@ -4,24 +4,29 @@ import { memo, useState } from 'react'
 
 import { Button, Header, Modal, Select, Text } from '@/components/Atoms'
 import type { DownloadPDFProps } from '@/components/Templates'
-import { overlayOpen } from '@/constants'
+import { GROUPS_MODAL_TYPE } from '@/constants'
 
 type GenerateGroupListProps = {
-	modalId: string
 	formattedGroups: DownloadPDFProps['groups']
+}
+
+export type SelectedGroupList = {
+	modal: GROUPS_MODAL_TYPE | null
 }
 
 const DownloadPDF = dynamic(() => import('@/components/Templates').then((mod) => mod.DownloadPDF))
 
-export const GenerateGroupList = memo(({ modalId, formattedGroups }: GenerateGroupListProps) => {
+export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListProps) => {
+	const [open, setOpen] = useState<SelectedGroupList>({ modal: null })
 	const [listType, setListType] = useState<DownloadPDFProps['listType']>('')
 
 	const handleClose = () => {
 		setListType('')
+		setOpen({ modal: null })
 	}
 
 	const handleOpen = () => {
-		overlayOpen(modalId)
+		setOpen({ modal: GROUPS_MODAL_TYPE.EXPORT })
 	}
 
 	return (
@@ -33,7 +38,7 @@ export const GenerateGroupList = memo(({ modalId, formattedGroups }: GenerateGro
 			>
 				Gerar lista de grupos
 			</Button>
-			<Modal handleClose={handleClose} modalId={modalId}>
+			<Modal onOpenChange={handleClose} open={open.modal === GROUPS_MODAL_TYPE.EXPORT}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex w-full flex-col items-center justify-between gap-6">
 						<div className="flex flex-col items-center gap-2">

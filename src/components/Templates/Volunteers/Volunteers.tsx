@@ -9,11 +9,16 @@ import { Pagination } from '@/components/Atoms'
 import { CreateVolunteerButton, ListManager } from '@/components/Molecules'
 import { ExportVolunteersButton, FilterDrawer, ListPage, PageContent } from '@/components/Organisms'
 import { VolunteerSchema, type VolunteerType } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
-import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
+import { MEMBERS, MODALS_IDS, VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { useGetVolunteers } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
+
+export type SelectedVolunteer = {
+	id: VolunteersAPI['id']
+	modal: VOLUNTEER_MODAL_TYPE
+}
 
 const AssignFunctionVolunteerModal = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.AssignFunctionVolunteerModal)
@@ -28,7 +33,7 @@ const VolunteerDrawer = dynamic(() => import('@/components/Organisms').then((mod
 const VolunteerModalData = dynamic(() => import('@/components/Organisms').then((mod) => mod.VolunteerModalData))
 
 export const Volunteers = () => {
-	const [selectedVolunteer, setSelectedVolunteer] = useState<VolunteersAPI['id'] | null>(null)
+	const [selectedVolunteer, setSelectedVolunteer] = useState<SelectedVolunteer | null>(null)
 
 	const { data: volunteers, isLoading, search, setSearch, page, setPage, query, setQuery } = useGetVolunteers()
 
@@ -60,32 +65,27 @@ export const Volunteers = () => {
 	})
 
 	const handleOpenModalToCheckInVolunteer = useCallback((id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL)
+		setSelectedVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.CHECK_IN })
 	}, [])
 
 	const handleOpenModalToDeleteVolunteer = useCallback((id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_REMOVE_MODAL)
+		setSelectedVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.DELETE })
 	}, [])
 
 	const handleOpenModalToShowVolunteerData = useCallback((id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_MODAL_DATA)
+		setSelectedVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.INFO })
 	}, [])
 
 	const handleOpenDrawerToCreateOrEditVolunteer = useCallback((id?: VolunteersAPI['id']) => {
 		if (id) {
-			setSelectedVolunteer(id)
+			setSelectedVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
 			setSelectedVolunteer(null)
 		}
-		overlayOpen(MODALS_IDS.VOLUNTEER_EDIT_DRAWER)
 	}, [])
 
 	const handleOpenAssignFunctionVolunteerModal = useCallback((id: VolunteersAPI['id']) => {
-		setSelectedVolunteer(id)
-		overlayOpen(MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL)
+		setSelectedVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.ASSIGN_FUNCTION })
 	}, [])
 
 	const formattedVolunteers = formatTableData(
@@ -127,16 +127,8 @@ export const Volunteers = () => {
 				<ListManager bodyData={formattedVolunteers} headerLabels={HEADER_LABELS} isLoading={isLoading} />
 				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={volunteers?.totalPages} />}
 			</ListPage>
-			<VolunteerCheckInModal
-				modalId={MODALS_IDS.VOLUNTEER_CHECK_IN_MODAL}
-				selectedVolunteer={selectedVolunteer}
-				setSelectedVolunteer={setSelectedVolunteer}
-			/>
-			<VolunteerDeleteModal
-				modalId={MODALS_IDS.VOLUNTEER_REMOVE_MODAL}
-				selectedVolunteer={selectedVolunteer}
-				setSelectedVolunteer={setSelectedVolunteer}
-			/>
+			<VolunteerCheckInModal selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
+			<VolunteerDeleteModal selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
 			<FormProvider {...methods}>
 				<VolunteerDrawer
 					drawerId={MODALS_IDS.VOLUNTEER_EDIT_DRAWER}
@@ -144,16 +136,8 @@ export const Volunteers = () => {
 					setSelectedVolunteer={setSelectedVolunteer}
 				/>
 			</FormProvider>
-			<AssignFunctionVolunteerModal
-				modalId={MODALS_IDS.VOLUNTEER_ASSIGN_FUNCTION_MODAL}
-				selectedVolunteer={selectedVolunteer}
-				setSelectedVolunteer={setSelectedVolunteer}
-			/>
-			<VolunteerModalData
-				modalId={MODALS_IDS.VOLUNTEER_MODAL_DATA}
-				selectedVolunteer={selectedVolunteer}
-				setSelectedVolunteer={setSelectedVolunteer}
-			/>
+			<AssignFunctionVolunteerModal selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
+			<VolunteerModalData selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
 		</PageContent>
 	)
 }

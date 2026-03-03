@@ -6,17 +6,14 @@ import toast from 'react-hot-toast'
 import QRCode from 'react-qr-code'
 
 import { Button, Modal, Spinner } from '@/components/Atoms'
-import { overlayClose } from '@/constants'
 import { formatPhone } from '@/formatters'
 
 import type { PaymentChoiceProps } from './PaymentChoice'
 
-type ModalPaymentPixProps = Pick<PaymentChoiceProps, 'pixValue' | 'setCurrentStep'> & {
-	modalId: string
-}
+type ModalPaymentPixProps = Pick<PaymentChoiceProps, 'pixValue' | 'setCurrentStep'>
 
-export const ModalPaymentPix = ({ pixValue, modalId, setCurrentStep }: ModalPaymentPixProps) => {
-	const { reset } = useFormContext()
+export const ModalPaymentPix = ({ pixValue, setCurrentStep }: ModalPaymentPixProps) => {
+	const { reset, setValue, watch } = useFormContext()
 	const handleCopyPixValue = async () => {
 		if (!pixValue) return
 
@@ -30,13 +27,13 @@ export const ModalPaymentPix = ({ pixValue, modalId, setCurrentStep }: ModalPaym
 
 	const handleClose = () => {
 		setCurrentStep(0)
-		overlayClose(modalId)
 		reset()
+		setValue('pixModal', false)
 		toast.success('Inscrição realizada com sucesso!')
 	}
 
 	return (
-		<Modal handleClose={handleClose} isStatic modalId={modalId}>
+		<Modal onOpenChange={handleClose} open={watch('pixModal')}>
 			<div className="flex flex-col items-center justify-center space-y-6">
 				<div className="space-y-2.5 text-center">
 					<h2 className="text-lg font-semibold">

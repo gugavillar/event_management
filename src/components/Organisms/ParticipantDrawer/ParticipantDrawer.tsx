@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, MaskedInputField, SearchBox, SelectField } from '@/components/Molecules'
+import type { SelectedParticipant } from '@/components/Templates'
 import { overlayClose, UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
@@ -18,13 +19,13 @@ import type { ParticipantType } from './ParticipantDrawer.schema'
 
 type ParticipantDrawerProps = {
 	drawerId: string
-	selectedParticipant: null | ParticipantsAPI['id']
-	setSelectedParticipant: Dispatch<SetStateAction<ParticipantsAPI['id'] | null>>
+	selectedParticipant: null | SelectedParticipant
+	setSelectedParticipant: Dispatch<SetStateAction<SelectedParticipant | null>>
 }
 
 export const ParticipantDrawer = memo(
 	({ drawerId, selectedParticipant, setSelectedParticipant }: ParticipantDrawerProps) => {
-		const { data, isLoading } = useGetParticipant(selectedParticipant)
+		const { data, isLoading } = useGetParticipant(selectedParticipant?.id as ParticipantsAPI['id'])
 		const {
 			handleSubmit,
 			reset,
@@ -78,7 +79,7 @@ export const ParticipantDrawer = memo(
 						data: {
 							...formattedData,
 						},
-						participantId: selectedParticipant,
+						participantId: selectedParticipant.id,
 					},
 					{
 						onError: () => toast.error('Erro ao atualizar participante'),

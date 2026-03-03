@@ -5,16 +5,16 @@ import { type Dispatch, memo, type SetStateAction } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/Atoms'
+import type { SelectedEvent } from '@/components/Templates'
 import { overlayOpen } from '@/constants'
-import type { EventsAPI } from '@/services/queries/events/event.type'
 
 import { EventDrawer } from '../EventDrawer'
 import { EventSchema, type EventSchemaType } from '../EventDrawer/EventDrawer.schema'
 
 type CreateEventButtonProps = {
 	drawerId: string
-	selectedEvent: null | EventsAPI['id']
-	setSelectedEvent: Dispatch<SetStateAction<EventsAPI['id'] | null>>
+	selectedEvent: null | SelectedEvent
+	setSelectedEvent: Dispatch<SetStateAction<SelectedEvent | null>>
 }
 
 export const CreateEventButton = memo(({ drawerId, selectedEvent, setSelectedEvent }: CreateEventButtonProps) => {

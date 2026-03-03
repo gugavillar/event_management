@@ -12,11 +12,16 @@ import {
 	ParticipantSchema,
 	type ParticipantType,
 } from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
-import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
+import { MEMBERS, MODALS_IDS, overlayOpen, PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { useGetParticipants } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
+
+export type SelectedParticipant = {
+	modal: PARTICIPANT_MODAL_TYPE
+	id: ParticipantsAPI['id']
+}
 
 const ParticipantCheckInModal = dynamic(() =>
 	import('@/components/Organisms').then((mod) => mod.ParticipantCheckInModal)
@@ -33,7 +38,7 @@ const InterestedModalToParticipant = dynamic(() =>
 )
 
 export const Participants = () => {
-	const [selectedParticipant, setSelectedParticipant] = useState<null | ParticipantsAPI['id']>(null)
+	const [selectedParticipant, setSelectedParticipant] = useState<null | SelectedParticipant>(null)
 
 	const methods = useForm<ParticipantType>({
 		defaultValues: {
@@ -65,18 +70,16 @@ export const Participants = () => {
 	const { data: participants, isLoading, search, setSearch, page, setPage, query, setQuery } = useGetParticipants()
 
 	const handleOpenModalToDeleteParticipant = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.CHECK_IN })
 	}, [])
 
 	const handleOpenModalToCheckInParticipant = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.CHECK_IN })
 	}, [])
 
 	const handleOpenDrawerToCreateOrEditParticipant = useCallback((id?: ParticipantsAPI['id']) => {
 		if (id) {
-			setSelectedParticipant(id)
+			setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
 			setSelectedParticipant(null)
 		}
@@ -84,13 +87,11 @@ export const Participants = () => {
 	}, [])
 
 	const handleOpenModalToShowParticipantData = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.INFO })
 	}, [])
 
 	const handleOpenModalInterestedParticipant = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.INTERESTED })
 	}, [])
 
 	const formattedParticipants = formatTableData(
@@ -135,12 +136,10 @@ export const Participants = () => {
 				)}
 			</ListPage>
 			<ParticipantDeleteModal
-				modalId={MODALS_IDS.PARTICIPANT_REMOVE_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>
 			<ParticipantCheckInModal
-				modalId={MODALS_IDS.PARTICIPANT_CHECK_IN_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>
@@ -151,14 +150,9 @@ export const Participants = () => {
 					setSelectedParticipant={setSelectedParticipant}
 				/>
 			</FormProvider>
-			<ParticipantModalData
-				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
-				selectedParticipant={selectedParticipant}
-				setSelectedParticipant={setSelectedParticipant}
-			/>
+			<ParticipantModalData selectedParticipant={selectedParticipant} setSelectedParticipant={setSelectedParticipant} />
 			<InterestedModalToParticipant
 				interested={true}
-				modalId={MODALS_IDS.PARTICIPANT_INTERESTED_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>

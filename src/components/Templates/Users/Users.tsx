@@ -7,7 +7,7 @@ import { useCallback, useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { CreateUserButton, ListPage, PageContent } from '@/components/Organisms'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { MODALS_IDS } from '@/constants'
 import { useGetUsers } from '@/services/queries/users'
 import type { UserAPI } from '@/services/queries/users/users.type'
 
@@ -17,6 +17,11 @@ type UsersProps = {
 	userId: User['id']
 }
 
+export type SelectedUser = {
+	id: UserAPI['id']
+	modal: 'block' | 'change-role' | 'reset-password'
+}
+
 const BlockUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.BlockUserModal))
 
 const ChangeRoleUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.ChangeRoleUserModal))
@@ -24,22 +29,19 @@ const ChangeRoleUserModal = dynamic(() => import('@/components/Organisms').then(
 const UserResetPasswordModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.UserResetPasswordModal))
 
 export const Users = ({ userId }: UsersProps) => {
-	const [selectedUser, setSelectedUser] = useState<UserAPI['id'] | null>(null)
+	const [selectedUser, setSelectedUser] = useState<SelectedUser | null>(null)
 	const { data: users, isLoading, search, setSearch, page, setPage } = useGetUsers()
 
 	const handleOpenChangeRoleModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser(id)
-		overlayOpen(MODALS_IDS.USER_CHANGE_ROLE_MODAL)
+		setSelectedUser({ id, modal: 'change-role' })
 	}, [])
 
 	const handleOpenResetPasswordModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser(id)
-		overlayOpen(MODALS_IDS.USER_RESET_PASSWORD_MODAL)
+		setSelectedUser({ id, modal: 'reset-password' })
 	}, [])
 
 	const handleOpenBlockUserModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser(id)
-		overlayOpen(MODALS_IDS.USER_BLOCK_MODAL)
+		setSelectedUser({ id, modal: 'block' })
 	}, [])
 
 	const formatData = formatTableData(
@@ -64,21 +66,9 @@ export const Users = ({ userId }: UsersProps) => {
 				<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
 				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={users?.totalPages} />}
 			</ListPage>
-			<ChangeRoleUserModal
-				modalId={MODALS_IDS.USER_CHANGE_ROLE_MODAL}
-				selectedUser={selectedUser}
-				setSelectedUser={setSelectedUser}
-			/>
-			<UserResetPasswordModal
-				modalId={MODALS_IDS.USER_RESET_PASSWORD_MODAL}
-				selectedUser={selectedUser}
-				setSelectedUser={setSelectedUser}
-			/>
-			<BlockUserModal
-				modalId={MODALS_IDS.USER_BLOCK_MODAL}
-				selectedUser={selectedUser}
-				setSelectedUser={setSelectedUser}
-			/>
+			<ChangeRoleUserModal selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+			<UserResetPasswordModal selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+			<BlockUserModal selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
 		</PageContent>
 	)
 }

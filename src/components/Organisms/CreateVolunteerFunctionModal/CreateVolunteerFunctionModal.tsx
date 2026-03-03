@@ -7,24 +7,23 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal } from '@/components/Atoms'
 import { ComboBox, FieldArrayContainerWithAppendButton, InputField } from '@/components/Molecules'
-import { overlayClose } from '@/constants'
+import type { SelectedFunction } from '@/components/Templates'
+import { VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
 import { useCreateFunction, useUpdateFunction } from '@/services/queries/volunteers'
-import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 import { generateToastError } from '@/utils/errors'
 
 import { FunctionSchema, type FunctionSchemaType } from './CreateVolunteerFunctionModal.schema'
 
 type CreateVolunteerFunctionModalProps = {
-	modalId: string
-	selectedFunction: VolunteersFunctionsFromAPI | null
-	setSelectedFunction: Dispatch<SetStateAction<VolunteersFunctionsFromAPI | null>>
+	selectedFunction: SelectedFunction | null
+	setSelectedFunction: Dispatch<SetStateAction<SelectedFunction | null>>
 }
 
 export const CreateVolunteerFunctionModal = memo(
-	({ modalId, selectedFunction, setSelectedFunction }: CreateVolunteerFunctionModalProps) => {
+	({ selectedFunction, setSelectedFunction }: CreateVolunteerFunctionModalProps) => {
 		const methods = useForm<FunctionSchemaType>({
 			defaultValues: {
 				events: [{ id: '' }],
@@ -54,16 +53,15 @@ export const CreateVolunteerFunctionModal = memo(
 		})
 
 		const handleSubmit: SubmitHandler<FunctionSchemaType> = async (values) => {
-			if (selectedFunction) {
+			if (selectedFunction?.function) {
 				return await update(
-					{ id: selectedFunction.volunteerRoleId, ...values },
+					{ id: selectedFunction.function?.volunteerRoleId, ...values },
 					{
 						onError: (error) => generateToastError(error, 'Erro ao atualizar a função'),
 						onSuccess: () => {
 							toast.success('Função atualizada com sucesso!')
 							methods.reset()
 							setSelectedFunction(null)
-							overlayClose(modalId)
 						},
 					}
 				)
@@ -73,7 +71,6 @@ export const CreateVolunteerFunctionModal = memo(
 				onSuccess: () => {
 					toast.success('Função cadastrada com sucesso!')
 					methods.reset()
-					overlayClose(modalId)
 				},
 			})
 		}
@@ -82,20 +79,24 @@ export const CreateVolunteerFunctionModal = memo(
 			if (!selectedFunction) return methods.reset()
 			methods.reset(
 				{
-					events: [{ id: selectedFunction.eventId }],
-					role: selectedFunction.volunteerRole?.role,
+					events: [{ id: selectedFunction.function?.eventId }],
+					role: selectedFunction.function?.volunteerRole?.role,
 				},
 				{ keepDefaultValues: true }
 			)
 		}, [methods, selectedFunction])
 
+		const handleClose = () => {
+			setSelectedFunction(null)
+		}
+
 		return (
-			<Modal handleClose={() => setSelectedFunction(null)} modalId={modalId}>
+			<Modal onOpenChange={handleClose} open={selectedFunction?.modal === VOLUNTEER_MODAL_TYPE.CREATE_OR_EDIT_FUNCTION}>
 				<FormProvider {...methods}>
 					<div className="flex w-full flex-col items-center justify-center">
 						<div className="flex w-full flex-col items-center justify-between gap-6">
 							<Header as="h3" className="text-2xl">
-								{selectedFunction ? 'Editar' : 'Criar'} função
+								{selectedFunction?.function?.id ? 'Editar' : 'Criar'} função
 							</Header>
 							<InputField fieldName="role">Função</InputField>
 							<FieldArrayContainerWithAppendButton
@@ -138,7 +139,7 @@ export const CreateVolunteerFunctionModal = memo(
 								})}
 							</FieldArrayContainerWithAppendButton>
 							<Button
-								className="w-full max-w-40 items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={!methods.formState.isValid || !methods.formState.isDirty}
 								isLoading={isPendingCreate || isPendingUpdate}
 								onClick={methods.handleSubmit(handleSubmit)}

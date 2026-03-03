@@ -1,17 +1,18 @@
 'use client'
 import { OctagonAlert } from 'lucide-react'
-import { memo } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 import { useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
+import type { MeetingType } from '@/components/Templates'
 import type { MeetingSchemaType } from '@/components/Templates/Meetings/Meetings.schema'
-import { overlayClose } from '@/constants'
+import { MEETING_MODAL_TYPE } from '@/constants'
 import { useCreateMeetingPresence } from '@/services/queries/meetings'
 
 type MeetingAlertModalProps = {
-	modalId: string
-	type: 'draft' | 'send'
+	type: MeetingType
+	setType: Dispatch<SetStateAction<MeetingType>>
 	meetingId: string
 	clearState: VoidFunction
 	isUpdate: boolean
@@ -19,7 +20,7 @@ type MeetingAlertModalProps = {
 }
 
 export const MeetingAlertModal = memo(
-	({ modalId, type, meetingId, clearState, isUpdate, hasPreviousRecord }: MeetingAlertModalProps) => {
+	({ type, meetingId, clearState, isUpdate, hasPreviousRecord, setType }: MeetingAlertModalProps) => {
 		const { reset, getValues, handleSubmit } = useFormContext<MeetingSchemaType>()
 		const { create, isPending } = useCreateMeetingPresence()
 
@@ -61,16 +62,16 @@ export const MeetingAlertModal = memo(
 		}
 
 		const handleCloseMeetingAlertModal = () => {
-			overlayClose(modalId)
+			setType({ modal: null, type: 'send' })
 		}
 
-		const title = type === 'draft' ? 'Salvar presenças temporariamente?' : 'Confirmar envio das presenças?'
+		const title = type.type === 'draft' ? 'Salvar presenças temporariamente?' : 'Confirmar envio das presenças?'
 		const description =
-			type === 'draft'
+			type.type === 'draft'
 				? 'Esta opção só pode ser usada se ainda não houver presenças salvas no sistema. As presenças serão armazenadas localmente no seu dispositivo e poderão ser enviadas depois.'
 				: 'As presenças serão registradas no sistema e poderão ser editadas posteriormente.'
 		return (
-			<Modal modalId={modalId}>
+			<Modal onOpenChange={handleCloseMeetingAlertModal} open={type.modal === MEETING_MODAL_TYPE.ALERT}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-between gap-6">
 						<OctagonAlert className="text-amber-300" size={64} />
@@ -93,7 +94,7 @@ export const MeetingAlertModal = memo(
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={isPending}
 								isLoading={isPending}
-								onClick={type === 'draft' ? handleSaveList : handleSubmit(onSubmit)}
+								onClick={type.type === 'draft' ? handleSaveList : handleSubmit(onSubmit)}
 							>
 								Confirmar
 							</Button>

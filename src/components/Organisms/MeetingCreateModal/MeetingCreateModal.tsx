@@ -1,12 +1,12 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { memo } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 import { Controller, FormProvider, type SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
-import { ComboBox, InputField, MaskedInputField } from '@/components/Molecules'
-import { overlayClose } from '@/constants'
+import { ComboBox, InputField, MaskedInputField, type SelectedMeeting } from '@/components/Molecules'
+import { MEETING_MODAL_TYPE } from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -16,10 +16,11 @@ import { generateToastError } from '@/utils/errors'
 import { MeetingCreateModalSchema, type MeetingCreateModalType } from './MeetingCreateModal.schema'
 
 type MeetingCreateModalProps = {
-	modalId: string
+	open: SelectedMeeting
+	setOpen: Dispatch<SetStateAction<SelectedMeeting>>
 }
 
-export const MeetingCreateModal = memo(({ modalId }: MeetingCreateModalProps) => {
+export const MeetingCreateModal = memo(({ open, setOpen }: MeetingCreateModalProps) => {
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const { create, isPending } = useCreateMeeting()
 
@@ -47,7 +48,7 @@ export const MeetingCreateModal = memo(({ modalId }: MeetingCreateModalProps) =>
 
 	const handleCloseModal = () => {
 		methods.reset()
-		overlayClose(modalId)
+		setOpen({ modal: null })
 	}
 
 	const onSubmit: SubmitHandler<MeetingCreateModalType> = async (values) => {
@@ -68,7 +69,7 @@ export const MeetingCreateModal = memo(({ modalId }: MeetingCreateModalProps) =>
 	}
 
 	return (
-		<Modal handleClose={handleCloseModal} modalId={modalId}>
+		<Modal onOpenChange={handleCloseModal} open={open.modal === MEETING_MODAL_TYPE.CREATE}>
 			<FormProvider {...methods}>
 				<div className="flex w-full flex-col items-center justify-center">
 					<div className="flex w-full flex-col items-center justify-between gap-6">

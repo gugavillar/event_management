@@ -6,10 +6,11 @@ import { useCallback, useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ExportParticipantsButton, FilterDrawer, ListPage, PageContent } from '@/components/Organisms'
-import { MEMBERS, MODALS_IDS, overlayOpen } from '@/constants'
+import { MEMBERS, MODALS_IDS, PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { useGetParticipants } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
+import type { SelectedParticipant } from '../Participants'
 import { formatTableData, HEADER_LABELS } from './InterestedParticipants.utils'
 
 const ParticipantModalData = dynamic(() => import('@/components/Organisms').then((mod) => mod.ParticipantModalData))
@@ -21,22 +22,19 @@ const InterestedModalToParticipant = dynamic(() =>
 const ParticipantDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.ParticipantDeleteModal))
 
 export const InterestedParticipants = () => {
-	const [selectedParticipant, setSelectedParticipant] = useState<null | ParticipantsAPI['id']>(null)
+	const [selectedParticipant, setSelectedParticipant] = useState<null | SelectedParticipant>(null)
 	const { data: participants, isLoading, search, setSearch, page, setPage, query, setQuery } = useGetParticipants(true)
 
 	const handleOpenModalToShowParticipantData = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_MODAL_DATA)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.INFO })
 	}, [])
 
 	const handleOpenModalInterestedParticipant = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_INTERESTED_MODAL)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.INTERESTED })
 	}, [])
 
 	const handleOpenModalToDeleteParticipant = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant(id)
-		overlayOpen(MODALS_IDS.PARTICIPANT_REMOVE_MODAL)
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.DELETE })
 	}, [])
 
 	const formattedInterestedParticipants = formatTableData(
@@ -73,19 +71,13 @@ export const InterestedParticipants = () => {
 					<Pagination currentPage={page} setPage={setPage} totalPages={participants?.totalPages} />
 				)}
 			</ListPage>
-			<ParticipantModalData
-				modalId={MODALS_IDS.PARTICIPANT_MODAL_DATA}
-				selectedParticipant={selectedParticipant}
-				setSelectedParticipant={setSelectedParticipant}
-			/>
+			<ParticipantModalData selectedParticipant={selectedParticipant} setSelectedParticipant={setSelectedParticipant} />
 			<InterestedModalToParticipant
 				interested={false}
-				modalId={MODALS_IDS.PARTICIPANT_INTERESTED_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>
 			<ParticipantDeleteModal
-				modalId={MODALS_IDS.PARTICIPANT_REMOVE_MODAL}
 				selectedParticipant={selectedParticipant}
 				setSelectedParticipant={setSelectedParticipant}
 			/>

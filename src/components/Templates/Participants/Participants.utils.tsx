@@ -80,6 +80,7 @@ export const formatTableData = (
 						Editar
 					</Tooltip>
 					<Tooltip
+						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
 						trigger={
 							<TicketCheck
 								className="cursor-pointer"
