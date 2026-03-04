@@ -14,7 +14,7 @@ import {
 	VolunteerField,
 } from '@/components/Molecules'
 import type { SelectedRoom } from '@/components/Templates'
-import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
+import { MEMBERS, MembersTypesOptionsRadio, ROOMS_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -25,12 +25,11 @@ import { generateToastError } from '@/utils/errors'
 import type { RoomSchemaType } from './RoomDrawer.schema'
 
 type RoomDrawerProps = {
-	drawerId: string
 	selectedRoom: SelectedRoom | null
 	setSelectedRoom: Dispatch<SetStateAction<SelectedRoom | null>>
 }
 
-export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDrawerProps) => {
+export const RoomDrawer = ({ selectedRoom, setSelectedRoom }: RoomDrawerProps) => {
 	const { handleSubmit, formState, control, watch, reset } = useFormContext<RoomSchemaType>()
 	const { fields, append, remove } = useFieldArray({
 		name: 'members',
@@ -51,7 +50,7 @@ export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDraw
 			roomNumber: values.roomNumber.padStart(2, '0'),
 		}
 
-		if (selectedRoom) {
+		if (selectedRoom?.id) {
 			return await update(
 				{
 					data: {
@@ -65,7 +64,6 @@ export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDraw
 						reset()
 						setSelectedRoom(null)
 						toast.success('Quarto atualizado com sucesso!')
-						overlayClose(drawerId)
 					},
 				}
 			)
@@ -77,7 +75,6 @@ export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDraw
 				reset()
 				setSelectedRoom(null)
 				toast.success('Quarto criado com sucesso!')
-				overlayClose(drawerId)
 			},
 		})
 	}
@@ -110,9 +107,9 @@ export const RoomDrawer = ({ drawerId, selectedRoom, setSelectedRoom }: RoomDraw
 	return (
 		<Drawer
 			className="max-w-3xl"
-			drawerId={drawerId}
 			handleClose={handleClose}
-			headingTitle={selectedRoom ? 'Editar quarto' : 'Criar quarto'}
+			headingTitle={selectedRoom?.id ? 'Editar quarto' : 'Criar quarto'}
+			isOpen={selectedRoom?.modal === ROOMS_MODAL_TYPE.CREATE_OR_EDIT}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">

@@ -9,15 +9,15 @@ import { Pagination } from '@/components/Atoms'
 import { CreateVolunteerButton, ListManager } from '@/components/Molecules'
 import { ExportVolunteersButton, FilterDrawer, ListPage, PageContent } from '@/components/Organisms'
 import { VolunteerSchema, type VolunteerType } from '@/components/Organisms/VolunteerDrawer/VolunteerDrawer.schema'
-import { MEMBERS, MODALS_IDS, VOLUNTEER_MODAL_TYPE } from '@/constants'
+import { MEMBERS, VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { useGetVolunteers } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
 import { formatTableData, HEADER_LABELS } from './Volunteers.utils'
 
 export type SelectedVolunteer = {
-	id: VolunteersAPI['id']
-	modal: VOLUNTEER_MODAL_TYPE
+	id: VolunteersAPI['id'] | null
+	modal: VOLUNTEER_MODAL_TYPE | null
 }
 
 const AssignFunctionVolunteerModal = dynamic(() =>
@@ -80,7 +80,7 @@ export const Volunteers = () => {
 		if (id) {
 			setSelectedVolunteer({ id, modal: VOLUNTEER_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
-			setSelectedVolunteer(null)
+			setSelectedVolunteer({ id: null, modal: VOLUNTEER_MODAL_TYPE.CREATE_OR_EDIT })
 		}
 	}, [])
 
@@ -112,14 +112,7 @@ export const Volunteers = () => {
 			</div>
 			<ListPage
 				className="lg:max-w-full"
-				moreFilter={
-					<FilterDrawer
-						drawerId={MODALS_IDS.VOLUNTEER_FILTER_DRAWER}
-						query={query}
-						setQuery={setQuery}
-						type={MEMBERS.VOLUNTEER}
-					/>
-				}
+				moreFilter={<FilterDrawer query={query} setQuery={setQuery} type={MEMBERS.VOLUNTEER} />}
 				placeholderField="Encontrar um voluntário"
 				search={search}
 				setSearch={setSearch}
@@ -130,11 +123,7 @@ export const Volunteers = () => {
 			<VolunteerCheckInModal selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
 			<VolunteerDeleteModal selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
 			<FormProvider {...methods}>
-				<VolunteerDrawer
-					drawerId={MODALS_IDS.VOLUNTEER_EDIT_DRAWER}
-					selectedVolunteer={selectedVolunteer}
-					setSelectedVolunteer={setSelectedVolunteer}
-				/>
+				<VolunteerDrawer selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
 			</FormProvider>
 			<AssignFunctionVolunteerModal selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />
 			<VolunteerModalData selectedVolunteer={selectedVolunteer} setSelectedVolunteer={setSelectedVolunteer} />

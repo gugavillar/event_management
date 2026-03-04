@@ -163,7 +163,7 @@ export const Meetings = () => {
 			>
 				{!meetingId ? (
 					<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-						<h3 className="text-lg font-bold text-gray-800">Selecione a reunião</h3>
+						<h3 className="font-bold text-gray-800 text-lg">Selecione a reunião</h3>
 						<p className="mt-2 text-gray-500">
 							Para gerar a lista de presença é necessário selecionar o evento e selecionar a reunião, caso a reunião não
 							exista crie uma.

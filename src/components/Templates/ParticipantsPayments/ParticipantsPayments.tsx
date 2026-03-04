@@ -8,7 +8,7 @@ import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { FilterDrawer, ListPage, ModalReturnPayment, PageContent } from '@/components/Organisms'
 import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MEMBERS, MODALS_IDS, overlayClose, PARTICIPANT_MODAL_TYPE, PaymentTypeAPI } from '@/constants'
+import { MEMBERS, PARTICIPANT_MODAL_TYPE, PaymentTypeAPI } from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
 import { useCreateParticipantPayment, useGetPayments } from '@/services/queries/participants'
 import { useReturnParticipantPayment } from '@/services/queries/participants/hooks/useReturnParticipantPayment'
@@ -102,7 +102,6 @@ export const ParticipantsPayments = () => {
 		}
 
 		setSelectedParticipant(null)
-		overlayClose(MODALS_IDS.PARTICIPANT_RETURN_PAYMENT_MODAL)
 	}, [returnPayment, selectedParticipant])
 
 	const hasMoreThanOnePage = !!participantsPayments?.totalPages && participantsPayments.totalPages > 1
@@ -114,15 +113,7 @@ export const ParticipantsPayments = () => {
 		<PageContent pageTitle="Pagamentos dos participantes" subheadingPage="Lista de pagamentos">
 			<ListPage
 				className="lg:max-w-full"
-				moreFilter={
-					<FilterDrawer
-						drawerId={MODALS_IDS.PARTICIPANT_FILTER_PAYMENT_DRAWER}
-						isPaymentType
-						query={query}
-						setQuery={setQuery}
-						type={MEMBERS.PARTICIPANT}
-					/>
-				}
+				moreFilter={<FilterDrawer isPaymentType query={query} setQuery={setQuery} type={MEMBERS.PARTICIPANT} />}
 				placeholderField="Encontrar um participante"
 				search={search}
 				setSearch={setSearch}

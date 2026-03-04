@@ -59,7 +59,7 @@ export const Content = (eventId: string, isFetching: boolean, data: ReturnType<t
 	if (!eventId) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">Selecione um evento</h3>
+				<h3 className="font-bold text-gray-800 text-lg">Selecione um evento</h3>
 				<p className="mt-2 text-gray-500">
 					As funções são exibidas conforme o evento selecionado. Escolha um para continuar.
 				</p>
@@ -70,7 +70,7 @@ export const Content = (eventId: string, isFetching: boolean, data: ReturnType<t
 	if (!isFetching && !data?.length) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">Nenhuma função encontrada</h3>
+				<h3 className="font-bold text-gray-800 text-lg">Nenhuma função encontrada</h3>
 				<p className="mt-2 text-gray-500">Nenhuma função foi criada para o evento selecionado.</p>
 			</div>
 		)

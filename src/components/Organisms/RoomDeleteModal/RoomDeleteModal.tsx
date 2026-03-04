@@ -18,7 +18,7 @@ export const RoomDeleteModal = ({ selectedRoom, setSelectedRoom }: RoomDeleteMod
 	const { isPending, remove } = useDeleteRoom()
 
 	const handleDeleteRoom = async () => {
-		if (!selectedRoom) return
+		if (!selectedRoom?.id) return
 		await remove(selectedRoom.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir quarto'),
 			onSuccess: () => {

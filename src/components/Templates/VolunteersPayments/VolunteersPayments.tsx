@@ -8,7 +8,7 @@ import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { FilterDrawer, ListPage, ModalReturnPayment, PageContent } from '@/components/Organisms'
 import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MEMBERS, MODALS_IDS, overlayClose, PaymentTypeAPI, VOLUNTEER_MODAL_TYPE } from '@/constants'
+import { MEMBERS, PaymentTypeAPI, VOLUNTEER_MODAL_TYPE } from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
 import { useCreateVolunteerPayment, useGetPayments, useReturnVolunteerPayment } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -101,7 +101,6 @@ export const VolunteersPayments = () => {
 		}
 
 		setSelectedVolunteer(null)
-		overlayClose(MODALS_IDS.VOLUNTEER_RETURN_PAYMENT_MODAL)
 	}, [returnPayment, selectedVolunteer])
 
 	const hasMoreThanOnePage = !!volunteersPayments?.totalPages && volunteersPayments.totalPages > 1
@@ -114,15 +113,7 @@ export const VolunteersPayments = () => {
 		<PageContent pageTitle="Pagamentos dos voluntários" subheadingPage="Lista de pagamentos">
 			<ListPage
 				className="lg:max-w-full"
-				moreFilter={
-					<FilterDrawer
-						drawerId={MODALS_IDS.VOLUNTEER_FILTER_PAYMENT_DRAWER}
-						isPaymentType
-						query={query}
-						setQuery={setQuery}
-						type={MEMBERS.VOLUNTEER}
-					/>
-				}
+				moreFilter={<FilterDrawer isPaymentType query={query} setQuery={setQuery} type={MEMBERS.VOLUNTEER} />}
 				placeholderField="Encontrar um voluntário"
 				search={search}
 				setSearch={setSearch}

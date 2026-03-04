@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, MaskedInputField, SearchBox, SelectField } from '@/components/Molecules'
 import type { SelectedVolunteer } from '@/components/Templates'
-import { UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import { UF, VOLUNTEER_MODAL_TYPE, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetCities } from '@/services/queries/cities'
@@ -18,12 +18,11 @@ import { generateToastError } from '@/utils/errors'
 import type { VolunteerType } from './VolunteerDrawer.schema'
 
 type VolunteerDrawerProps = {
-	drawerId: string
 	selectedVolunteer: null | SelectedVolunteer
 	setSelectedVolunteer: Dispatch<SetStateAction<SelectedVolunteer | null>>
 }
 
-export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedVolunteer }: VolunteerDrawerProps) => {
+export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }: VolunteerDrawerProps) => {
 	const { data, isLoading } = useGetVolunteer(selectedVolunteer?.id as VolunteersAPI['id'])
 	const { isPending: isUpdating, update } = useUpdateVolunteer()
 	const { isPending: isCreating, create } = useCreateVolunteer()
@@ -71,7 +70,7 @@ export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedV
 			...(!selectedVolunteer && { inscriptionType: 'internal' as const }),
 		}
 
-		if (selectedVolunteer) {
+		if (selectedVolunteer?.id) {
 			return await update(
 				{
 					data: {
@@ -116,7 +115,11 @@ export const VolunteerDrawer = memo(({ drawerId, selectedVolunteer, setSelectedV
 	}, [data, reset])
 
 	return (
-		<Drawer drawerId={drawerId} handleClose={handleClose} headingTitle="Dados do voluntário">
+		<Drawer
+			handleClose={handleClose}
+			headingTitle="Dados do voluntário"
+			isOpen={selectedVolunteer?.modal === VOLUNTEER_MODAL_TYPE.CREATE_OR_EDIT}
+		>
 			<DrawerBody isLoading={isLoading}>
 				<Controller
 					control={control}

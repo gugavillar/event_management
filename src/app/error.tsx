@@ -8,7 +8,7 @@ const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: ()
 	return (
 		<div className="flex size-full flex-col items-center justify-center gap-4 bg-gray-200 p-4">
 			<div className="flex max-w-md flex-col items-center justify-center text-center">
-				<h2 className="mb-2 text-3xl font-bold text-gray-900">
+				<h2 className="mb-2 font-bold text-3xl text-gray-900">
 					{isServerActionError ? 'Atualização Disponível' : 'Algo deu errado!'}
 				</h2>
 				<p className="mb-6 text-gray-600">

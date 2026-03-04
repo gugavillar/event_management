@@ -60,69 +60,11 @@ export enum EVENTS_MODAL_TYPE {
 	DELETE = 'delete',
 }
 
-export const MODALS_IDS = {
-	// DONATION
-	DONATION_CREATE_DRAWER: 'donation_create_drawer',
-	DONATION_REMOVE_MODAL: 'donation_remove_modal',
-
-	// EVENT
-	EVENT_CREATE_OR_UPDATE_DRAWER: 'event_create_or_update_drawer',
-	EVENT_REMOVE_MODAL: 'event_remove_modal',
-
-	// FUNCTION
-	FUNCTION_CREATE_OR_UPDATE_MODAL: 'function_create_or_update_modal',
-	FUNCTION_REMOVE_MODAL: 'function_remove_modal',
-	GENERATE_LIST_GROUP_MODAL: 'generate_list_group_modal',
-
-	// GROUP
-	GROUP_DRAWER: 'group_manager',
-	GROUP_REMOVE_MODAL: 'group_remove_modal',
-	MEETING_ALERT_MODAL: 'meeting_alert_modal',
-
-	// MEETING
-	MEETING_CREATE_MODAL: 'meeting_create_modal',
-	MEETING_EXPORT_MODAL: 'meeting_export_modal',
-	PARTICIPANT_CHECK_IN_MODAL: 'participant_check_in_modal',
-	PARTICIPANT_EDIT_DRAWER: 'participant_edit_drawer',
-	PARTICIPANT_EXPORT_MODAL: 'participant_export_modal',
-	PARTICIPANT_FILTER_DRAWER: 'participant_filter_drawer',
-	PARTICIPANT_FILTER_INTERESTED_DRAWER: 'participant_filter_interested_drawer',
-	PARTICIPANT_FILTER_PAYMENT_DRAWER: 'participant_filter_payment_drawer',
-	PARTICIPANT_INTERESTED_MODAL: 'participant_interested_modal',
-	PARTICIPANT_MODAL_DATA: 'participant_modal_data',
-	// PARTICIPANT
-	PARTICIPANT_PAYMENT_MODAL: 'participant_payment_modal',
-	PARTICIPANT_REMOVE_MODAL: 'participant_remove_modal',
-	PARTICIPANT_RETURN_PAYMENT_MODAL: 'participant_return_payment_modal',
-
-	// PIX
-	PAYMENT_PIX_MODAL: 'payment_pix_modal',
-
-	// ROOM
-	ROOM_DRAWER: 'rooms_manager',
-	ROOM_REMOVE_MODAL: 'room_remove_modal',
-
-	// TRANSACTIONS
-	TRANSACTION_CREATE_DRAWER: 'transaction_create_drawer',
-	TRANSACTION_REMOVE_MODAL: 'transaction_remove_modal',
-	USER_BLOCK_MODAL: 'user_block_modal',
-	USER_CHANGE_ROLE_MODAL: 'user_change_role_modal',
-
-	// USERS
-	USER_CREATE_MODAL: 'user_create_modal',
-	USER_RESET_PASSWORD_MODAL: 'user_reset_password_modal',
-	VOLUNTEER_ASSIGN_FUNCTION_MODAL: 'volunteer_assign_function_modal',
-	VOLUNTEER_CHECK_IN_MODAL: 'volunteer_check_in_modal',
-	VOLUNTEER_EDIT_DRAWER: 'volunteer_edit_drawer',
-
-	// VOLUNTEER
-	VOLUNTEER_EXPORT_MODAL: 'volunteer_export_modal',
-	VOLUNTEER_FILTER_DRAWER: 'volunteer_filter_drawer',
-	VOLUNTEER_FILTER_PAYMENT_DRAWER: 'volunteer_filter_payment_drawer',
-	VOLUNTEER_MODAL_DATA: 'volunteer_modal_data',
-	VOLUNTEER_PAYMENT_MODAL: 'volunteer_payment_modal',
-	VOLUNTEER_REMOVE_MODAL: 'volunteer_remove_modal',
-	VOLUNTEER_RETURN_PAYMENT_MODAL: 'volunteer_return_payment_modal',
+export enum USERS_MODAL_TYPE {
+	BLOCK = 'block',
+	CHANGE_ROLE = 'change-role',
+	CREATE = 'create',
+	RESET_PASSWORD = 'reset-password',
 }
 
 export const FILES_TYPES = {

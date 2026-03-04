@@ -79,6 +79,7 @@
 		},
 		"enabled": true,
 		"rules": {
+			"nursery": { "useSortedClasses": "error" },
 			"recommended": false,
 			"style": { "useBlockStatements": "off", "useImportType": "on" }
 		}

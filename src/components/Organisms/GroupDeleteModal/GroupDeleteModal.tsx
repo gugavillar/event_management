@@ -18,7 +18,7 @@ export const GroupDeleteModal = ({ selectedGroup, setSelectedGroup }: GroupDelet
 	const { isPending, remove } = useDeleteGroup()
 
 	const handleDeleteGroup = async () => {
-		if (!selectedGroup) return
+		if (!selectedGroup?.id) return
 		await remove(selectedGroup.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir grupo'),
 			onSuccess: () => {

@@ -14,7 +14,7 @@ import {
 	VolunteerField,
 } from '@/components/Molecules'
 import type { SelectedGroup } from '@/components/Templates'
-import { MEMBERS, MembersTypesOptionsRadio, overlayClose } from '@/constants'
+import { GROUPS_MODAL_TYPE, MEMBERS, MembersTypesOptionsRadio } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -25,12 +25,11 @@ import { generateToastError } from '@/utils/errors'
 import type { GroupSchemaType } from './GroupDrawer.schema'
 
 type GroupDrawerProps = {
-	drawerId: string
 	selectedGroup: SelectedGroup | null
 	setSelectedGroup: Dispatch<SetStateAction<SelectedGroup | null>>
 }
 
-export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: GroupDrawerProps) => {
+export const GroupDrawer = ({ selectedGroup, setSelectedGroup }: GroupDrawerProps) => {
 	const { handleSubmit, formState, control, watch, reset } = useFormContext<GroupSchemaType>()
 	const { fields, append, remove } = useFieldArray({
 		name: 'members',
@@ -49,7 +48,7 @@ export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: Group
 			return toast.error('O grupo precisa ter pelo menos 3 membros')
 		}
 
-		if (selectedGroup) {
+		if (selectedGroup?.id) {
 			return await update(
 				{
 					data: {
@@ -63,7 +62,6 @@ export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: Group
 						reset()
 						setSelectedGroup(null)
 						toast.success('Grupo atualizado com sucesso!')
-						overlayClose(drawerId)
 					},
 				}
 			)
@@ -75,7 +73,6 @@ export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: Group
 				reset()
 				setSelectedGroup(null)
 				toast.success('Grupo criado com sucesso!')
-				overlayClose(drawerId)
 			},
 		})
 	}
@@ -108,9 +105,9 @@ export const GroupDrawer = ({ drawerId, selectedGroup, setSelectedGroup }: Group
 	return (
 		<Drawer
 			className="max-w-3xl"
-			drawerId={drawerId}
 			handleClose={handleClose}
-			headingTitle={selectedGroup ? 'Editar grupo' : 'Criar grupo'}
+			headingTitle={selectedGroup?.id ? 'Editar grupo' : 'Criar grupo'}
+			isOpen={selectedGroup?.modal === GROUPS_MODAL_TYPE.CREATE_OR_EDIT}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">

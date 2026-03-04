@@ -16,7 +16,7 @@ export const Dropdown = ({ trigger, children }: DropdownProps) => {
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild>{trigger}</DropdownMenu.Trigger>
 			<DropdownMenu.Portal>
-				<DropdownMenu.Content className="bg-white min-w-52 px-1.5 py-2.5 border border-gray-200 rounded-lg shadow-md">
+				<DropdownMenu.Content className="min-w-52 rounded-lg border border-gray-200 bg-white px-1.5 py-2.5 shadow-md">
 					{children}
 				</DropdownMenu.Content>
 			</DropdownMenu.Portal>

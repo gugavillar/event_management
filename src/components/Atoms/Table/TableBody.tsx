@@ -53,7 +53,7 @@ export const TableBody = ({
 							return (
 								<td
 									className={twMerge(
-										'px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800 md:first:sticky md:first:left-0 md:first:bg-inherit',
+										'whitespace-nowrap px-6 py-4 font-medium text-gray-800 text-sm md:first:sticky md:first:left-0 md:first:bg-inherit',
 										isToApplyClassOrFunction && 'cursor-pointer'
 									)}
 									key={uuid()}

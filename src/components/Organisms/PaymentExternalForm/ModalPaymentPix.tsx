@@ -36,7 +36,7 @@ export const ModalPaymentPix = ({ pixValue, setCurrentStep }: ModalPaymentPixPro
 		<Modal onOpenChange={handleClose} open={watch('pixModal')}>
 			<div className="flex flex-col items-center justify-center space-y-6">
 				<div className="space-y-2.5 text-center">
-					<h2 className="text-lg font-semibold">
+					<h2 className="font-semibold text-lg">
 						Para realizar o pagamento, utilize o QR Code abaixo ou copie o código PIX.
 					</h2>
 					<p>

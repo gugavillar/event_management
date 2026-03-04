@@ -18,7 +18,7 @@ export const VolunteerDeleteModal = memo(({ selectedVolunteer, setSelectedVolunt
 	const { remove, isPending } = useDeleteVolunteer()
 
 	const handleDeleteVolunteer = async () => {
-		if (!selectedVolunteer) return
+		if (!selectedVolunteer?.id) return
 
 		await remove(selectedVolunteer.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir voluntário'),

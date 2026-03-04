@@ -43,7 +43,7 @@ export const ExportTransactionsButton = ({ eventId, eventName, transactionLength
 
 	return (
 		<Button
-			className="max-w-sm min-w-60 items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
+			className="min-w-60 max-w-sm items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 			disabled={!transactionLength}
 			isLoading={isFetching}
 			leftIcon={<FileDown />}

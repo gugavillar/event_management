@@ -40,14 +40,14 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 						<Spinner />
 					) : (
 						<>
-							<Text className="text-lg font-semibold">
-								<Text as="span" className="text-base font-normal opacity-50">
+							<Text className="font-semibold text-lg">
+								<Text as="span" className="font-normal text-base opacity-50">
 									Participantes:
 								</Text>{' '}
 								{data?.confirmedParticipants}
 							</Text>
-							<Text className="text-lg font-semibold">
-								<Text as="span" className="text-base font-normal opacity-50">
+							<Text className="font-semibold text-lg">
+								<Text as="span" className="font-normal text-base opacity-50">
 									Voluntários:
 								</Text>{' '}
 								{data?.confirmedVolunteers}
@@ -64,14 +64,14 @@ export const DashboardCards = ({ data, isLoading }: DashboardCardsProps) => {
 						<Spinner />
 					) : (
 						<>
-							<Text className="text-lg font-semibold">
-								<Text as="span" className="text-base font-normal opacity-50">
+							<Text className="font-semibold text-lg">
+								<Text as="span" className="font-normal text-base opacity-50">
 									Participantes:
 								</Text>{' '}
 								{isLoading ? <Spinner /> : data?.participantPayment}
 							</Text>
-							<Text className="text-lg font-semibold">
-								<Text as="span" className="text-base font-normal opacity-50">
+							<Text className="font-semibold text-lg">
+								<Text as="span" className="font-normal text-base opacity-50">
 									Voluntários:
 								</Text>{' '}
 								{isLoading ? <Spinner /> : data?.volunteerPayment}

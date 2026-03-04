@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import { Button, Header, Modal } from '@/components/Atoms'
 import { SelectField } from '@/components/Molecules'
 import type { SelectedUser } from '@/components/Templates'
-import { type ROLES, RolesTypesSelectOptions } from '@/constants'
+import { type ROLES, RolesTypesSelectOptions, USERS_MODAL_TYPE } from '@/constants'
 import { useUpdateUserRole } from '@/services/queries/users'
 
 import { ChangeRoleUserSchema, type ChangeRoleUserType } from './ChangeRoleUserModal.schema'
@@ -48,7 +48,7 @@ export const ChangeRoleUserModal = memo(({ selectedUser, setSelectedUser }: Chan
 	}
 
 	return (
-		<Modal onOpenChange={handleClose} open={selectedUser?.modal === 'change-role'}>
+		<Modal onOpenChange={handleClose} open={selectedUser?.modal === USERS_MODAL_TYPE.CHANGE_ROLE}>
 			<FormProvider {...methods}>
 				<div className="flex w-full flex-col items-center justify-center">
 					<div className="flex w-full flex-col items-center justify-between gap-6">

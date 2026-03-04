@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { DonationDeleteModal, DonationHeader, ListPage, PageContent } from '@/components/Organisms'
-import { DONATION_MODAL_TYPE, MODALS_IDS, overlayOpen } from '@/constants'
+import { DONATION_MODAL_TYPE } from '@/constants'
 import { useGetDonations } from '@/services/queries/donations'
 import type { DonationAPI } from '@/services/queries/donations/donations.types'
 
@@ -22,7 +22,6 @@ export const Donation = () => {
 
 	const handleRemoveDonation = useCallback((id: DonationAPI['id']) => {
 		setSelectedDonation({ id, modal: DONATION_MODAL_TYPE.DELETE })
-		overlayOpen(MODALS_IDS.DONATION_REMOVE_MODAL)
 	}, [])
 
 	const formatData = formatTableData(data?.data, handleRemoveDonation)

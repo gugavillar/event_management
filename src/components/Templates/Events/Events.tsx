@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { CreateEventButton, ListPage, PageContent } from '@/components/Organisms'
-import { EVENTS_MODAL_TYPE, type MEMBERS, MembersTypes, MODALS_IDS } from '@/constants'
+import { EVENTS_MODAL_TYPE, type MEMBERS, MembersTypes } from '@/constants'
 import { useGetEvents, useUpdateInterested, useUpdateRegistration } from '@/services/queries/events'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
@@ -14,7 +14,7 @@ import { generateToastError } from '@/utils/errors'
 import { formatTableData, HEADER_LABELS } from './Events.utils'
 
 export type SelectedEvent = {
-	id: EventsAPI['id']
+	id: EventsAPI['id'] | ''
 	modal: EVENTS_MODAL_TYPE
 }
 
@@ -91,13 +91,7 @@ export const Events = () => {
 	return (
 		<PageContent subheadingPage="Lista de eventos">
 			<ListPage
-				actionButton={
-					<CreateEventButton
-						drawerId={MODALS_IDS.EVENT_CREATE_OR_UPDATE_DRAWER}
-						selectedEvent={selectedEvent}
-						setSelectedEvent={setSelectedEvent}
-					/>
-				}
+				actionButton={<CreateEventButton selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />}
 				className="w-full lg:max-w-full"
 				placeholderField="Encontrar um evento"
 				search={search}

@@ -15,7 +15,7 @@ export const Tooltip = ({ trigger, children, sideOffset = 20, side = 'right' }: 
 				<TooltipRadix.Trigger asChild>{trigger}</TooltipRadix.Trigger>
 				<TooltipRadix.Portal>
 					<TooltipRadix.Content
-						className="bg-gray-900 text-white px-2 py-1 text-sm shadow-lg rounded-md"
+						className="rounded-md bg-gray-900 px-2 py-1 text-sm text-white shadow-lg"
 						side={side}
 						sideOffset={sideOffset}
 					>

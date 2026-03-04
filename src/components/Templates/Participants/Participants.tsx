@@ -12,15 +12,15 @@ import {
 	ParticipantSchema,
 	type ParticipantType,
 } from '@/components/Organisms/ParticipantDrawer/ParticipantDrawer.schema'
-import { MEMBERS, MODALS_IDS, overlayOpen, PARTICIPANT_MODAL_TYPE } from '@/constants'
+import { MEMBERS, PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { useGetParticipants } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { formatTableData, HEADER_LABELS } from './Participants.utils'
 
 export type SelectedParticipant = {
-	modal: PARTICIPANT_MODAL_TYPE
-	id: ParticipantsAPI['id']
+	modal: PARTICIPANT_MODAL_TYPE | null
+	id: ParticipantsAPI['id'] | null
 }
 
 const ParticipantCheckInModal = dynamic(() =>
@@ -81,9 +81,8 @@ export const Participants = () => {
 		if (id) {
 			setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
-			setSelectedParticipant(null)
+			setSelectedParticipant({ id: null, modal: PARTICIPANT_MODAL_TYPE.CREATE_OR_EDIT })
 		}
-		overlayOpen(MODALS_IDS.PARTICIPANT_EDIT_DRAWER)
 	}, [])
 
 	const handleOpenModalToShowParticipantData = useCallback((id: ParticipantsAPI['id']) => {
@@ -118,14 +117,7 @@ export const Participants = () => {
 			</div>
 			<ListPage
 				className="lg:max-w-full"
-				moreFilter={
-					<FilterDrawer
-						drawerId={MODALS_IDS.PARTICIPANT_FILTER_DRAWER}
-						query={query}
-						setQuery={setQuery}
-						type={MEMBERS.PARTICIPANT}
-					/>
-				}
+				moreFilter={<FilterDrawer query={query} setQuery={setQuery} type={MEMBERS.PARTICIPANT} />}
 				placeholderField="Encontrar um participante"
 				search={search}
 				setSearch={setSearch}
@@ -144,11 +136,7 @@ export const Participants = () => {
 				setSelectedParticipant={setSelectedParticipant}
 			/>
 			<FormProvider {...methods}>
-				<ParticipantDrawer
-					drawerId={MODALS_IDS.PARTICIPANT_EDIT_DRAWER}
-					selectedParticipant={selectedParticipant}
-					setSelectedParticipant={setSelectedParticipant}
-				/>
+				<ParticipantDrawer selectedParticipant={selectedParticipant} setSelectedParticipant={setSelectedParticipant} />
 			</FormProvider>
 			<ParticipantModalData selectedParticipant={selectedParticipant} setSelectedParticipant={setSelectedParticipant} />
 			<InterestedModalToParticipant

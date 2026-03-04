@@ -59,7 +59,7 @@ export const formatTableData = (
 							<Tooltip
 								{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
 								trigger={
-									<div className="inline-flex items-center gap-1 cursor-pointer">
+									<div className="inline-flex cursor-pointer items-center gap-1">
 										<ExternalLink className="size-4" />
 										<ChevronDown className="size-4" />
 									</div>
@@ -71,20 +71,20 @@ export const formatTableData = (
 					}
 				>
 					<DropdownItem
-						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 						onSelect={() => handleOpenLink(event.id, 'participante')}
 					>
 						Inscrição participantes
 					</DropdownItem>
 
 					<DropdownItem
-						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 						onSelect={() => handleOpenLink(event.id, 'voluntario')}
 					>
 						Inscrição voluntários
 					</DropdownItem>
 					<DropdownItem
-						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 						onSelect={() => handleOpenInterestedLink(event.id)}
 					>
 						Lista de interessados
@@ -96,7 +96,7 @@ export const formatTableData = (
 							<Tooltip
 								{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
 								trigger={
-									<div className="inline-flex items-center gap-1 cursor-pointer">
+									<div className="inline-flex cursor-pointer items-center gap-1">
 										<Lock className="size-4" />
 										<ChevronDown className="size-4" />
 									</div>
@@ -108,7 +108,7 @@ export const formatTableData = (
 					}
 				>
 					<DropdownItem
-						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 						onSelect={() =>
 							handleBlockOrOpenRegistration(
 								event.id,
@@ -120,7 +120,7 @@ export const formatTableData = (
 						{event.isParticipantRegistrationOpen ? 'Fechar inscrição participantes' : 'Abrir inscrição participantes'}
 					</DropdownItem>
 					<DropdownItem
-						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 						onSelect={() =>
 							handleBlockOrOpenRegistration(
 								event.id,
@@ -132,7 +132,7 @@ export const formatTableData = (
 						{event.isVolunteerRegistrationOpen ? 'Fechar inscrição voluntários' : 'Abrir inscrição voluntários'}
 					</DropdownItem>
 					<DropdownItem
-						className="block cursor-pointer rounded-lg px-3 py-2 select-none hover:bg-gray-100"
+						className="block cursor-pointer select-none rounded-lg px-3 py-2 hover:bg-gray-100"
 						onSelect={() =>
 							handleActivatedOrDeactivatedInterestedList(event.id, event.isInterestedListOpen ? 'close' : 'open')
 						}

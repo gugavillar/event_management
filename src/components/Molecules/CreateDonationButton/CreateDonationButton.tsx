@@ -1,15 +1,16 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { HandHeart } from 'lucide-react'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/Atoms'
 import { DonationDrawer } from '@/components/Organisms'
 import { DonationSchema, type DonationType } from '@/components/Organisms/DonationDrawer/DonationDrawer.schema'
-import { MODALS_IDS, overlayOpen } from '@/constants'
+import { DONATION_MODAL_TYPE } from '@/constants'
 
 export const CreateDonationButton = memo(() => {
+	const [isOpen, setIsOpen] = useState<DONATION_MODAL_TYPE | null>(null)
 	const methods = useForm<DonationType>({
 		defaultValues: {
 			eventId: '',
@@ -20,7 +21,7 @@ export const CreateDonationButton = memo(() => {
 	})
 
 	const handleOpenDonationDrawer = () => {
-		overlayOpen(MODALS_IDS.DONATION_CREATE_DRAWER)
+		setIsOpen(DONATION_MODAL_TYPE.CREATE)
 	}
 
 	return (
@@ -34,7 +35,7 @@ export const CreateDonationButton = memo(() => {
 				Criar uma nova doação
 			</Button>
 			<FormProvider {...methods}>
-				<DonationDrawer drawerId={MODALS_IDS.DONATION_CREATE_DRAWER} />
+				<DonationDrawer isOpen={isOpen} setIsOpen={setIsOpen} />
 			</FormProvider>
 		</>
 	)

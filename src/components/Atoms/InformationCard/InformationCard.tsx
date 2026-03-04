@@ -24,7 +24,7 @@ export const InformationCard = ({
 		>
 			<div
 				className={twMerge(
-					'flex items-center justify-between rounded-t-xl border-b border-gray-200 bg-gray-100 px-4 py-2',
+					'flex items-center justify-between rounded-t-xl border-gray-200 border-b bg-gray-100 px-4 py-2',
 					headerClassName
 				)}
 			>

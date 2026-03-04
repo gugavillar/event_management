@@ -1,11 +1,11 @@
 'use client'
-import { memo } from 'react'
+import { type Dispatch, memo, type SetStateAction } from 'react'
 import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { CurrencyInputField, InputField, MaskedInputField, SelectField } from '@/components/Molecules'
-import { overlayClose } from '@/constants'
+import { TRANSACTION_MODAL_TYPE } from '@/constants'
 import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
 import { useCreateTransaction } from '@/services/queries/transactions/hooks'
 import type { TransactionsAPI } from '@/services/queries/transactions/transactions.types'
@@ -15,11 +15,12 @@ import type { TransactionType } from './TransactionDrawer.schema'
 import { AMOUNT_TYPE, TRANSACTION_TYPE } from './TransactionDrawer.utils'
 
 type TransactionDrawerProps = {
-	drawerId: string
 	eventId: string
+	isOpen: TRANSACTION_MODAL_TYPE | null
+	setIsOpen: Dispatch<SetStateAction<TRANSACTION_MODAL_TYPE | null>>
 }
 
-export const TransactionDrawer = memo(({ drawerId, eventId }: TransactionDrawerProps) => {
+export const TransactionDrawer = memo(({ eventId, isOpen, setIsOpen }: TransactionDrawerProps) => {
 	const { create, isPending } = useCreateTransaction()
 	const {
 		handleSubmit,
@@ -44,17 +45,22 @@ export const TransactionDrawer = memo(({ drawerId, eventId }: TransactionDrawerP
 			onSuccess: () => {
 				reset()
 				toast.success('Transação criada com sucesso!')
-				overlayClose(drawerId)
+				setIsOpen(null)
 			},
 		})
 	}
 
 	const handleClose = () => {
 		reset()
+		setIsOpen(null)
 	}
 
 	return (
-		<Drawer drawerId={drawerId} handleClose={handleClose} headingTitle="Dados da transação">
+		<Drawer
+			handleClose={handleClose}
+			headingTitle="Dados da transação"
+			isOpen={isOpen === TRANSACTION_MODAL_TYPE.CREATE}
+		>
 			<DrawerBody>
 				<SelectField fieldName="type" options={TRANSACTION_TYPE} placeholder="Selecione uma opção">
 					Tipo

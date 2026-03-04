@@ -19,7 +19,7 @@ export const ParticipantCheckInModal = memo(
 		const { update, isPending } = useUpdateCheckInParticipant()
 
 		const handleCheckInParticipant = async (status: CHECK_IN_STATUS) => {
-			if (!selectedParticipant) return
+			if (!selectedParticipant?.id) return
 
 			await update(
 				{ participantId: selectedParticipant.id, status },

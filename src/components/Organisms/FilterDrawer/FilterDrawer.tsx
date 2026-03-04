@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { Button, Drawer, DrawerBody, DrawerFooter, Label } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { MEMBERS, overlayClose, overlayOpen } from '@/constants'
+import { MEMBERS } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -13,7 +13,6 @@ import { ParticipantFilters } from './ParticipantFilters'
 import { VolunteerFilters } from './VolunteerFilters'
 
 type FilterDrawerProps = {
-	drawerId: string
 	type: MEMBERS.PARTICIPANT | MEMBERS.VOLUNTEER
 	query: any
 	setQuery: any
@@ -35,14 +34,8 @@ const defaultFilters: FilterType = {
 	status: '',
 }
 
-export const FilterDrawer = ({
-	drawerId,
-	type,
-	query,
-	setQuery,
-	isPaymentType,
-	isInterestedList,
-}: FilterDrawerProps) => {
+export const FilterDrawer = ({ type, query, setQuery, isPaymentType, isInterestedList }: FilterDrawerProps) => {
+	const [isOpen, setIsOpen] = useState(false)
 	const [filterEventId, setFilterEventId] = useState(query.eventId)
 	const [filters, setFilters] = useState<FilterType>({
 		city: query.city,
@@ -73,18 +66,22 @@ export const FilterDrawer = ({
 
 	const handleApplyFilters = () => {
 		setQuery((prev: any) => ({ ...prev, ...filters, eventId: filterEventId }))
-		overlayClose(drawerId)
+		setIsOpen(false)
 	}
 
 	const handleClearFilters = () => {
 		setQuery({ ...defaultFilters, eventId: '' })
 		setFilters(defaultFilters)
 		setFilterEventId('')
-		overlayClose(drawerId)
+		setIsOpen(false)
 	}
 
 	const handleOpenDrawerFilters = () => {
-		overlayOpen(drawerId)
+		setIsOpen(true)
+	}
+
+	const handleCloseDrawerFilters = () => {
+		setIsOpen(false)
 	}
 
 	const filterCount = filterEventId
@@ -103,12 +100,12 @@ export const FilterDrawer = ({
 			>
 				<span className="max-md:hidden">Filtros</span>
 				{filterCount > 0 && (
-					<span className="items-center rounded-full bg-teal-800 px-1.5 py-0.5 text-xs font-medium text-white max-sm:absolute max-sm:-top-2 max-sm:right-0 md:inline-flex">
+					<span className="items-center rounded-full bg-teal-800 px-1.5 py-0.5 font-medium text-white text-xs max-sm:absolute max-sm:-top-2 max-sm:right-0 md:inline-flex">
 						{filterCount}
 					</span>
 				)}
 			</Button>
-			<Drawer drawerId={drawerId} headingTitle="Filtros">
+			<Drawer handleClose={handleCloseDrawerFilters} headingTitle="Filtros" isOpen={isOpen}>
 				<DrawerBody>
 					<div className="w-full">
 						<Label>Evento</Label>

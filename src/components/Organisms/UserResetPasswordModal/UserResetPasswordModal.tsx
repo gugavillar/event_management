@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import type { SelectedUser } from '@/components/Templates'
+import { USERS_MODAL_TYPE } from '@/constants'
 import { useResetPassword } from '@/services/queries/users'
 
 type UserResetPasswordModalProps = {
@@ -34,7 +35,7 @@ export const UserResetPasswordModal = memo(({ selectedUser, setSelectedUser }: U
 	}
 
 	return (
-		<Modal onOpenChange={handleClose} open={selectedUser?.modal === 'reset-password'}>
+		<Modal onOpenChange={handleClose} open={selectedUser?.modal === USERS_MODAL_TYPE.RESET_PASSWORD}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

@@ -10,7 +10,7 @@ type LinkProps = NextLinkProps & {
 export const Link = ({ href, className, children, ...props }: LinkProps) => {
 	return (
 		<NextLink
-			className={twMerge('inline-flex items-center gap-x-2 text-lg font-medium text-gray-800', className)}
+			className={twMerge('inline-flex items-center gap-x-2 font-medium text-gray-800 text-lg', className)}
 			href={href}
 			{...props}
 		>

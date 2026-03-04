@@ -33,7 +33,7 @@ export const SubMenuItem = ({ buttonIcon, buttonLabel, collapsed, links, path, u
 			trigger={
 				<button
 					className={twMerge(
-						'inline-flex shrink-0 cursor-pointer items-center gap-x-2 rounded-md p-2 text-start text-lg font-medium text-gray-100 hover:bg-slate-900/80 focus:outline-hidden',
+						'inline-flex shrink-0 cursor-pointer items-center gap-x-2 rounded-md p-2 text-start font-medium text-gray-100 text-lg hover:bg-slate-900/80 focus:outline-hidden',
 						collapsed && 'justify-center',
 						path.includes(validateLabelPath) && 'bg-slate-900/80'
 					)}
@@ -50,7 +50,7 @@ export const SubMenuItem = ({ buttonIcon, buttonLabel, collapsed, links, path, u
 				}
 				return (
 					<DropdownItem key={label} onSelect={() => push(href)}>
-						<button className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50">
+						<button className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50">
 							{label}
 						</button>
 					</DropdownItem>

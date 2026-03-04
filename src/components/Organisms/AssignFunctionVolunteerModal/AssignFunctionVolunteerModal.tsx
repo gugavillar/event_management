@@ -66,7 +66,7 @@ export const AssignFunctionVolunteerModal = memo(
 		const selectedEventId = methods.watch('eventId')
 
 		const handleSubmit: SubmitHandler<AssignFunctionType> = async (values) => {
-			if (!selectedVolunteer) return
+			if (!selectedVolunteer?.id) return
 
 			await update(
 				{ data: values, volunteerId: selectedVolunteer.id },
@@ -81,7 +81,7 @@ export const AssignFunctionVolunteerModal = memo(
 		}
 
 		const handleRemoveFunctions = async () => {
-			if (!selectedVolunteer) return
+			if (!selectedVolunteer?.id) return
 
 			await update(
 				{

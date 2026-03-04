@@ -23,7 +23,7 @@ export const TransactionCardInfo = ({
 	if (!selectedEvent) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">Selecione um evento</h3>
+				<h3 className="font-bold text-gray-800 text-lg">Selecione um evento</h3>
 				<p className="mt-2 text-gray-500">
 					As transações são exibidas conforme o evento selecionado. Escolha um para continuar.
 				</p>

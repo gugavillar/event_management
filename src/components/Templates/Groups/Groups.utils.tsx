@@ -59,7 +59,7 @@ export const Content = (
 	if (!selectedEvent) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">Selecione um evento</h3>
+				<h3 className="font-bold text-gray-800 text-lg">Selecione um evento</h3>
 				<p className="mt-2 text-gray-500">
 					Os grupos são exibidos conforme o evento selecionado. Escolha um para continuar.
 				</p>
@@ -70,7 +70,7 @@ export const Content = (
 	if (!isFetching && !groups?.length) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">Nenhum grupo encontrado</h3>
+				<h3 className="font-bold text-gray-800 text-lg">Nenhum grupo encontrado</h3>
 				<p className="mt-2 text-gray-500">Nenhum grupo foi criado para o evento selecionado.</p>
 			</div>
 		)
@@ -89,7 +89,7 @@ export const Content = (
 	if (!hasMembers) {
 		return (
 			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="text-lg font-bold text-gray-800">Nenhum membro encontrado</h3>
+				<h3 className="font-bold text-gray-800 text-lg">Nenhum membro encontrado</h3>
 				<p className="mt-2 text-gray-500">
 					Verifique se digitou corretamente ou experimente usar apenas parte do nome.
 				</p>
@@ -115,13 +115,13 @@ export const Content = (
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col space-y-2.5">
 						<Header>{data.name}</Header>
-						<Text className="text-lg font-semibold">
+						<Text className="font-semibold text-lg">
 							Participantes:{' '}
 							<Text as="span" className="font-normal">
 								{totalOfParticipants}
 							</Text>
 						</Text>
-						<Text className="text-lg font-semibold">
+						<Text className="font-semibold text-lg">
 							Líderes:{' '}
 							<Text as="span" className="font-normal">
 								{totalOfLeaders}

@@ -18,7 +18,7 @@ export const EventDeleteModal = ({ selectedEvent, setSelectedEvent }: EventDelet
 	const { remove, isPending } = useDeleteEvent()
 
 	const handleDeleteEvent = async () => {
-		if (!selectedEvent) return
+		if (!selectedEvent?.id) return
 		await remove(selectedEvent.id, {
 			onError: (error) => generateToastError(error, 'Erro ao excluir evento'),
 			onSuccess: () => {

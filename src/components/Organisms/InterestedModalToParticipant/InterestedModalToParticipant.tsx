@@ -20,7 +20,7 @@ export const InterestedModalToParticipant = memo(
 		const { update, isPending } = useUpdateInterestedParticipant()
 
 		const handleMoveParticipant = async () => {
-			if (!selectedParticipant) return
+			if (!selectedParticipant?.id) return
 
 			await update(
 				{ interested, participantId: selectedParticipant.id },

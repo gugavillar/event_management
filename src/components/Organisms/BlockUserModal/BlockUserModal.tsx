@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Header, Modal, Text } from '@/components/Atoms'
 import type { SelectedUser } from '@/components/Templates'
+import { USERS_MODAL_TYPE } from '@/constants'
 import { useBlockOrUnblockUser } from '@/services/queries/users'
 
 type BlockUserModalProps = {
@@ -34,7 +35,7 @@ export const BlockUserModal = memo(({ selectedUser, setSelectedUser }: BlockUser
 	}
 
 	return (
-		<Modal onOpenChange={handleCloseModal} open={selectedUser?.modal === 'block'}>
+		<Modal onOpenChange={handleCloseModal} open={selectedUser?.modal === USERS_MODAL_TYPE.BLOCK}>
 			<div className="flex flex-col items-center justify-center">
 				<div className="flex flex-col items-center justify-between gap-6">
 					<OctagonAlert className="text-amber-300" size={64} />

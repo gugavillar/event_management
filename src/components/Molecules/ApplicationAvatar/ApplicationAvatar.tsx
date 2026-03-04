@@ -19,14 +19,14 @@ export const ApplicationAvatar = memo(({ collapsed, handleCollapse }: Applicatio
 				<>
 					<Tickets className="text-slate-100" data-testid="ticket-icon" size={48} />
 					<div>
-						<Text className="text-xl font-bold text-gray-100">Hub de Eventos</Text>
-						<Text className="text-lg text-gray-100/40">Anglicana Vida</Text>
+						<Text className="font-bold text-gray-100 text-xl">Hub de Eventos</Text>
+						<Text className="text-gray-100/40 text-lg">Anglicana Vida</Text>
 					</div>
 				</>
 			)}
 			<Button
 				className={twMerge(
-					'absolute -top-3 hidden items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 text-lg font-medium text-gray-100 transition-all duration-500 md:inline-flex',
+					'absolute -top-3 hidden items-center justify-center gap-x-0 rounded-lg border-none bg-slate-900/80 p-0 font-medium text-gray-100 text-lg transition-all duration-500 md:inline-flex',
 					collapsed ? 'left-12' : 'left-64'
 				)}
 				onClick={() => handleCollapse(!collapsed)}

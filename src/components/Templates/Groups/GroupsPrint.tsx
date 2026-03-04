@@ -101,7 +101,7 @@ export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
 
 	return (
 		<PDFDownloadLink
-			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 text-base font-semibold text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
+			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 font-semibold text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
 			document={listType === 'portrait' ? <PortraitList groups={groups} /> : <LandscapeList groups={groups} />}
 			fileName={fileName}
 			key={renderKey}

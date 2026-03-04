@@ -7,7 +7,7 @@ import { useCallback, useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { CreateUserButton, ListPage, PageContent } from '@/components/Organisms'
-import { MODALS_IDS } from '@/constants'
+import { USERS_MODAL_TYPE } from '@/constants'
 import { useGetUsers } from '@/services/queries/users'
 import type { UserAPI } from '@/services/queries/users/users.type'
 
@@ -19,7 +19,7 @@ type UsersProps = {
 
 export type SelectedUser = {
 	id: UserAPI['id']
-	modal: 'block' | 'change-role' | 'reset-password'
+	modal: USERS_MODAL_TYPE
 }
 
 const BlockUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.BlockUserModal))
@@ -33,15 +33,15 @@ export const Users = ({ userId }: UsersProps) => {
 	const { data: users, isLoading, search, setSearch, page, setPage } = useGetUsers()
 
 	const handleOpenChangeRoleModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser({ id, modal: 'change-role' })
+		setSelectedUser({ id, modal: USERS_MODAL_TYPE.CHANGE_ROLE })
 	}, [])
 
 	const handleOpenResetPasswordModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser({ id, modal: 'reset-password' })
+		setSelectedUser({ id, modal: USERS_MODAL_TYPE.RESET_PASSWORD })
 	}, [])
 
 	const handleOpenBlockUserModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser({ id, modal: 'block' })
+		setSelectedUser({ id, modal: USERS_MODAL_TYPE.BLOCK })
 	}, [])
 
 	const formatData = formatTableData(
@@ -57,7 +57,7 @@ export const Users = ({ userId }: UsersProps) => {
 	return (
 		<PageContent subheadingPage="Lista de usuários" title="Usuários">
 			<ListPage
-				actionButton={<CreateUserButton drawerId={MODALS_IDS.USER_CREATE_MODAL} />}
+				actionButton={<CreateUserButton />}
 				className="w-full lg:max-w-full"
 				placeholderField="Digite o nome do usuário"
 				search={search}

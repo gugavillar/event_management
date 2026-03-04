@@ -36,8 +36,8 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
 							/>
 						</div>
 						<label className="ms-3" htmlFor={`${fieldName}-${option.value}`}>
-							<span className="block text-sm font-semibold text-gray-800">{option.label}</span>
-							{option.description && <span className="block text-sm text-gray-600">{option.description}</span>}
+							<span className="block font-semibold text-gray-800 text-sm">{option.label}</span>
+							{option.description && <span className="block text-gray-600 text-sm">{option.description}</span>}
 						</label>
 					</div>
 				))}

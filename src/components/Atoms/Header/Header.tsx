@@ -10,7 +10,7 @@ type HeaderProps<T extends ElementType> = ComponentProps<T> & {
 export const Header = <T extends HeadingElement>({ as = 'h1', className, children, ...props }: HeaderProps<T>) => {
 	const Component = as
 	return (
-		<Component className={twMerge('text-2xl font-bold text-slate-800', className)} {...props}>
+		<Component className={twMerge('font-bold text-2xl text-slate-800', className)} {...props}>
 			{children}
 		</Component>
 	)

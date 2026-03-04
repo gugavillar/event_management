@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react'
 import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { ExportParticipantsButton, FilterDrawer, ListPage, PageContent } from '@/components/Organisms'
-import { MEMBERS, MODALS_IDS, PARTICIPANT_MODAL_TYPE } from '@/constants'
+import { MEMBERS, PARTICIPANT_MODAL_TYPE } from '@/constants'
 import { useGetParticipants } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -53,15 +53,7 @@ export const InterestedParticipants = () => {
 			</div>
 			<ListPage
 				className="lg:max-w-full"
-				moreFilter={
-					<FilterDrawer
-						drawerId={MODALS_IDS.PARTICIPANT_FILTER_INTERESTED_DRAWER}
-						isInterestedList
-						query={query}
-						setQuery={setQuery}
-						type={MEMBERS.PARTICIPANT}
-					/>
-				}
+				moreFilter={<FilterDrawer isInterestedList query={query} setQuery={setQuery} type={MEMBERS.PARTICIPANT} />}
 				placeholderField="Encontrar um participante"
 				search={search}
 				setSearch={setSearch}

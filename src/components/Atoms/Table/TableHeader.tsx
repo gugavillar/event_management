@@ -17,7 +17,7 @@ export const TableHeader = memo(({ headerLabels, className, ...props }: TableHea
 				{headerLabels?.map(({ label, className }) => (
 					<th
 						className={twMerge(
-							'bg-slate-800 px-6 py-3 text-start text-xs font-medium text-nowrap text-gray-100 uppercase md:first:sticky md:first:left-0',
+							'text-nowrap bg-slate-800 px-6 py-3 text-start font-medium text-gray-100 text-xs uppercase md:first:sticky md:first:left-0',
 							className
 						)}
 						key={uuid()}

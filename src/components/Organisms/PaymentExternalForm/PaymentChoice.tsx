@@ -40,7 +40,7 @@ export const PaymentChoice = ({
 			</h3>
 			{paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value ? (
 				<div className="space-y-8 text-center">
-					<h2 className="text-lg font-semibold">
+					<h2 className="font-semibold text-lg">
 						Ao finalizar, será exibido o QR Code e um botão para copiar o código PIX. Use a opção que preferir para
 						pagar.
 					</h2>
@@ -58,7 +58,7 @@ export const PaymentChoice = ({
 				</div>
 			) : (
 				<div className="space-y-8 text-center">
-					<h2 className="text-lg font-semibold">
+					<h2 className="font-semibold text-lg">
 						Para pagamentos em dinheiro ou cartão, dirija-se à secretaria da igreja.
 					</h2>
 					<p>Recomendamos que não deixe para o último momento para evitar imprevistos.</p>

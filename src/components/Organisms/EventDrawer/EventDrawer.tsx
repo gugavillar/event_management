@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { CurrencyInputField, InputField, MaskedInputField, SelectField } from '@/components/Molecules'
 import type { SelectedEvent } from '@/components/Templates'
-import { GenderSelectOptions, overlayClose } from '@/constants'
+import { EVENTS_MODAL_TYPE, GenderSelectOptions } from '@/constants'
 import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
 import { useCreateEvent, useGetEvent, useUpdateEvent } from '@/services/queries/events'
 import type { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
@@ -15,12 +15,11 @@ import { generateToastError } from '@/utils/errors'
 import type { EventSchemaType } from './EventDrawer.schema'
 
 type EventDrawerProps = {
-	drawerId: string
 	selectedEvent: null | SelectedEvent
 	setSelectedEvent: Dispatch<SetStateAction<SelectedEvent | null>>
 }
 
-export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: EventDrawerProps) => {
+export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProps) => {
 	const {
 		handleSubmit,
 		reset,
@@ -43,7 +42,7 @@ export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: Event
 			...(values.maxAge ? { maxAge: Number(values.maxAge) } : { maxAge: null }),
 		} as FormEvent
 
-		if (selectedEvent) {
+		if (selectedEvent?.id) {
 			return await update(
 				{
 					data: formattedValues,
@@ -55,7 +54,6 @@ export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: Event
 						reset()
 						setSelectedEvent(null)
 						toast.success('Evento atualizado com sucesso!')
-						overlayClose(drawerId)
 					},
 				}
 			)
@@ -65,7 +63,7 @@ export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: Event
 			onSuccess: () => {
 				reset()
 				toast.success('Evento criado com sucesso!')
-				overlayClose(drawerId)
+				setSelectedEvent(null)
 			},
 		})
 	}
@@ -90,9 +88,9 @@ export const EventDrawer = ({ drawerId, selectedEvent, setSelectedEvent }: Event
 
 	return (
 		<Drawer
-			drawerId={drawerId}
 			handleClose={handleClose}
-			headingTitle={selectedEvent ? 'Editar evento' : 'Novo evento'}
+			headingTitle={selectedEvent?.id ? 'Editar evento' : 'Novo evento'}
+			isOpen={selectedEvent?.modal === EVENTS_MODAL_TYPE.CREATE_OR_EDIT}
 		>
 			<DrawerBody isLoading={isLoading}>
 				<InputField fieldName="name">Nome do evento</InputField>

@@ -9,7 +9,7 @@ import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import { GenerateGroupList, ListPage, PageContent } from '@/components/Organisms'
 import { GroupSchema, type GroupSchemaType } from '@/components/Organisms/GroupDrawer/GroupDrawer.schema'
-import { GROUPS_MODAL_TYPE, MODALS_IDS } from '@/constants'
+import { GROUPS_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -19,8 +19,8 @@ import type { GroupAPI } from '@/services/queries/groups/groups.types'
 import { Content, formatTableData } from './Groups.utils'
 
 export type SelectedGroup = {
-	id: GroupAPI['id']
-	modal: GROUPS_MODAL_TYPE
+	id: GroupAPI['id'] | null
+	modal: GROUPS_MODAL_TYPE | null
 }
 
 const GroupDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.GroupDeleteModal))
@@ -72,7 +72,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 		if (id) {
 			setSelectedGroup({ id, modal: GROUPS_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
-			setSelectedGroup(null)
+			setSelectedGroup({ id: null, modal: GROUPS_MODAL_TYPE.CREATE_OR_EDIT })
 		}
 	}, [])
 
@@ -124,11 +124,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 				)}
 			</ListPage>
 			<FormProvider {...methods}>
-				<GroupDrawer
-					drawerId={MODALS_IDS.GROUP_DRAWER}
-					selectedGroup={selectedGroup}
-					setSelectedGroup={setSelectedGroup}
-				/>
+				<GroupDrawer selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
 			</FormProvider>
 			<GroupDeleteModal selectedGroup={selectedGroup} setSelectedGroup={setSelectedGroup} />
 		</PageContent>

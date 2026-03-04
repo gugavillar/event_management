@@ -31,7 +31,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 				trigger={
 					<button
 						className={twMerge(
-							'inline-flex w-full shrink-0 cursor-pointer items-center gap-x-2 rounded-md p-2 text-start text-sm text-gray-100 hover:bg-slate-900/80 focus:outline-hidden',
+							'inline-flex w-full shrink-0 cursor-pointer items-center gap-x-2 rounded-md p-2 text-start text-gray-100 text-sm hover:bg-slate-900/80 focus:outline-hidden',
 							collapsed && 'justify-center'
 						)}
 						type="button"
@@ -50,7 +50,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 				{user?.role === ROLES.ADMIN && (
 					<DropdownItem>
 						<button
-							className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+							className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 							onClick={() => push(PRINCIPAL_LINKS.USERS)}
 							onSelect={() => {}}
 						>
@@ -60,7 +60,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 				)}
 				<DropdownItem>
 					<button
-						className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-sm text-gray-800 hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+						className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 						onClick={handleLogout}
 						onSelect={() => {}}
 					>

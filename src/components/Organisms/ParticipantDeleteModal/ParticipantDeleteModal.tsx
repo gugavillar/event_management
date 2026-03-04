@@ -19,7 +19,7 @@ export const ParticipantDeleteModal = memo(
 		const { remove, isPending } = useDeleteParticipant()
 
 		const handleDeleteParticipant = async () => {
-			if (!selectedParticipant) return
+			if (!selectedParticipant?.id) return
 
 			await remove(selectedParticipant.id, {
 				onError: (error) => generateToastError(error, 'Erro ao excluir participante'),

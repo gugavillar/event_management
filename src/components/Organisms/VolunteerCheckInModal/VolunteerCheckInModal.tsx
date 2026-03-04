@@ -18,7 +18,7 @@ export const VolunteerCheckInModal = memo(({ selectedVolunteer, setSelectedVolun
 	const { update, isPending } = useUpdateCheckInVolunteer()
 
 	const handleCheckInVolunteer = async (status: CHECK_IN_STATUS) => {
-		if (!selectedVolunteer) return
+		if (!selectedVolunteer?.id) return
 
 		await update(
 			{ status, volunteerId: selectedVolunteer.id },

@@ -27,10 +27,7 @@ export const Step = ({ steps, handleFinish, currentStep, handleNext, handlePrev,
 					const isSuccess = currentStep > index
 					return (
 						<li
-							className={twMerge(
-								'group flex flex-1 shrink basis-0 items-center gap-x-2',
-								isLast && 'w-fit flex-grow-0'
-							)}
+							className={twMerge('group flex flex-1 shrink basis-0 items-center gap-x-2', isLast && 'w-fit grow-0')}
 							key={title}
 						>
 							<span className="group inline-flex min-h-7 min-w-7 items-center align-middle text-xs">
@@ -46,7 +43,7 @@ export const Step = ({ steps, handleFinish, currentStep, handleNext, handlePrev,
 										<Check className="block size-3 shrink-0" />
 									)}
 								</span>
-								<span className="ms-2 text-sm font-medium text-gray-800">{title}</span>
+								<span className="ms-2 font-medium text-gray-800 text-sm">{title}</span>
 							</span>
 							<div
 								className={twMerge('h-px w-full flex-1 bg-gray-200 group-last:hidden', isSuccess && 'bg-blue-600')}
@@ -56,9 +53,9 @@ export const Step = ({ steps, handleFinish, currentStep, handleNext, handlePrev,
 				})}
 			</ul>
 			<div className="my-6">{steps[currentStep].content}</div>
-			<div className="mt-auto flex items-center justify-between gap-x-2">
+			<div className="mt-auto flex flex-col items-center justify-between gap-4 md:flex-row">
 				<button
-					className="inline-flex items-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 focus:bg-gray-50 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+					className="inline-flex w-full cursor-pointer items-center justify-center gap-x-1 rounded-lg border border-gray-200 bg-white px-3 py-2.5 font-medium text-gray-800 text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 					disabled={isPending}
 					onClick={handlePrev}
 					type="button"
@@ -68,7 +65,7 @@ export const Step = ({ steps, handleFinish, currentStep, handleNext, handlePrev,
 				</button>
 				{!isLastStep && (
 					<button
-						className="inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+						className="inline-flex w-full cursor-pointer items-center justify-center gap-x-1 rounded-lg border border-transparent bg-teal-500 px-3 py-2.5 font-medium text-sm text-white transition-all duration-300 hover:bg-teal-400 focus:bg-blue-700 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 						onClick={handleNext}
 						type="button"
 					>
@@ -78,7 +75,7 @@ export const Step = ({ steps, handleFinish, currentStep, handleNext, handlePrev,
 				)}
 				{isLastStep && (
 					<Button
-						className="inline-flex items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+						className="inline-flex w-full items-center gap-x-1 rounded-lg border border-transparent bg-blue-600 px-3 py-2 font-medium text-sm text-white transition-all duration-300 hover:bg-blue-700 focus:bg-blue-700 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 						isLoading={isPending}
 						onClick={handleFinish}
 						type="button"

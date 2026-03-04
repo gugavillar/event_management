@@ -9,7 +9,7 @@ import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
 import { RoomSchema, type RoomSchemaType } from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
-import { MODALS_IDS, ROOMS_MODAL_TYPE } from '@/constants'
+import { ROOMS_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -19,8 +19,8 @@ import type { RoomAPI } from '@/services/queries/rooms/rooms.types'
 import { Content, formatTableData } from './Rooms.utils'
 
 export type SelectedRoom = {
-	id: RoomAPI['id']
-	modal: ROOMS_MODAL_TYPE
+	id: RoomAPI['id'] | null
+	modal: ROOMS_MODAL_TYPE | null
 }
 
 const RoomDeleteModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDeleteModal))
@@ -72,7 +72,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 		if (id) {
 			setSelectedRoom({ id, modal: ROOMS_MODAL_TYPE.CREATE_OR_EDIT })
 		} else {
-			setSelectedRoom(null)
+			setSelectedRoom({ id: null, modal: ROOMS_MODAL_TYPE.CREATE_OR_EDIT })
 		}
 	}, [])
 
@@ -124,7 +124,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 				)}
 			</ListPage>
 			<FormProvider {...methods}>
-				<RoomDrawer drawerId={MODALS_IDS.ROOM_DRAWER} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
+				<RoomDrawer selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
 			</FormProvider>
 			<RoomDeleteModal selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
 		</PageContent>

@@ -6,18 +6,17 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/Atoms'
 import type { SelectedEvent } from '@/components/Templates'
-import { overlayOpen } from '@/constants'
+import { EVENTS_MODAL_TYPE } from '@/constants'
 
 import { EventDrawer } from '../EventDrawer'
 import { EventSchema, type EventSchemaType } from '../EventDrawer/EventDrawer.schema'
 
 type CreateEventButtonProps = {
-	drawerId: string
 	selectedEvent: null | SelectedEvent
 	setSelectedEvent: Dispatch<SetStateAction<SelectedEvent | null>>
 }
 
-export const CreateEventButton = memo(({ drawerId, selectedEvent, setSelectedEvent }: CreateEventButtonProps) => {
+export const CreateEventButton = memo(({ selectedEvent, setSelectedEvent }: CreateEventButtonProps) => {
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
 			finalDate: '',
@@ -34,8 +33,7 @@ export const CreateEventButton = memo(({ drawerId, selectedEvent, setSelectedEve
 	})
 
 	const handleCreateEvent = () => {
-		setSelectedEvent(null)
-		overlayOpen(drawerId)
+		setSelectedEvent({ id: '', modal: EVENTS_MODAL_TYPE.CREATE_OR_EDIT })
 	}
 
 	return (
@@ -49,7 +47,7 @@ export const CreateEventButton = memo(({ drawerId, selectedEvent, setSelectedEve
 				<span className="max-md:hidden">Criar evento</span>
 			</Button>
 			<FormProvider {...methods}>
-				<EventDrawer drawerId={drawerId} selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
+				<EventDrawer selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
 			</FormProvider>
 		</>
 	)
