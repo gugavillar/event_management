@@ -39,15 +39,21 @@ export const AddressExternalForm = ({ type }: AddressExternalFormProps) => {
 
 	return (
 		<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-			<InputField fieldName="address.street">Endereço</InputField>
-			<InputField fieldName="address.number">Número</InputField>
+			<InputField fieldName="address.street" placeholder="Rua, avenida, travessa...">
+				Endereço
+			</InputField>
+			<InputField fieldName="address.number" placeholder="Ex: 123">
+				Número
+			</InputField>
 			<SelectField fieldName="address.state" options={UF} placeholder="Selecione o estado">
 				Estado
 			</SelectField>
 			<SelectField fieldName="address.city" options={cities ?? []} placeholder="Selecione a cidade">
 				Cidade
 			</SelectField>
-			<InputField fieldName="address.neighborhood">Bairro</InputField>
+			<InputField fieldName="address.neighborhood" placeholder="Nome do bairro">
+				Bairro
+			</InputField>
 			<CheckboxField fieldClassName="md:col-span-2 mt-2" fieldName="terms" label={checkboxLabel} />
 		</div>
 	)
