@@ -23,7 +23,7 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 	const {
 		handleSubmit,
 		reset,
-		formState: { isValid, isDirty, errors },
+		formState: { isValid, isDirty },
 	} = useFormContext<EventSchemaType>()
 	const { create, isPending: isPendingCreate } = useCreateEvent()
 	const { update, isPending: isPendingUpdate } = useUpdateEvent()

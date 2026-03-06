@@ -1,7 +1,7 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
+import { Image } from '@/components/Atoms'
 import { ClosedInscriptions } from '@/components/Templates'
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
 import { eventPermitCreateRegistration, MEMBERS } from '@/constants'
@@ -41,17 +41,7 @@ export default async function RegistrationPage({ params }: Params) {
 
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
-			<div className="relative size-full h-[50dvh] lg:h-dvh">
-				<Image
-					alt="Background image"
-					blurDataURL="/placeholder.png"
-					className="object-cover object-center"
-					fill
-					placeholder="blur"
-					sizes="100vw"
-					src={backgroundImage}
-				/>
-			</div>
+			<Image backgroundImage={backgroundImage} />
 			<div className="size-full h-[50dvh] overflow-y-auto lg:h-full">
 				<div className="flex min-h-full flex-col items-center justify-center space-y-8 p-8">
 					<header className="space-y-2 text-center">
