@@ -45,7 +45,7 @@ export default async function InterestedPage({ params }: Params) {
 				<Image
 					alt="Background image"
 					blurDataURL="/placeholder.png"
-					className="object-cover"
+					className="object-cover object-center"
 					fill
 					placeholder="blur"
 					sizes="100vw"

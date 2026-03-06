@@ -1,5 +1,6 @@
 'use client'
 import { FileText, Upload, X } from 'lucide-react'
+import Link from 'next/link'
 import { useRef } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { ZodError } from 'zod'
@@ -38,8 +39,18 @@ export const FileInput = () => {
 	}
 
 	return (
-		<div className="space-y-2">
-			<Label htmlFor="file">Imagem do evento</Label>
+		<div className="flex flex-col space-y-2">
+			<div className="flex flex-col">
+				<Label className="mb-0" htmlFor="file">
+					Imagem do evento
+				</Label>
+				<p className="text-xs">
+					Para saber mais informações{' '}
+					<Link className="underline underline-offset-2" href="/info.webp" target="_blank">
+						clique aqui.
+					</Link>
+				</p>
+			</div>
 			{file ? (
 				<div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-primary/10 p-4">
 					<FileText className="size-8 shrink-0 text-primary" />
