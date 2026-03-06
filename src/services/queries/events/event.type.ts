@@ -11,6 +11,7 @@ export type FormEvent = {
 	maxAge?: number
 	participantPrice: number
 	volunteerPrice: number
+	file: any
 }
 
 export type EventsAPI = {
@@ -26,6 +27,7 @@ export type EventsAPI = {
 	isInterestedListOpen: boolean
 	minAge: number | null
 	maxAge: number | null
+	imageUrl: string | null
 	createdAt: string
 	updatedAt: string
 	userId: UUID

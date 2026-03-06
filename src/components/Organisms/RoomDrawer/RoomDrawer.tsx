@@ -162,7 +162,7 @@ export const RoomDrawer = ({ selectedRoom, setSelectedRoom }: RoomDrawerProps) =
 											eventId={eventId}
 											fieldError={formState.errors.members?.[index]?.member?.message}
 											fieldMemberName={fieldMemberName}
-											hasNoRoom={selectedRoom === null}
+											hasNoRoom={selectedRoom?.id === null}
 											isEdition={Boolean(selectedRoom)}
 											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 										/>
@@ -172,7 +172,7 @@ export const RoomDrawer = ({ selectedRoom, setSelectedRoom }: RoomDrawerProps) =
 											eventId={eventId}
 											fieldError={formState.errors.members?.[index]?.member?.message}
 											fieldMemberName={fieldMemberName}
-											hasNoRoom={selectedRoom === null}
+											hasNoRoom={selectedRoom?.id === null}
 											isEdition={Boolean(selectedRoom)}
 											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 										/>

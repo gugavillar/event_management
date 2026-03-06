@@ -1,10 +1,12 @@
 import { z } from 'zod'
 
+import { fileInputSchema } from '@/components/Atoms'
 import { GenderTypeAPI } from '@/constants'
 import { isEqualOrIsBeforeFirstDate, isValidateDate } from '@/formatters'
 
 export const EventSchema = z
 	.object({
+		file: fileInputSchema,
 		finalDate: z
 			.string({ error: 'Campo obrigatório' })
 			.refine((value) => !!value?.length, { error: 'Campo obrigatório' })

@@ -158,7 +158,7 @@ export const GroupDrawer = ({ selectedGroup, setSelectedGroup }: GroupDrawerProp
 											eventId={eventId}
 											fieldError={formState.errors.members?.[index]?.member?.message}
 											fieldMemberName={fieldMemberName}
-											hasNoGroup={selectedGroup === null}
+											hasNoGroup={selectedGroup?.id === null}
 											isEdition={Boolean(selectedGroup)}
 											key={`${fieldMemberName}-${MEMBERS.PARTICIPANT}`}
 										/>
@@ -168,7 +168,7 @@ export const GroupDrawer = ({ selectedGroup, setSelectedGroup }: GroupDrawerProp
 											eventId={eventId}
 											fieldError={formState.errors.members?.[index]?.member?.message}
 											fieldMemberName={fieldMemberName}
-											hasNoGroup={selectedGroup === null}
+											hasNoGroup={selectedGroup?.id === null}
 											isEdition={Boolean(selectedGroup)}
 											key={`${fieldMemberName}-${MEMBERS.VOLUNTEER}`}
 										/>

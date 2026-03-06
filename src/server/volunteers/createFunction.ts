@@ -15,7 +15,7 @@ export const createFunction = async ({ role, events }: VolunteersFunctionsForm) 
 			role: z.string().trim().min(1).max(MAX_FIELD_LENGTH),
 		}).parse({ events, role })
 
-		return prisma.$transaction(async (tx) => {
+		return await prisma.$transaction(async (tx) => {
 			const newRole = await tx.volunteerRole.create({
 				data: { role },
 			})

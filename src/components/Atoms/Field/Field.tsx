@@ -9,7 +9,7 @@ type FieldProps = ComponentPropsWithRef<'input'> & {
 
 const Warning = () => {
 	return (
-		<div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3" data-testid="warning-icon">
+		<div className="pointer-events-none absolute inset-e-0 inset-y-0 flex items-center pe-3" data-testid="warning-icon">
 			<TriangleAlert className="size-4 shrink-0 text-red-500" />
 		</div>
 	)
@@ -29,7 +29,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(({ isInvalid, clas
 			/>
 			{rightIcon ? (
 				<div
-					className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50"
+					className="pointer-events-none absolute inset-s-0 inset-y-0 flex items-center ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50"
 					data-testid="right-icon"
 				>
 					{rightIcon}

@@ -1,19 +1,46 @@
+import { differenceInSeconds } from 'date-fns'
+import { imgbbUpload } from 'imgbb-image-uploader'
 import { z } from 'zod'
 
 import { eventSchemaRoute } from '@/app/api/events/event.schema'
+import { fileInputSchema } from '@/components/Atoms'
 import { prisma } from '@/lib/prisma'
-import type { FormEvent } from '@/services/queries/events/event.type'
 
-export const updateEventById = async (data: FormEvent, id: string) => {
+export const updateEventById = async (data: FormData, id: string) => {
+	const rawData = Object.fromEntries(data.entries())
+	const file = data.get('file')
+
 	try {
-		eventSchemaRoute
+		const parsed = eventSchemaRoute
 			.extend({
+				file: fileInputSchema,
 				id: z.uuid(),
 			})
-			.parse({ ...data, id })
+			.parse({ ...rawData, file, id })
+
+		const { file: image, ...prismaValues } = parsed
+		const expiration = differenceInSeconds(new Date(), new Date(prismaValues.finalDate))
+
+		const {
+			data: { url },
+		} = await imgbbUpload({
+			expiration,
+			image,
+			key: process.env.IMG_BB_API_KEY as string,
+			name: prismaValues.name,
+		})
+
+		if (!url) {
+			throw Error
+		}
+
+		const newValues = {
+			...prismaValues,
+			imageUrl: url,
+		}
 
 		return await prisma.event.update({
-			data,
+			data: newValues,
 			where: {
 				id,
 			},

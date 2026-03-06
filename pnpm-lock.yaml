@@ -56,6 +56,9 @@ importers:
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
+      imgbb-image-uploader:
+        specifier: ^1.0.6
+        version: 1.0.6(react@19.2.4)
       jsonwebtoken:
         specifier: ^9.0.3
         version: 9.0.3
@@ -2427,6 +2430,11 @@ packages:
   iconv-lite@0.6.3:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
+
+  imgbb-image-uploader@1.0.6:
+    resolution: {integrity: sha512-pZfStfqCNiBkSwq+AZN2lspIc8CZejbXkurHZEq9CXZUV9WAUpGMdvpxILTI7xB3BiQvU7ozL6tuuSkezgHNvA==}
+    peerDependencies:
+      react: ^18.0.0
 
   import-local@3.2.0:
     resolution: {integrity: sha512-2SPlun1JUPWoM6t3F0dw0FkCF/jWY8kttcY4f599GLTSjh2OCuuhdTkJQsEcZzBqbXZGKMK2OqW1oZsjtf/gQA==}
@@ -5946,6 +5954,10 @@ snapshots:
   iconv-lite@0.6.3:
     dependencies:
       safer-buffer: 2.1.2
+
+  imgbb-image-uploader@1.0.6(react@19.2.4):
+    dependencies:
+      react: 19.2.4
 
   import-local@3.2.0:
     dependencies:

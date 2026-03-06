@@ -19,6 +19,7 @@ type CreateEventButtonProps = {
 export const CreateEventButton = memo(({ selectedEvent, setSelectedEvent }: CreateEventButtonProps) => {
 	const methods = useForm<EventSchemaType>({
 		defaultValues: {
+			file: undefined,
 			finalDate: '',
 			gender: '',
 			initialDate: '',

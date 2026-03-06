@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import { ClosedInscriptions } from '@/components/Templates'
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
-import { image, interestedListPermitCreateRegistration } from '@/constants'
+import { interestedListPermitCreateRegistration } from '@/constants'
 import { getEvent } from '@/services/queries/events'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 
@@ -36,7 +36,7 @@ export default async function InterestedPage({ params }: Params) {
 		return <ClosedInscriptions />
 	}
 
-	const backgroundImage = image(event?.name)
+	const backgroundImage = event?.imageUrl ? event.imageUrl : '/placeholder.png'
 	const isNotHappening = !event?.name.toLowerCase().includes('happening')
 
 	return (

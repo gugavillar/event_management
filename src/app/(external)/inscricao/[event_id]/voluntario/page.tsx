@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
 import { ClosedInscriptions, ExternalVolunteerForm } from '@/components/Templates'
-import { eventPermitCreateRegistration, image, MEMBERS } from '@/constants'
+import { eventPermitCreateRegistration, MEMBERS } from '@/constants'
 import { getEvent } from '@/services/queries/events'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 
@@ -35,7 +35,7 @@ export default async function RegistrationPage({ params }: Params) {
 		return <ClosedInscriptions />
 	}
 
-	const backgroundImage = image(event?.name)
+	const backgroundImage = event?.imageUrl ? event.imageUrl : '/placeholder.png'
 
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">

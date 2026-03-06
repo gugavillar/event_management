@@ -4,11 +4,11 @@ import { UserSchema, type UserSchemaType } from '@/components/Organisms/UserDraw
 import type { ROLES } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
-export const createUser = (data: UserSchemaType) => {
+export const createUser = async (data: UserSchemaType) => {
 	try {
 		UserSchema.parse({ ...data })
 
-		return prisma.user.create({
+		return await prisma.user.create({
 			data: {
 				email: data.email,
 				name: data.name,

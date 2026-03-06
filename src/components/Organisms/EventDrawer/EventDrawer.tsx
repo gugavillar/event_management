@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction, useEffect } from 'react'
 import { type SubmitHandler, useFormContext } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
+import { Button, Drawer, DrawerBody, DrawerFooter, FileInput } from '@/components/Atoms'
 import { CurrencyInputField, InputField, MaskedInputField, SelectField } from '@/components/Molecules'
 import type { SelectedEvent } from '@/components/Templates'
 import { EVENTS_MODAL_TYPE, GenderSelectOptions } from '@/constants'
@@ -23,7 +23,7 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 	const {
 		handleSubmit,
 		reset,
-		formState: { isValid, isDirty },
+		formState: { isValid, isDirty, errors },
 	} = useFormContext<EventSchemaType>()
 	const { create, isPending: isPendingCreate } = useCreateEvent()
 	const { update, isPending: isPendingUpdate } = useUpdateEvent()
@@ -117,6 +117,7 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 				<MaskedInputField fieldName="finalDate" format="##/##/####" value={data?.finalDate}>
 					Data de término do evento
 				</MaskedInputField>
+				<FileInput />
 			</DrawerBody>
 			<DrawerFooter>
 				<Button
@@ -126,7 +127,7 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 					onClick={handleSubmit(onSubmit)}
 					type="submit"
 				>
-					{selectedEvent ? 'Editar evento' : 'Criar evento'}
+					{selectedEvent?.id ? 'Editar evento' : 'Criar evento'}
 				</Button>
 			</DrawerFooter>
 		</Drawer>

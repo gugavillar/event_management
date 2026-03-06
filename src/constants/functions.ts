@@ -1,6 +1,5 @@
 import { isFuture } from 'date-fns'
 
-import { IMAGES_FORMS } from './globals'
 import { MEMBERS, type ROLES } from './status'
 
 export const generatePage = (page: string | undefined) => {
@@ -31,24 +30,6 @@ export const interestedListPermitCreateRegistration = (event: any) => {
 	if (!event.isInterestedListOpen) return false
 
 	return isFuture(new Date(event.initialDate))
-}
-
-export const image = (eventName?: string) => {
-	if (!eventName) return ''
-
-	if (eventName.toLowerCase().includes('happening')) {
-		return IMAGES_FORMS.happening
-	}
-
-	if (eventName.toLowerCase().includes('cursilho masculino')) {
-		return IMAGES_FORMS['cursilho-masculino']
-	}
-
-	if (eventName.toLowerCase().includes('cursilho feminino')) {
-		return IMAGES_FORMS['cursilho-feminino']
-	}
-
-	return '/placeholder.png'
 }
 
 export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {

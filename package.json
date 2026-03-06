@@ -15,6 +15,7 @@
 		"date-fns": "^4.1.0",
 		"dotenv": "^17.3.1",
 		"file-saver": "^2.0.5",
+		"imgbb-image-uploader": "^1.0.6",
 		"jsonwebtoken": "^9.0.3",
 		"lodash": "^4.17.23",
 		"lucide-react": "^0.575.0",

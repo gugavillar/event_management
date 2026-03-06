@@ -33,7 +33,6 @@ export const useGetVolunteers = () => {
 	useEffect(() => {
 		if (isFirstRender.current) {
 			isFirstRender.current = false
-			console.log('chamou')
 			return
 		}
 

@@ -9,7 +9,14 @@ type UpdateEventArgs = {
 }
 
 export const updateEvent = async ({ eventId, data }: UpdateEventArgs) => {
-	const response = await api.put(ENDPOINTS.UPDATE_EVENT(eventId), { ...data })
+	const formData = new FormData()
+
+	Object.entries(data).forEach(([key, value]) => {
+		if (value !== undefined && value !== null) {
+			formData.append(key, value as any)
+		}
+	})
+	const response = await api.put(ENDPOINTS.UPDATE_EVENT(eventId), formData)
 
 	return response.data
 }

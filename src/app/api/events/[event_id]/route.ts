@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server'
 
 import { getEventById, removeEventById, updateEventById } from '@/server'
-import type { FormEvent } from '@/services/queries/events/event.type'
 import { requestProcess } from '@/utils/prisma'
 
 type Params = {
@@ -27,7 +26,7 @@ const handleDelete = async (_: NextRequest, { params }: Params) => {
 }
 
 const handleUpdate = async (request: NextRequest, { params }: Params) => {
-	const body: FormEvent = await request.json()
+	const body = await request.formData()
 	const routeParams = await params.then((res) => res.event_id ?? '')
 
 	return await requestProcess({
