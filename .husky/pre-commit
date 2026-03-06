@@ -1,1 +1,1 @@
-pnpm run check-types && pnpm lint-staged
+pnpm biome && pnpm run check-types && pnpm lint-staged

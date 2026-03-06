@@ -66,9 +66,7 @@
 		"typescript": "^5.9.3"
 	},
 	"lint-staged": {
-		"*.{ts,tsx,js,jsx}": [
-			"biome check --staged --no-errors-on-unmatched"
-		]
+		"*.{ts,tsx,js,jsx}": ["biome check --staged --no-errors-on-unmatched"]
 	},
 	"name": "event_management",
 	"pnpm": {
