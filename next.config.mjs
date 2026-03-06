@@ -8,9 +8,6 @@ const nextConfig = {
 		unoptimized: true,
 	},
 	output: 'standalone',
-	watchOptions: {
-		ignored: ['node_modules', '.next', 'public', '**/*.spec.ts', '**/*.test.tsx', '**/__tests__/**'],
-	},
 }
 
 export default nextConfig
