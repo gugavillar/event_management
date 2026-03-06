@@ -81,6 +81,7 @@ model Event {
   isInterestedListOpen          Boolean              @default(false)
   minAge                        Int?
   maxAge                        Int?
+  imageUrl                      String?
   createdAt                     DateTime             @default(now())
   updatedAt                     DateTime             @updatedAt
   userId                        String
