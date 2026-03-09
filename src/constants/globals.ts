@@ -144,6 +144,7 @@ export const PAGES_ROLES = {
 	'/doacoes': [ROLES.ADMIN],
 	'/eventos': [ROLES.ADMIN, ROLES.USER],
 	'/grupos': [ROLES.ADMIN, ROLES.USER],
+	'/participantes/fotos': [ROLES.ADMIN, ROLES.USER],
 	'/participantes/lista-interessados': [ROLES.ADMIN, ROLES.USER],
 	'/participantes/listagem': [ROLES.ADMIN, ROLES.USER],
 	'/participantes/pagamentos': [ROLES.ADMIN, ROLES.USER],

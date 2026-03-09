@@ -10,7 +10,7 @@ import { useQuery } from '@/providers/QueryProvider'
 import type { ParticipantsFromAPI } from '../participants.type'
 import { getParticipants } from '../usecases'
 
-export const useGetParticipants = (isInterested?: boolean) => {
+export const useGetParticipants = (isInterested?: boolean, enabled = true) => {
 	const [query, setQuery] = useQueryStates({
 		city: parseAsString.withDefault(''),
 		eventId: parseAsString.withDefault(''),
@@ -40,6 +40,7 @@ export const useGetParticipants = (isInterested?: boolean) => {
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceCity])
 
 	const { data, isLoading }: UseQueryResult<ParticipantsFromAPI> = useQuery({
+		enabled,
 		queryFn: () =>
 			getParticipants({
 				eventId: debounceEventId,

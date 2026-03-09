@@ -137,6 +137,7 @@ export const Meetings = () => {
 							keyOptionValue="value"
 							lastItemRef={lastItemRef}
 							options={formattedEvents}
+							placeholder="Selecione o evento"
 							selectedValue={eventId}
 							setSelectedValue={setEventId}
 						/>

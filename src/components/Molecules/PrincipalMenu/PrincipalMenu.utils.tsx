@@ -55,6 +55,7 @@ export const MENU_LINKS: MENU_LINKS_TYPE[] = [
 				label: 'Lista de interessados',
 			},
 			{ href: '/participantes/pagamentos', label: 'Pagamentos' },
+			{ href: '/participantes/fotos', label: 'Fotos' },
 		],
 	},
 	{
