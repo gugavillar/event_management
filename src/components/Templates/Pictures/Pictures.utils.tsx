@@ -1,7 +1,4 @@
-import { Camera } from 'lucide-react'
-
-import { Tooltip } from '@/components/Atoms'
-import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE } from '@/constants'
+import { PictureInput } from '@/components/Atoms'
 import { formatBirthdate } from '@/formatters'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
@@ -35,9 +32,12 @@ export const formatTableData = (data: Array<ParticipantsAPI> | undefined) => {
 		return {
 			actions: (
 				<div className="flex space-x-4">
-					<Tooltip {...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE} trigger={<Camera className="cursor-pointer" size={20} />}>
-						Adicionar foto
-					</Tooltip>
+					<PictureInput
+						eventId={participant.eventId}
+						eventName={participant.event.name}
+						participantId={participant.id}
+						participantName={participant.name}
+					/>
 				</div>
 			),
 			birthdate: formatBirthdate(participant.birthdate, participant.event.finalDate),

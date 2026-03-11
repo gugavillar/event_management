@@ -87,3 +87,11 @@ export type ParticipantsPaymentsAPI = {
 	createdAt: string
 	updatedAt: string
 }
+
+export type SaveParticipantPictureType = {
+	participantId: UUID
+	picture: File
+	eventName: string
+	eventId: UUID
+	participantName: string
+}

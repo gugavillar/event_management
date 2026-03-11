@@ -22,21 +22,24 @@ export const ListPage = ({
 	setSearch,
 	...props
 }: ListPageProps) => {
+	const hasActionButtonOrFieldOrMoreFilter = Boolean(actionButton) || Boolean(moreFilter) || Boolean(search)
 	return (
 		<>
-			<div className={twMerge('flex flex-row items-center gap-5 lg:max-w-xl', className)} {...props}>
-				{placeholderField && (
-					<Field
-						className="ps-11"
-						onChange={(event) => setSearch?.(event.target.value)}
-						placeholder={placeholderField}
-						rightIcon={<Search size={24} />}
-						value={search}
-					/>
-				)}
-				{moreFilter || null}
-				{actionButton || null}
-			</div>
+			{hasActionButtonOrFieldOrMoreFilter && (
+				<div className={twMerge('flex flex-row items-center gap-5 lg:max-w-xl', className)} {...props}>
+					{placeholderField && (
+						<Field
+							className="ps-11"
+							onChange={(event) => setSearch?.(event.target.value)}
+							placeholder={placeholderField}
+							rightIcon={<Search size={24} />}
+							value={search}
+						/>
+					)}
+					{moreFilter || null}
+					{actionButton || null}
+				</div>
+			)}
 			{children}
 		</>
 	)

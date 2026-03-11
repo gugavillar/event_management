@@ -6,6 +6,7 @@ import { ROLES } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
 const COOKIE_PREFIX = 'event-manager'
+const isProduction = process.env.NODE_ENV === 'production'
 
 export const authOptions: NextAuthOptions = {
 	callbacks: {
@@ -34,7 +35,7 @@ export const authOptions: NextAuthOptions = {
 			options: {
 				path: '/',
 				sameSite: 'lax',
-				secure: true,
+				secure: isProduction,
 			},
 		},
 		csrfToken: {
@@ -43,7 +44,7 @@ export const authOptions: NextAuthOptions = {
 				httpOnly: true,
 				path: '/',
 				sameSite: 'lax',
-				secure: true,
+				secure: isProduction,
 			},
 		},
 		sessionToken: {
@@ -52,7 +53,7 @@ export const authOptions: NextAuthOptions = {
 				httpOnly: true,
 				path: '/',
 				sameSite: 'lax',
-				secure: true,
+				secure: isProduction,
 			},
 		},
 	},

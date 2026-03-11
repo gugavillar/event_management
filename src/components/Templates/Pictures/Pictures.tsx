@@ -44,6 +44,7 @@ export const Pictures = () => {
 	})
 
 	const formattedParticipants = formatTableData(participants?.data)
+
 	const formattedCities = formatterFieldSelectValues(participantsCities, 'city', 'city')
 	formattedCities.unshift({
 		label: 'Todos as cidades',
@@ -69,7 +70,7 @@ export const Pictures = () => {
 
 	return (
 		<PageContent pageTitle="Fotos" subheadingPage="Envio de fotos dos participantes do evento">
-			<div className="flex items-center justify-center gap-5">
+			<div className="flex flex-col items-center justify-center gap-5 md:flex-row">
 				<ComboBox
 					keyOptionLabel="label"
 					keyOptionValue="value"
