@@ -8,7 +8,6 @@ const handleUpdate = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await saveParticipantPicture(body),
-		isProtectedRoute: true,
 	})
 }
 
