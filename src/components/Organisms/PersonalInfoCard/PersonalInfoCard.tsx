@@ -1,7 +1,9 @@
+import { ExternalLink } from 'lucide-react'
+import Link from 'next/link'
 import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { InformationCard } from '@/components/Atoms'
+import { InformationCard, Text } from '@/components/Atoms'
 import { InfoBox } from '@/components/Molecules'
 
 type PersonalInfoCardProps = ComponentProps<'div'> & {
@@ -15,6 +17,7 @@ type PersonalInfoCardProps = ComponentProps<'div'> & {
 		community?: string
 		religion?: string
 		health?: string
+		pictureUrl?: string
 	}
 	type: 'volunteer' | 'participant'
 }
@@ -36,6 +39,14 @@ export const PersonalInfoCard = ({ className, userInfo, type, ...props }: Person
 				</>
 			)}
 			<InfoBox label="Restrição Saúde/Alimentar" value={userInfo?.health ?? 'Não possui'} />
+			{userInfo?.pictureUrl && (
+				<div className="space-y-0.5 px-6">
+					<Text className="opacity-50">Foto</Text>
+					<Link className="flex items-center gap-2.5 text-sky-500" href={userInfo?.pictureUrl ?? ''} target="_blank">
+						Visualizar <ExternalLink size={20} />
+					</Link>
+				</div>
+			)}
 		</InformationCard>
 	)
 }

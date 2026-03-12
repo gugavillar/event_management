@@ -36,9 +36,9 @@ export const Dashboard = () => {
 				className="max-w-sm"
 				keyOptionLabel="label"
 				keyOptionValue="value"
-				label="Selecione o evento"
 				lastItemRef={lastItemRef}
 				options={formattedEvents}
+				placeholder="Selecione o evento"
 				selectedValue={eventId}
 				setSelectedValue={setEventId}
 			/>

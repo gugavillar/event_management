@@ -87,6 +87,7 @@ export const ENDPOINTS = {
 	RESET_USER_PASSWORD: (user_id: string) => `${BASE_PATH.USERS}/${user_id}/reset`,
 	RETURN_PARTICIPANT_PAYMENT: (payment_id: string) => `${BASE_PATH.PARTICIPANTS}/payments/${payment_id}`,
 	RETURN_VOLUNTEER_PAYMENT: (payment_id: string) => `${BASE_PATH.VOLUNTEERS}/payments/${payment_id}`,
+	SAVE_PARTICIPANT_PICTURE: (participant_id: string) => `${BASE_PATH.PARTICIPANTS}/${participant_id}/picture`,
 	UPDATE_CHECK_IN_PARTICIPANT: (participant_id: string) => `${BASE_PATH.PARTICIPANTS}/${participant_id}/check-in`,
 	UPDATE_CHECK_IN_VOLUNTEER: (volunteer_id: string) => `${BASE_PATH.VOLUNTEERS}/${volunteer_id}/check-in`,
 	UPDATE_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
