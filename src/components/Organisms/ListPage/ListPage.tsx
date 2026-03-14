@@ -22,7 +22,7 @@ export const ListPage = ({
 	setSearch,
 	...props
 }: ListPageProps) => {
-	const hasActionButtonOrFieldOrMoreFilter = Boolean(actionButton) || Boolean(moreFilter) || Boolean(search)
+	const hasActionButtonOrFieldOrMoreFilter = Boolean(placeholderField) || Boolean(moreFilter) || Boolean(actionButton)
 	return (
 		<>
 			{hasActionButtonOrFieldOrMoreFilter && (
