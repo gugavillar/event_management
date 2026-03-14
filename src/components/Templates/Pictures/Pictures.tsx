@@ -12,8 +12,8 @@ import { useGetParticipants, useGetParticipantsCities } from '@/services/queries
 
 import { formatTableData, HEADER_LABELS } from './Pictures.utils'
 
-export const Pictures = () => {
-	const [eventId, setEventId] = useState('')
+export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
+	const [eventId, setEventId] = useState(paramsEventId ?? '')
 
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const {
