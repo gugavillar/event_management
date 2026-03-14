@@ -19,20 +19,10 @@ export const HEADER_LABELS = [
 		label: 'Valor',
 	},
 	{
-		accessor: 'donationType',
-		label: 'Tipo',
-	},
-	{
 		accessor: 'action',
 		label: '',
 	},
 ]
-
-const DONATION_TYPE = {
-	CARD: 'Cartão',
-	CASH: 'Dinheiro',
-	PIX: 'Pix',
-} as const
 
 export const formatTableData = (
 	data: Array<DonationAPI> | undefined,
@@ -50,7 +40,6 @@ export const formatTableData = (
 				Excluir
 			</Tooltip>
 		),
-		...(donation.type && { donationType: DONATION_TYPE[donation.type] }),
 		event: donation.event.name,
 		value: currencyValue(Number(donation.value)),
 	}))
