@@ -12,7 +12,7 @@ export const ChartValidation = ({ categories, series, isLoading }: ChartValidati
 	if (isLoading) {
 		return (
 			<div className="flex h-32 items-center justify-center">
-				<Spinner className="size-12" />
+				<Spinner className="size-12" role="spinner" />
 			</div>
 		)
 	}

@@ -3,7 +3,7 @@ import { fireEvent, render } from '@testing-library/react'
 import { ApplicationAvatar } from './ApplicationAvatar'
 
 describe('ApplicationAvatar component', () => {
-	const handleCollapse = jest.fn()
+	const handleCollapse = vi.fn()
 
 	it('renders correctly', () => {
 		const { getByTestId } = render(<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />)

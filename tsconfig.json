@@ -21,7 +21,8 @@
 		"rootDir": "./",
 		"skipLibCheck": true,
 		"strict": true,
-		"target": "ES2017"
+		"target": "ES2017",
+		"types": ["vitest/globals"]
 	},
 	"exclude": ["node_modules"],
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next", ".next/dev/types/**/*.ts"]

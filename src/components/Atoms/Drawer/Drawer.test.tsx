@@ -5,7 +5,7 @@ import { Drawer } from './Drawer'
 describe('<Drawer />', () => {
 	it('should render the Drawer', () => {
 		const { getByText } = render(
-			<Drawer handleClose={() => jest.fn()} headingTitle="any-title" isOpen={true}>
+			<Drawer handleClose={() => vi.fn()} headingTitle="any-title" isOpen={true}>
 				children
 			</Drawer>
 		)
@@ -14,7 +14,7 @@ describe('<Drawer />', () => {
 	})
 
 	it('should call handleClose on click close-button', async () => {
-		const mockHandleClose = jest.fn()
+		const mockHandleClose = vi.fn()
 		const { getByRole } = render(
 			<Drawer handleClose={mockHandleClose} headingTitle="any-title" isOpen={true}>
 				children

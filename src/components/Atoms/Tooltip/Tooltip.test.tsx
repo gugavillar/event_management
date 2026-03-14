@@ -1,17 +1,19 @@
-jest.mock('@tanstack/react-query', () => ({
-	isServer: false,
-}))
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { Tooltip } from './Tooltip'
 
 describe('Tooltip component', () => {
-	// test('renders correctly', () => {
-	// 	render(<Tooltip>Test tooltip</Tooltip>)
-	// 	expect(screen.getByText('Test tooltip')).toBeInTheDocument()
-	// })
-	// test('applies custom classes', () => {
-	// 	render(<Tooltip className="custom-class">Test tooltip</Tooltip>)
-	// 	expect(screen.getByText('Test tooltip')).toHaveClass('custom-class')
-	// })
-	// test('called autoinit', async () => {
-	// 	render(<Tooltip>Test tooltip</Tooltip>)
-	// })
+	it('should renders correctly', async () => {
+		const user = userEvent.setup()
+
+		const { getByText, findAllByText } = render(<Tooltip trigger={<button>Test</button>}>tooltip text</Tooltip>)
+
+		await user.hover(getByText('Test'))
+
+		expect(getByText('Test')).toBeInTheDocument()
+		const tooltip = await findAllByText('tooltip text')
+
+		expect(tooltip[0]).toBeInTheDocument()
+	})
 })

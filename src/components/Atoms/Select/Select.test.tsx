@@ -32,7 +32,7 @@ describe('Field component', () => {
 	})
 
 	it('renders options correctly', () => {
-		const onChangeMock = jest.fn()
+		const onChangeMock = vi.fn()
 		const randomOption = Math.floor(Math.random() * 8) + 1
 		const OPTIONS = generateOptions(randomOption)
 
@@ -44,7 +44,7 @@ describe('Field component', () => {
 	})
 
 	it('ref getting value correctly', () => {
-		const onChangeMock = jest.fn()
+		const onChangeMock = vi.fn()
 		const ref = createRef<HTMLSelectElement>()
 		const OPTIONS = generateOptions(8)
 		const randomOption = Math.floor(Math.random() * OPTIONS.length)

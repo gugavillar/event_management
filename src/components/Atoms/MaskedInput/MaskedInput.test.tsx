@@ -29,7 +29,7 @@ describe('Field component', () => {
 	})
 
 	it('executa o onChange corretamente', () => {
-		const onChangeMock = jest.fn()
+		const onChangeMock = vi.fn()
 
 		const { getByTestId } = render(
 			<MaskedInput data-testid="input-field" format="##/##/####" onChange={onChangeMock} />
@@ -51,7 +51,7 @@ describe('Field component', () => {
 	})
 
 	it('ref getting value correctly', () => {
-		const onChangeMock = jest.fn()
+		const onChangeMock = vi.fn()
 		const ref = createRef<HTMLInputElement>()
 
 		const { getByTestId } = render(

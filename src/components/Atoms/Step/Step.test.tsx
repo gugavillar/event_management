@@ -3,9 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { Step } from './Step'
 
 const stepsProps = {
-	handleFinish: jest.fn(),
-	handleNext: jest.fn(),
-	handlePrev: jest.fn(),
+	handleFinish: vi.fn(),
+	handleNext: vi.fn(),
+	handlePrev: vi.fn(),
 	steps: [
 		{
 			content: <p>Content 1</p>,

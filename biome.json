@@ -26,8 +26,8 @@
 			"src/**/*.{js,jsx,ts,tsx}",
 			"prisma/**/*.{js,ts}",
 			"package.json",
-			"jest.config.ts",
-			"jest.setup.ts",
+			"vitest.config.ts",
+			"vitest.setup.ts",
 			"next.config.mjs",
 			"postcss.config.mjs",
 			"tsconfig.json"
@@ -44,8 +44,8 @@
 			"src/**/*.{js,jsx,ts,tsx}",
 			"prisma/**/*.{js,ts}",
 			"package.json",
-			"jest.config.ts",
-			"jest.setup.ts",
+			"vitest.config.ts",
+			"vitest.setup.ts",
 			"next.config.mjs",
 			"tsconfig.json"
 		]

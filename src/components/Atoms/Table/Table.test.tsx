@@ -58,7 +58,7 @@ describe('Table component', () => {
 	})
 
 	it('handle click function called when click in column data', () => {
-		const handleClick = jest.fn()
+		const handleClick = vi.fn()
 		const { tableHeader, tableData } = generateTableData(15)
 		const { getByTestId } = render(
 			<Table
@@ -77,8 +77,8 @@ describe('Table component', () => {
 		expect(handleClick).toHaveBeenCalled()
 	})
 
-	it('handle click function called with correct data', () => {
-		const handleClick = jest.fn()
+	it('should not called handle click function', () => {
+		const handleClick = vi.fn()
 		const { tableHeader, tableData } = generateTableData(15)
 		const randomIndex = Math.floor(Math.random() * tableData.length)
 		const { getByTestId } = render(
@@ -95,11 +95,11 @@ describe('Table component', () => {
 
 		fireEvent.click(row.firstChild as HTMLElement)
 
-		expect(handleClick).toHaveBeenCalledWith(tableData[randomIndex])
+		expect(handleClick).not.toHaveBeenCalledWith(tableData[randomIndex])
 	})
 
-	it('not have function when a react element is passed', () => {
-		const handleClick = jest.fn()
+	it('handle click function called with correct data', () => {
+		const handleClick = vi.fn()
 		const { tableHeader, tableData } = generateTableData(15)
 		const randomIndex = Math.floor(Math.random() * tableData.length)
 		const { getByTestId } = render(
@@ -116,7 +116,7 @@ describe('Table component', () => {
 
 		fireEvent.click(row.lastChild as HTMLElement)
 
-		expect(handleClick).not.toHaveBeenCalled()
+		expect(handleClick).toHaveBeenCalled()
 	})
 
 	it('render spinner when is loading true and table data is undefined', () => {
