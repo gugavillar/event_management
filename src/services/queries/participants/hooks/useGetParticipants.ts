@@ -40,7 +40,7 @@ export const useGetParticipants = (isInterested?: boolean, enabled = true) => {
 	}, [debounceEventId, debounceSearch, debounceStatus, debounceCity])
 
 	const { data, isLoading }: UseQueryResult<ParticipantsFromAPI> = useQuery({
-		enabled,
+		...(!enabled && { enabled: Boolean(debounceEventId) }),
 		queryFn: () =>
 			getParticipants({
 				eventId: debounceEventId,

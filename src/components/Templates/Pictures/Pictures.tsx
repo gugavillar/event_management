@@ -1,6 +1,6 @@
 'use client'
 import { Search } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 
 import { Field, Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
@@ -13,8 +13,6 @@ import { useGetParticipants, useGetParticipantsCities } from '@/services/queries
 import { formatTableData, HEADER_LABELS } from './Pictures.utils'
 
 export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
-	const [eventId, setEventId] = useState(paramsEventId ?? '')
-
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const {
 		data: participants,
@@ -25,10 +23,10 @@ export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
 		setPage,
 		query,
 		setQuery,
-	} = useGetParticipants(false, !!eventId)
+	} = useGetParticipants(false, false)
 	const { data: participantsCities } = useGetParticipantsCities({
-		enabled: !!eventId,
-		eventId,
+		enabled: Boolean(paramsEventId),
+		eventId: query.eventId,
 	})
 
 	const formattedEvents = formatterComboBoxValues(
@@ -61,10 +59,7 @@ export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
 		[setQuery]
 	)
 
-	useEffect(() => {
-		if (!eventId) return
-		handleQueryChange(eventId, 'eventId')
-	}, [eventId, handleQueryChange])
+	const selectedValue = (value: string) => handleQueryChange(value, 'eventId')
 
 	const hasMoreThanOnePage = !!participants?.totalPages && participants.totalPages > 1
 
@@ -77,12 +72,12 @@ export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
 					lastItemRef={lastItemRef}
 					options={formattedEvents}
 					placeholder="Selecione um evento"
-					selectedValue={eventId}
-					setSelectedValue={setEventId}
+					selectedValue={query.eventId}
+					setSelectedValue={selectedValue}
 				/>
 				<div className="w-full">
 					<Select
-						disabled={!eventId}
+						disabled={!query.eventId}
 						onChange={(e) => handleQueryChange(e.target.value, 'city')}
 						options={formattedCities}
 						value={query.city}
@@ -90,7 +85,7 @@ export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
 				</div>
 				<Field
 					className="ps-11"
-					disabled={!eventId}
+					disabled={!query.eventId}
 					onChange={(event) => setSearch?.(event.target.value)}
 					placeholder="Encontrar um participante"
 					rightIcon={<Search size={24} />}
