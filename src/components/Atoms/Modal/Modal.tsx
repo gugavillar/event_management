@@ -22,6 +22,7 @@ export const Modal = ({ children, isLarge, open, disableClose, onOpenChange }: M
 						isLarge && 'md:w-xl lg:w-6xl',
 						'data-[state=closed]:animate-overlay-out data-[state=open]:animate-overlay-in'
 					)}
+					role="content"
 				>
 					<AlertDialog.Title className="sr-only">Modal</AlertDialog.Title>
 					<AlertDialog.Cancel

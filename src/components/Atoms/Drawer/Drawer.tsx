@@ -24,6 +24,7 @@ export const Drawer = ({ children, headingTitle, handleClose, className, isOpen 
 						isOpen ? 'translate-x-0' : 'translate-x-full',
 						'data-[state=closed]:animate-sheet-out data-[state=open]:animate-sheet-in'
 					)}
+					role="content"
 				>
 					<div className="flex items-center justify-between border-b p-4">
 						<AlertDialog.Title asChild>

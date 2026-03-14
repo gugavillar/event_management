@@ -26,4 +26,15 @@ describe('Modal component', () => {
 		await user.click(closeButton)
 		expect(mockedOnOpenChange).toHaveBeenCalled()
 	})
+
+	it('should have classes when is large', () => {
+		const mockedOnOpenChange = vi.fn()
+		const { getByRole } = render(
+			<Modal isLarge onOpenChange={mockedOnOpenChange} open>
+				modal
+			</Modal>
+		)
+		const content = getByRole('content')
+		expect(content).toHaveClass('md:w-xl lg:w-6xl')
+	})
 })

@@ -16,7 +16,7 @@ export const FunctionTag = memo(({ status, isLeader, className, ...props }: Func
 			)}
 			{...props}
 		>
-			{isLeader && <span className="inline-block size-2 rounded-full bg-emerald-800"></span>}
+			{isLeader && <span className="inline-block size-2 rounded-full bg-emerald-800" role="badge-pin" />}
 			{status ?? 'Sem função'}
 		</mark>
 	)

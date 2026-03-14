@@ -26,4 +26,15 @@ describe('<Drawer />', () => {
 		})
 		expect(mockHandleClose).toHaveBeenCalled()
 	})
+
+	it('if open is true have correct class', async () => {
+		const mockHandleClose = vi.fn()
+		const { getByRole } = render(
+			<Drawer handleClose={mockHandleClose} headingTitle="any-title" isOpen={true}>
+				children
+			</Drawer>
+		)
+		const content = getByRole('content')
+		expect(content).toHaveClass('translate-x-0')
+	})
 })
