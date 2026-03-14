@@ -2,11 +2,11 @@ import { transactionSchemaRoute } from '@/app/api/transactions/transaction.schem
 import { prisma } from '@/lib/prisma'
 import type { FormTransaction } from '@/services/queries/transactions/transactions.types'
 
-export const createTransaction = (data: FormTransaction) => {
+export const createTransaction = async (data: FormTransaction) => {
 	try {
 		transactionSchemaRoute.parse({ ...data })
 
-		return prisma.transactions.create({
+		return await prisma.transactions.create({
 			data: {
 				...data,
 			},

@@ -8,7 +8,7 @@ export type DonationAPI = {
 	id: UUID
 	eventId: UUID
 	value: string
-	paymentType: `${PaymentTypeAPI.CARD}` | `${PaymentTypeAPI.CASH}` | `${PaymentTypeAPI.PIX}` | null
+	type: `${PaymentTypeAPI.CARD}` | `${PaymentTypeAPI.CASH}` | `${PaymentTypeAPI.PIX}` | null
 	createdAt: string
 	updatedAt: string
 	event: EventsAPI

@@ -9,7 +9,7 @@ const calculationAge = (birthdate: Date, finalEventDate: Date) => {
 
 const queries = async (eventId: string | null) => {
 	const [participants, volunteers, participantsCities, interestedParticipants] = await Promise.all([
-		await prisma.participant.findMany({
+		prisma.participant.findMany({
 			include: {
 				event: true,
 				payments: true,
@@ -22,7 +22,7 @@ const queries = async (eventId: string | null) => {
 				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 			},
 		}),
-		await prisma.volunteer.findMany({
+		prisma.volunteer.findMany({
 			include: {
 				event: true,
 				payments: true,
@@ -32,7 +32,7 @@ const queries = async (eventId: string | null) => {
 				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
 			},
 		}),
-		await prisma.participantAddress.groupBy({
+		prisma.participantAddress.groupBy({
 			_count: true,
 			by: ['city'],
 			where: {
@@ -43,7 +43,7 @@ const queries = async (eventId: string | null) => {
 				OR: [{ participant: { checkIn: null } }, { participant: { checkIn: { not: CHECK_IN_STATUS.WITHDREW } } }],
 			},
 		}),
-		await prisma.participant.count({
+		prisma.participant.count({
 			where: {
 				...(eventId && { eventId }),
 				interested: true,
