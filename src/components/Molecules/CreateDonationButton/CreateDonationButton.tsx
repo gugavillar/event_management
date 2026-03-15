@@ -17,6 +17,7 @@ export const CreateDonationButton = memo(() => {
 			name: '',
 			value: '',
 		},
+		mode: 'onChange',
 		resolver: zodResolver(DonationSchema),
 	})
 

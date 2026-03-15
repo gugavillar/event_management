@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { MAX_FIELD_LENGTH } from '@/constants'
+
 const uuidBooleanObject = z.record(z.uuid(), z.boolean())
 
 const arrayOfUuidBooleanObjects = z.array(uuidBooleanObject)
@@ -7,7 +9,7 @@ const arrayOfUuidBooleanObjects = z.array(uuidBooleanObject)
 export const meetingSchemaRoute = z.object({
 	date: z.iso.datetime({ precision: 3 }),
 	eventId: z.uuid(),
-	title: z.string().trim().min(3),
+	title: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
 })
 
 export type MeetingSchemaRouteType = z.infer<typeof meetingSchemaRoute>
