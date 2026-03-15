@@ -94,4 +94,5 @@ export type SaveParticipantPictureType = {
 	eventName: string
 	eventId: UUID
 	participantName: string
+	fileType: string
 }

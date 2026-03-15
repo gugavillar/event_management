@@ -1,14 +1,18 @@
 import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
-import { validatePhonesNotEquals } from '@/constants'
+import { MAX_FIELD_LENGTH, validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
 
 export const VolunteerSchema = z
 	.object({
 		address: z.object({
 			city: z.string().trim().min(3, 'Campo obrigatório'),
-			neighborhood: z.string().trim().min(3, 'Campo obrigatório'),
+			neighborhood: z
+				.string()
+				.trim()
+				.min(3, 'Campo obrigatório')
+				.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 			number: z.string().trim().min(1, 'Campo obrigatório'),
 			state: z
 				.string({ error: 'Campo obrigatório' })
@@ -16,7 +20,11 @@ export const VolunteerSchema = z
 				.refine((value) => validateUF(value), {
 					error: 'Campo obrigatório',
 				}),
-			street: z.string().trim().min(3, 'Campo obrigatório'),
+			street: z
+				.string()
+				.trim()
+				.min(3, 'Campo obrigatório')
+				.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 		}),
 		birthdate: z
 			.string({ error: 'Campo obrigatório' })
@@ -24,9 +32,17 @@ export const VolunteerSchema = z
 			.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? validateBirthdate(value) : false), {
 				error: 'Data inválida',
 			}),
-		called: z.string({ error: 'Campo obrigatório' }).trim().min(1, 'Campo obrigatório'),
+		called: z
+			.string({ error: 'Campo obrigatório' })
+			.trim()
+			.min(1, 'Campo obrigatório')
+			.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 		cell: z.string().nullable().optional(),
-		community: z.string().trim().min(1, 'Campo obrigatório'),
+		community: z
+			.string()
+			.trim()
+			.min(1, 'Campo obrigatório')
+			.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 		email: z
 			.email({ error: 'Email inválido' })
 			.trim()
@@ -53,12 +69,20 @@ export const VolunteerSchema = z
 				error: 'Campo obrigatório',
 			}),
 		health: z.string().nullable().optional(),
-		name: z.string().trim().min(3, 'Campo obrigatório'),
+		name: z
+			.string()
+			.trim()
+			.min(3, 'Campo obrigatório')
+			.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 		phone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
-		relative: z.string().trim().min(1, 'Campo obrigatório'),
+		relative: z
+			.string()
+			.trim()
+			.min(1, 'Campo obrigatório')
+			.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 		relativePhone: z
 			.string({ error: 'Campo obrigatório' })
 			.trim()

@@ -5,9 +5,9 @@ import { MAX_FIELD_LENGTH } from '@/constants'
 
 export const volunteerSchemaRoute = z.object({
 	address: z.object({
-		city: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
+		city: z.string().trim().min(3),
 		neighborhood: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
-		number: z.string().trim().min(1).max(MAX_FIELD_LENGTH),
+		number: z.string().trim().min(1),
 		state: z
 			.string()
 			.trim()

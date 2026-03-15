@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { fileInputSchema } from '@/components/Atoms'
-import { GenderTypeAPI } from '@/constants'
+import { GenderTypeAPI, MAX_FIELD_LENGTH } from '@/constants'
 import { isEqualOrIsBeforeFirstDate, isValidateDate } from '@/formatters'
 
 export const EventSchema = z
@@ -32,7 +32,11 @@ export const EventSchema = z
 			}),
 		maxAge: z.string().optional(),
 		minAge: z.string().optional(),
-		name: z.string({ error: 'Campo obrigatório' }).trim().min(3, 'Campo obrigatório'),
+		name: z
+			.string({ error: 'Campo obrigatório' })
+			.trim()
+			.min(3, 'Campo obrigatório')
+			.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 		participantPrice: z
 			.string({
 				error: 'Campo obrigatório',

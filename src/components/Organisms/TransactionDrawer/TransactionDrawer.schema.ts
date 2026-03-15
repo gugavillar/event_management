@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { TransactionAmountType, TransactionsType } from '@/constants'
+import { MAX_FIELD_LENGTH, TransactionAmountType, TransactionsType } from '@/constants'
 import { isValidateDate } from '@/formatters'
 
 import { AMOUNT_TYPE, TRANSACTION_TYPE } from './TransactionDrawer.utils'
@@ -27,7 +27,11 @@ export const TransactionSchema = z.object({
 		.refine((value) => (/^\d{2}\/\d{2}\/\d{4}/g.test(value) ? isValidateDate(value) : false), {
 			error: 'A data não é valida',
 		}),
-	description: z.string().trim().min(3, 'Campo obrigatório'),
+	description: z
+		.string()
+		.trim()
+		.min(3, 'Campo obrigatório')
+		.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 	type: z
 		.union([
 			z.enum([...TRANSACTION_TYPE.map(({ value }) => value)], {

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { MEMBERS, validateFieldsForNotEquals } from '@/constants'
+import { MAX_FIELD_LENGTH, MEMBERS, validateFieldsForNotEquals } from '@/constants'
 
 export const GroupSchema = z.object({
 	eventId: z.string({ error: 'Campo obrigatório' }).uuid({ message: 'Campo obrigatório' }),
@@ -21,7 +21,11 @@ export const GroupSchema = z.object({
 			})
 		)
 		.superRefine((data, ctx) => validateFieldsForNotEquals(data, ctx, 'member', 'Os membros devem ser diferentes')),
-	name: z.string({ error: 'Campo obrigatório' }).trim().min(3, 'Campo obrigatório'),
+	name: z
+		.string({ error: 'Campo obrigatório' })
+		.trim()
+		.min(3, 'Campo obrigatório')
+		.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 })
 
 export type GroupSchemaType = z.infer<typeof GroupSchema>

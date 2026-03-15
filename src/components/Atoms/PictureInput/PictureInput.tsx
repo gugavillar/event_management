@@ -12,6 +12,7 @@ import { Button } from '../Button'
 import { Header } from '../Header'
 import { Modal } from '../Modal'
 import { Tooltip } from '../Tooltip'
+import { compressImage } from './PictureInput.utils'
 
 type PictureInputProps = {
 	eventName: string
@@ -39,7 +40,7 @@ export const PictureInput = ({ eventId, eventName, participantId, participantNam
 	const handleSendPicture = async () => {
 		if (!picture) return
 		await sendPicture(
-			{ eventId, eventName, participantId, participantName, picture },
+			{ eventId, eventName, fileType: picture.type, participantId, participantName, picture },
 			{
 				onError: () => {
 					toast.error('Erro ao enviar foto')
@@ -61,14 +62,16 @@ export const PictureInput = ({ eventId, eventName, participantId, participantNam
 				Adicionar foto
 			</Tooltip>
 			<input
-				accept="image/*"
+				accept="image/png, image/jpeg, .png, .jpg, .jpeg"
 				capture
 				className="hidden"
 				id="file"
 				multiple={false}
-				onChange={(e) => {
+				onChange={async (e) => {
 					const selectedFile = e.target.files?.[0]
-					setPicture(selectedFile)
+					if (!selectedFile) return
+					const compressedFile = await compressImage(selectedFile)
+					setPicture(compressedFile)
 				}}
 				ref={(e) => {
 					inputRef.current = e

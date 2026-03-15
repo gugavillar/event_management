@@ -1,10 +1,14 @@
 import { z } from 'zod'
 
-import { PaymentTypeAPI } from '@/constants'
+import { MAX_FIELD_LENGTH, PaymentTypeAPI } from '@/constants'
 
 export const DonationSchema = z.object({
 	eventId: z.string().trim().min(1, 'Campo obrigatório'),
-	name: z.string({ error: 'Campo obrigatório' }).trim().min(3, 'Campo obrigatório'),
+	name: z
+		.string({ error: 'Campo obrigatório' })
+		.trim()
+		.min(3, 'Campo obrigatório')
+		.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
 	type: z.enum([PaymentTypeAPI.CARD, PaymentTypeAPI.CASH, PaymentTypeAPI.PIX]),
 	value: z
 		.string({
