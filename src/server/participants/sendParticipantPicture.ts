@@ -45,7 +45,7 @@ export const saveParticipantPicture = async (data: FormData) => {
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
 
-		const key = `eventos/${prismaValues.eventId}/${prismaValues.participantId}-${sanitizedName}`
+		const key = `${prismaValues.eventId}/${prismaValues.participantId}-${sanitizedName}`
 
 		const command = new PutObjectCommand({
 			Bucket: process.env.AWS_BUCKET!,
