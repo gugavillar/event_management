@@ -39,7 +39,7 @@ describe('functions', () => {
 
 		test('eventPermitCreateRegistration return true when event initialDate is future and participant registration open', () => {
 			const today = new Date()
-			const future = `${today.getFullYear() + 1}-${today.getMonth()}-${today.getDay()}`
+			const future = `${today.getFullYear() + 1}-${today.getMonth() + 1}-${today.getDate()}`
 			const isRegistrationOpen = eventPermitCreateRegistration(
 				{
 					initialDate: future,
@@ -52,7 +52,7 @@ describe('functions', () => {
 
 		test('eventPermitCreateRegistration return true when event initialDate is future and volunteer registration open', () => {
 			const today = new Date()
-			const future = `${today.getFullYear() + 1}-${today.getMonth()}-${today.getDay()}`
+			const future = `${today.getFullYear() + 1}-${today.getMonth() + 1}-${today.getDate()}`
 			const isRegistrationOpen = eventPermitCreateRegistration(
 				{
 					initialDate: future,
@@ -65,7 +65,7 @@ describe('functions', () => {
 
 		test('eventPermitCreateRegistration return false when event initialDate is future and participant registration close', () => {
 			const today = new Date()
-			const future = `${today.getFullYear() + 1}-${today.getMonth()}-${today.getDay()}`
+			const future = `${today.getFullYear() + 1}-${today.getMonth() + 1}-${today.getDate()}`
 			const isRegistrationOpen = eventPermitCreateRegistration(
 				{
 					initialDate: future,
@@ -78,7 +78,7 @@ describe('functions', () => {
 
 		test('eventPermitCreateRegistration return false when event initialDate is future and volunteer registration close', () => {
 			const today = new Date()
-			const future = `${today.getFullYear() + 1}-${today.getMonth()}-${today.getDay()}`
+			const future = `${today.getFullYear() + 1}-${today.getMonth() + 1}-${today.getDate()}`
 			const isRegistrationOpen = eventPermitCreateRegistration(
 				{
 					initialDate: future,
@@ -105,7 +105,7 @@ describe('functions', () => {
 
 		test('interestedListPermitCreateRegistration return true when isInterestedListOpen is true and initialDate is future', () => {
 			const today = new Date()
-			const future = `${today.getFullYear() + 1}-${today.getMonth()}-${today.getDay()}`
+			const future = `${today.getFullYear() + 1}-${today.getMonth() + 1}-${today.getDate()}`
 			const isRegistrationOpen = interestedListPermitCreateRegistration({
 				initialDate: future,
 				isInterestedListOpen: true,
