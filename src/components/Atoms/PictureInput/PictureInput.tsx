@@ -79,7 +79,7 @@ export const PictureInput = ({ eventId, eventName, participantId, participantNam
 				type="file"
 			/>
 			{picture && (
-				<Modal onOpenChange={handleRemoveFile} open>
+				<Modal disableClose={isPending} onOpenChange={handleRemoveFile} open>
 					<div className="flex flex-col items-center justify-center">
 						<div className="flex flex-col items-center justify-between gap-6">
 							<div className="space-y-4 text-center">

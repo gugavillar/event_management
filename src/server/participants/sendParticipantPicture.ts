@@ -20,7 +20,7 @@ const savePictureSchema = z.object({
 			message: 'Arquivo inválido',
 		})
 		.refine((file) => file?.size <= MAX_FILE_SIZE, {
-			message: 'O arquivo deve ter no máximo 1MB',
+			message: `O arquivo deve ter no máximo ${MAX_FILE_SIZE}KB`,
 		})
 		.refine((file) => ACCEPTED_TYPE.includes(file?.type), {
 			message: 'O arquivo deve ser uma imagem',
@@ -37,7 +37,6 @@ export const saveParticipantPicture = async (data: FormData) => {
 		const parsed = savePictureSchema.parse({ ...rawData, file })
 
 		const { file: image, ...prismaValues } = parsed
-		const pictureName = `${prismaValues.participantName} ${prismaValues.eventName}`
 
 		const sanitizedName = prismaValues.participantName
 			.toLowerCase()

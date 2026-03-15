@@ -8,9 +8,10 @@ type ModalProps = {
 	onOpenChange: VoidFunction
 	children: ReactNode
 	isLarge?: boolean
+	disableClose?: boolean
 }
 
-export const Modal = ({ children, isLarge, open, onOpenChange }: ModalProps) => {
+export const Modal = ({ children, isLarge, open, disableClose, onOpenChange }: ModalProps) => {
 	return (
 		<AlertDialog.Root onOpenChange={onOpenChange} open={open}>
 			<AlertDialog.Portal>
@@ -23,7 +24,10 @@ export const Modal = ({ children, isLarge, open, onOpenChange }: ModalProps) => 
 					)}
 				>
 					<AlertDialog.Title className="sr-only">Modal</AlertDialog.Title>
-					<AlertDialog.Cancel className="absolute top-3 right-3 flex size-7 cursor-pointer items-center justify-center rounded-full border border-transparent font-semibold text-gray-800 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50">
+					<AlertDialog.Cancel
+						className="absolute top-3 right-3 flex size-7 cursor-pointer items-center justify-center rounded-full border border-transparent font-semibold text-gray-800 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
+						disabled={disableClose}
+					>
 						<CircleX size={20} />
 					</AlertDialog.Cancel>
 					{children}

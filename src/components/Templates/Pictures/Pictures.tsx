@@ -1,10 +1,11 @@
 'use client'
 import { Search } from 'lucide-react'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { Field, Pagination, Select } from '@/components/Atoms'
 import { ComboBox, ListManager } from '@/components/Molecules'
 import { ListPage, PageContent } from '@/components/Organisms'
+import { CHECK_IN_STATUS } from '@/constants'
 import { formatterComboBoxValues, formatterFieldSelectValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetInfinityEvents } from '@/services/queries/events'
@@ -62,6 +63,14 @@ export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
 	const selectedValue = (value: string) => handleQueryChange(value, 'eventId')
 
 	const hasMoreThanOnePage = !!participants?.totalPages && participants.totalPages > 1
+
+	useEffect(() => {
+		if (!query.eventId) return
+		setQuery((prev) => ({
+			...prev,
+			status: CHECK_IN_STATUS.CONFIRMED,
+		}))
+	}, [query.eventId, setQuery])
 
 	return (
 		<PageContent pageTitle="Fotos" subheadingPage="Envio de fotos dos participantes do evento">
