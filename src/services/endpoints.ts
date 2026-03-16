@@ -69,6 +69,7 @@ export const ENDPOINTS = {
 	GET_MEETING_PRESENCE: (meeting_id: string) => `${BASE_PATH.MEETINGS}/presence/${meeting_id}`,
 	GET_MEETINGS_BY_EVENT_ID: (event_id: string) => `${BASE_PATH.MEETINGS}/events/${event_id}`,
 	GET_PARTICIPANT: (participant_id: string) => `${BASE_PATH.PARTICIPANTS}/${participant_id}`,
+	GET_PARTICIPANT_PICTURE_URL: (participant_id: string) => `${BASE_PATH.PARTICIPANTS}/${participant_id}/upload-url`,
 	GET_PARTICIPANTS: BASE_PATH.PARTICIPANTS,
 	GET_PARTICIPANTS_CITIES: `${BASE_PATH.PARTICIPANTS}/cities`,
 	GET_PARTICIPANTS_PAYMENTS: `${BASE_PATH.PARTICIPANTS}/payments`,

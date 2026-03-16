@@ -22,6 +22,7 @@ export type ParticipantsAPI = {
 	createdAt: string
 	updatedAt: string
 	eventId: UUID
+	pictureUrl?: string
 	address: {
 		id: UUID
 		street: string

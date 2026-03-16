@@ -3,7 +3,7 @@ import { type Dispatch, memo, type SetStateAction } from 'react'
 import { Header, Modal, Spinner } from '@/components/Atoms'
 import type { SelectedParticipant } from '@/components/Templates'
 import { PARTICIPANT_MODAL_TYPE } from '@/constants'
-import { useGetParticipant } from '@/services/queries/participants'
+import { useGetParticipant, useGetPictureUrl } from '@/services/queries/participants'
 import type { ParticipantsAPI } from '@/services/queries/participants/participants.type'
 
 import { AddressInfoCard } from '../AddressInfoCard'
@@ -18,9 +18,15 @@ type ParticipantModalDataProps = {
 export const ParticipantModalData = memo(
 	({ selectedParticipant, setSelectedParticipant }: ParticipantModalDataProps) => {
 		const { data, isLoading } = useGetParticipant(selectedParticipant?.id as ParticipantsAPI['id'])
+		const { getUrl, isPending } = useGetPictureUrl()
 
 		const handleClose = () => {
 			setSelectedParticipant(null)
+		}
+
+		const handleSeePicture = async () => {
+			if (!data?.pictureUrl) return
+			await getUrl(data?.id)
 		}
 
 		return (
@@ -35,7 +41,12 @@ export const ParticipantModalData = memo(
 						</div>
 					) : (
 						<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-							<PersonalInfoCard type="participant" userInfo={{ ...data }} />
+							<PersonalInfoCard
+								isLoadingUrl={isPending}
+								seePicture={handleSeePicture}
+								type="participant"
+								userInfo={{ ...data }}
+							/>
 							<AddressInfoCard
 								addressInfo={{
 									...data.address,

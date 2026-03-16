@@ -1,9 +1,8 @@
 import { ExternalLink } from 'lucide-react'
-import Link from 'next/link'
 import type { ComponentProps } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { InformationCard, Text } from '@/components/Atoms'
+import { InformationCard, Spinner, Text } from '@/components/Atoms'
 import { InfoBox } from '@/components/Molecules'
 
 type PersonalInfoCardProps = ComponentProps<'div'> & {
@@ -20,9 +19,18 @@ type PersonalInfoCardProps = ComponentProps<'div'> & {
 		pictureUrl?: string
 	}
 	type: 'volunteer' | 'participant'
+	seePicture?: VoidFunction
+	isLoadingUrl?: boolean
 }
 
-export const PersonalInfoCard = ({ className, userInfo, type, ...props }: PersonalInfoCardProps) => {
+export const PersonalInfoCard = ({
+	className,
+	userInfo,
+	type,
+	seePicture,
+	isLoadingUrl,
+	...props
+}: PersonalInfoCardProps) => {
 	return (
 		<InformationCard className={twMerge('space-y-3 pb-6', className)} headingText="Dados pessoais" {...props}>
 			<InfoBox label="Nome" value={userInfo.name} />
@@ -42,9 +50,13 @@ export const PersonalInfoCard = ({ className, userInfo, type, ...props }: Person
 			{userInfo?.pictureUrl && (
 				<div className="space-y-0.5 px-6">
 					<Text className="opacity-50">Foto</Text>
-					<Link className="flex items-center gap-2.5 text-sky-500" href={userInfo?.pictureUrl ?? ''} target="_blank">
-						Visualizar <ExternalLink size={20} />
-					</Link>
+					<button
+						className="flex cursor-pointer items-center gap-x-2 text-sky-500 disabled:cursor-not-allowed disabled:opacity-50"
+						disabled={isLoadingUrl}
+						onClick={seePicture}
+					>
+						Visualizar {isLoadingUrl ? <Spinner className="size-4" /> : <ExternalLink size={16} />}
+					</button>
 				</div>
 			)}
 		</InformationCard>
