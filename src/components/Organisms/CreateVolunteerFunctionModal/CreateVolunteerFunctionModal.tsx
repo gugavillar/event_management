@@ -69,6 +69,7 @@ export const CreateVolunteerFunctionModal = memo(
 			await create(values, {
 				onError: (error) => generateToastError(error, 'Erro ao cadastrar a função'),
 				onSuccess: () => {
+					setSelectedFunction(null)
 					toast.success('Função cadastrada com sucesso!')
 					methods.reset()
 				},

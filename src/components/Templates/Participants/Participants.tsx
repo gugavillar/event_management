@@ -70,7 +70,7 @@ export const Participants = () => {
 	const { data: participants, isLoading, search, setSearch, page, setPage, query, setQuery } = useGetParticipants()
 
 	const handleOpenModalToDeleteParticipant = useCallback((id: ParticipantsAPI['id']) => {
-		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.CHECK_IN })
+		setSelectedParticipant({ id, modal: PARTICIPANT_MODAL_TYPE.DELETE })
 	}, [])
 
 	const handleOpenModalToCheckInParticipant = useCallback((id: ParticipantsAPI['id']) => {

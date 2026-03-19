@@ -24,6 +24,7 @@ export const UserResetPasswordModal = memo(({ selectedUser, setSelectedUser }: U
 			{
 				onError: () => toast.error('Erro ao redefinir a senha'),
 				onSuccess: () => {
+					setSelectedUser(null)
 					toast.success('Senha redefinida com sucesso!')
 				},
 			}
