@@ -46,15 +46,18 @@ export const getExportVolunteersData = async (eventId: string) => {
 			return NextResponse.json({ error: 'Nenhum voluntário cadastrado' }, { status: 400 })
 		}
 
+		// biome-ignore assist/source/useSortedKeys: <order necessary for xlsx file>
 		const volunteersData = volunteers.map((volunteer) => ({
-			Alimentação_Saúde: volunteer.health || 'Não possui',
-			Bairro: volunteer.address?.neighborhood,
+			Nome: volunteer.name,
 			Chamado: volunteer.called,
-			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
-			Célula: volunteer.cell || 'Nenhuma',
 			Data_Nascimento: formatBirthdate(volunteer.birthdate, volunteer.event.finalDate),
-			Email: volunteer.email,
 			Endereço: `${volunteer.address?.street}, ${volunteer.address?.number}`,
+			Bairro: volunteer.address?.neighborhood,
+			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
+			Telefone: formatPhone(volunteer.phone),
+			Alimentação_Saúde: volunteer.health || 'Não possui',
+			Parente: volunteer.relative,
+			Telefone_Parente: formatPhone(volunteer.relativePhone),
 			Função: !volunteer.eventRoles?.length
 				? 'Sem Função'
 				: volunteer.eventRoles
@@ -68,14 +71,12 @@ export const getExportVolunteersData = async (eventId: string) => {
 				volunteer.groupMemberships?.find(
 					(group) => group.volunteerId === volunteer.id && group.group.eventId === eventId
 				)?.group.name || 'Sem grupo',
-			Nome: volunteer.name,
-			Parente: volunteer.relative,
 			Quarto:
 				volunteer.roomMember?.find((room) => room.volunteerId === volunteer.id && room.room.eventId === eventId)?.room
 					.roomNumber || 'Sem quarto',
+			Célula: volunteer.cell || 'Nenhuma',
+			Email: volunteer.email,
 			Status: formatCheckIn(volunteer.checkIn),
-			Telefone: formatPhone(volunteer.phone),
-			Telefone_Parente: formatPhone(volunteer.relativePhone),
 		}))
 
 		const paymentsData = volunteers.map((payment) => {
@@ -85,10 +86,11 @@ export const getExportVolunteersData = async (eventId: string) => {
 				? paymentStatus(payment.checkIn, null)
 				: payment.payments.map((p) => paymentStatus(payment.checkIn, p.paymentType)).join(', ')
 			const datesPayments = payment.payments.map((p) => paymentDate(p.paymentType, p.updatedAt)).join(', ')
+			// biome-ignore assist/source/useSortedKeys: <order necessary for xlsx file>
 			return {
-				Data_Pagamento: datesPayments,
 				Nome: payment.name,
 				Status: statusPayments,
+				Data_Pagamento: datesPayments,
 				Valor_Pago: currencyValue(paymentValue),
 			}
 		})

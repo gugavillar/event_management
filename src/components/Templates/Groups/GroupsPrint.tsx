@@ -3,6 +3,7 @@
 import { Document, Page, PDFDownloadLink, StyleSheet, Text, View } from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
 import { useMemo } from 'react'
+import toast from 'react-hot-toast'
 
 import { Spinner } from '@/components/Atoms'
 import { generatePrintKey } from '@/constants'
@@ -12,6 +13,7 @@ import type { formatTableData } from './Groups.utils'
 export type DownloadPDFProps = {
 	groups: ReturnType<typeof formatTableData>
 	listType: 'portrait' | 'landscape' | ''
+	handleClose: VoidFunction
 }
 
 type DocumentsProps = {
@@ -92,12 +94,17 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 	)
 }
 
-export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
+export const DownloadPDF = ({ groups, listType, handleClose }: DownloadPDFProps) => {
 	const renderKey = useMemo(() => generatePrintKey(groups, listType), [groups, listType])
 
 	if (!groups.length) return null
 
 	const fileName = listType === 'portrait' ? 'grupos-resumida.pdf' : 'grupos-detalhada.pdf'
+
+	const handleClick = () => {
+		toast.success('Arquivo baixado com sucesso!')
+		setTimeout(handleClose, 1000)
+	}
 
 	return (
 		<PDFDownloadLink
@@ -105,6 +112,7 @@ export const DownloadPDF = ({ groups, listType }: DownloadPDFProps) => {
 			document={listType === 'portrait' ? <PortraitList groups={groups} /> : <LandscapeList groups={groups} />}
 			fileName={fileName}
 			key={renderKey}
+			onClick={handleClick}
 		>
 			{({ loading }) =>
 				loading ? (

@@ -190,7 +190,7 @@ export const RoomDrawer = ({ selectedRoom, setSelectedRoom }: RoomDrawerProps) =
 					isLoading={isPendingCreate || isPendingUpdate}
 					onClick={handleSubmit(onSubmit)}
 				>
-					{selectedRoom ? 'Atualizar quarto' : 'Criar quarto'}
+					{selectedRoom?.id ? 'Atualizar quarto' : 'Criar quarto'}
 				</Button>
 			</DrawerFooter>
 		</Drawer>

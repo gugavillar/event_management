@@ -3,6 +3,7 @@
 import { Document, Page, PDFDownloadLink, StyleSheet, Text, View } from '@react-pdf/renderer'
 import { FileDown } from 'lucide-react'
 import { useMemo } from 'react'
+import toast from 'react-hot-toast'
 
 import { Spinner } from '@/components/Atoms'
 import { generatePrintKey } from '@/constants'
@@ -57,6 +58,10 @@ const MyDocument = ({ rooms }: DownloadPDFProps) => {
 export const DownloadPDF = ({ rooms }: DownloadPDFProps) => {
 	const renderKey = useMemo(() => generatePrintKey(rooms), [rooms])
 
+	const handleClick = () => {
+		toast.success('Arquivo baixado com sucesso!')
+	}
+
 	if (!rooms.length) return null
 
 	return (
@@ -65,6 +70,7 @@ export const DownloadPDF = ({ rooms }: DownloadPDFProps) => {
 			document={<MyDocument rooms={rooms} />}
 			fileName="quartos.pdf"
 			key={renderKey}
+			onClick={handleClick}
 		>
 			{({ loading }) =>
 				loading ? (

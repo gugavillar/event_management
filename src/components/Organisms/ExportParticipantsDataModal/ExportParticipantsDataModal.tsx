@@ -1,7 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import saveAs from 'file-saver'
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useCallback, useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
@@ -50,18 +50,18 @@ export const ExportParticipantsDataModal = ({ open, setOpen, isInterested }: Exp
 		isFetchingNextPage,
 	})
 
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		methods.reset()
 		setOpen({ modal: null })
-	}
+	}, [methods.reset, setOpen])
 
 	useEffect(() => {
 		if (!eventId) return
 
 		if (isError) {
-			toast.error('Erro ao baixar arquivo ou evento sem participantes')
+			toast.error('Erro ao baixar arquivo ou evento sem participantes', { id: TOAST_ID })
 			setEventId('')
-			methods.reset()
+			handleClose()
 			return
 		}
 
@@ -76,8 +76,8 @@ export const ExportParticipantsDataModal = ({ open, setOpen, isInterested }: Exp
 		setEventId('')
 		toast.dismiss(TOAST_ID)
 		toast.success('Arquivo baixado com sucesso!')
-		methods.reset()
-	}, [data, isError, eventId, formattedEvents, methods, isInterested])
+		handleClose()
+	}, [data, isError, eventId, formattedEvents, isInterested, handleClose])
 
 	const handleSubmit = async (values: ExportParticipantsFileModalType) => {
 		if (!values.eventId) return

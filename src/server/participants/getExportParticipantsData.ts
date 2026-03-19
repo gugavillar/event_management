@@ -47,21 +47,22 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 		}
 
 		if (isInterested) {
+			// biome-ignore assist/source/useSortedKeys: <order necessary for xlsx file>
 			const interestedData = participants.map((participant) => ({
-				Alimentação_Saúde: participant.health || 'Não possui',
-				Bairro: participant.address?.neighborhood,
-				Chamado: participant.called,
-				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
-				Convidou: participant.host,
-				Data_Nascimento: formatBirthdate(participant.birthdate, participant.event.finalDate),
-				Email: participant.email,
-				Endereço: `${participant.address?.street}, ${participant.address?.number}`,
 				Nome: participant.name,
-				Religião: participant.religion || 'Não possui',
-				Responsável: participant.responsible,
+				Chamado: participant.called,
+				Data_Nascimento: formatBirthdate(participant.birthdate, participant.event.finalDate),
+				Endereço: `${participant.address?.street}, ${participant.address?.number}`,
+				Bairro: participant.address?.neighborhood,
+				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
 				Telefone: formatPhone(participant.phone),
-				Telefone_Convidou: formatPhone(participant.hostPhone),
+				Alimentação_Saúde: participant.health || 'Não possui',
+				Responsável: participant.responsible,
 				Telefone_Responsável: formatPhone(participant.responsiblePhone),
+				Convidou: participant.host,
+				Telefone_Convidou: formatPhone(participant.hostPhone),
+				Email: participant.email,
+				Religião: participant.religion || 'Não possui',
 			}))
 			const tableHeaderParticipants = Object.keys(interestedData[0])
 			const worksheetParticipants = utils.json_to_sheet(interestedData, {
@@ -81,29 +82,30 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 			})
 		}
 
+		// biome-ignore assist/source/useSortedKeys: <order necessary for xlsx file>
 		const participantsData = participants.map((participant) => ({
-			Alimentação_Saúde: participant.health || 'Não possui',
-			Bairro: participant.address?.neighborhood,
+			Nome: participant.name,
 			Chamado: participant.called,
-			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
-			Convidou: participant.host,
 			Data_Nascimento: formatBirthdate(participant.birthdate, participant.event.finalDate),
-			Email: participant.email,
 			Endereço: `${participant.address?.street}, ${participant.address?.number}`,
+			Bairro: participant.address?.neighborhood,
+			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
+			Telefone: formatPhone(participant.phone),
+			Alimentação_Saúde: participant.health || 'Não possui',
+			Responsável: participant.responsible,
+			Telefone_Responsável: formatPhone(participant.responsiblePhone),
+			Convidou: participant.host,
+			Telefone_Convidou: formatPhone(participant.hostPhone),
 			Grupo:
 				participant.groupMemberships?.find(
 					(group) => group.participantId === participant.id && group.group.eventId === eventId
 				)?.group.name || 'Sem grupo',
-			Nome: participant.name,
 			Quarto:
 				participant.roomMember?.find((room) => room.participantId === participant.id && room.room.eventId === eventId)
 					?.room.roomNumber || 'Sem quarto',
+			Email: participant.email,
 			Religião: participant.religion || 'Não possui',
-			Responsável: participant.responsible,
 			Status: formatCheckIn(participant.checkIn),
-			Telefone: formatPhone(participant.phone),
-			Telefone_Convidou: formatPhone(participant.hostPhone),
-			Telefone_Responsável: formatPhone(participant.responsiblePhone),
 		}))
 
 		const paymentsData = participants.map((payment) => {
@@ -113,10 +115,11 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 				? paymentStatus(payment.checkIn, null)
 				: payment.payments.map((p) => paymentStatus(payment.checkIn, p.paymentType)).join(', ')
 			const datesPayments = payment.payments.map((p) => paymentDate(p.paymentType, p.updatedAt)).join(', ')
+			// biome-ignore assist/source/useSortedKeys: <order necessary for xlsx file>
 			return {
-				Data_Pagamento: datesPayments,
 				Nome: payment.name,
 				Status: statusPayments,
+				Data_Pagamento: datesPayments,
 				Valor_Pago: currencyValue(paymentValue),
 			}
 		})

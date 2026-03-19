@@ -59,7 +59,7 @@ export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListPro
 							]}
 							value={listType}
 						/>
-						{listType && <DownloadPDF groups={formattedGroups} listType={listType} />}
+						{listType && <DownloadPDF groups={formattedGroups} handleClose={handleClose} listType={listType} />}
 					</div>
 				</div>
 			</Modal>

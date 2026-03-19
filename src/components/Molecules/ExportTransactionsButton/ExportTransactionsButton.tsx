@@ -24,7 +24,9 @@ export const ExportTransactionsButton = ({ eventId, eventName, transactionLength
 		if (!eventId || !isDownload) return
 
 		if (isError) {
-			toast.error('Erro ao baixar arquivo ou evento sem transações')
+			toast.error('Erro ao baixar arquivo ou evento sem transações', {
+				id: TOAST_ID,
+			})
 			setIsDownload(false)
 			return
 		}

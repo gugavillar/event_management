@@ -186,7 +186,7 @@ export const GroupDrawer = ({ selectedGroup, setSelectedGroup }: GroupDrawerProp
 					isLoading={isPendingCreate || isPendingUpdate}
 					onClick={handleSubmit(onSubmit)}
 				>
-					{selectedGroup ? 'Atualizar grupo' : 'Criar grupo'}
+					{selectedGroup?.id ? 'Atualizar grupo' : 'Criar grupo'}
 				</Button>
 			</DrawerFooter>
 		</Drawer>
