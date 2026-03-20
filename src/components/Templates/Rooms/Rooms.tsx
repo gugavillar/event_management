@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { Button, Field } from '@/components/Atoms'
 import { ComboBox } from '@/components/Molecules'
-import { ListPage, PageContent } from '@/components/Organisms'
+import { GenerateRoomList, ListPage, PageContent } from '@/components/Organisms'
 import { RoomSchema, type RoomSchemaType } from '@/components/Organisms/RoomDrawer/RoomDrawer.schema'
 import { ROOMS_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
@@ -27,7 +27,7 @@ const RoomDeleteModal = dynamic(() => import('@/components/Organisms').then((mod
 
 const RoomDrawer = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDrawer))
 
-const DownloadPDF = dynamic(() => import('./RoomsPrint').then((mod) => mod.DownloadPDF))
+const RoomsPrint = dynamic(() => import('./RoomsPrint').then((mod) => mod.RoomsPrint))
 
 export const Rooms = ({ eventId }: { eventId: string }) => {
 	const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null)
@@ -81,7 +81,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 	return (
 		<PageContent subheadingPage="Listagem de grupos">
 			<div className="flex flex-col items-center justify-end gap-5 md:flex-row">
-				<DownloadPDF rooms={formattedRooms} />
+				{!!formattedRooms.length && <GenerateRoomList formattedRooms={formattedRooms} />}
 				<Button
 					className="min-w-60 items-center justify-center border-transparent bg-teal-500 text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 					leftIcon={<BedSingle />}

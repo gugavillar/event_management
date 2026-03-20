@@ -3,22 +3,18 @@ import dynamic from 'next/dynamic'
 import { memo, useState } from 'react'
 
 import { Button, Header, Modal, Select, Text } from '@/components/Atoms'
-import type { GroupsPrintProps } from '@/components/Templates'
-import { GROUPS_MODAL_TYPE } from '@/constants'
+import type { RoomsPrintProps } from '@/components/Templates'
+import { ROOMS_MODAL_TYPE } from '@/constants'
 
-type GenerateGroupListProps = {
-	formattedGroups: GroupsPrintProps['groups']
+export type SelectedRoomList = {
+	modal: ROOMS_MODAL_TYPE | null
 }
 
-export type SelectedGroupList = {
-	modal: GROUPS_MODAL_TYPE | null
-}
+const RoomsPrint = dynamic(() => import('@/components/Templates').then((mod) => mod.RoomsPrint))
 
-const GroupsPrint = dynamic(() => import('@/components/Templates').then((mod) => mod.GroupsPrint))
-
-export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListProps) => {
-	const [open, setOpen] = useState<SelectedGroupList>({ modal: null })
-	const [listType, setListType] = useState<GroupsPrintProps['listType']>('')
+export const GenerateRoomList = memo(({ formattedRooms }: { formattedRooms: RoomsPrintProps['rooms'] }) => {
+	const [open, setOpen] = useState<SelectedRoomList>({ modal: null })
+	const [listType, setListType] = useState<RoomsPrintProps['listType']>('')
 
 	const handleClose = () => {
 		setListType('')
@@ -26,7 +22,7 @@ export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListPro
 	}
 
 	const handleOpen = () => {
-		setOpen({ modal: GROUPS_MODAL_TYPE.EXPORT })
+		setOpen({ modal: ROOMS_MODAL_TYPE.EXPORT })
 	}
 
 	return (
@@ -36,9 +32,9 @@ export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListPro
 				onClick={handleOpen}
 				type="button"
 			>
-				Gerar lista de grupos
+				Gerar lista de quartos
 			</Button>
-			<Modal onOpenChange={handleClose} open={open.modal === GROUPS_MODAL_TYPE.EXPORT}>
+			<Modal onOpenChange={handleClose} open={open.modal === ROOMS_MODAL_TYPE.EXPORT}>
 				<div className="flex flex-col items-center justify-center">
 					<div className="flex w-full flex-col items-center justify-between gap-6">
 						<div className="flex flex-col items-center gap-2">
@@ -51,15 +47,15 @@ export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListPro
 						</div>
 						<Select
 							className="w-full"
-							onChange={(e) => setListType(e.target.value as GroupsPrintProps['listType'])}
+							onChange={(e) => setListType(e.target.value as RoomsPrintProps['listType'])}
 							options={[
 								{ label: 'Selecione uma opção', value: '' },
-								{ label: 'Detalhada', value: 'landscape' },
-								{ label: 'Resumida', value: 'portrait' },
+								{ label: 'Lista contínua', value: 'portrait' },
+								{ label: 'Um quarto por página', value: 'landscape' },
 							]}
 							value={listType}
 						/>
-						{listType && <GroupsPrint groups={formattedGroups} handleClose={handleClose} listType={listType} />}
+						{listType && <RoomsPrint handleClose={handleClose} listType={listType} rooms={formattedRooms} />}
 					</div>
 				</div>
 			</Modal>
@@ -67,4 +63,4 @@ export const GenerateGroupList = memo(({ formattedGroups }: GenerateGroupListPro
 	)
 })
 
-GenerateGroupList.displayName = 'GenerateGroupList'
+GenerateRoomList.displayName = 'GenerateRoomList'

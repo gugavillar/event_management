@@ -10,11 +10,25 @@ import { generatePrintKey } from '@/constants'
 
 import type { formatTableData } from './Rooms.utils'
 
-type DownloadPDFProps = {
+export type RoomsPrintProps = {
 	rooms: ReturnType<typeof formatTableData>
+	listType: 'portrait' | 'landscape' | ''
+	handleClose: VoidFunction
+}
+
+type DocumentsProps = {
+	rooms: RoomsPrintProps['rooms']
 }
 
 const styles = StyleSheet.create({
+	landscapeTableCell: {
+		borderWidth: 0.5,
+		fontSize: 28,
+		paddingHorizontal: 10,
+		paddingVertical: 10,
+		width: '100%',
+	},
+	landscapeTitle: { fontSize: 48, fontWeight: 'bold', paddingBottom: 20, textAlign: 'center' },
 	page: { padding: 20 },
 	section: { marginBottom: 10 },
 	tableCellLeft: {
@@ -32,10 +46,10 @@ const styles = StyleSheet.create({
 		width: '30%',
 	},
 	tableRow: { flexDirection: 'row' },
-	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 5 },
+	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 10 },
 })
 
-const MyDocument = ({ rooms }: DownloadPDFProps) => {
+const PortraitList = ({ rooms }: DocumentsProps) => {
 	return (
 		<Document>
 			<Page size="A4" style={styles.page}>
@@ -55,20 +69,42 @@ const MyDocument = ({ rooms }: DownloadPDFProps) => {
 	)
 }
 
-export const DownloadPDF = ({ rooms }: DownloadPDFProps) => {
-	const renderKey = useMemo(() => generatePrintKey(rooms), [rooms])
+const LandscapeList = ({ rooms }: DocumentsProps) => {
+	return (
+		<Document>
+			{rooms.map((room) => (
+				<Page key={room.id} orientation="landscape" size="A4" style={styles.page}>
+					<View style={styles.section} wrap={false}>
+						<Text style={styles.landscapeTitle}>{room.roomNumber}</Text>
+						{room.members.map((member) => (
+							<View key={member.id} style={styles.tableRow}>
+								<Text style={styles.landscapeTableCell}>{member.member}</Text>
+							</View>
+						))}
+					</View>
+				</Page>
+			))}
+		</Document>
+	)
+}
+
+export const RoomsPrint = ({ rooms, listType, handleClose }: RoomsPrintProps) => {
+	const renderKey = useMemo(() => generatePrintKey(rooms, listType), [rooms, listType])
+
+	if (!rooms.length) return null
+
+	const fileName = listType === 'portrait' ? 'lista-de-quartos.pdf' : 'quartos-por-página.pdf'
 
 	const handleClick = () => {
 		toast.success('Arquivo baixado com sucesso!')
+		setTimeout(handleClose, 1000)
 	}
-
-	if (!rooms.length) return null
 
 	return (
 		<PDFDownloadLink
 			className="inline-flex min-w-60 items-center justify-center gap-x-2 rounded-lg border border-transparent bg-teal-500 px-4 py-3 font-semibold text-base text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800 disabled:pointer-events-none disabled:opacity-50"
-			document={<MyDocument rooms={rooms} />}
-			fileName="quartos.pdf"
+			document={listType === 'portrait' ? <PortraitList rooms={rooms} /> : <LandscapeList rooms={rooms} />}
+			fileName={fileName}
 			key={renderKey}
 			onClick={handleClick}
 		>

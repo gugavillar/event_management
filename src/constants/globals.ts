@@ -47,6 +47,7 @@ export enum MEETING_MODAL_TYPE {
 export enum ROOMS_MODAL_TYPE {
 	CREATE_OR_EDIT = 'create-or-edit',
 	DELETE = 'delete',
+	EXPORT = 'export',
 }
 
 export enum GROUPS_MODAL_TYPE {

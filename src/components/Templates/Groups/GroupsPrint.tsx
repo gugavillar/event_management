@@ -10,14 +10,14 @@ import { generatePrintKey } from '@/constants'
 
 import type { formatTableData } from './Groups.utils'
 
-export type DownloadPDFProps = {
+export type GroupsPrintProps = {
 	groups: ReturnType<typeof formatTableData>
 	listType: 'portrait' | 'landscape' | ''
 	handleClose: VoidFunction
 }
 
 type DocumentsProps = {
-	groups: DownloadPDFProps['groups']
+	groups: GroupsPrintProps['groups']
 }
 
 const styles = StyleSheet.create({
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 		width: '30%',
 	},
 	tableRow: { flexDirection: 'row' },
-	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 5 },
+	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 10 },
 })
 
 const PortraitList = ({ groups }: DocumentsProps) => {
@@ -94,7 +94,7 @@ const LandscapeList = ({ groups }: DocumentsProps) => {
 	)
 }
 
-export const DownloadPDF = ({ groups, listType, handleClose }: DownloadPDFProps) => {
+export const GroupsPrint = ({ groups, listType, handleClose }: GroupsPrintProps) => {
 	const renderKey = useMemo(() => generatePrintKey(groups, listType), [groups, listType])
 
 	if (!groups.length) return null
