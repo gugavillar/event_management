@@ -106,6 +106,7 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 			Email: participant.email,
 			Religião: participant.religion || 'Não possui',
 			Status: formatCheckIn(participant.checkIn),
+			Tem_Foto: participant?.pictureUrl ? 'Sim' : 'Não',
 		}))
 
 		const paymentsData = participants.map((payment) => {
