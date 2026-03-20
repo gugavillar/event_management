@@ -26,7 +26,11 @@ export const ParticipantModalData = memo(
 
 		const handleSeePicture = async () => {
 			if (!data?.pictureUrl) return
-			await getUrl(data?.id)
+			const newTab = window.open('', '_blank')
+			const response = await getUrl(data?.id)
+			if (newTab) {
+				newTab.location.href = response.url
+			}
 		}
 
 		return (
