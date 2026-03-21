@@ -22,7 +22,7 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 		(acc, link) => {
 			if (link.hasSubMenu) {
 				const links = link.links.filter((subLink) => {
-					const requiredPermission = ROUTE_PERMISSIONS[subLink.href]
+					const requiredPermission = ROUTE_PERMISSIONS[subLink.href as keyof typeof ROUTE_PERMISSIONS]
 					return hasPermission(parsedRoles, requiredPermission)
 				})
 
@@ -30,7 +30,7 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 					acc.push({ ...link, links })
 				}
 			} else {
-				const requiredPermission = ROUTE_PERMISSIONS[link.href]
+				const requiredPermission = ROUTE_PERMISSIONS[link.href as keyof typeof ROUTE_PERMISSIONS]
 
 				if (requiredPermission && hasPermission(parsedRoles, requiredPermission)) {
 					acc.push(link)

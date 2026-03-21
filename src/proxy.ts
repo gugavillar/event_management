@@ -9,7 +9,7 @@ export default withAuth(
 		const { pathname } = req.nextUrl
 		const nextToken = req.nextauth.token
 		const parsedRoles = JSON.parse(nextToken?.role || '{}')
-		const requiredPermission = ROUTE_PERMISSIONS[pathname]
+		const requiredPermission = ROUTE_PERMISSIONS[pathname as keyof typeof ROUTE_PERMISSIONS]
 
 		if (!requiredPermission) {
 			return NextResponse.next()

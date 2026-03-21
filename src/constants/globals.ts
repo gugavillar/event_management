@@ -161,7 +161,7 @@ export const COMMON_PROPS_TOOLTIPS_BUTTON_TABLE = {
 	sideOffset: 5,
 } as const
 
-export const ROUTE_PERMISSIONS: Record<string, string> = {
+export const ROUTE_PERMISSIONS = {
 	'/dashboard': 'dashboard',
 	'/doacoes': 'donations',
 	'/eventos': 'events',
@@ -177,4 +177,4 @@ export const ROUTE_PERMISSIONS: Record<string, string> = {
 	'/voluntarios/funcoes': 'volunteers.functions',
 	'/voluntarios/listagem': 'volunteers.list',
 	'/voluntarios/pagamentos': 'volunteers.payment',
-}
+} as const
