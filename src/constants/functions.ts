@@ -33,6 +33,8 @@ export const interestedListPermitCreateRegistration = (event: any) => {
 }
 
 export const hasPermission = (permissions: Record<string, any>, path: string): boolean => {
+	if (!path) return false
+
 	const keys = path.split('.')
 
 	let current = permissions
