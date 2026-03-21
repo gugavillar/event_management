@@ -130,6 +130,7 @@ export const ExternalParticipantForm = ({
 					handleFinish={methods.handleSubmit(onSubmit)}
 					handleNext={handleNext}
 					handlePrev={handlePrev}
+					isInterestedList={isInterestedList}
 					isPending={isPending}
 					steps={[
 						{

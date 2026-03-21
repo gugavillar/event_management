@@ -12,7 +12,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 			<div className={twMerge('flex', props.disabled && 'pointer-events-none opacity-50', className)}>
 				<input
 					className={twMerge(
-						'mt-0.5 shrink-0 rounded-sm border-gray-500 text-blue-600 checked:border-blue-500 focus:ring-blue-500 disabled:pointer-events-none disabled:opacity-50',
+						'mt-0.5 shrink-0 rounded-sm border-gray-500 text-teal-600 checked:border-teal-500 focus:ring-teal-500 disabled:pointer-events-none disabled:opacity-50',
 						className,
 						isInvalid && 'border-red-500 focus:border-red-500 focus:ring-red-500'
 					)}
