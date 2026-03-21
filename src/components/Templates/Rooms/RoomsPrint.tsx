@@ -22,31 +22,35 @@ type DocumentsProps = {
 
 const styles = StyleSheet.create({
 	landscapeTableCell: {
-		borderWidth: 0.5,
+		flex: 1,
 		fontSize: 28,
 		paddingHorizontal: 10,
 		paddingVertical: 10,
-		width: '100%',
+		textAlign: 'center',
 	},
-	landscapeTitle: { fontSize: 48, fontWeight: 'bold', paddingBottom: 20, textAlign: 'center' },
+	landscapeTitle: { fontSize: 72, fontWeight: 'bold', paddingBottom: 20, textAlign: 'center' },
 	page: { padding: 20 },
 	section: { marginBottom: 10 },
 	tableCellLeft: {
-		borderWidth: 0.5,
+		borderWidth: 1,
 		fontSize: 14,
+		justifyContent: 'center',
+		minHeight: 20,
 		paddingHorizontal: 5,
-		paddingVertical: 2,
+		paddingVertical: 4,
 		width: '70%',
 	},
 	tableCellRight: {
-		borderWidth: 0.5,
+		borderWidth: 1,
 		fontSize: 14,
+		justifyContent: 'center',
+		minHeight: 20,
 		paddingHorizontal: 5,
-		paddingVertical: 2,
+		paddingVertical: 4,
 		width: '30%',
 	},
 	tableRow: { flexDirection: 'row' },
-	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 10 },
+	title: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
 })
 
 const PortraitList = ({ rooms }: DocumentsProps) => {

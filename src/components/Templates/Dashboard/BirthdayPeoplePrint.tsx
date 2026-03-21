@@ -12,25 +12,28 @@ type DownloadPDFProps = {
 	birthdayPeople: ReturnType<typeof formatTableData>
 }
 
+const baseCell = {
+	borderWidth: 1,
+	fontSize: 12,
+	justifyContent: 'center',
+	paddingHorizontal: 6,
+	paddingVertical: 4,
+} as const
+
 const styles = StyleSheet.create({
 	page: { padding: 20 },
-	section: { marginBottom: 10 },
+	section: { marginBottom: 12 },
 	tableCellLeft: {
-		borderWidth: 0.5,
-		fontSize: 14,
-		paddingHorizontal: 5,
-		paddingVertical: 2,
+		...baseCell,
 		width: '70%',
 	},
 	tableCellRight: {
-		borderWidth: 0.5,
-		fontSize: 14,
-		paddingHorizontal: 5,
-		paddingVertical: 2,
+		...baseCell,
+		textAlign: 'center',
 		width: '30%',
 	},
 	tableRow: { flexDirection: 'row' },
-	title: { fontSize: 16, fontWeight: 'bold', paddingBottom: 5 },
+	title: { fontSize: 18, fontWeight: 'bold', marginBottom: 12 },
 })
 
 const MyDocument = ({ birthdayPeople }: DownloadPDFProps) => {
