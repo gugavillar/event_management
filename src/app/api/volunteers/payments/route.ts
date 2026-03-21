@@ -27,7 +27,6 @@ const handlePost = async (request: NextRequest) => {
 	const body = await request.json()
 	return await requestProcess({
 		functions: async () => await createVolunteerPayment(body),
-		isProtectedRoute: true,
 	})
 }
 

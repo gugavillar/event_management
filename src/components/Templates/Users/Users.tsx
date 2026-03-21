@@ -24,16 +24,17 @@ export type SelectedUser = {
 
 const BlockUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.BlockUserModal))
 
-const ChangeRoleUserModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.ChangeRoleUserModal))
+const UserPermissionDrawer = dynamic(() => import('@/components/Organisms').then((mod) => mod.UserPermissionDrawer))
 
 const UserResetPasswordModal = dynamic(() => import('@/components/Organisms').then((mod) => mod.UserResetPasswordModal))
 
 export const Users = ({ userId }: UsersProps) => {
 	const [selectedUser, setSelectedUser] = useState<SelectedUser | null>(null)
+
 	const { data: users, isLoading, search, setSearch, page, setPage } = useGetUsers()
 
-	const handleOpenChangeRoleModal = useCallback((id: UserAPI['id']) => {
-		setSelectedUser({ id, modal: USERS_MODAL_TYPE.CHANGE_ROLE })
+	const handleOpenPermissionDrawer = useCallback((id: UserAPI['id']) => {
+		setSelectedUser({ id, modal: USERS_MODAL_TYPE.USER_PERMISSION })
 	}, [])
 
 	const handleOpenResetPasswordModal = useCallback((id: UserAPI['id']) => {
@@ -47,7 +48,7 @@ export const Users = ({ userId }: UsersProps) => {
 	const formatData = formatTableData(
 		users?.data,
 		userId,
-		handleOpenChangeRoleModal,
+		handleOpenPermissionDrawer,
 		handleOpenResetPasswordModal,
 		handleOpenBlockUserModal
 	)
@@ -55,7 +56,7 @@ export const Users = ({ userId }: UsersProps) => {
 	const hasMoreThanOnePage = !!users?.totalPages && users.totalPages > 1
 
 	return (
-		<PageContent subheadingPage="Lista de usuários" title="Usuários">
+		<PageContent pageTitle="Usuários" subheadingPage="Lista de usuários">
 			<ListPage
 				actionButton={<CreateUserButton />}
 				className="w-full lg:max-w-full"
@@ -66,7 +67,7 @@ export const Users = ({ userId }: UsersProps) => {
 				<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
 				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={users?.totalPages} />}
 			</ListPage>
-			<ChangeRoleUserModal selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
+			<UserPermissionDrawer selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
 			<UserResetPasswordModal selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
 			<BlockUserModal selectedUser={selectedUser} setSelectedUser={setSelectedUser} />
 		</PageContent>

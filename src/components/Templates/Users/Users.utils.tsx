@@ -1,7 +1,7 @@
-import { UserLock, UserRoundCog, UserRoundPen } from 'lucide-react'
+import { RotateCcwKey, UserLock, UserRoundKey } from 'lucide-react'
 
 import { Tooltip, UserTag } from '@/components/Atoms'
-import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, RolesTypes, USER_STATUS } from '@/constants'
+import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, USER_STATUS } from '@/constants'
 import type { UserAPI } from '@/services/queries/users/users.type'
 
 export const HEADER_LABELS = [
@@ -12,10 +12,6 @@ export const HEADER_LABELS = [
 	{
 		accessor: 'email',
 		label: 'Email',
-	},
-	{
-		accessor: 'role',
-		label: 'Tipo de acesso',
 	},
 	{
 		accessor: 'firstAccess',
@@ -34,7 +30,7 @@ export const HEADER_LABELS = [
 export const formatTableData = (
 	data: Array<UserAPI> | undefined,
 	userId: string,
-	handleChangeRole: (id: UserAPI['id']) => void,
+	handleOpenPermissionDrawer: (id: UserAPI['id']) => void,
 	handleResetPassword: (id: UserAPI['id']) => void,
 	handleBlockUser: (id: UserAPI['id']) => void
 ) => {
@@ -47,13 +43,15 @@ export const formatTableData = (
 				<div className="flex space-x-4">
 					<Tooltip
 						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
-						trigger={<UserRoundPen className="cursor-pointer" onClick={() => handleChangeRole(user.id)} size={20} />}
+						trigger={
+							<UserRoundKey className="cursor-pointer" onClick={() => handleOpenPermissionDrawer(user.id)} size={20} />
+						}
 					>
-						Alterar permissão
+						Permissões
 					</Tooltip>
 					<Tooltip
 						{...COMMON_PROPS_TOOLTIPS_BUTTON_TABLE}
-						trigger={<UserRoundCog className="cursor-pointer" onClick={() => handleResetPassword(user.id)} size={20} />}
+						trigger={<RotateCcwKey className="cursor-pointer" onClick={() => handleResetPassword(user.id)} size={20} />}
 					>
 						Redefinir senha
 					</Tooltip>
@@ -66,7 +64,6 @@ export const formatTableData = (
 				</div>
 			),
 			firstAccess: user.firstAccess ? 'Sim' : 'Não',
-			role: RolesTypes[user.role].label,
 			status: <UserTag status={!user.deletedAt ? USER_STATUS.ACTIVE : USER_STATUS.INACTIVE} />,
 		}))
 		.filter((user) => user.id !== userId)

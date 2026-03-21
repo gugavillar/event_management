@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs'
 
 import { UserSchema, type UserSchemaType } from '@/components/Organisms/UserDrawer/UserDrawer.schema'
-import type { ROLES } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
 export const createUser = async (data: UserSchemaType) => {
@@ -13,7 +12,6 @@ export const createUser = async (data: UserSchemaType) => {
 				email: data.email,
 				name: data.name,
 				passwordHash: bcrypt.hashSync('123456', 10),
-				role: data.role as ROLES,
 			},
 		})
 	} catch (error) {

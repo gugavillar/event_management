@@ -15,32 +15,17 @@ const BASE_PATH = {
 
 export const ENDPOINTS = {
 	BLOCK_OR_UNBLOCK_USER: (user_id: string) => `${BASE_PATH.USERS}/${user_id}/block`,
-
-	// Donations
 	CREATE_DONATION: BASE_PATH.DONATIONS,
-	// Events
 	CREATE_EVENT: BASE_PATH.EVENTS,
-
-	// Functions
 	CREATE_FUNCTION: `${BASE_PATH.VOLUNTEERS}/functions`,
-
-	// Groups
 	CREATE_GROUP: BASE_PATH.GROUPS,
-
-	// Meetings
 	CREATE_MEETING: BASE_PATH.MEETINGS,
 	CREATE_MEETING_PRESENCE: `${BASE_PATH.MEETINGS}/presence`,
-
-	// Participants
 	CREATE_PARTICIPANT: BASE_PATH.PARTICIPANTS,
 	CREATE_PARTICIPANT_PAYMENT: `${BASE_PATH.PARTICIPANTS}/payments`,
-
-	// Rooms
 	CREATE_ROOM: BASE_PATH.ROOMS,
 	CREATE_TRANSACTION: BASE_PATH.TRANSACTIONS,
 	CREATE_USER: BASE_PATH.USERS,
-
-	// Volunteers
 	CREATE_VOLUNTEER: BASE_PATH.VOLUNTEERS,
 	CREATE_VOLUNTEER_PAYMENT: `${BASE_PATH.VOLUNTEERS}/payments`,
 	DELETE_DONATION: (donation_id: string) => `${BASE_PATH.DONATIONS}/${donation_id}`,
@@ -56,8 +41,6 @@ export const ENDPOINTS = {
 	EXPORT_PARTICIPANTS_DATA: (event_id: string) => `${BASE_PATH.PARTICIPANTS}/files/${event_id}`,
 	EXPORT_TRANSACTIONS_DATA: (event_id: string) => `${BASE_PATH.TRANSACTIONS}/files/${event_id}`,
 	EXPORT_VOLUNTEERS_DATA: (event_id: string) => `${BASE_PATH.VOLUNTEERS}/files/${event_id}`,
-
-	// Dashboard
 	GET_DASHBOARD: BASE_PATH.DASHBOARD,
 	GET_DONATIONS: BASE_PATH.DONATIONS,
 	GET_EVENT: (event_id: string) => `${BASE_PATH.EVENTS}/${event_id}`,
@@ -75,11 +58,8 @@ export const ENDPOINTS = {
 	GET_PARTICIPANTS_PAYMENTS: `${BASE_PATH.PARTICIPANTS}/payments`,
 	GET_ROOM: (room_id: string) => `${BASE_PATH.ROOMS}/room/${room_id}`,
 	GET_ROOM_BY_EVENT_ID: (event_id: string) => `${BASE_PATH.ROOMS}/events/${event_id}`,
-
-	// Transactions
 	GET_TRANSACTIONS: BASE_PATH.TRANSACTIONS,
-
-	// Users
+	GET_USER: (user_id: string) => `${BASE_PATH.USERS}/${user_id}`,
 	GET_USERS: BASE_PATH.USERS,
 	GET_VOLUNTEER: (volunteer_id: string) => `${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 	GET_VOLUNTEERS: BASE_PATH.VOLUNTEERS,

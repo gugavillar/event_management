@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs'
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-import { ROLES } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
 const COOKIE_PREFIX = 'event-manager'
@@ -84,9 +83,7 @@ export const authOptions: NextAuthOptions = {
 					throw new Error('Senha incorreta!')
 				}
 
-				const userHasRole = [ROLES.ADMIN, ROLES.USER].includes(user.role as ROLES)
-
-				if (!userHasRole) {
+				if (!user.role) {
 					throw new Error('Usuário sem permissão!')
 				}
 
@@ -99,7 +96,7 @@ export const authOptions: NextAuthOptions = {
 					firstAccess: user.firstAccess,
 					id: user.id,
 					name: user.name,
-					role: user.role as ROLES,
+					role: user.role,
 				}
 			},
 

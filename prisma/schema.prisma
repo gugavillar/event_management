@@ -20,11 +20,6 @@ enum Gender {
   BOTH
 }
 
-enum Roles {
-  USER
-  ADMIN
-}
-
 enum ParticipantOrVolunteerStatus {
   CONFIRMED
   WITHDREW
@@ -62,7 +57,7 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
-  role         Roles     @default(USER)
+  role         String?   @db.VarChar(300)
   events       Event[]   @relation("UserToEvent")
 
   @@map("users")

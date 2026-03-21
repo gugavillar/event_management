@@ -10,7 +10,6 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createMeetingPresence(body, updatePresence),
-		isProtectedRoute: true,
 	})
 }
 

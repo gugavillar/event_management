@@ -64,20 +64,6 @@ export const GenderType = {
 
 export const GenderSelectOptions = Object.values(GenderTypeAPI).map((value) => ({ ...GenderType[value] }))
 
-export enum ROLES {
-	USER = 'USER',
-	ADMIN = 'ADMIN',
-}
-
-export const RolesTypes = {
-	[ROLES.ADMIN]: { label: 'Administrador', value: ROLES.ADMIN },
-	[ROLES.USER]: { label: 'Usuário', value: ROLES.USER },
-}
-
-export const RolesTypesSelectOptions = Object.values(ROLES).map((value) => ({
-	...RolesTypes[value],
-}))
-
 export enum USER_STATUS {
 	ACTIVE = 'Ativo',
 	INACTIVE = 'Inativo',

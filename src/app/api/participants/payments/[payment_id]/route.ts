@@ -13,7 +13,6 @@ const handleDelete = async (_: NextRequest, { params }: Params) => {
 	const routeParam = await params.then((res) => res.payment_id ?? '')
 	return await requestProcess({
 		functions: async () => await returnPaymentParticipant(routeParam),
-		isProtectedRoute: true,
 	})
 }
 

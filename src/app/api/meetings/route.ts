@@ -9,7 +9,6 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createMeeting(body),
-		isProtectedRoute: true,
 	})
 }
 

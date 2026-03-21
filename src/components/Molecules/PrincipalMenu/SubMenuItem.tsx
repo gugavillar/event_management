@@ -3,30 +3,20 @@ import { useRouter } from 'next/navigation'
 import { twMerge } from 'tailwind-merge'
 
 import { Dropdown, DropdownItem, Tooltip } from '@/components/Atoms'
-import { PAGES_ROLES, type ROLES } from '@/constants'
 
 import type { MenuLinkWithSubMenu } from './PrincipalMenu.utils'
 
 type SubMenuItemProps = Omit<MenuLinkWithSubMenu, 'hasSubMenu'> & {
 	collapsed: boolean
 	path: string
-	userRole?: string
 }
 
-const validateHasMenu = (links: MenuLinkWithSubMenu['links'], userRole: ROLES) => {
-	return links.some((link) => PAGES_ROLES[link.href as keyof typeof PAGES_ROLES].includes(userRole))
-}
-
-export const SubMenuItem = ({ buttonIcon, buttonLabel, collapsed, links, path, userRole }: SubMenuItemProps) => {
+export const SubMenuItem = ({ buttonIcon, buttonLabel, collapsed, links, path }: SubMenuItemProps) => {
 	const { push } = useRouter()
 	const validateLabelPath = buttonLabel
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.toLowerCase()
-
-	if (!validateHasMenu(links, userRole as ROLES)) {
-		return null
-	}
 
 	return (
 		<Dropdown
@@ -45,9 +35,6 @@ export const SubMenuItem = ({ buttonIcon, buttonLabel, collapsed, links, path, u
 			}
 		>
 			{links.map(({ href, label }) => {
-				if (!PAGES_ROLES[href as keyof typeof PAGES_ROLES].includes(userRole as ROLES)) {
-					return null
-				}
 				return (
 					<DropdownItem key={label} onSelect={() => push(href)}>
 						<button className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50">

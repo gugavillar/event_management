@@ -16,7 +16,6 @@ export const CreateUserButton = memo(() => {
 		defaultValues: {
 			email: '',
 			name: '',
-			role: '',
 		},
 		mode: 'onChange',
 		resolver: zodResolver(UserSchema),

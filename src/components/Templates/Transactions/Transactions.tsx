@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
 import { ComboBox, ExportTransactionsButton, ListManager, TransactionCard } from '@/components/Molecules'
-import { CreateTransaction, ListPage, TransactionDeleteModal } from '@/components/Organisms'
+import { CreateTransaction, ListPage, PageContent, TransactionDeleteModal } from '@/components/Organisms'
 import { TRANSACTION_MODAL_TYPE } from '@/constants'
 import { formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
@@ -54,7 +54,7 @@ export const Transaction = () => {
 	const eventName = formattedEvents.find((event) => event.customProps.value === eventId)?.customProps.label
 
 	return (
-		<>
+		<PageContent pageTitle="Transações" subheadingPage="Prestação de contas">
 			<div className="flex flex-col-reverse items-center justify-between gap-6 md:flex-row md:items-end">
 				<ComboBox
 					className="max-w-103.5"
@@ -116,6 +116,6 @@ export const Transaction = () => {
 				selectedTransaction={selectedTransaction}
 				setSelectedTransaction={setSelectedTransaction}
 			/>
-		</>
+		</PageContent>
 	)
 }

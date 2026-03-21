@@ -7,7 +7,7 @@ import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar, Dropdown, DropdownItem, Tooltip } from '@/components/Atoms'
-import { PRINCIPAL_LINKS, ROLES } from '@/constants'
+import { PRINCIPAL_LINKS } from '@/constants'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -24,6 +24,8 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 			redirect: true,
 		})
 	}
+
+	const hasPermissionToManageUsers = JSON.parse(user?.role).users === true
 
 	return (
 		<footer className="border-gray-200 max-md:border-l max-md:pl-4 md:mt-auto md:border-t md:pt-4">
@@ -47,7 +49,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 					</button>
 				}
 			>
-				{user?.role === ROLES.ADMIN && (
+				{hasPermissionToManageUsers && (
 					<DropdownItem>
 						<button
 							className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"

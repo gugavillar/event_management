@@ -12,7 +12,6 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createUser(body),
-		isProtectedRoute: true,
 	})
 }
 
@@ -22,7 +21,6 @@ const handlerGet = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await getAllUsers(searchParams, pageParams),
-		isProtectedRoute: true,
 	})
 }
 

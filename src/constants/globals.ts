@@ -1,5 +1,3 @@
-import { ROLES } from './status'
-
 export const LIMIT_PER_PAGE = 10
 export const LIMIT_PER_PAGE_EDITION = 300
 export const IS_NOT_DEVELOPMENT = process.env.NODE_ENV !== 'development'
@@ -63,7 +61,7 @@ export enum EVENTS_MODAL_TYPE {
 
 export enum USERS_MODAL_TYPE {
 	BLOCK = 'block',
-	CHANGE_ROLE = 'change-role',
+	USER_PERMISSION = 'user_permission',
 	CREATE = 'create',
 	RESET_PASSWORD = 'reset-password',
 }
@@ -140,25 +138,43 @@ export const IMAGES_FORMS = {
 	happening: '/happening.webp',
 }
 
-export const PAGES_ROLES = {
-	'/dashboard': [ROLES.ADMIN, ROLES.USER],
-	'/doacoes': [ROLES.ADMIN],
-	'/eventos': [ROLES.ADMIN, ROLES.USER],
-	'/grupos': [ROLES.ADMIN, ROLES.USER],
-	'/participantes/fotos': [ROLES.ADMIN, ROLES.USER],
-	'/participantes/lista-interessados': [ROLES.ADMIN, ROLES.USER],
-	'/participantes/listagem': [ROLES.ADMIN, ROLES.USER],
-	'/participantes/pagamentos': [ROLES.ADMIN, ROLES.USER],
-	'/quartos': [ROLES.ADMIN, ROLES.USER],
-	'/reunioes': [ROLES.ADMIN, ROLES.USER],
-	'/transacoes': [ROLES.ADMIN],
-	'/usuarios': [ROLES.ADMIN],
-	'/voluntarios/funcoes': [ROLES.ADMIN, ROLES.USER],
-	'/voluntarios/listagem': [ROLES.ADMIN, ROLES.USER],
-	'/voluntarios/pagamentos': [ROLES.ADMIN, ROLES.USER],
-}
+export const PAGES = [
+	{ fieldName: 'dashboard', label: 'Dashboard' },
+	{ fieldName: 'donations', label: 'Doações' },
+	{ fieldName: 'events', label: 'Eventos' },
+	{ fieldName: 'groups', label: 'Grupos' },
+	{ fieldName: 'participants.picture', label: 'Participantes - Fotos' },
+	{ fieldName: 'participants.interest', label: 'Participantes - Lista de interessados' },
+	{ fieldName: 'participants.list', label: 'Participantes - Listagem' },
+	{ fieldName: 'participants.payment', label: 'Participantes - Pagamentos' },
+	{ fieldName: 'rooms', label: 'Quartos' },
+	{ fieldName: 'meetings', label: 'Reuniões' },
+	{ fieldName: 'transactions', label: 'Transações' },
+	{ fieldName: 'users', label: 'Usuários' },
+	{ fieldName: 'volunteers.functions', label: 'Voluntários - Funções' },
+	{ fieldName: 'volunteers.list', label: 'Voluntários - Listagem' },
+	{ fieldName: 'volunteers.payment', label: 'Voluntários - Pagamentos' },
+] as const
 
 export const COMMON_PROPS_TOOLTIPS_BUTTON_TABLE = {
 	side: 'bottom',
 	sideOffset: 5,
 } as const
+
+export const ROUTE_PERMISSIONS: Record<string, string> = {
+	'/dashboard': 'dashboard',
+	'/doacoes': 'donations',
+	'/eventos': 'events',
+	'/grupos': 'groups',
+	'/participantes/fotos': 'participants.picture',
+	'/participantes/lista-interessados': 'participants.interest',
+	'/participantes/listagem': 'participants.list',
+	'/participantes/pagamentos': 'participants.payment',
+	'/quartos': 'rooms',
+	'/reunioes': 'meetings',
+	'/transacoes': 'transactions',
+	'/usuarios': 'users',
+	'/voluntarios/funcoes': 'volunteers.functions',
+	'/voluntarios/listagem': 'volunteers.list',
+	'/voluntarios/pagamentos': 'volunteers.payment',
+}
