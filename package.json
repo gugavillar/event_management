@@ -98,7 +98,7 @@
 		"migrate:dev": "pnpx prisma migrate dev",
 		"prebuild": "next telemetry disable",
 		"prepare": "husky",
-		"pstudio": "pnpx prisma studio",
+		"pstudio": "pnpm prisma studio",
 		"seed": "pnpx prisma db seed",
 		"start": "next start",
 		"test": "jest",

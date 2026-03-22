@@ -9,6 +9,7 @@ export const useUpdateUserRole = () => {
 	const { isPending, mutateAsync: update } = useMutation({
 		mutationFn: updateUserRole,
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] })
 			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS] })
 		},
 	})
