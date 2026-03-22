@@ -3,7 +3,6 @@ import { getServerSession } from 'next-auth'
 import { ZodError } from 'zod'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
-import { ROLES } from '@/constants'
 import { formatZodValidationErrors } from '@/formatters'
 import { prisma } from '@/lib/prisma'
 
@@ -11,13 +10,11 @@ const isDevelopmentEnvironment = process.env.NODE_ENV !== 'production'
 
 type RequestProcessProps<T> = {
 	functions: () => Promise<T>
-	isProtectedRoute?: boolean
 	isNecessarySession?: boolean
 	successMessage?: string
 }
 export async function requestProcess<T>({
 	functions,
-	isProtectedRoute,
 	isNecessarySession = true,
 	successMessage,
 }: RequestProcessProps<T>) {
@@ -63,16 +60,6 @@ export async function requestProcess<T>({
 				}
 			)
 		}
-	}
-
-	if (isProtectedRoute && session?.user?.role !== ROLES.ADMIN) {
-		return NextResponse.json(
-			{
-				error: 'Usuário sem permissão!',
-				message: 'Usuário sem permissão!',
-			},
-			{ status: 403 }
-		)
 	}
 
 	try {

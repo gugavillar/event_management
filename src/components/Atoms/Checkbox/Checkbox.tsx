@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge'
 
 type CheckboxProps = ComponentPropsWithRef<'input'> & {
 	isInvalid?: boolean
-	label: string | ReactNode
+	label?: string | ReactNode
 }
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
@@ -20,9 +20,11 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 					type="checkbox"
 					{...props}
 				/>
-				<label className="ms-3 text-sm" htmlFor={props.id}>
-					{label}
-				</label>
+				{label && (
+					<label className="ms-3 text-sm" htmlFor={props.id}>
+						{label}
+					</label>
+				)}
 			</div>
 		)
 	}

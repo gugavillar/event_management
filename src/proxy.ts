@@ -2,20 +2,26 @@ import { NextResponse } from 'next/server'
 import { withAuth } from 'next-auth/middleware'
 
 import { authOptions } from './app/api/auth/[...nextauth]/authOptions'
-import { PAGES_ROLES, type ROLES } from './constants'
+import { hasPermission, ROUTE_PERMISSIONS } from './constants'
 
 export default withAuth(
 	async function middleware(req) {
 		const { pathname } = req.nextUrl
 		const nextToken = req.nextauth.token
-		const userHasPermissionToAccessPage = PAGES_ROLES[pathname as keyof typeof PAGES_ROLES].includes(
-			nextToken?.role as ROLES
-		)
+		const parsedRoles = JSON.parse(nextToken?.role || '{}')
+		const requiredPermission = ROUTE_PERMISSIONS[pathname as keyof typeof ROUTE_PERMISSIONS]
 
-		if (!userHasPermissionToAccessPage) {
-			const dashboardURL = new URL('/dashboard', req.url)
-			return NextResponse.redirect(dashboardURL)
+		if (!requiredPermission) {
+			return NextResponse.next()
 		}
+
+		const allowed = hasPermission(parsedRoles, requiredPermission)
+
+		if (!allowed) {
+			return NextResponse.redirect(new URL('/dashboard', req.url))
+		}
+
+		return NextResponse.next()
 	},
 	{
 		callbacks: {

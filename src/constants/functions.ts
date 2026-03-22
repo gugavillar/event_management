@@ -1,6 +1,6 @@
 import { isFuture } from 'date-fns'
 
-import { MEMBERS, type ROLES } from './status'
+import { MEMBERS } from './status'
 
 export const generatePage = (page: string | undefined) => {
 	if (!page) return 1
@@ -32,8 +32,19 @@ export const interestedListPermitCreateRegistration = (event: any) => {
 	return isFuture(new Date(event.initialDate))
 }
 
-export const validatePagePermission = (userRole: ROLES, pageRole: ROLES[]) => {
-	return pageRole.includes(userRole)
+export const hasPermission = (permissions: Record<string, any>, path: string): boolean => {
+	if (!path) return false
+
+	const keys = path.split('.')
+
+	let current = permissions
+
+	for (const key of keys) {
+		if (current[key] === undefined) return false
+		current = current[key]
+	}
+
+	return !!current
 }
 
 export const generatePrintKey = <T>(data: Array<{ id: string; members: Array<T> }>, listType?: string) => {

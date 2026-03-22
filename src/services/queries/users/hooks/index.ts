@@ -1,5 +1,6 @@
 export * from './useBlockOrUnblockUser'
 export * from './useCreateUser'
+export * from './useGetUser'
 export * from './useGetUsers'
 export * from './useResetPassword'
 export * from './useUpdatePassword'

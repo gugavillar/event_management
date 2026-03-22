@@ -17,7 +17,6 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 
 	return await requestProcess({
 		functions: async () => await resetUserPassword(routeParam, session?.user?.id as string),
-		isProtectedRoute: true,
 	})
 }
 

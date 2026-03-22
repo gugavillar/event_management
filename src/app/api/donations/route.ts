@@ -8,7 +8,6 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createDonation(data),
-		isProtectedRoute: true,
 	})
 }
 
@@ -18,7 +17,6 @@ const handlerGet = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await getAllDonations(searchParams, pageParams),
-		isProtectedRoute: true,
 	})
 }
 

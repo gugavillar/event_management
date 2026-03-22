@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
-import type { ROLES } from '@/constants'
+import type { UserPermissionDrawerType } from '@/components/Organisms/UserPermissionDrawer/UserPermissionDrawer.schema'
 import { updateUserRole } from '@/server'
 import { requestProcess } from '@/utils/prisma'
 
@@ -14,12 +14,11 @@ type Params = {
 
 const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	const session = await getServerSession(authOptions)
-	const body: { role: ROLES } = await request.json()
+	const body: { permissions: UserPermissionDrawerType } = await request.json()
 	const routeParam = await params.then((res) => res.user_id ?? '')
 
 	return await requestProcess({
-		functions: async () => await updateUserRole(routeParam, body.role, session?.user?.id as string),
-		isProtectedRoute: true,
+		functions: async () => await updateUserRole(routeParam, body.permissions, session?.user?.id as string),
 	})
 }
 

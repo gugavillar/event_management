@@ -15,7 +15,6 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 
 	return await requestProcess({
 		functions: async () => await updateInterestedParticipant(routeParam, body.interested),
-		isProtectedRoute: true,
 	})
 }
 

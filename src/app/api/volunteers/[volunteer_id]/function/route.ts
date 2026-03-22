@@ -19,7 +19,6 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 
 	return await requestProcess({
 		functions: async () => await updateVolunteerFunction(body, routeParams, onlyRemove),
-		isProtectedRoute: true,
 	})
 }
 

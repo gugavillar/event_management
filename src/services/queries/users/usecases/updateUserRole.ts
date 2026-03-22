@@ -1,4 +1,4 @@
-import type { ROLES } from '@/constants'
+import type { UserPermissionDrawerType } from '@/components/Organisms/UserPermissionDrawer/UserPermissionDrawer.schema'
 import { api } from '@/services/api'
 import { ENDPOINTS } from '@/services/endpoints'
 
@@ -6,11 +6,11 @@ import type { UserAPI } from '../users.type'
 
 type UpdateUserRoleArgs = {
 	userId: UserAPI['id']
-	role: ROLES
+	permissions: UserPermissionDrawerType
 }
 
-export const updateUserRole = async ({ userId, role }: UpdateUserRoleArgs) => {
-	const response = await api.patch(ENDPOINTS.UPDATE_USER_ROLE(userId), { role })
+export const updateUserRole = async ({ userId, permissions }: UpdateUserRoleArgs) => {
+	const response = await api.patch(ENDPOINTS.UPDATE_USER_ROLE(userId), { permissions })
 
 	return response.data
 }

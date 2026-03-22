@@ -18,7 +18,6 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 
 	return await requestProcess({
 		functions: async () => await blockOrUnblockUser(routeParam, session?.user?.id as string, body.blocked),
-		isProtectedRoute: true,
 	})
 }
 

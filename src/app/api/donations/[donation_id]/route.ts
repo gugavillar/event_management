@@ -13,7 +13,6 @@ const handleDelete = async (_: NextRequest, { params }: Params) => {
 	const routeParams = await params.then((res) => res.donation_id ?? '')
 	return await requestProcess({
 		functions: async () => removeDonationById(routeParams),
-		isProtectedRoute: true,
 	})
 }
 

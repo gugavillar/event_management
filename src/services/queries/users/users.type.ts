@@ -1,12 +1,10 @@
 import type { UUID } from 'node:crypto'
 
-import type { ROLES } from '@/constants'
-
 export type UserAPI = {
 	id: UUID
 	name: string
 	email: string
-	role: ROLES
+	role: string
 	firstAccess: boolean
 	deletedAt: string | null
 }

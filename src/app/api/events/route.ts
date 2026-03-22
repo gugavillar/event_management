@@ -12,7 +12,6 @@ const handlerPost = async (request: NextRequest) => {
 
 	return await requestProcess({
 		functions: async () => await createEvent(body, session?.user?.id as string),
-		isProtectedRoute: true,
 	})
 }
 

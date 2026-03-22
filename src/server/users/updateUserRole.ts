@@ -1,15 +1,19 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-import { ROLES } from '@/constants'
+import {
+	type UserPermissionDrawerType,
+	userPermissionDrawerSchema,
+} from '@/components/Organisms/UserPermissionDrawer/UserPermissionDrawer.schema'
 import { prisma } from '@/lib/prisma'
 
-export const updateUserRole = async (userId: string, role: ROLES, userIdLogged: string) => {
+export const updateUserRole = async (userId: string, role: UserPermissionDrawerType, userIdLogged: string) => {
 	try {
-		z.object({
-			role: z.enum([ROLES.ADMIN, ROLES.USER]),
-			userId: z.uuid(),
-		}).parse({ role, userId })
+		userPermissionDrawerSchema
+			.extend({
+				userId: z.uuid(),
+			})
+			.parse({ ...role, userId })
 
 		const isSameUser = userId === userIdLogged
 
@@ -26,7 +30,7 @@ export const updateUserRole = async (userId: string, role: ROLES, userIdLogged: 
 
 		return await prisma.user.update({
 			data: {
-				role,
+				role: JSON.stringify(role),
 			},
 			where: {
 				id: userId,
