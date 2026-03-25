@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { memo } from 'react'
 
-import { hasPermission, ROUTE_PERMISSIONS } from '@/constants'
+import { hasPermission, ROUTE_PERMISSIONS, safeParse } from '@/constants'
 
 import { MenuItem } from './MenuItem'
 import { MENU_LINKS } from './PrincipalMenu.utils'
@@ -16,7 +16,7 @@ type PrincipalMenuProps = {
 export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 	const path = usePathname()
 	const { data } = useSession()
-	const parsedRoles = JSON.parse(data?.user?.role || '{}')
+	const { data: parsedRoles } = safeParse(data?.user?.role)
 
 	const filteredMenuLinks = MENU_LINKS.reduce(
 		(acc, link) => {

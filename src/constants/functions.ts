@@ -90,3 +90,11 @@ export function deepTrim<T>(obj: T): T {
 
 	return obj
 }
+
+export const safeParse = (value: any) => {
+	try {
+		return { data: JSON.parse(value), success: true }
+	} catch (error) {
+		return { data: error, success: false }
+	}
+}

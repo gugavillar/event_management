@@ -21,7 +21,6 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 					firstAccess: true,
 					id: true,
 					name: true,
-					role: true,
 				},
 				skip,
 				take: LIMIT_PER_PAGE,

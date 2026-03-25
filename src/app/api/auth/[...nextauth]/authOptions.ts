@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import type { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
+import { safeParse } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
 const COOKIE_PREFIX = 'event-manager'
@@ -83,7 +84,13 @@ export const authOptions: NextAuthOptions = {
 					throw new Error('Senha incorreta!')
 				}
 
-				if (!user.role) {
+				const { data: parsedRoles, success } = safeParse(user.role)
+
+				if (!success) {
+					throw new Error('Erro ao analisar as permissões do usuário!')
+				}
+
+				if (!parsedRoles) {
 					throw new Error('Usuário sem permissão!')
 				}
 

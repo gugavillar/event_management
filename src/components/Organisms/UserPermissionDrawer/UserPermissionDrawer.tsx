@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 import { Button, Checkbox, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import type { SelectedUser } from '@/components/Templates'
-import { PAGES, USERS_MODAL_TYPE } from '@/constants'
+import { PAGES, safeParse, USERS_MODAL_TYPE } from '@/constants'
 import { useGetUser, useUpdateUserRole } from '@/services/queries/users'
 import type { UserAPI } from '@/services/queries/users/users.type'
 
@@ -73,7 +73,11 @@ export const UserPermissionDrawer = ({ selectedUser, setSelectedUser }: UserPerm
 
 	useEffect(() => {
 		if (!data) return
-		const parsedRoles = JSON.parse(data.role)
+		const { data: parsedRoles, success } = safeParse(data.role)
+		if (!success) {
+			toast.error('Erro ao carregar as permissões do usuário')
+			return
+		}
 		reset(parsedRoles, { keepDefaultValues: true })
 	}, [data, reset])
 
