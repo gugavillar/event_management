@@ -1,4 +1,4 @@
-import { differenceInYears, format, isBefore, isEqual, isPast, isValid, parse, startOfDay } from 'date-fns'
+import { differenceInYears, isBefore, isEqual, isPast, isValid, parse, startOfDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
 const getNumberDate = (date: string, formatString = 'yyyy-MM-dd') => {
@@ -9,12 +9,6 @@ const getNumberDate = (date: string, formatString = 'yyyy-MM-dd') => {
 			locale: ptBR,
 		}).getTime()
 	)
-}
-
-export const formatToBrazilianDate = (date: string) => {
-	if (!date) return ''
-
-	return format(date, 'dd/MM/yyyy', { locale: ptBR })
 }
 
 export const isValidateDate = (date: string) => {

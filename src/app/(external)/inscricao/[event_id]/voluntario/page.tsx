@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { notFound } from 'next/navigation'
 import { z } from 'zod'
 
@@ -36,6 +37,9 @@ export default async function RegistrationPage({ params }: Params) {
 	}
 
 	const backgroundImage = event?.imageUrl ? event.imageUrl : '/placeholder.png'
+	const startDate = format(event?.initialDate, 'dd/MM')
+	const endDate = format(event?.finalDate, 'dd/MM')
+	const year = format(event?.finalDate, 'yyyy')
 
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
@@ -44,7 +48,10 @@ export default async function RegistrationPage({ params }: Params) {
 				<div className="flex min-h-full flex-col items-center justify-center space-y-8 p-8">
 					<header className="space-y-2 text-center">
 						<h1 className="text-4xl">{event?.name}</h1>
-						<h2 className="text-3xl">Voluntário</h2>
+						<p className="text-2xl">Inscrição para voluntário</p>
+						<p className="text-lg">
+							🗓️ {startDate} a {endDate} de {year}
+						</p>
 					</header>
 					<ExternalVolunteerForm eventId={event?.id} registrationValue={Number(event?.volunteerPrice)} />
 				</div>

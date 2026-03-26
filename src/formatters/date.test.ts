@@ -1,6 +1,5 @@
 import {
 	formatDateToSendToApi,
-	formatToBrazilianDate,
 	isEqualOrIsBeforeFirstDate,
 	isValidateDate,
 	validateBirthdate,
@@ -8,18 +7,6 @@ import {
 } from './date'
 
 describe('date formatters', () => {
-	it('formatToBrazilianDate format correctly', () => {
-		const dateFormatted = formatToBrazilianDate(new Date().toISOString())
-		expect(dateFormatted).toBe(
-			`${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`
-		)
-	})
-
-	it('formatToBrazilianDate return empty string when no value is passed', () => {
-		const dateFormatted = formatToBrazilianDate('')
-		expect(dateFormatted).toBe('')
-	})
-
 	it('isValidateDate return false when no value is passed', () => {
 		const isDateValid = isValidateDate('')
 		expect(isDateValid).toBe(false)
