@@ -1,3 +1,4 @@
+export * from './automation'
 export * from './dashboard'
 export * from './donations'
 export * from './events'
