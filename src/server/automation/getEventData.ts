@@ -1,16 +1,11 @@
+import { NextResponse } from 'next/server'
+
 import { CHECK_IN_STATUS } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
 const queries = async (eventId: string | null) => {
 	const [participants, volunteers, participantsCities] = await Promise.all([
 		prisma.participant.findMany({
-			include: {
-				event: {
-					select: {
-						name: true,
-					},
-				},
-			},
 			where: {
 				...(eventId && { eventId }),
 				AND: {
@@ -45,13 +40,31 @@ const queries = async (eventId: string | null) => {
 	}
 }
 
-export const getEventData = async (eventId: string | null) => {
+export const getEventData = async () => {
 	try {
-		const { participantsCities, participants, volunteers } = await queries(eventId)
+		const event = await prisma.event.findFirst({
+			orderBy: {
+				initialDate: 'asc',
+			},
+			select: {
+				id: true,
+				name: true,
+			},
+			where: {
+				finalDate: { gt: new Date() },
+				initialDate: { gt: new Date() },
+			},
+		})
+
+		if (!event?.id) {
+			return NextResponse.json({ message: 'Nenhum evento encontrado' }, { status: 404 })
+		}
+
+		const { participantsCities, participants, volunteers } = await queries(event?.id)
 
 		const totalOfParticipants = participants.length
 		const totalOfVolunteers = volunteers.length
-		const eventName = participants[0]?.event.name || 'Evento'
+		const eventName = event?.name
 
 		const formattedCitiesCount = participantsCities.map((item) => ({
 			city: item.city,
