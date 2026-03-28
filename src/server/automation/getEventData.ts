@@ -57,7 +57,7 @@ export const getEventData = async () => {
 		})
 
 		if (!event?.id) {
-			return NextResponse.json({ message: 'Nenhum evento encontrado' }, { status: 404 })
+			return NextResponse.json({ data: { hasEvent: false } })
 		}
 
 		const { participantsCities, participants, volunteers } = await queries(event?.id)
@@ -73,6 +73,7 @@ export const getEventData = async () => {
 
 		return {
 			eventName,
+			hasEvent: true,
 			participants: totalOfParticipants,
 			participantsCities: formattedCitiesCount,
 			volunteers: totalOfVolunteers,
