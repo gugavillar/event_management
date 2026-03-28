@@ -5,8 +5,11 @@ const queries = async (eventId: string | null) => {
 	const [participants, volunteers, participantsCities] = await Promise.all([
 		prisma.participant.findMany({
 			include: {
-				event: true,
-				payments: true,
+				event: {
+					select: {
+						name: true,
+					},
+				},
 			},
 			where: {
 				...(eventId && { eventId }),
@@ -17,10 +20,6 @@ const queries = async (eventId: string | null) => {
 			},
 		}),
 		prisma.volunteer.findMany({
-			include: {
-				event: true,
-				payments: true,
-			},
 			where: {
 				...(eventId && { eventId }),
 				OR: [{ checkIn: null }, { checkIn: { not: CHECK_IN_STATUS.WITHDREW } }],
@@ -52,6 +51,7 @@ export const getEventData = async (eventId: string | null) => {
 
 		const totalOfParticipants = participants.length
 		const totalOfVolunteers = volunteers.length
+		const eventName = participants[0]?.event.name || 'Evento'
 
 		const formattedCitiesCount = participantsCities.map((item) => ({
 			city: item.city,
@@ -59,6 +59,7 @@ export const getEventData = async (eventId: string | null) => {
 		}))
 
 		return {
+			eventName,
 			participants: totalOfParticipants,
 			participantsCities: formattedCitiesCount,
 			volunteers: totalOfVolunteers,
