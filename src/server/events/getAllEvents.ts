@@ -9,7 +9,7 @@ export const getAllEvents = async (search: string | null, page = 1) => {
 			prisma.event.findMany({
 				...(search && {
 					where: {
-						name: { contains: search },
+						name: { contains: search, mode: 'insensitive' },
 					},
 				}),
 				orderBy: !search ? { createdAt: 'desc' } : { name: 'asc' },
@@ -19,7 +19,7 @@ export const getAllEvents = async (search: string | null, page = 1) => {
 			prisma.event.count({
 				...(search && {
 					where: {
-						name: { contains: search },
+						name: { contains: search, mode: 'insensitive' },
 					},
 				}),
 			}),

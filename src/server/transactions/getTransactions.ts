@@ -14,6 +14,7 @@ export const getTransactions = async (eventId: string | null, searchTransaction:
 							...(searchTransaction && {
 								description: {
 									contains: searchTransaction,
+									mode: 'insensitive',
 								},
 							}),
 						},
@@ -32,6 +33,7 @@ export const getTransactions = async (eventId: string | null, searchTransaction:
 							...(searchTransaction && {
 								description: {
 									contains: searchTransaction,
+									mode: 'insensitive',
 								},
 							}),
 						},

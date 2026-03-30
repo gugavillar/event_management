@@ -26,7 +26,7 @@ export const getAllParticipants = async (
 				take: limit,
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { contains: search } }),
+					...(search && { name: { contains: search, mode: 'insensitive' } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
@@ -49,7 +49,7 @@ export const getAllParticipants = async (
 			prisma.participant.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { contains: search } }),
+					...(search && { name: { contains: search, mode: 'insensitive' } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),

@@ -9,7 +9,7 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 			prisma.user.findMany({
 				...(search && {
 					where: {
-						name: { contains: search },
+						name: { contains: search, mode: 'insensitive' },
 					},
 				}),
 				orderBy: {
@@ -28,7 +28,7 @@ export const getAllUsers = async (search: string | null, page = 1) => {
 			prisma.user.count({
 				...(search && {
 					where: {
-						name: { contains: search },
+						name: { contains: search, mode: 'insensitive' },
 					},
 				}),
 			}),

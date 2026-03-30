@@ -32,7 +32,7 @@ export const getAllVolunteers = async (
 				take: limit,
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { contains: search } }),
+					...(search && { name: { contains: search, mode: 'insensitive' } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),
@@ -60,7 +60,7 @@ export const getAllVolunteers = async (
 			prisma.volunteer.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { contains: search } }),
+					...(search && { name: { contains: search, mode: 'insensitive' } }),
 					...(status && {
 						checkIn: status !== CHECK_IN_STATUS.NOT_ANSWERED ? status : null,
 					}),

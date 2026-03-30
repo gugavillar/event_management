@@ -11,7 +11,7 @@ export const getAllFunctions = async (search: string | null, eventId: string) =>
 			orderBy: { volunteerRole: { role: 'asc' } },
 			where: {
 				eventId,
-				...(search && { volunteerRole: { role: { contains: search } } }),
+				...(search && { volunteerRole: { role: { contains: search, mode: 'insensitive' } } }),
 			},
 		})
 	} catch (error) {

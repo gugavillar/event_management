@@ -22,7 +22,7 @@ export const getAllParticipantsPayments = async (
 				take: LIMIT_PER_PAGE,
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { contains: search } }),
+					...(search && { name: { contains: search, mode: 'insensitive' } }),
 					...(paymentType && {
 						payments: {
 							...(paymentType !== PaymentTypeAPI.OPEN
@@ -47,7 +47,7 @@ export const getAllParticipantsPayments = async (
 			prisma.participant.count({
 				where: {
 					...(eventId && { eventId }),
-					...(search && { name: { contains: search } }),
+					...(search && { name: { contains: search, mode: 'insensitive' } }),
 					...(paymentType && {
 						payments: {
 							...(paymentType !== PaymentTypeAPI.OPEN
