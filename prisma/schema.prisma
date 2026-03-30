@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -57,7 +57,7 @@ model User {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
-  role         String?   @db.VarChar(300)
+  role         String?
   events       Event[]   @relation("UserToEvent")
 
   @@map("users")
@@ -69,8 +69,8 @@ model Event {
   gender                        Gender
   initialDate                   DateTime
   finalDate                     DateTime
-  participantPrice              Decimal
-  volunteerPrice                Decimal
+  participantPrice              Decimal              @db.Decimal(8, 2)
+  volunteerPrice                Decimal              @db.Decimal(8, 2)
   isParticipantRegistrationOpen Boolean              @default(true)
   isVolunteerRegistrationOpen   Boolean              @default(true)
   isInterestedListOpen          Boolean              @default(false)
@@ -169,8 +169,8 @@ model VolunteerAddress {
 
 model VolunteerPayment {
   id              String         @id @default(uuid())
-  paymentValue    Decimal
-  paymentReceived Decimal?
+  paymentValue    Decimal        @db.Decimal(8, 2)
+  paymentReceived Decimal?       @db.Decimal(8, 2)
   paymentType     PaymentType?
   eventId         String
   event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
@@ -229,8 +229,8 @@ model ParticipantAddress {
 
 model ParticipantPayment {
   id              String         @id @default(uuid())
-  paymentValue    Decimal
-  paymentReceived Decimal?
+  paymentValue    Decimal        @db.Decimal(8, 2)
+  paymentReceived Decimal?       @db.Decimal(8, 2)
   paymentType     PaymentType?
   eventId         String
   event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
@@ -323,7 +323,7 @@ model Donation {
   id          String        @id @default(uuid())
   eventId     String
   name        String
-  value       Decimal
+  value       Decimal       @db.Decimal(8, 2)
   type        PaymentType?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
@@ -335,7 +335,7 @@ model Transactions {
   id                   String                          @id @default(uuid())
   eventId              String
   type                 TransactionsType
-  amount               Decimal
+  amount               Decimal                         @db.Decimal(8, 2)
   description          String
   date                 DateTime
   amountType           TransactionsIncomeOrOutcomeType
