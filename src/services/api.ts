@@ -7,7 +7,7 @@ import { PRINCIPAL_LINKS } from '@/constants'
 import { BASE_URL } from './endpoints'
 
 export const api = axios.create({
-	baseURL: BASE_URL,
+	baseURL: isServer ? BASE_URL : '/api',
 })
 
 api.interceptors.request.use(async (config) => {
