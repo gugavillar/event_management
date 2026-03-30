@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { Image } from '@/components/Atoms'
 import { ClosedInscriptions, ExternalVolunteerForm } from '@/components/Templates'
 import { eventPermitCreateRegistration, MEMBERS } from '@/constants'
-import { getEvent } from '@/services/queries/events'
+import { getEventById } from '@/server'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 
 type Params = {
@@ -28,7 +28,11 @@ export default async function RegistrationPage({ params }: Params) {
 		notFound()
 	}
 
-	const event: EventsAPI = await getEvent(pageParams.event_id)
+	const event = await getEventById(pageParams.event_id)
+
+	if (!event) {
+		notFound()
+	}
 
 	const isRegistrationPermitted = eventPermitCreateRegistration(event, MEMBERS.VOLUNTEER)
 
