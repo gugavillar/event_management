@@ -28,7 +28,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 	const hasPermissionToManageUsers = JSON.parse(user?.role).users === true
 
 	return (
-		<footer className="border-gray-200 max-md:border-l max-md:pl-4 md:mt-auto md:border-t md:pt-4">
+		<footer className="border-gray-200 md:mt-auto md:border-t md:pt-4">
 			<Dropdown
 				trigger={
 					<button

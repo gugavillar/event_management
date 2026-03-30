@@ -43,7 +43,7 @@ export const PrincipalMenu = memo(({ collapsed }: PrincipalMenuProps) => {
 	)
 
 	return (
-		<nav className="flex w-full flex-row justify-evenly md:mt-8 md:flex-col md:space-y-4" data-testid="principal-menu">
+		<nav className="flex w-full flex-row md:mt-8 md:flex-col md:space-y-4" data-testid="principal-menu">
 			{filteredMenuLinks.map((item) =>
 				item.hasSubMenu ? (
 					<SubMenuItem {...item} collapsed={collapsed} key={item.buttonLabel} path={path} />

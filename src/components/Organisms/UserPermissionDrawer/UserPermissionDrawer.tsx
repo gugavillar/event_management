@@ -30,6 +30,8 @@ export const UserPermissionDrawer = ({ selectedUser, setSelectedUser }: UserPerm
 			dashboard: true,
 			donations: false,
 			events: false,
+			groups: false,
+			meetings: false,
 			participants: {
 				interest: false,
 				list: false,
