@@ -1,6 +1,7 @@
 export const LIMIT_PER_PAGE = 10
 export const LIMIT_PER_PAGE_EDITION = 300
 export const IS_NOT_DEVELOPMENT = process.env.NODE_ENV !== 'development'
+export const IS_SERVER = typeof window === 'undefined'
 
 export enum PARTICIPANT_MODAL_TYPE {
 	CHECK_IN = 'check-in',

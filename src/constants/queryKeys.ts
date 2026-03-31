@@ -1,4 +1,6 @@
-import { isServer, QueryClient } from '@tanstack/react-query'
+import { QueryClient } from '@tanstack/react-query'
+
+import { IS_SERVER } from '@/constants'
 
 const makeQueryClient = () =>
 	new QueryClient({
@@ -49,7 +51,7 @@ export const QUERY_KEYS = {
 } as const
 
 export const getQueryClient = () => {
-	if (isServer) {
+	if (IS_SERVER) {
 		return makeQueryClient()
 	}
 	if (!browserQueryClient) {
