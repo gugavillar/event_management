@@ -80,7 +80,7 @@ export const UserPermissionDrawer = ({ selectedUser, setSelectedUser }: UserPerm
 			toast.error('Erro ao carregar as permissões do usuário')
 			return
 		}
-		reset(parsedRoles, { keepDefaultValues: true })
+		reset(parsedRoles)
 	}, [data, reset])
 
 	return (
