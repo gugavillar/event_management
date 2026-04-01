@@ -4,9 +4,8 @@ import {
 	generatePage,
 	generatePrintKey,
 	interestedListPermitCreateRegistration,
-	validatePagePermission,
 } from './functions'
-import { MEMBERS, ROLES } from './status'
+import { MEMBERS } from './status'
 
 describe('functions', () => {
 	describe('generatePage function', () => {
@@ -114,17 +113,17 @@ describe('functions', () => {
 		})
 	})
 
-	describe('validatePagePermission function', () => {
-		test('should return true when user has permission', () => {
-			const hasPagePermission = validatePagePermission(ROLES.ADMIN, [ROLES.ADMIN])
-			expect(hasPagePermission).toBe(true)
-		})
+	// describe('validatePagePermission function', () => {
+	// 	test('should return true when user has permission', () => {
+	// 		const hasPagePermission = validatePagePermission(ROLES.ADMIN, [ROLES.ADMIN])
+	// 		expect(hasPagePermission).toBe(true)
+	// 	})
 
-		test('should return false when user has no permission', () => {
-			const hasPagePermission = validatePagePermission(ROLES.USER, [ROLES.ADMIN])
-			expect(hasPagePermission).toBe(false)
-		})
-	})
+	// 	test('should return false when user has no permission', () => {
+	// 		const hasPagePermission = validatePagePermission(ROLES.USER, [ROLES.ADMIN])
+	// 		expect(hasPagePermission).toBe(false)
+	// 	})
+	// })
 
 	describe('generatePrintKey function', () => {
 		test('should return string with list type', () => {

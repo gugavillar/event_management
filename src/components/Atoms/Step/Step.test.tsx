@@ -2,6 +2,12 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import { Step } from './Step'
 
+vi.mock('react-hook-form', () => ({
+	useFormContext: vi.fn().mockReturnValue({
+		watch: vi.fn(),
+	}),
+}))
+
 const stepsProps = {
 	handleFinish: vi.fn(),
 	handleNext: vi.fn(),

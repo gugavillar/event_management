@@ -1,6 +1,8 @@
-import { differenceInYears, format } from 'date-fns'
+import { differenceInYears, format, parseISO } from 'date-fns'
 
 import { CHECK_IN_STATUS, PaymentType, PaymentTypeAPI, StatusType } from '@/constants'
+
+import { getNumberDate } from './date'
 
 export const paymentStatus = (
 	checkInStatus: keyof typeof CHECK_IN_STATUS | null,
@@ -27,12 +29,15 @@ export const formatCheckIn = (checkIn: keyof typeof CHECK_IN_STATUS | null) => {
 	return StatusType[checkIn].label
 }
 
-export const formatBirthdate = (birthdate: string | Date, eventFinalDate: string | Date, showAge = true) => {
+export const formatBirthdate = (birthdate: string, eventFinalDate: string, showAge = true) => {
 	if (!birthdate || !eventFinalDate) return ''
 
+	const birth = getNumberDate(birthdate)
+	const eventDate = getNumberDate(eventFinalDate)
+
 	if (!showAge) {
-		return format(birthdate, 'dd/MM/yyyy')
+		return format(birth, 'dd/MM/yyyy')
 	}
 
-	return `${format(birthdate, 'dd/MM/yyyy')} - ${differenceInYears(new Date(eventFinalDate), birthdate)} anos`
+	return `${format(birth, 'dd/MM/yyyy')} - ${differenceInYears(new Date(eventDate), birth)} anos`
 }
