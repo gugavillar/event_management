@@ -27,4 +27,11 @@ describe('Function Tag Component', () => {
 		const { getByTestId } = render(<FunctionTag className="custom-class" data-testid="function-tag" status="Função" />)
 		expect(getByTestId('function-tag')).toHaveClass('custom-class')
 	})
+
+	it('should show badge pin when is leader', () => {
+		const { getByRole } = render(
+			<FunctionTag className="custom-class" data-testid="function-tag" isLeader status="Função" />
+		)
+		expect(getByRole('badge-pin')).toBeInTheDocument()
+	})
 })

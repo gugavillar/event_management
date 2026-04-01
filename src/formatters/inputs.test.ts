@@ -23,9 +23,31 @@ describe('inputs formatters', () => {
 		expect(formattedValues).toEqual([])
 	})
 
+	it('formatterFieldSelectValues function return empty array when no values are passed', () => {
+		const formattedValues = formatterFieldSelectValues(undefined, 'name', 'id')
+		expect(formattedValues).toEqual([])
+	})
+
+	it('formatterFieldSelectValues return values correctly when no label key is provided', () => {
+		const mockValues = ['teste', 'teste2', 'teste3']
+		const formattedValues = formatterFieldSelectValues(mockValues)
+		expect(formattedValues).toEqual(mockValues.map((value) => ({ label: value, value: value })))
+	})
+
 	it('formatterComboBoxValues return empty array', () => {
 		const formattedValues = formatterComboBoxValues([], 'name', 'id')
 		expect(formattedValues).toEqual([])
+	})
+
+	it('formatterComboBoxValues return empty array when no values are passed', () => {
+		const formattedValues = formatterComboBoxValues(undefined, 'name', 'id')
+		expect(formattedValues).toEqual([])
+	})
+
+	it('formattedComboBoxValues return values correctly when no label key is provided', () => {
+		const mockValues = ['teste', 'teste2', 'teste3']
+		const formattedValues = formatterComboBoxValues(mockValues)
+		expect(formattedValues).toEqual(mockValues.map((value) => ({ customProps: { label: value, value: value } })))
 	})
 
 	it('formatterComboBoxValues function format correctly', () => {

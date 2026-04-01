@@ -1,19 +1,20 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import type { Mock } from 'vitest'
 
 import { Pagination } from './Pagination'
 import { usePagination } from './Pagination.utils'
 
-jest.mock('./Pagination.utils', () => ({
-	usePagination: jest.fn(),
+vi.mock('./Pagination.utils', () => ({
+	usePagination: vi.fn(),
 }))
 
-const mockedUsePagination = usePagination as jest.Mock
+const mockedUsePagination = usePagination as Mock
 
 describe('Pagination component', () => {
-	const setPage = jest.fn()
+	const setPage = vi.fn()
 
 	beforeEach(() => {
-		jest.clearAllMocks()
+		vi.clearAllMocks()
 	})
 
 	it('is prev button disabled on first page', () => {

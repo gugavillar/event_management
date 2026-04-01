@@ -22,13 +22,14 @@ export const Modal = ({ children, isLarge, open, disableClose, onOpenChange }: M
 						isLarge && 'md:w-xl lg:w-6xl',
 						'data-[state=closed]:animate-overlay-out data-[state=open]:animate-overlay-in'
 					)}
+					role="content"
 				>
 					<AlertDialog.Title className="sr-only">Modal</AlertDialog.Title>
 					<AlertDialog.Cancel
 						className="absolute top-3 right-3 flex size-7 cursor-pointer items-center justify-center rounded-full border border-transparent font-semibold text-gray-800 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 						disabled={disableClose}
 					>
-						<CircleX size={20} />
+						<CircleX role="close-modal" size={20} />
 					</AlertDialog.Cancel>
 					{children}
 				</AlertDialog.Content>

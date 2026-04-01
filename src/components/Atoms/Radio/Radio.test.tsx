@@ -78,7 +78,7 @@ describe('Radio component', () => {
 	})
 
 	it('executa o onChange corretamente', () => {
-		const onChangeMock = jest.fn()
+		const onChangeMock = vi.fn()
 
 		const { getAllByRole } = render(
 			<Radio fieldName="test" name="radio-test" onChange={onChangeMock} options={options} />

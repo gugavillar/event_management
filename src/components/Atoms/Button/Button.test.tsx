@@ -30,7 +30,7 @@ describe('Button component', () => {
 	})
 
 	it('calls onClick function when clicked', () => {
-		const mockFn = jest.fn()
+		const mockFn = vi.fn()
 		const { getByRole } = render(<Button onClick={mockFn}>Button</Button>)
 		const button = getByRole('button', { name: 'Button' })
 		fireEvent.click(button)
