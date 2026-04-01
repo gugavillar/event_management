@@ -1,7 +1,7 @@
 import { differenceInYears, isBefore, isEqual, isPast, isValid, parse, startOfDay } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
-export const getNumberDate = (date: string, formatString = 'yyyy-MM-dd') => {
+const getNumberDate = (date: string, formatString = 'yyyy-MM-dd') => {
 	if (!date) return NaN
 
 	return startOfDay(

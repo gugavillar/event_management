@@ -1,6 +1,5 @@
 import {
 	formatDateToSendToApi,
-	getNumberDate,
 	isEqualOrIsBeforeFirstDate,
 	isValidateDate,
 	validateBirthdate,
@@ -8,16 +7,6 @@ import {
 } from './date'
 
 describe('date formatters', () => {
-	it('getNumberDate return NaN when no value is passed', () => {
-		const numberDate = getNumberDate('')
-		expect(numberDate).toBe(NaN)
-	})
-
-	it('getNumberDate return number when valid date is passed', () => {
-		const numberDate = getNumberDate('2000-01-01')
-		expect(new Date(numberDate).toISOString()).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/)
-	})
-
 	it('isValidateDate return false when no value is passed', () => {
 		const isDateValid = isValidateDate('')
 		expect(isDateValid).toBe(false)
