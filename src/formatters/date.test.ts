@@ -12,12 +12,12 @@ describe('date formatters', () => {
 		expect(isDateValid).toBe(false)
 	})
 
-	it('isValidateDate return true when brasilian date is valid', () => {
+	it('isValidateDate return true when brazil date is valid', () => {
 		const isDateValid = isValidateDate('01/01/2000')
 		expect(isDateValid).toBe(true)
 	})
 
-	it('isValidateDate return false when brasilian date is not valid', () => {
+	it('isValidateDate return false when brazil date is not valid', () => {
 		const isDateValid = isValidateDate('31/02/2000')
 		expect(isDateValid).toBe(false)
 	})
