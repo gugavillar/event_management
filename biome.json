@@ -80,6 +80,7 @@
 		},
 		"enabled": true,
 		"rules": {
+			"correctness": { "noUnusedImports": "error" },
 			"nursery": { "useSortedClasses": "error" },
 			"recommended": false,
 			"style": { "useBlockStatements": "off", "useImportType": "on" }

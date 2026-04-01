@@ -10,7 +10,8 @@
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@tests": ["./vitest.setup.ts"]
 		},
 		"plugins": [
 			{
@@ -25,5 +26,13 @@
 		"types": ["vitest/globals"]
 	},
 	"exclude": ["node_modules"],
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next", ".next/dev/types/**/*.ts"]
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		".next",
+		".next/dev/types/**/*.ts",
+		"vitest.setup.ts"
+	]
 }

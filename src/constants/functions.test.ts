@@ -3,7 +3,9 @@ import {
 	eventPermitCreateRegistration,
 	generatePage,
 	generatePrintKey,
+	hasPermission,
 	interestedListPermitCreateRegistration,
+	safeParse,
 } from './functions'
 import { MEMBERS } from './status'
 
@@ -172,6 +174,29 @@ describe('functions', () => {
 				],
 				name: 'any-name',
 			})
+		})
+	})
+
+	describe('safeParse function', () => {
+		it('should return success false and data null when value is not json', () => {
+			const { success } = safeParse('undefined')
+			expect(success).toBe(false)
+		})
+
+		it('should return success true and data when value is json', () => {
+			const { success, data } = safeParse('{"id":"any-id"}')
+			expect(success).toBe(true)
+			expect(data).toStrictEqual({ id: 'any-id' })
+		})
+	})
+
+	describe('hasPermission function', () => {
+		it('should return false when path not passed', () => {
+			expect(hasPermission({}, '')).toBe(false)
+		})
+
+		it('should return true when path is passed and correct permissions', () => {
+			expect(hasPermission({ '/any-path': 'any-path' }, '/any-path')).toBe(true)
 		})
 	})
 })

@@ -2,13 +2,13 @@ name: Build Docker images
 
 on:
   push:
-    branches: 'main'
+    branches: "main"
     paths:
-      - 'Dockerfile'
-      - 'src/**'
-      - 'package.json'
-      - 'prisma/**'
-      - 'public/**'
+      - "Dockerfile"
+      - "src/**"
+      - "package.json"
+      - "prisma/**"
+      - "public/**"
 
 jobs:
   build-and-push-dockerfile-image:
@@ -40,8 +40,8 @@ jobs:
       - name: Run biome
         run: biome ci .
 
-      # - name: Run unit tests
-      #   run: pnpm test
+      - name: Run unit tests
+        run: pnpm test
 
       # - name: Delete database
       #   env:
