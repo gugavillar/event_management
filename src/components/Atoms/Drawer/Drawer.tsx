@@ -30,6 +30,7 @@ export const Drawer = ({ children, headingTitle, handleClose, className, isOpen 
 						<AlertDialog.Title asChild>
 							<Header as="h3">{headingTitle}</Header>
 						</AlertDialog.Title>
+						<AlertDialog.Description className="sr-only">Drawer de ação</AlertDialog.Description>
 						<AlertDialog.Cancel
 							className="absolute top-4 right-3 flex size-7 cursor-pointer items-center justify-center rounded-full border border-transparent font-semibold text-gray-800 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 							role="close-button"

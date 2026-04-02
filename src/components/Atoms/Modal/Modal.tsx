@@ -9,9 +9,10 @@ type ModalProps = {
 	children: ReactNode
 	isLarge?: boolean
 	disableClose?: boolean
+	description?: string
 }
 
-export const Modal = ({ children, isLarge, open, disableClose, onOpenChange }: ModalProps) => {
+export const Modal = ({ children, isLarge, open, disableClose, onOpenChange, description }: ModalProps) => {
 	return (
 		<AlertDialog.Root onOpenChange={onOpenChange} open={open}>
 			<AlertDialog.Portal>
@@ -25,6 +26,7 @@ export const Modal = ({ children, isLarge, open, disableClose, onOpenChange }: M
 					role="content"
 				>
 					<AlertDialog.Title className="sr-only">Modal</AlertDialog.Title>
+					<AlertDialog.Description className="sr-only">{description ?? 'Modal de confirmação'}</AlertDialog.Description>
 					<AlertDialog.Cancel
 						className="absolute top-3 right-3 flex size-7 cursor-pointer items-center justify-center rounded-full border border-transparent font-semibold text-gray-800 text-sm hover:bg-gray-100 disabled:pointer-events-none disabled:opacity-50"
 						disabled={disableClose}
