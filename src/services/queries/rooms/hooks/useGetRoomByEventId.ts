@@ -11,7 +11,7 @@ import { getRoomByEventId } from '../usecases'
 
 export const useGetRoomByEventId = (eventId: string) => {
 	const [roomEventId, setRoomEventId] = useQueryState('eventId', {
-		defaultValue: eventId,
+		defaultValue: '',
 	})
 	const [searchMemberRoom, setSearchMemberRoom] = useQueryState('searchMemberRoom', {
 		defaultValue: '',
@@ -20,7 +20,7 @@ export const useGetRoomByEventId = (eventId: string) => {
 	const debounceSearchMember = useDebounce(searchMemberRoom, 500)
 
 	const { isLoading, data }: UseQueryResult<Array<RoomAPI>> = useQuery({
-		enabled: !!roomEventId,
+		enabled: !!eventId,
 		initialData: [],
 		queryFn: () => getRoomByEventId(roomEventId as RoomAPI['id'], debounceSearchMember),
 		queryKey: [QUERY_KEYS.ROOMS, roomEventId, debounceSearchMember],
