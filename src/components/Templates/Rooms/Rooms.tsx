@@ -29,7 +29,7 @@ const RoomDrawer = dynamic(() => import('@/components/Organisms').then((mod) => 
 
 const RoomsPrint = dynamic(() => import('./RoomsPrint').then((mod) => mod.RoomsPrint))
 
-export const Rooms = ({ eventId }: { eventId: string }) => {
+export const Rooms = () => {
 	const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null)
 
 	const {
@@ -39,7 +39,7 @@ export const Rooms = ({ eventId }: { eventId: string }) => {
 		isLoading,
 		searchMemberRoom,
 		setSearchMemberRoom,
-	} = useGetRoomByEventId(eventId)
+	} = useGetRoomByEventId()
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const methods = useForm<RoomSchemaType>({
