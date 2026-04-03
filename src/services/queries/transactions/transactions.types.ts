@@ -1,15 +1,17 @@
 import type { UUID } from 'node:crypto'
 
+import type { TransactionAmountType, TransactionsType } from '@/constants'
+
 import type { EventsAPI } from '../events/event.type'
 
 export type TransactionsAPI = {
 	id: UUID
 	eventId: UUID
-	type: 'INCOME' | 'OUTCOME'
+	type: TransactionsType
 	description: string
 	date: string
 	amount: string
-	amountType: 'ACCOUNT' | 'CASH'
+	amountType: TransactionAmountType
 	createdAt: string
 	event: EventsAPI
 }

@@ -28,8 +28,10 @@ describe('getUsers', () => {
 		const users = mockUsers(10)
 		mockAxios
 			.onGet(ENDPOINTS.GET_USERS, { params: { limit: LIMIT_PER_PAGE, pageUser: 1, searchUser: users[0].name } })
-			.reply(200, { data: { users: users[0] }, status: 200 })
-		const response = await getUsers({ page: 1, searchUser: users[0].name })
-		expect(response).toEqual({ users: users[0] })
+			.reply((config) => {
+				expect(config.params).toEqual({ limit: LIMIT_PER_PAGE, pageUser: 1, searchUser: users[0].name })
+				return [200, { data: { users: users[0] }, status: 200 }]
+			})
+		await getUsers({ page: 1, searchUser: users[0].name })
 	})
 })

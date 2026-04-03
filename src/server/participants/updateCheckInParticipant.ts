@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export type UpdateCheckInParticipantArgs = {
 	participantId: string
-	status: (typeof CHECK_IN_STATUS)['CONFIRMED' | 'WITHDREW']
+	status: CHECK_IN_STATUS
 }
 
 export const updateCheckInParticipant = async ({ participantId, status }: UpdateCheckInParticipantArgs) => {
