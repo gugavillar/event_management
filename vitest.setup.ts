@@ -13,7 +13,8 @@ beforeAll(() => {
 	mockCityAxios = new AxiosMockAdapter(ibgeUfAPI)
 })
 
-afterEach(() => {
+beforeEach(() => {
+	vi.clearAllMocks()
 	mockAxios.reset()
 	mockCityAxios.reset()
 })

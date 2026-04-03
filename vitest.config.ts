@@ -17,6 +17,7 @@ export default defineConfig({
 				'src/**/**/index.ts',
 				'src/app/**',
 				'src/**/**/*.types.ts',
+				'src/server/**',
 			],
 			include: ['src/**/*.{ts,tsx}'],
 			provider: 'v8',

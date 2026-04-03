@@ -1,7 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { renderHook, waitFor } from '@testing-library/react'
 import type { UUID } from 'crypto'
-import { beforeEach } from 'vitest'
 
 import { createWrapper } from '@/utils/test-utils'
 
@@ -15,10 +14,6 @@ vi.mock('../usecases', () => ({
 const id = faker.string.uuid() as UUID
 
 describe('useGetUser', () => {
-	beforeEach(() => {
-		vi.clearAllMocks()
-	})
-
 	it('should call getUser with the correct id', async () => {
 		const mockGetUser = vi.mocked(usecases.getUser)
 		mockGetUser.mockResolvedValue({

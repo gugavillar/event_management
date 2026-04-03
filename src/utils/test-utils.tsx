@@ -1,12 +1,32 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type { ReactNode } from 'react'
+import { type ReactNode, useState } from 'react'
 
-vi.mock('nuqs', () => ({
-	parseAsInteger: { withDefault: vi.fn() },
-	parseAsString: { withDefault: vi.fn() },
-	useQueryState: vi.fn(() => [null, vi.fn()]),
-	useQueryStates: vi.fn(() => [{}, vi.fn()]),
-}))
+vi.mock('nuqs', () => {
+	const createParserMock = () => ({
+		withDefault: vi.fn().mockReturnThis(),
+	})
+
+	return {
+		parseAsInteger: createParserMock(),
+		parseAsString: createParserMock(),
+
+		useQueryState: () => {
+			const [value, setValue] = useState<any>(null)
+
+			return [
+				value,
+				(newValue: any) => {
+					setValue(newValue)
+				},
+			]
+		},
+
+		useQueryStates: () => {
+			const [state, setState] = useState({})
+			return [state, setState]
+		},
+	}
+})
 
 vi.mock('nuqs/adapters/next/app', () => ({
 	NuqsAdapter: ({ children }: { children: React.ReactNode }) => children,

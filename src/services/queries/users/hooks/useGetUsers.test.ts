@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { createWrapper } from '@/utils/test-utils'
 
@@ -33,9 +33,9 @@ describe('useGetUsers', () => {
 		})
 		const wrapper = createWrapper()
 		const { result } = renderHook(() => useGetUsers(), { wrapper })
-		result.current.setPage(2)
+		await act(async () => await result.current.setPage(2))
 		await waitFor(() => {
-			expect(result.current.setPage).toHaveBeenCalledWith(2)
+			expect(result.current.page).toBe(2)
 		})
 	})
 
@@ -46,9 +46,9 @@ describe('useGetUsers', () => {
 		})
 		const wrapper = createWrapper()
 		const { result } = renderHook(() => useGetUsers(), { wrapper })
-		result.current.setSearch('any-name')
+		await act(async () => await result.current.setSearch('any-name'))
 		await waitFor(() => {
-			expect(result.current.setSearch).toHaveBeenCalledWith('any-name')
+			expect(result.current.search).toBe('any-name')
 		})
 	})
 })
