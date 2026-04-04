@@ -8,7 +8,7 @@ type GetDashboardDataParams = {
 export const getDashboardData = async ({ eventId }: GetDashboardDataParams) => {
 	const response = await api.get(ENDPOINTS.GET_DASHBOARD, {
 		params: {
-			...(eventId && { eventId }),
+			eventId,
 		},
 	})
 	return response.data

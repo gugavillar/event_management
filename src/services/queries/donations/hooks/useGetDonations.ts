@@ -28,6 +28,7 @@ export const useGetDonations = () => {
 	}, [eventId])
 
 	const { data, isLoading }: UseQueryResult<DonationsFromAPI> = useQuery({
+		enabled: !!eventId,
 		queryFn: () => getDonations({ eventId, page }),
 		queryKey: [QUERY_KEYS.DONATIONS, eventId, page],
 	})

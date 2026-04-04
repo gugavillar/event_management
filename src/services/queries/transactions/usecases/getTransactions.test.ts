@@ -40,28 +40,42 @@ const mockTransactions = {
 describe('getTransactions', () => {
 	it('should return transactions', async () => {
 		mockAxios.onGet(ENDPOINTS.GET_TRANSACTIONS).reply(200, { data: mockTransactions })
-		const response = await getTransactions({ eventId: '', page: 1 })
+		const response = await getTransactions({ eventId: mockTransactions.data[0].eventId, page: 1 })
 		expect(response).toEqual(mockTransactions)
 	})
 
 	it('should pass correct params', async () => {
-		mockAxios.onGet(ENDPOINTS.GET_TRANSACTIONS, { params: { limit: LIMIT_PER_PAGE, page: 1 } }).reply((config) => {
-			expect(config.params).toEqual({ limit: LIMIT_PER_PAGE, page: 1 })
-			return [200, { data: mockTransactions }]
-		})
-		await getTransactions({ page: 1 })
+		mockAxios
+			.onGet(ENDPOINTS.GET_TRANSACTIONS, {
+				params: { eventId: mockTransactions.data[0].eventId, limit: LIMIT_PER_PAGE, page: 1 },
+			})
+			.reply((config) => {
+				expect(config.params).toEqual({ eventId: mockTransactions.data[0].eventId, limit: LIMIT_PER_PAGE, page: 1 })
+				return [200, { data: mockTransactions }]
+			})
+		await getTransactions({ eventId: mockTransactions.data[0].eventId, page: 1 })
 	})
 
 	it('should pass correct param searchTransaction', async () => {
 		mockAxios
 			.onGet(ENDPOINTS.GET_TRANSACTIONS, {
-				params: { limit: LIMIT_PER_PAGE, page: 1, searchTransaction: 'any-transaction' },
+				params: {
+					eventId: mockTransactions.data[0].eventId,
+					limit: LIMIT_PER_PAGE,
+					page: 1,
+					searchTransaction: 'any-transaction',
+				},
 			})
 			.reply((config) => {
-				expect(config.params).toEqual({ limit: LIMIT_PER_PAGE, page: 1, searchTransaction: 'any-transaction' })
+				expect(config.params).toEqual({
+					eventId: mockTransactions.data[0].eventId,
+					limit: LIMIT_PER_PAGE,
+					page: 1,
+					searchTransaction: 'any-transaction',
+				})
 				return [200, { data: mockTransactions }]
 			})
-		await getTransactions({ page: 1, searchTransaction: 'any-transaction' })
+		await getTransactions({ eventId: mockTransactions.data[0].eventId, page: 1, searchTransaction: 'any-transaction' })
 	})
 
 	it('should pass correct param eventId', async () => {

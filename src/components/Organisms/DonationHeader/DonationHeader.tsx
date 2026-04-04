@@ -18,9 +18,7 @@ export const DonationHeader = ({ eventId, setEventId, sumOfAllDonations }: Donat
 	const formattedEvents = formatterComboBoxValues(
 		events?.pages?.flatMap((page) => page.data),
 		'name',
-		'id',
-		true,
-		'Todos os eventos'
+		'id'
 	)
 
 	const lastItemRef = useInfiniteScrollObserver({
@@ -31,25 +29,28 @@ export const DonationHeader = ({ eventId, setEventId, sumOfAllDonations }: Donat
 
 	return (
 		<section className="flex flex-col gap-6">
-			<CreateDonationButton />
-			<div className="flex flex-col items-end justify-between gap-x-12 gap-y-5 md:flex-row">
+			<div className="flex flex-col items-center justify-between gap-6 md:flex-row">
 				<ComboBox
 					className="lg:max-w-lg"
 					keyOptionLabel="label"
 					keyOptionValue="value"
+					label="Selecione o evento"
 					lastItemRef={lastItemRef}
 					options={formattedEvents}
 					selectedValue={eventId}
 					setSelectedValue={setEventId}
 				/>
-				<InformationCard className="w-full lg:max-w-lg" headingText="Doações">
+				<CreateDonationButton />
+			</div>
+			{eventId && (
+				<InformationCard className="w-full self-end lg:max-w-lg" headingText="Doações">
 					<div className="flex h-full items-center justify-end p-4 md:p-5">
 						<Header as="h3" className="text-2xl">
 							{!sumOfAllDonations ? currencyValue(0) : currencyValue(sumOfAllDonations)}
 						</Header>
 					</div>
 				</InformationCard>
-			</div>
+			)}
 		</section>
 	)
 }

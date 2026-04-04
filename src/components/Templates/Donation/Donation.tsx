@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 
 import { Pagination } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { InfoCard, ListManager } from '@/components/Molecules'
 import { DonationDeleteModal, DonationHeader, ListPage, PageContent } from '@/components/Organisms'
 import { DONATION_MODAL_TYPE } from '@/constants'
 import { useGetDonations } from '@/services/queries/donations'
@@ -31,10 +31,17 @@ export const Donation = () => {
 	return (
 		<PageContent pageTitle="Doações" subheadingPage="Lista das doações">
 			<DonationHeader eventId={eventId} setEventId={setEventId} sumOfAllDonations={data?.sumOfAllDonations} />
-			<ListPage className="lg:max-w-full">
-				<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
-				{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={data?.totalPages} />}
-			</ListPage>
+			{eventId ? (
+				<ListPage className="lg:max-w-full">
+					<ListManager bodyData={formatData} headerLabels={HEADER_LABELS} isLoading={isLoading} />
+					{hasMoreThanOnePage && <Pagination currentPage={page} setPage={setPage} totalPages={data?.totalPages} />}
+				</ListPage>
+			) : (
+				<InfoCard
+					description="As doações são exibidas conforme o evento selecionado. Escolha um para continuar."
+					title="Selecione um evento"
+				/>
+			)}
 			<DonationDeleteModal selectedDonation={selectedDonation} setSelectedDonation={setSelectedDonation} />
 		</PageContent>
 	)

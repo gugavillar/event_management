@@ -10,7 +10,7 @@ type GetDonationsParams = {
 export const getDonations = async ({ eventId, page = 1 }: GetDonationsParams) => {
 	const response = await api.get(ENDPOINTS.GET_DONATIONS, {
 		params: {
-			...(eventId && { eventId }),
+			eventId,
 			limit: LIMIT_PER_PAGE,
 			page,
 		},

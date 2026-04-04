@@ -1,7 +1,7 @@
 import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Header, Spinner, Text, Tooltip } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { InfoCard, ListManager } from '@/components/Molecules'
 import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, MEMBERS, MembersTypes } from '@/constants'
 import { formatBirthdate, formatPhone } from '@/formatters'
 import type { GroupAPI } from '@/services/queries/groups/groups.types'
@@ -58,22 +58,15 @@ export const Content = (
 ) => {
 	if (!selectedEvent) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="font-bold text-gray-800 text-lg">Selecione um evento</h3>
-				<p className="mt-2 text-gray-500">
-					Os grupos são exibidos conforme o evento selecionado. Escolha um para continuar.
-				</p>
-			</div>
+			<InfoCard
+				description="Os grupos são exibidos conforme o evento selecionado. Escolha um para continuar."
+				title="Selecione um evento"
+			/>
 		)
 	}
 
 	if (!isFetching && !groups?.length) {
-		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="font-bold text-gray-800 text-lg">Nenhum grupo encontrado</h3>
-				<p className="mt-2 text-gray-500">Nenhum grupo foi criado para o evento selecionado.</p>
-			</div>
-		)
+		return <InfoCard description="Nenhum grupo foi criado para o evento selecionado" title="Nenhum grupo encontrado" />
 	}
 
 	if (isFetching) {
@@ -88,12 +81,10 @@ export const Content = (
 
 	if (!hasMembers) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="font-bold text-gray-800 text-lg">Nenhum membro encontrado</h3>
-				<p className="mt-2 text-gray-500">
-					Verifique se digitou corretamente ou experimente usar apenas parte do nome.
-				</p>
-			</div>
+			<InfoCard
+				description="Verifique se digitou corretamente ou experimente usar apenas parte do nome."
+				title="Nenhum membro encontrado"
+			/>
 		)
 	}
 

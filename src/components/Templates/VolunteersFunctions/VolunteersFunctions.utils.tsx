@@ -1,7 +1,7 @@
 import { SquarePen, Trash2 } from 'lucide-react'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
-import { ListManager } from '@/components/Molecules'
+import { InfoCard, ListManager } from '@/components/Molecules'
 import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE } from '@/constants'
 import type { VolunteersFunctionsFromAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -58,21 +58,16 @@ export const formatTableData = (
 export const Content = (eventId: string, isFetching: boolean, data: ReturnType<typeof formatTableData>) => {
 	if (!eventId) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="font-bold text-gray-800 text-lg">Selecione um evento</h3>
-				<p className="mt-2 text-gray-500">
-					As funções são exibidas conforme o evento selecionado. Escolha um para continuar.
-				</p>
-			</div>
+			<InfoCard
+				description="As funções são exibidas conforme o evento selecionado. Escolha um para continuar."
+				title="Selecione um evento"
+			/>
 		)
 	}
 
 	if (!isFetching && !data?.length) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="font-bold text-gray-800 text-lg">Nenhuma função encontrada</h3>
-				<p className="mt-2 text-gray-500">Nenhuma função foi criada para o evento selecionado.</p>
-			</div>
+			<InfoCard description="Nenhuma função foi criada para o evento selecionado" title="Nenhuma função encontrada" />
 		)
 	}
 

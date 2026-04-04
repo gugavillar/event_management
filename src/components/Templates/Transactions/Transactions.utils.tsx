@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Spinner, Tooltip } from '@/components/Atoms'
+import { InfoCard } from '@/components/Molecules'
 import { amountType, transactionType } from '@/components/Organisms/TransactionDrawer/TransactionDrawer.utils'
 import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, TransactionsType } from '@/constants'
 import { currencyValue } from '@/formatters'
@@ -22,12 +23,10 @@ export const TransactionCardInfo = ({
 }) => {
 	if (!selectedEvent) {
 		return (
-			<div className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 text-center md:p-5">
-				<h3 className="font-bold text-gray-800 text-lg">Selecione um evento</h3>
-				<p className="mt-2 text-gray-500">
-					As transações são exibidas conforme o evento selecionado. Escolha um para continuar.
-				</p>
-			</div>
+			<InfoCard
+				description="As transações são exibidas conforme o evento selecionado. Escolha um para continuar."
+				title="Selecione um evento"
+			/>
 		)
 	}
 
