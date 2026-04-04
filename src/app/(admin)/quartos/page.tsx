@@ -27,7 +27,7 @@ export default async function RoomsPage({ searchParams }: SearchParams) {
 
 	return (
 		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
-			<HydrationProvider queryFn={getRooms} queryKey={[QUERY_KEYS.ROOMS]}>
+			<HydrationProvider queryFn={getRooms} queryKey={[QUERY_KEYS.ROOMS, eventId, searchMemberRoom]}>
 				<Rooms />
 			</HydrationProvider>
 		</HydrationInfinityProvider>

@@ -21,7 +21,7 @@ export const useGetRoomByEventId = () => {
 
 	const { isLoading, data }: UseQueryResult<Array<RoomAPI>> = useQuery({
 		enabled: !!roomEventId,
-		initialData: [],
+		placeholderData: [],
 		queryFn: () => getRoomByEventId(roomEventId as RoomAPI['id'], debounceSearchMember),
 		queryKey: [QUERY_KEYS.ROOMS, roomEventId, debounceSearchMember],
 	})
