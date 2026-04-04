@@ -1,5 +1,7 @@
 import { mockCityAxios } from '@tests'
 
+import { ENDPOINTS_IBGE } from '@/services/endpoints'
+
 import { getCity } from './getCity'
 
 const mockCities = [
@@ -47,7 +49,7 @@ const mockCities = [
 
 describe('getCity', () => {
 	it('should return cities correctly', async () => {
-		mockCityAxios.onGet(`/localidades/estados/DF/municipios?orderBy=nome`).reply(200, mockCities)
+		mockCityAxios.onGet(ENDPOINTS_IBGE.GET_CITIES_BY_STATE('DF')).reply(200, mockCities)
 		const { data } = await getCity('DF')
 		expect(data).toStrictEqual(mockCities)
 	})

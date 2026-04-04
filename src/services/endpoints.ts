@@ -84,3 +84,7 @@ export const ENDPOINTS = {
 	UPDATE_VOLUNTEER: (volunteer_id: string) => `${BASE_PATH.VOLUNTEERS}/${volunteer_id}`,
 	UPDATE_VOLUNTEER_FUNCTION: (volunteer_id: string) => `${BASE_PATH.VOLUNTEERS}/${volunteer_id}/function`,
 }
+
+export const ENDPOINTS_IBGE = {
+	GET_CITIES_BY_STATE: (state: string) => `/localidades/estados/${state}/municipios?orderBy=nome`,
+}
