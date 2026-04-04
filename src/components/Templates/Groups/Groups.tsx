@@ -29,7 +29,7 @@ const GroupDrawer = dynamic(() => import('@/components/Organisms').then((mod) =>
 	ssr: false,
 })
 
-export const Groups = ({ eventId }: { eventId: string }) => {
+export const Groups = () => {
 	const [selectedGroup, setSelectedGroup] = useState<SelectedGroup | null>(null)
 
 	const {
@@ -39,7 +39,7 @@ export const Groups = ({ eventId }: { eventId: string }) => {
 		isLoading,
 		searchMemberGroup,
 		setSearchMemberGroup,
-	} = useGetGroupByEventId(eventId)
+	} = useGetGroupByEventId()
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 
 	const methods = useForm<GroupSchemaType>({

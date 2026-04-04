@@ -44,7 +44,7 @@ export default async function PicturesPage({ searchParams }: SearchParams) {
 					queryFn={getAllParticipants}
 					queryKey={[QUERY_KEYS.PARTICIPANTS, eventId, searchParticipant, undefined, city, undefined, page]}
 				>
-					<Pictures paramsEventId={eventId} />
+					<Pictures />
 				</HydrationProvider>
 			</HydrationProvider>
 		</HydrationInfinityProvider>

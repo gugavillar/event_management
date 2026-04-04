@@ -27,8 +27,8 @@ export default async function GroupsPage({ searchParams }: SearchParams) {
 
 	return (
 		<HydrationInfinityProvider initialPageParam={1} queryFn={getAllEvents} queryKey={[QUERY_KEYS.EVENTS_INFINITY, '']}>
-			<HydrationProvider queryFn={getGroups} queryKey={[QUERY_KEYS.GROUPS, eventId]}>
-				<Groups eventId={eventId} />
+			<HydrationProvider queryFn={getGroups} queryKey={[QUERY_KEYS.GROUPS, eventId, searchMemberGroup]}>
+				<Groups />
 			</HydrationProvider>
 		</HydrationInfinityProvider>
 	)

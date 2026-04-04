@@ -9,9 +9,9 @@ import { useQuery } from '@/providers/QueryProvider'
 import type { GroupAPI } from '../groups.types'
 import { getGroupByEventId } from '../usecases'
 
-export const useGetGroupByEventId = (eventId: string) => {
+export const useGetGroupByEventId = () => {
 	const [groupEventId, setGroupEventId] = useQueryState('eventId', {
-		defaultValue: eventId,
+		defaultValue: '',
 	})
 	const [searchMemberGroup, setSearchMemberGroup] = useQueryState('searchMemberGroup', {
 		defaultValue: '',
@@ -21,6 +21,7 @@ export const useGetGroupByEventId = (eventId: string) => {
 
 	const { data, isLoading }: UseQueryResult<Array<GroupAPI>> = useQuery({
 		enabled: !!groupEventId,
+		placeholderData: [],
 		queryFn: () => getGroupByEventId(groupEventId as GroupAPI['id'], debounceSearchMember),
 		queryKey: [QUERY_KEYS.GROUPS, groupEventId, debounceSearchMember],
 	})

@@ -13,7 +13,7 @@ import { useGetParticipants, useGetParticipantsCities } from '@/services/queries
 
 import { formatTableData, HEADER_LABELS } from './Pictures.utils'
 
-export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
+export const Pictures = () => {
 	const { data: events, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetInfinityEvents()
 	const {
 		data: participants,
@@ -26,7 +26,7 @@ export const Pictures = ({ paramsEventId }: { paramsEventId?: string }) => {
 		setQuery,
 	} = useGetParticipants(false, false)
 	const { data: participantsCities } = useGetParticipantsCities({
-		enabled: Boolean(paramsEventId),
+		enabled: Boolean(query.eventId),
 		eventId: query.eventId,
 	})
 
