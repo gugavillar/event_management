@@ -23,6 +23,9 @@ export const useUpdateCheckInParticipant = () => {
 			queryClient.invalidateQueries({
 				queryKey: [QUERY_KEYS.GROUPS],
 			})
+			queryClient.invalidateQueries({
+				queryKey: [QUERY_KEYS.PARTICIPANTS_CITIES],
+			})
 		},
 	})
 

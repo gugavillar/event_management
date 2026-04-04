@@ -8,16 +8,18 @@ import { getParticipantsCities } from '../usecases'
 export const useGetParticipantsCities = ({
 	isInterested,
 	eventId,
+	isOnlyConfirmed,
 	enabled = true,
 }: {
 	isInterested?: boolean
 	eventId?: string
+	isOnlyConfirmed?: boolean
 	enabled?: boolean
 }) => {
 	const { data } = useQuery({
 		enabled,
-		queryFn: () => getParticipantsCities(isInterested, eventId),
-		queryKey: [QUERY_KEYS.PARTICIPANTS_CITIES, isInterested, eventId],
+		queryFn: () => getParticipantsCities(isInterested, eventId, isOnlyConfirmed),
+		queryKey: [QUERY_KEYS.PARTICIPANTS_CITIES, isInterested, eventId, isOnlyConfirmed],
 	})
 
 	return { data }

@@ -1,6 +1,11 @@
+import { CHECK_IN_STATUS } from '@/constants'
 import { prisma } from '@/lib/prisma'
 
-export const getParticipantsCities = async (isInterested: boolean | null, eventId: string | null) => {
+export const getParticipantsCities = async (
+	isInterested: boolean | null,
+	eventId: string | null,
+	isOnlyConfirmed: boolean | null
+) => {
 	try {
 		return await prisma.participantAddress.groupBy({
 			by: ['city'],
@@ -10,6 +15,7 @@ export const getParticipantsCities = async (isInterested: boolean | null, eventI
 			where: {
 				participant: {
 					...(eventId && { eventId }),
+					...(isOnlyConfirmed && { checkIn: CHECK_IN_STATUS.CONFIRMED }),
 					...(isInterested
 						? { interested: true }
 						: {

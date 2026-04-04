@@ -28,6 +28,7 @@ export const Pictures = () => {
 	const { data: participantsCities } = useGetParticipantsCities({
 		enabled: Boolean(query.eventId),
 		eventId: query.eventId,
+		isOnlyConfirmed: true,
 	})
 
 	const formattedEvents = formatterComboBoxValues(
