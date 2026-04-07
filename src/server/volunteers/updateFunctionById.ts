@@ -27,16 +27,7 @@ export const updateFunctionById = async (data: { role: string; events: Array<{ i
 
 			const existentEvents = currentLinks.map((e) => e.eventId)
 
-			const toRemove = currentLinks.filter((evr) => !updateEvents.includes(evr.eventId))
 			const toAdd = updateEvents.filter((eventId) => !existentEvents.includes(eventId))
-
-			await Promise.all(
-				toRemove.map(({ id }) =>
-					tx.eventVolunteerRole.delete({
-						where: { id },
-					})
-				)
-			)
 
 			await Promise.all(
 				toAdd.map((eventId) =>
