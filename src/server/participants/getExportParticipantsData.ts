@@ -51,7 +51,10 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 			const interestedData = participants.map((participant) => ({
 				Nome: participant.name,
 				Chamado: participant.called,
-				Data_Nascimento: formatBirthdate(`${participant.birthdate}`, `${participant.event.finalDate}`),
+				Data_Nascimento: formatBirthdate(
+					participant.birthdate.toISOString(),
+					participant.event.finalDate.toISOString()
+				),
 				Endereço: `${participant.address?.street}, ${participant.address?.number}`,
 				Bairro: participant.address?.neighborhood,
 				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
@@ -86,7 +89,7 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 		const participantsData = participants.map((participant) => ({
 			Nome: participant.name,
 			Chamado: participant.called,
-			Data_Nascimento: formatBirthdate(`${participant.birthdate}`, `${participant.event.finalDate}`),
+			Data_Nascimento: formatBirthdate(participant.birthdate.toISOString(), participant.event.finalDate.toISOString()),
 			Endereço: `${participant.address?.street}, ${participant.address?.number}`,
 			Bairro: participant.address?.neighborhood,
 			Cidade: `${participant.address?.city} - ${participant.address?.state}`,

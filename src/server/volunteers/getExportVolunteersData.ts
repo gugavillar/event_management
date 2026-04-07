@@ -50,7 +50,7 @@ export const getExportVolunteersData = async (eventId: string) => {
 		const volunteersData = volunteers.map((volunteer) => ({
 			Nome: volunteer.name,
 			Chamado: volunteer.called,
-			Data_Nascimento: formatBirthdate(`${volunteer.birthdate}`, `${volunteer.event.finalDate}`),
+			Data_Nascimento: formatBirthdate(volunteer.birthdate.toISOString(), volunteer.event.finalDate.toISOString()),
 			Endereço: `${volunteer.address?.street}, ${volunteer.address?.number}`,
 			Bairro: volunteer.address?.neighborhood,
 			Cidade: `${volunteer.address?.city} - ${volunteer.address?.state}`,
