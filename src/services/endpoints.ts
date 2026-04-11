@@ -1,4 +1,5 @@
 export const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+export const MESSAGES_BASE_URL = process.env.NEXT_PUBLIC_MESSAGES_BASE_URL
 
 const BASE_PATH = {
 	DASHBOARD: '/dashboard',

@@ -3,7 +3,7 @@ import { signOut } from 'next-auth/react'
 
 import { IS_SERVER, PRINCIPAL_LINKS } from '@/constants'
 
-import { BASE_URL } from './endpoints'
+import { BASE_URL, MESSAGES_BASE_URL } from './endpoints'
 
 export const api = axios.create({
 	baseURL: IS_SERVER ? BASE_URL : '/api',
@@ -28,3 +28,10 @@ api.interceptors.response.use(
 		return Promise.reject(error)
 	}
 )
+
+export const apiMessage = axios.create({
+	baseURL: `${MESSAGES_BASE_URL}/${process.env.INSTANCE_ID}/token/${process.env.INSTANCE_TOKEN}`,
+	headers: {
+		'Client-Token': process.env.CLIENT_TOKEN,
+	},
+})

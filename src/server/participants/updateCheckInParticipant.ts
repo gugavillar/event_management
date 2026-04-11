@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import { CHECK_IN_STATUS } from '@/constants'
 import { prisma } from '@/lib/prisma'
+import { apiMessage } from '@/services/api'
 
 export type UpdateCheckInParticipantArgs = {
 	participantId: string
@@ -53,6 +54,27 @@ export const updateCheckInParticipant = async ({ participantId, status }: Update
 						participantId,
 					},
 				})
+			}
+
+			const participant = await tx.participant.findUnique({
+				include: {
+					address: true,
+					event: true,
+				},
+				where: {
+					id: participantId,
+				},
+			})
+
+			const phones = process.env.PHONES_SEND?.split(',').map((phone) => phone.trim()) ?? []
+
+			if (phones?.length) {
+				for (const phone of phones) {
+					await apiMessage.post('/send-text', {
+						message: `Desistência do participante\n\nParticipante: ${participant?.name}\nEvento: ${participant?.event?.name}\nCidade: ${participant?.address?.city}\n\nConvidado por: ${participant?.host}`,
+						phone,
+					})
+				}
 			}
 
 			return await tx.participant.update({
