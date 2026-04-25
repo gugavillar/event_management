@@ -84,4 +84,3 @@ jobs:
             NEXT_PUBLIC_PIX_KEY=${{ secrets.PIX_KEY }}
             NEXT_PUBLIC_PHONE=${{ secrets.PHONE }}
             NEXT_PUBLIC_MICROSOFT_CLARITY=${{ secrets.MICROSOFT_CLARITY }}
-            NEXT_PUBLIC_MESSAGES_BASE_URL=${{ secrets.MESSAGES_BASE_URL }}
