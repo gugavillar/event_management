@@ -11,7 +11,7 @@ export default withAuth(
 		const { data: parsedRoles, success } = safeParse(nextToken?.role)
 		const requiredPermission = ROUTE_PERMISSIONS[pathname as keyof typeof ROUTE_PERMISSIONS]
 
-		if (!success) {
+		if (!success || !parsedRoles) {
 			const res = NextResponse.redirect(new URL('/', req.url))
 			res.cookies.delete('event-manager.session-token')
 			return res

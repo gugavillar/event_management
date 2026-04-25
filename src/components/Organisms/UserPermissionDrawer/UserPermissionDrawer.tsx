@@ -76,7 +76,7 @@ export const UserPermissionDrawer = ({ selectedUser, setSelectedUser }: UserPerm
 	useEffect(() => {
 		if (!data) return
 		const { data: parsedRoles, success } = safeParse(data.role)
-		if (!success) {
+		if (!success || !parsedRoles) {
 			toast.error('Erro ao carregar as permissões do usuário')
 			return
 		}

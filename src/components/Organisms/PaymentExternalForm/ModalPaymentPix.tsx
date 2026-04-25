@@ -17,7 +17,7 @@ export const ModalPaymentPix = ({ pixValue, setCurrentStep }: ModalPaymentPixPro
 	const handleCopyPixValue = async () => {
 		if (!pixValue) return
 
-		const success = copy(pixValue)
+		const success = await copy(pixValue)
 		if (success) {
 			return toast.success('PIX copiado com sucesso!')
 		}

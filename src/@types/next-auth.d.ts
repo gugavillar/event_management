@@ -2,11 +2,9 @@ import type { DefaultSession } from 'next-auth'
 
 import type { UUID } from 'node:crypto'
 
-import type { ROLES } from '@/constants'
-
 declare module 'next-auth' {
 	interface User {
-		role: ROLES
+		role: string | null
 		firstAccess: boolean
 	}
 
@@ -17,7 +15,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
 	interface JWT {
-		role: ROLES
+		role: string | null
 		id: UUID
 		firstAccess: boolean
 	}

@@ -115,18 +115,6 @@ describe('functions', () => {
 		})
 	})
 
-	// describe('validatePagePermission function', () => {
-	// 	test('should return true when user has permission', () => {
-	// 		const hasPagePermission = validatePagePermission(ROLES.ADMIN, [ROLES.ADMIN])
-	// 		expect(hasPagePermission).toBe(true)
-	// 	})
-
-	// 	test('should return false when user has no permission', () => {
-	// 		const hasPagePermission = validatePagePermission(ROLES.USER, [ROLES.ADMIN])
-	// 		expect(hasPagePermission).toBe(false)
-	// 	})
-	// })
-
 	describe('generatePrintKey function', () => {
 		test('should return string with list type', () => {
 			const key = generatePrintKey([{ id: 'any-id', members: [{ id: 'any-id' }] }], 'any-list-type')
@@ -183,20 +171,31 @@ describe('functions', () => {
 			expect(success).toBe(false)
 		})
 
+		it('should return success false and data null when value is null', () => {
+			const { success } = safeParse(null)
+			expect(success).toBe(false)
+		})
+
+		it('should return success false and schema not valid', () => {
+			const { success, data } = safeParse(JSON.stringify({ events: true }))
+			expect(success).toBe(false)
+			expect(data).toBe(null)
+		})
+
 		it('should return success true and data when value is json', () => {
-			const { success, data } = safeParse('{"id":"any-id"}')
+			const { success, data } = safeParse(JSON.stringify({ dashboard: true }))
 			expect(success).toBe(true)
-			expect(data).toStrictEqual({ id: 'any-id' })
+			expect(data).toStrictEqual({ dashboard: true })
 		})
 	})
 
 	describe('hasPermission function', () => {
-		it('should return false when path not passed', () => {
-			expect(hasPermission({}, '')).toBe(false)
+		it('should return false when path and permissions are not passed', () => {
+			expect(hasPermission(null, '')).toBe(false)
 		})
 
 		it('should return true when path is passed and correct permissions', () => {
-			expect(hasPermission({ '/any-path': 'any-path' }, '/any-path')).toBe(true)
+			expect(hasPermission({ dashboard: true }, 'dashboard')).toBe(true)
 		})
 	})
 })

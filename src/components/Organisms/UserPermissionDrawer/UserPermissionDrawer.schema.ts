@@ -3,24 +3,28 @@ import z from 'zod'
 export const userPermissionDrawerSchema = z
 	.object({
 		dashboard: z.boolean(),
-		donations: z.boolean(),
-		events: z.boolean(),
-		groups: z.boolean(),
-		meetings: z.boolean(),
-		participants: z.object({
-			interest: z.boolean(),
-			list: z.boolean(),
-			payment: z.boolean(),
-			picture: z.boolean(),
-		}),
-		rooms: z.boolean(),
-		transactions: z.boolean(),
-		users: z.boolean(),
-		volunteers: z.object({
-			functions: z.boolean(),
-			list: z.boolean(),
-			payment: z.boolean(),
-		}),
+		donations: z.boolean().optional(),
+		events: z.boolean().optional(),
+		groups: z.boolean().optional(),
+		meetings: z.boolean().optional(),
+		participants: z
+			.object({
+				interest: z.boolean().optional(),
+				list: z.boolean().optional(),
+				payment: z.boolean().optional(),
+				picture: z.boolean().optional(),
+			})
+			.optional(),
+		rooms: z.boolean().optional(),
+		transactions: z.boolean().optional(),
+		users: z.boolean().optional(),
+		volunteers: z
+			.object({
+				functions: z.boolean().optional(),
+				list: z.boolean().optional(),
+				payment: z.boolean().optional(),
+			})
+			.optional(),
 	})
 	.refine((data) => {
 		const hasAtLeastOnePermission = Object.values(data).some((value) => {

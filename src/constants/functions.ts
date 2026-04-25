@@ -1,5 +1,10 @@
 import { isFuture } from 'date-fns'
 
+import {
+	type UserPermissionDrawerType,
+	userPermissionDrawerSchema,
+} from '@/components/Organisms/UserPermissionDrawer/UserPermissionDrawer.schema'
+
 import { MEMBERS } from './status'
 
 export const generatePage = (page: string | undefined) => {
@@ -32,19 +37,18 @@ export const interestedListPermitCreateRegistration = (event: any) => {
 	return isFuture(new Date(event.initialDate))
 }
 
-export const hasPermission = (permissions: Record<string, any>, path: string): boolean => {
-	if (!path) return false
+export const hasPermission = (permissions: Partial<UserPermissionDrawerType> | null, path: string): boolean => {
+	if (!path || !permissions) return false
 
 	const keys = path.split('.')
-
-	let current = permissions
+	let current: any = permissions
 
 	for (const key of keys) {
-		if (current[key] === undefined) return false
+		if (current?.[key] === undefined) return false
 		current = current[key]
 	}
 
-	return !!current
+	return Boolean(current)
 }
 
 export const generatePrintKey = <T>(data: Array<{ id: string; members: Array<T> }>, listType?: string) => {
@@ -91,10 +95,21 @@ export function deepTrim<T>(obj: T): T {
 	return obj
 }
 
-export const safeParse = (value: any) => {
+export const safeParse = (
+	value?: string | null
+): { data: Partial<UserPermissionDrawerType> | null; success: boolean } => {
+	if (!value) return { data: null, success: false }
 	try {
-		return { data: JSON.parse(value), success: true }
-	} catch (error) {
-		return { data: error, success: false }
+		const parsed = JSON.parse(value)
+
+		const result = userPermissionDrawerSchema.safeParse(parsed)
+
+		if (!result.success) {
+			return { data: null, success: false }
+		}
+
+		return { data: result.data, success: true }
+	} catch {
+		return { data: null, success: false }
 	}
 }

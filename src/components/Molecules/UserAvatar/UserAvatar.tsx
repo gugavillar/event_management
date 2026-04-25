@@ -7,7 +7,7 @@ import { memo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { Avatar, Dropdown, DropdownItem, Tooltip } from '@/components/Atoms'
-import { PRINCIPAL_LINKS } from '@/constants'
+import { PRINCIPAL_LINKS, safeParse } from '@/constants'
 
 type UserAvatarProps = {
 	collapsed: boolean
@@ -25,7 +25,8 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 		})
 	}
 
-	const hasPermissionToManageUsers = JSON.parse(user?.role).users === true
+	const safeUser = safeParse(user?.role)
+	const hasPermissionToManageUsers = !!safeUser?.data?.users
 
 	return (
 		<footer className="border-gray-200 md:mt-auto md:border-t md:pt-4">

@@ -18,51 +18,50 @@ export async function requestProcess<T>({
 	isNecessarySession = true,
 	successMessage,
 }: RequestProcessProps<T>) {
-	const session = await getServerSession(authOptions)
-
-	if (isNecessarySession) {
-		if (!session?.user) {
-			return NextResponse.json(
-				{
-					error: 'Usuário não autenticado!',
-					message: 'Usuário não autenticado!',
-				},
-				{ status: 401 }
-			)
-		}
-
-		const isValidUser = await prisma.user.findUnique({
-			where: {
-				email: session.user.email as string,
-			},
-		})
-
-		if (!isValidUser) {
-			return NextResponse.json(
-				{
-					error: 'Erro de autenticação.',
-					message: 'Usuário não encontrado!',
-				},
-				{
-					status: 409,
-				}
-			)
-		}
-
-		if (isValidUser.deletedAt) {
-			return NextResponse.json(
-				{
-					error: 'Erro de autenticação.',
-					message: 'Usuário bloqueado!',
-				},
-				{
-					status: 409,
-				}
-			)
-		}
-	}
-
 	try {
+		const session = await getServerSession(authOptions)
+
+		if (isNecessarySession) {
+			if (!session?.user) {
+				return NextResponse.json(
+					{
+						error: 'Usuário não autenticado!',
+						message: 'Usuário não autenticado!',
+					},
+					{ status: 401 }
+				)
+			}
+
+			const isValidUser = await prisma.user.findUnique({
+				where: {
+					email: session.user.email as string,
+				},
+			})
+
+			if (!isValidUser) {
+				return NextResponse.json(
+					{
+						error: 'Erro de autenticação.',
+						message: 'Usuário não encontrado!',
+					},
+					{
+						status: 409,
+					}
+				)
+			}
+
+			if (isValidUser.deletedAt) {
+				return NextResponse.json(
+					{
+						error: 'Erro de autenticação.',
+						message: 'Usuário bloqueado!',
+					},
+					{
+						status: 409,
+					}
+				)
+			}
+		}
 		const data = await functions()
 
 		if (data instanceof Response) {
@@ -77,7 +76,17 @@ export async function requestProcess<T>({
 			data,
 			...(successMessage && { message: successMessage }),
 		})
-	} catch (error) {
+	} catch (error: any) {
+		if (error.code === 'ECONNREFUSED') {
+			return NextResponse.json(
+				{
+					error: 'Sessão inválida (falha de conexão com banco)',
+					forceLogout: true,
+				},
+				{ status: 401 }
+			)
+		}
+
 		if (error instanceof ZodError) {
 			const errorsFormatted = formatZodValidationErrors(error.issues)
 

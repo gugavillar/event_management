@@ -12,6 +12,7 @@ export const createUser = async (data: UserSchemaType) => {
 				email: data.email,
 				name: data.name,
 				passwordHash: bcrypt.hashSync('123456', 10),
+				role: JSON.stringify({ dashboard: true }),
 			},
 		})
 	} catch (error) {
