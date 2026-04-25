@@ -2,7 +2,7 @@ name: Build Docker images
 
 on:
   push:
-    branches: "main"
+    branches: ["main"]
     paths:
       - "Dockerfile"
       - "src/**"
@@ -37,7 +37,7 @@ jobs:
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
-          version: 2.3.13
+          version: 2.4.13
 
       - name: Run biome
         run: biome ci .

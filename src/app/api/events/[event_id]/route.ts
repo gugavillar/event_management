@@ -33,4 +33,4 @@ const handleUpdate = async (request: NextRequest, { params }: Params) => {
 	})
 }
 
-export { handlerGet as GET, handleDelete as DELETE, handleUpdate as PUT }
+export { handleDelete as DELETE, handlerGet as GET, handleUpdate as PUT }

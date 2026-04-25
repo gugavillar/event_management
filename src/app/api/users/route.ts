@@ -33,4 +33,4 @@ const handleUpdate = async (request: NextRequest) => {
 	})
 }
 
-export { handlerPost as POST, handlerGet as GET, handleUpdate as PATCH }
+export { handlerGet as GET, handlerPost as POST, handleUpdate as PATCH }

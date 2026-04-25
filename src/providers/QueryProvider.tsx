@@ -3,7 +3,7 @@ import { QueryClientProvider, useInfiniteQuery, useMutation, useQuery, useQueryC
 
 import { getQueryClient } from '@/constants'
 
-export { useQuery, useMutation, useQueryClient, useInfiniteQuery }
+export { useInfiniteQuery, useMutation, useQuery, useQueryClient }
 
 export const QueryProvider = ({ children }: { children: React.ReactNode }) => {
 	const queryClient = getQueryClient()

@@ -30,4 +30,4 @@ const handlePost = async (request: NextRequest) => {
 	})
 }
 
-export { handlerGet as GET, handlePost as POST }
+export { handlePost as POST, handlerGet as GET }
