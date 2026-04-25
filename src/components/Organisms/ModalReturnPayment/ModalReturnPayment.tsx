@@ -29,6 +29,11 @@ export const ModalReturnPayment = memo(
 			setSelected(null)
 		}
 
+		const handleConfirmReturnPayment = () => {
+			handleReturnPayment()
+			setSelected(null)
+		}
+
 		return (
 			<Modal
 				onOpenChange={handleCloseModalReturnPayment}
@@ -62,7 +67,7 @@ export const ModalReturnPayment = memo(
 								className="w-full items-center justify-center border-transparent bg-teal-500 text-gray-50 transition-colors duration-500 hover:bg-teal-400 hover:text-slate-800"
 								disabled={isPending}
 								isLoading={isPending}
-								onClick={handleReturnPayment}
+								onClick={handleConfirmReturnPayment}
 							>
 								Confirmar
 							</Button>

@@ -100,8 +100,6 @@ export const ParticipantsPayments = () => {
 		} else {
 			toast.success('Pagamento do participante devolvido com sucesso!')
 		}
-
-		setSelectedParticipant(null)
 	}, [returnPayment, selectedParticipant])
 
 	const hasMoreThanOnePage = !!participantsPayments?.totalPages && participantsPayments.totalPages > 1
