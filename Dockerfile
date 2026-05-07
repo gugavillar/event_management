@@ -1,4 +1,4 @@
-FROM node:22-slim AS base
+FROM node:24-slim AS base
 WORKDIR /app
 RUN corepack enable
 
@@ -25,7 +25,7 @@ COPY . .
 RUN pnpm prisma generate
 RUN pnpm build
 
-FROM gcr.io/distroless/nodejs22-debian12 AS production
+FROM gcr.io/distroless/nodejs24-debian12 AS production
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=320"
