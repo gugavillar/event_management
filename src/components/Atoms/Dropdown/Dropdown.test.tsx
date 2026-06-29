@@ -6,7 +6,7 @@ import { Dropdown, DropdownItem } from './Dropdown'
 describe('Dropdown component', () => {
 	it('renders correctly', () => {
 		const { getByText } = render(
-			<Dropdown trigger={<button>Test dropdown</button>}>
+			<Dropdown trigger={<button type="button">Test dropdown</button>}>
 				<DropdownItem>option 1</DropdownItem>
 			</Dropdown>
 		)
@@ -16,7 +16,7 @@ describe('Dropdown component', () => {
 	it('show options when click in trigger', async () => {
 		const user = userEvent.setup()
 		const { getByText } = render(
-			<Dropdown trigger={<button>Test dropdown</button>}>
+			<Dropdown trigger={<button type="button">Test dropdown</button>}>
 				<DropdownItem>option 1</DropdownItem>
 			</Dropdown>
 		)

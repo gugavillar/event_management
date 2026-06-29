@@ -56,11 +56,11 @@ export const Pagination = memo(({ currentPage, totalPages = 1, setPage }: Pagina
 				<span className="hidden md:block">Anterior</span>
 			</button>
 			<div className="flex items-center gap-x-1">
-				{paginationValues?.map((page, index) =>
+				{paginationValues?.map((page) =>
 					page === '...' ? (
-						<SpreadButton key={index} />
+						<SpreadButton key="spread" />
 					) : (
-						<PageButton isActive={page === currentPage} key={index} label={page as number} setPage={setPage} />
+						<PageButton isActive={page === currentPage} key={page} label={page as number} setPage={setPage} />
 					)
 				)}
 			</div>

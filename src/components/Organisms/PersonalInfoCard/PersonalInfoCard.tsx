@@ -54,6 +54,7 @@ export const PersonalInfoCard = ({
 						className="flex cursor-pointer items-center gap-x-2 text-sky-500 disabled:cursor-not-allowed disabled:opacity-50"
 						disabled={isLoadingUrl}
 						onClick={seePicture}
+						type="button"
 					>
 						Visualizar {isLoadingUrl ? <Spinner className="size-4" /> : <ExternalLink size={16} />}
 					</button>

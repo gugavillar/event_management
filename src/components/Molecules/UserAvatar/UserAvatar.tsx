@@ -56,6 +56,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 							className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 							onClick={() => push(PRINCIPAL_LINKS.USERS)}
 							onSelect={() => {}}
+							type="button"
 						>
 							Gerenciar usuários
 						</button>
@@ -66,6 +67,7 @@ export const UserAvatar = memo(({ collapsed, user }: UserAvatarProps) => {
 						className="flex w-full cursor-pointer items-center gap-x-3 rounded-lg px-3 py-2 text-gray-800 text-sm hover:bg-gray-100 focus:bg-gray-100 focus:outline-hidden disabled:pointer-events-none disabled:opacity-50"
 						onClick={handleLogout}
 						onSelect={() => {}}
+						type="button"
 					>
 						Sair
 					</button>

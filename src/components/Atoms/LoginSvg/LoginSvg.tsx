@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react'
 export const LoginSvg = (props: ComponentProps<'svg'>) => {
 	return (
 		<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" {...props}>
+			<title>Login icon</title>
 			<path
 				d="M215.59 9.08S298.77-1.5 365 58.75s85.49 155.34 103.14 232-16.69 143.2-81.57 162.79S292.73 417 212.1 397s-105-13.21-162.3-73.76S4 151.77 74.59 83.29s141-74.21 141-74.21z"
 				fill="#b0bec5"

@@ -23,8 +23,8 @@ export const getUploadUrl = async (id: string) => {
 		}
 
 		const command = new GetObjectCommand({
-			Bucket: process.env.AWS_BUCKET!,
-			Key: data?.pictureUrl!,
+			Bucket: process.env.AWS_BUCKET as string,
+			Key: data?.pictureUrl as string,
 		})
 
 		const url = await getSignedUrl(s3, command, {

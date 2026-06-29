@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.5.1/schema.json",
 	"assist": {
 		"actions": {
 			"source": {
@@ -80,10 +80,24 @@
 		},
 		"enabled": true,
 		"rules": {
+			"a11y": {
+				"noLabelWithoutControl": "off",
+				"useKeyWithClickEvents": "off",
+				"useValidAriaRole": "off"
+			},
 			"correctness": { "noUnusedImports": "error" },
 			"nursery": { "useSortedClasses": "error" },
-			"recommended": false,
-			"style": { "useBlockStatements": "off", "useImportType": "on" }
+			"performance": {
+				"noAccumulatingSpread": "off"
+			},
+			"preset": "recommended",
+			"security": {
+				"noDangerouslySetInnerHtml": "off"
+			},
+			"style": { "useBlockStatements": "off", "useImportType": "on" },
+			"suspicious": {
+				"noExplicitAny": "off"
+			}
 		}
 	},
 	"vcs": { "clientKind": "git", "enabled": true, "useIgnoreFile": true }

@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { mockAxios } from '@tests'
-import type { UUID } from 'crypto'
+
+import type { UUID } from 'node:crypto'
 
 import { ENDPOINTS } from '@/services/endpoints'
 

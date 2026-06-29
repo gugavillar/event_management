@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/Atoms'
 
-const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
+const ErrorComponent = ({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) => {
 	const isServerActionError = error.message.includes('Failed to find Server Action')
 
 	return (
@@ -24,4 +24,4 @@ const Error = ({ error, reset }: { error: Error & { digest?: string }; reset: ()
 	)
 }
 
-export default Error
+export default ErrorComponent

@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { act, renderHook, waitFor } from '@testing-library/react'
-import type { UUID } from 'crypto'
+
+import type { UUID } from 'node:crypto'
 
 import { MEMBERS } from '@/constants'
 import { createWrapper } from '@/utils/test-utils'

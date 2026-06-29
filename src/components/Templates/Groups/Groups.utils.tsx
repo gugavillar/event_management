@@ -89,7 +89,7 @@ export const Content = (
 	}
 
 	return groups?.map((data) => {
-		if (!data.members.length) return <></>
+		if (!data.members.length) return null
 
 		const sortedMembers = data?.members?.sort((memberA, memberB) => memberB.type?.localeCompare(memberA.type))
 

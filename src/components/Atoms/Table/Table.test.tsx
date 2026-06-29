@@ -7,7 +7,7 @@ import { Table } from './Table'
 
 const generateTableData = (length: number) => {
 	const tableData = Array.from({ length }, () => ({
-		action: <button>Button</button>,
+		action: <button type="button">Button</button>,
 		birthdate: faker.date.birthdate().getUTCDate(),
 		email: faker.internet.email(),
 		id: faker.string.uuid() as UUID,

@@ -11,7 +11,7 @@ type Params = {
 	}>
 }
 
-const handleUpdate = async (request: NextRequest, { params }: Params) => {
+const handleUpdate = async (_: NextRequest, { params }: Params) => {
 	const session = await getServerSession(authOptions)
 	const routeParam = await params.then((res) => res.user_id ?? '')
 

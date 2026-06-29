@@ -47,7 +47,7 @@ export const saveParticipantPicture = async (data: FormData) => {
 		const key = `${prismaValues.eventId}/${prismaValues.participantId}-${sanitizedName}`
 
 		const command = new PutObjectCommand({
-			Bucket: process.env.AWS_BUCKET!,
+			Bucket: process.env.AWS_BUCKET as string,
 			ContentType: prismaValues.fileType,
 			Key: key,
 		})

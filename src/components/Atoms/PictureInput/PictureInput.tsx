@@ -1,9 +1,10 @@
 'use client'
-import type { UUID } from 'crypto'
 import { Camera } from 'lucide-react'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
+
+import type { UUID } from 'node:crypto'
 
 import { COMMON_PROPS_TOOLTIPS_BUTTON_TABLE } from '@/constants'
 import { useSendParticipantPicture } from '@/services/queries/participants'

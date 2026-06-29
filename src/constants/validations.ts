@@ -25,13 +25,13 @@ export const validateFieldsForNotEquals = <T>(
 	const duplicatesFields = new Set([...indices])
 
 	if (duplicatesFields?.size) {
-		duplicatesFields?.forEach((value) =>
+		duplicatesFields?.forEach((value) => {
 			ctx.addIssue({
 				code: 'custom',
 				message: errorMessage,
 				path: [`${value}.${keyOfArray as string}`],
 			})
-		)
+		})
 	}
 }
 

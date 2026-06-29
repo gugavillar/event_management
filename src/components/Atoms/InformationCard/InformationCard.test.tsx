@@ -14,7 +14,11 @@ describe('InformationCard component', () => {
 	it('renders correctly with action button', () => {
 		const { getByTestId } = render(
 			<InformationCard
-				actionButton={<button data-testid="action-button">Action</button>}
+				actionButton={
+					<button data-testid="action-button" type="button">
+						Action
+					</button>
+				}
 				data-testid="information-card"
 				headingText="Information"
 			/>

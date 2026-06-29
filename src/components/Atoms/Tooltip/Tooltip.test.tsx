@@ -7,7 +7,9 @@ describe('Tooltip component', () => {
 	it('should renders correctly', async () => {
 		const user = userEvent.setup()
 
-		const { getByText, findAllByText } = render(<Tooltip trigger={<button>Test</button>}>tooltip text</Tooltip>)
+		const { getByText, findAllByText } = render(
+			<Tooltip trigger={<button type="button">Test</button>}>tooltip text</Tooltip>
+		)
 
 		await user.hover(getByText('Test'))
 

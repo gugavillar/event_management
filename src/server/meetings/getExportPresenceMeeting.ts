@@ -57,7 +57,7 @@ export const getExportPresenceMeeting = async (eventId: string) => {
 
 		const data = Object.values(volunteerMap).map((v) => {
 			const row: Record<string, string> = {}
-			row['Voluntário'] = v.name
+			row.Voluntário = v.name
 
 			meetingTitles.forEach((title) => {
 				if (typeof title === 'string') {

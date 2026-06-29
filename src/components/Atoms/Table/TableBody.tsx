@@ -35,7 +35,7 @@ export const TableBody = ({
 }: TableBodyProps) => {
 	return (
 		<tbody className={twMerge('divide-y divide-gray-200', className)} {...props}>
-			{!bodyData || !bodyData?.length ? (
+			{!bodyData?.length ? (
 				<tr>
 					<td className="place-items-center py-36 text-center" colSpan={headerLabels.length} data-testid="no-data">
 						{isLoading ? <Spinner data-testid="spinner" /> : 'Nenhum registro encontrado'}

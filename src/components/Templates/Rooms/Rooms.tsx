@@ -27,8 +27,6 @@ const RoomDeleteModal = dynamic(() => import('@/components/Organisms').then((mod
 
 const RoomDrawer = dynamic(() => import('@/components/Organisms').then((mod) => mod.RoomDrawer))
 
-const RoomsPrint = dynamic(() => import('./RoomsPrint').then((mod) => mod.RoomsPrint))
-
 export const Rooms = () => {
 	const [selectedRoom, setSelectedRoom] = useState<SelectedRoom | null>(null)
 

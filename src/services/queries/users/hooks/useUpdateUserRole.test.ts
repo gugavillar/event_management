@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { QueryClient } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
-import type { UUID } from 'crypto'
+
+import type { UUID } from 'node:crypto'
 
 import { createWrapper } from '@/utils/test-utils'
 

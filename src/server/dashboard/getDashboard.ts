@@ -116,20 +116,30 @@ export const getDashboard = async (eventId: string | null) => {
 
 		participants.forEach((p) => {
 			const age = calculationAge(new Date(p.birthdate), new Date(p.event.finalDate))
-			if (age <= 19) return ageRangesParticipants['14–19']++
-			if (age <= 29) return ageRangesParticipants['20–29']++
-			if (age <= 39) return ageRangesParticipants['30–39']++
-			if (age <= 49) return ageRangesParticipants['40–49']++
-			return ageRangesParticipants['50+']++
+			if (age <= 19) {
+				ageRangesParticipants['14–19']++
+			} else if (age <= 29) {
+				ageRangesParticipants['20–29']++
+			} else if (age <= 39) {
+				ageRangesParticipants['30–39']++
+			} else if (age <= 49) {
+				ageRangesParticipants['40–49']++
+			} else {
+				ageRangesParticipants['50+']++
+			}
 		})
 
 		volunteers.forEach((v) => {
 			const age = calculationAge(new Date(v.birthdate), new Date(v.event.finalDate))
-			if (age <= 19) return ageRangesVolunteers['14–19']++
-			if (age <= 29) return ageRangesVolunteers['20–29']++
-			if (age <= 39) return ageRangesVolunteers['30–39']++
-			if (age <= 49) return ageRangesVolunteers['40–49']++
-			return ageRangesVolunteers['50+']++
+			if (age <= 19) {
+				ageRangesVolunteers['14–19']++
+			} else if (age <= 29) {
+				ageRangesVolunteers['20–29']++
+			} else if (age <= 39) {
+				ageRangesVolunteers['30–39']++
+			} else if (age <= 49) {
+				ageRangesVolunteers['40–49']++
+			} else ageRangesVolunteers['50+']++
 		})
 
 		const labelAgesArray = Object.keys(ageRangesParticipants)

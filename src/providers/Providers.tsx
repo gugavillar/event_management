@@ -35,6 +35,7 @@ export const Providers = ({ children }: Readonly<{ children: ReactNode }>) => {
 								<button
 									className="absolute -top-3.5 -right-3.5 cursor-pointer text-gray-500"
 									onClick={() => toast.dismiss(t.id)}
+									type="button"
 								>
 									<XCircle className="size-5" />
 								</button>
