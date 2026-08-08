@@ -26,10 +26,10 @@ COPY . .
 RUN pnpm prisma generate
 RUN pnpm build
 
-FROM gcr.io/distroless/nodejs24-debian12 AS production
+FROM gcr.io/distroless/nodejs24-debian12:nonroot AS production
 WORKDIR /app
 ENV NODE_ENV=production
-ENV NODE_OPTIONS="--max-old-space-size=320"
+ENV NODE_OPTIONS="--max-old-space-size=224"
 
 USER nonroot
 
